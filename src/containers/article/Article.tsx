@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, LinearProgress, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { getArticle } from "../../actions/articles.action";
-import { IArticle } from "../../types/article.types";
+import { getArticle } from "@/actions/articles.action";
+import { IArticle } from "@/types/article.types";
 
 const Article = () => {
   const [article, setArticle] = useState<IArticle | null>(null)

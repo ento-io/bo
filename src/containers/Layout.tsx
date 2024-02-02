@@ -5,9 +5,9 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { FaNoteSticky } from "react-icons/fa6";
-import { ISelectOption } from "../types/app.types";
 import { useEffect } from "react";
-import { getCurrentUser } from "../actions/auth.action";
+import { ISelectOption } from "@/types/app.types";
+import { getCurrentUser } from "@/actions/auth.action";
 
 const menus: ISelectOption[] = [
   {

@@ -4,9 +4,9 @@ import { LinearProgress } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 
 import ArticleForm from "./ArticleForm";
-import { editArticle, getArticle } from "../../actions/articles.action";
-import { IArticle, IArticleInput } from "../../types/article.types";
-import Notification from "../../components/Notification";
+import { editArticle, getArticle } from "@/actions/articles.action";
+import { IArticle, IArticleInput } from "@/types/article.types";
+// import Notification from "@/components/Notification";
 
 const EditArticle = () => {
   const [article, setArticle] = useState<IArticle | null>(null)
@@ -57,7 +57,7 @@ const EditArticle = () => {
         loading={loading}
         article={article}
       />
-      <Notification message={error} show={!!error} severity="error" />
+      {/* <Notification message={error} show={!!error} severity="error" /> */}
     </div>
   )
 }

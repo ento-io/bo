@@ -5,18 +5,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { FiPlus } from "react-icons/fi";
-import { FiEdit2 } from "react-icons/fi";
-import { FiTrash2 } from "react-icons/fi";
-import { FiEye } from "react-icons/fi";
+import { FiPlus , FiEdit2 , FiTrash2 , FiEye } from "react-icons/fi";
 
-import { IArticle } from '../../types/article.types';
 import { Fab, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { deleteArticle, getArticles } from '../../actions/articles.action';
-import Notification from '../../components/Notification';
 import { useNavigate } from 'react-router-dom';
-import { getUserFullName } from '../../utils/utils';
+import { deleteArticle, getArticles } from '@/actions/articles.action';
+// import Notification from '@/components/Notification';
+import { IArticle } from '@/types/article.types';
+import { getUserFullName } from '@/utils/utils';
 
 const Articles = () => {
   const [articles, setArticles] = useState<IArticle[]>([]);
@@ -54,7 +51,7 @@ const Articles = () => {
   }
 
   const handleEdit = (id: string) => {
-    navigate("/articles/edit/" + id);
+    navigate(`/articles/edit/${  id}`);
   }
 
   const handleAddArticle = () => {
@@ -62,7 +59,7 @@ const Articles = () => {
   }
 
   const handlePreview = (id: string) => {
-    navigate("/articles/" + id);
+    navigate(`/articles/${  id}`);
   }
 
   return (
@@ -106,7 +103,7 @@ const Articles = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Notification message={error} show={!!error} severity="error" />
+      {/* <Notification message={error} show={!!error} severity="error" /> */}
       <Fab color="primary" aria-label="add" onClick={handleAddArticle}>
         <FiPlus />
       </Fab>

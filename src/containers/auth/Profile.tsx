@@ -3,8 +3,8 @@ import Parse from "parse";
 
 import { Typography } from "@mui/material";
 
-import { getUserFullName } from "../../utils/utils";
-import { getCurrentUser } from "../../actions/auth.action";
+import { getUserFullName } from "@/utils/utils";
+import { getCurrentUser } from "@/actions/auth.action";
 
 const Profile = () => {
   const [currentUser, setCurrentUser] = useState<Parse.User | undefined>(undefined)

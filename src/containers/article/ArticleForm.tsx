@@ -2,10 +2,10 @@ import { useEffect } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { IArticle, IArticleInput } from "../../types/article.types"
-import TextField from "../../components/form/fields/TextField";
-import Form from "../../components/form/Form";
-import { articleSchema } from "../../validations/article.validations";
+import { IArticle, IArticleInput } from "@/types/article.types"
+import TextField from "@/components/form/fields/TextField";
+import Form from "@/components/form/Form";
+import { articleSchema } from "@/validations/article.validations";
 
 const initialValues = {
   title: '',
@@ -34,13 +34,13 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
     })
   }, [article, reset])
 
-  const _onSubmit: SubmitHandler<IArticleInput> = (values) => {
+  const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
     onSubmit(values);
     reset(initialValues);
   }
 
   return (
-    <Form form={form} onSubmit={handleSubmit(_onSubmit)} loading={loading}>
+    <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading}>
       <TextField
         label="Title"
         name="title"
