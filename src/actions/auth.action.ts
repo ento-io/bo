@@ -1,15 +1,16 @@
 import Parse from "parse";
 
-import { ILoginInput, ISignUpInput } from "../types/auth.types";
+import { setValues } from "@/utils/utils";
+import { ILoginInput, ISignUpInput } from "@/types/auth.types";
+
+const SIGNUP_PROPERTIES = new Set(['email', 'password', 'username', 'firstName', 'lastName']);
 
 export const signUp = async (values: ISignUpInput): Promise<Parse.Object> => {
   try {
+    const newValues = { username: values.email, ...values };
+
     const user = new Parse.User();
-    user.set('username', values.email);
-    user.set('firstName', values.firstName);
-    user.set('lastName', values.lastName);
-    user.set('email', values.email);
-    user.set('password', values.password);
+    setValues(user, newValues, SIGNUP_PROPERTIES);
 
     const createdUser = await user.signUp();
     return createdUser

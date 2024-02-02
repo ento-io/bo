@@ -4,9 +4,9 @@ import { LinearProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import ArticleForm from "./ArticleForm";
-import { createArticle } from "../../actions/articles.action";
-import { IArticleInput } from "../../types/article.types";
-import Notification from "../../components/Notification";
+import { createArticle } from "@/actions/articles.action";
+import { IArticleInput } from "@/types/article.types";
+// import Notification from "@/components/Notification";
 
 const CreateArticle = () => {
   const [error, setError] = useState<string>('');
@@ -36,7 +36,7 @@ const CreateArticle = () => {
         onSubmit={handleSubmitArticle}
         loading={loading}
       />
-      <Notification message={error} show={!!error} severity="error" />
+      {/* <Notification message={error} show={!!error} severity="error" /> */}
     </div>
   )
 }

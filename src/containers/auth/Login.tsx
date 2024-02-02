@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { ILoginInput } from "../../types/auth.types";
-import { loginSchema } from "../../validations/auth.validations";
-import TextField from "../../components/form/fields/TextField";
-import Form from "../../components/form/Form";
 import { Stack, Typography } from "@mui/material";
 import MUILink from "@mui/material/Link";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../actions/auth.action";
+import { ILoginInput } from "@/types/auth.types";
+import { loginSchema } from "@/validations/auth.validations";
+import TextField from "@/components/form/fields/TextField";
+import Form from "@/components/form/Form";
+import { login } from "@/actions/auth.action";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Login = () => {
 
   const { handleSubmit } = form;
 
-  const _onSubmit: SubmitHandler<ILoginInput> = async (values) => {
+  const onFormSubmit: SubmitHandler<ILoginInput> = async (values) => {
     await login(values);
     navigate('/');
   }
@@ -29,7 +29,7 @@ const Login = () => {
       </Typography>
       <div className="stretchSelf">
         <Stack spacing={2}>
-          <Form form={form} onSubmit={handleSubmit(_onSubmit)}>
+          <Form form={form} onSubmit={handleSubmit(onFormSubmit)}>
             <TextField
               label="Email"
               name="email"

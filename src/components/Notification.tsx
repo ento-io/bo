@@ -1,13 +1,8 @@
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
-import { forwardRef, useEffect, useState } from 'react';
+import { SyntheticEvent, forwardRef, useEffect, useState } from 'react';
 
-const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
-  props,
-  ref,
-) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+const Alert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />);
 
 type Props = {
   message: string;
@@ -22,7 +17,7 @@ const Notification = ({ message, show, severity = 'success' }: Props) => {
   }, [show])
 
 
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
