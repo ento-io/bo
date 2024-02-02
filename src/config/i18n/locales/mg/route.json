@@ -6,8 +6,6 @@
   "changePassword": "hanova-tenimiafina",
   "contacts": "hafatra",
   "profile": "mombamomba",
-  "vehicles": "fiara",
-  "requests": "fangatahana",
   "roles": "andraikitra",
   "confirmEmail": "hamarino-ny-mailaka",
   "settings": "fikirana",
@@ -16,7 +14,6 @@
   "pages": "pejy",
   "create": "hamorona",
   "update": "hanova",
-  "articles": "articles",
   "categories": "sokajy",
   "statistics": "antontanisa",
   "account": "kaonty",
@@ -25,7 +22,5 @@
   "emailResetPassword": "mot-de-passe/hanavao",
   "edit": "hovaina",
   "add": "hanampy",
-  "cooperative": "cooperative",
-  "administration": "fitantanana",
-  "employees": "mpiasa"
+  "administration": "fitantanana"
 }

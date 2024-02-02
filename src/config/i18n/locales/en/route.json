@@ -6,8 +6,6 @@
   "changePassword": "change-password",
   "contacts": "contacts",
   "profile": "profile",
-  "vehicles": "vehicles",
-  "requests": "requests",
   "roles": "roles",
   "confirmEmail": "email-confirmation",
   "settings": "settings",
@@ -16,16 +14,11 @@
   "pages": "pages",
   "create": "create",
   "update": "update",
-  "articles": "articles",
-  "categories": "categories",
-  "statistics": "statistics",
   "account": "account",
   "emailResetPassword": "password/reset",
   "confirmCode": "code/confirm",
   "verifyAccount": "verify",
   "edit": "edit",
   "add": "add",
-  "cooperative": "cooperative",
-  "administration": "administration",
-  "employees": "employees"
+  "administration": "administration"
 }
