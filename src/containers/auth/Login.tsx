@@ -1,85 +1,54 @@
-import Box from '@mui/material/Box';
-import { Stack, Typography } from '@mui/material';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-import { SubmitHandler, useForm } from 'react-hook-form';
-
-import { goToLogin, login } from '../../actions/auth';
-import { LoginInput } from '../../types/auth.type';
-import { loginSchema } from '../../utils/vaildations/auth.validation';
-import Form from '../../components/form/Form';
-import AuthLink from './AuthLink';
-import { PATH_NAMES } from '../../utils/constants';
-import { goToHome } from '../../actions/home';
-import TextField from '../../components/form/TextField';
-import { ILayoutError } from '../../types/app.type';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { ILoginInput } from "../../types/auth.types";
+import { loginSchema } from "../../validations/auth.validations";
+import TextField from "../../components/form/fields/TextField";
+import Form from "../../components/form/Form";
+import { Stack, Typography } from "@mui/material";
+import MUILink from "@mui/material/Link";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../actions/auth.action";
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const { setLayoutError } = useOutletContext<ILayoutError>();
-
-  const form = useForm<LoginInput>({
+  const form = useForm<ILoginInput>({
     resolver: zodResolver(loginSchema),
-  });
-
-  const {
-    mutate: onLogin,
-    // error,
-    isLoading,
-  } = useMutation<void, unknown, LoginInput>(login, {
-    onSuccess: () => {
-      navigate(goToHome())
-    },
-    onError: (error) => {
-      if (!error) return;
-      // pass the error to the parent layout
-      setLayoutError((error as Error).message);
-    }
   });
 
   const { handleSubmit } = form;
 
-  const onSubmitHandler: SubmitHandler<LoginInput> = async values => {
-    onLogin(values);
-  };
+  const _onSubmit: SubmitHandler<ILoginInput> = async (values) => {
+    await login(values);
+    navigate('/');
+  }
 
   return (
-    <Box className="flex1 stretchSelf justifyCenter">
-      <Stack spacing={2}>
-        <Typography variant="h5">
-          Login
-        </Typography>
-        <Form
-          form={form}
-          onSubmit={handleSubmit(onSubmitHandler)}
-          loading={isLoading}
-          primaryButtonText="Login"
-          // error={error}
-          // error={(error as Error)?.message}
-        >
-          <TextField
-            name="email"
-            placeholder="Email"
-            type="email"
-            fullWidth
-            required
-          />
-          <TextField
-            name="password"
-            placeholder="Password"
-            type="password"
-            fullWidth
-            required
-          />
-        </Form>
-        <Box>
-          <AuthLink label="Not have an account?" text="Sign up" url={`/${PATH_NAMES.auth.signUp}`} />
-        </Box>
-      </Stack>
-    </Box>
-  )
+    <div className="flexCenter flex1 stretchSelf">
+      <Typography variant="h3" gutterBottom>
+        Login
+      </Typography>
+      <div className="stretchSelf">
+        <Stack spacing={2}>
+          <Form form={form} onSubmit={handleSubmit(_onSubmit)}>
+            <TextField
+              label="Email"
+              name="email"
+              type="email"
+            />
+            <TextField
+              label="Password"
+              name="password"
+              type="password"
+            />
+          </Form>
+          <Typography variant="body1">
+            Don't have an account? <MUILink component={Link} to="/signup">Sign up</MUILink>
+          </Typography>
+        </Stack>
+
+      </div>
+    </div>
+  );
 }
 
-export default Login;
+export default Login

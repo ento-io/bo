@@ -1,47 +1,44 @@
-import { Stack, Box, Typography } from '@mui/material';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createArticle } from '../../actions/articles';
-import ArticleForm from './ArticleForm';
-import { IArticle, IArticleInput } from '../../types/article.type';
-import Loading from '../../components/Loading';
+import { useState } from "react";
+
+import { LinearProgress } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+import ArticleForm from "./ArticleForm";
+import { createArticle } from "../../actions/articles.action";
+import { IArticleInput } from "../../types/article.types";
+import Notification from "../../components/Notification";
 
 const CreateArticle = () => {
-  const queryClient = useQueryClient();
+  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
-  // just to show that the list is updated after creating a new article
-  // const {  data: articles } = useQuery(['articles'], () => getArticles());
+  const navigate = useNavigate();
 
-  const {
-    mutate: _createArticle,
-    isLoading,
-  } = useMutation<IArticle | undefined, Error, IArticleInput>(createArticle, {
-    onSuccess: (newArticle: IArticle | undefined) => {
-      if (!newArticle) return;
-      queryClient.setQueryData(
-        ['articles'],
-        (prev: IArticle[] | undefined): IArticle[] => prev ? [newArticle, ...prev] : [newArticle]
-      );
-    },
-  })
-
-  const handleSave = async (values: IArticleInput) => {
-    await _createArticle(values);
+  const handleSubmitArticle = async (values: IArticleInput) => {
+    setLoading(true);
+    try {
+      // -------- creation -------- //
+      await createArticle(values);
+      navigate('/articles');
+      setLoading(false);
+    } catch (error) {
+      setError(error as string);
+      setLoading(false);
+    }
   }
 
+
   return (
-    <Box className="flexCenter">
-      <Stack spacing={2}>
-        <Typography>
-          Create article
-        </Typography>
-        <div>
-          {isLoading && <Loading />}
-          {/* {isLoading && <Loading />} */}
-          <ArticleForm onSave={handleSave} />
-        </div>
-      </Stack>
-    </Box>
+    <div css={{ minHeight: "100vh", position: "relative" }} className="flexColumn">
+      {loading && <LinearProgress css={{ height: 4, position: "absolute", top: 0, left: 0, right: 0 }} className="stretchSelf" />}
+      <h1>CreateArticle</h1>
+      <ArticleForm
+        onSubmit={handleSubmitArticle}
+        loading={loading}
+      />
+      <Notification message={error} show={!!error} severity="error" />
+    </div>
   )
 }
 
-export default CreateArticle;
+export default CreateArticle

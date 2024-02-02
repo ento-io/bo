@@ -1,79 +1,75 @@
-import { FC } from 'react';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Articles from "./containers/article/Articles";
+import CreateArticle from "./containers/article/CreateArticle";
+import EditArticle from "./containers/article/EditArticle";
+import Article from "./containers/article/Article";
+import Layout from "./containers/Layout";
+import AuthLayout from "./containers/auth/AuthLayout";
+import SignUp from "./containers/auth/SignUp";
+import Login from "./containers/auth/Login";
+import LogOut from "./containers/auth/LogOut";
+import Profile from "./containers/auth/Profile";
+import Home from "./containers/Home";
 
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Test from './containers/test/Test';
-import EditArticle from './containers/article/EditArticle';
-import CreateArticle from './containers/article/CreateArticle';
-import PreviewArticle from './containers/article/PreviewArticle';
-import Articles from './containers/article/Articles';
-import DashboardLayout from './components/layout/DashboardLayout';
-import { PATH_NAMES } from './utils/constants';
-import Login from './containers/auth/Login';
-import AuthLayout from './components/layout/AuthLayout';
-import SignUp from './containers/auth/SignUp';
-import Home from './containers/home/Home';
-import LogOut from './containers/auth/LogOut';
-
-const router = createBrowserRouter([
+const router = [
   {
-    path: "/",
-    element: <DashboardLayout />,
+    path: "",
+    // loader: onEnterDashboard(),
+    element: <Layout />,
     children: [
       {
         path: "/",
         element: <Home />,
       },
       {
-        path: '/' + PATH_NAMES.articles.root,
+        path: "/profile",
+        element: <Profile />,
+      },
+      {
+        path: "/articles",
         children: [
           {
             path: "",
-            element: <Articles />,
+            element: <Articles />
           },
           {
-            path: PATH_NAMES.articles.root + "/:id",
-            element: <PreviewArticle />,
+            path: ":id",
+            element: <Article />
           },
           {
-            path: PATH_NAMES.articles.create,
-            element: <CreateArticle />,
+            path: "create",
+            element: <CreateArticle />
           },
           {
-            path: PATH_NAMES.articles.edit + "/:id",
-            element: <EditArticle />,
-          },
+            path: "edit/:id",
+            element: <EditArticle />
+          }
         ],
       },
     ]
   },
   {
-    path: "/",
+    path: "",
     element: <AuthLayout />,
     children: [
       {
-        path: PATH_NAMES.auth.login,
+        path: "/login",
         element: <Login />,
       },
       {
-        path: PATH_NAMES.auth.signUp,
+        path: "/signup",
         element: <SignUp />,
-      }
+      },
+      {
+        path: "/logout",
+        element: <LogOut />,
+      },
     ]
-  },
-  {
-    path: "/logout",
-    element: <LogOut />,
-  },
-  {
-    path: "/test",
-    element: <Test />,
-  },
-]);
+  }
+];
 
-const Routes: FC = () => {
-  return (
-    <RouterProvider router={router} />
-  );
-};
+const Routes = () => {
+  return <RouterProvider router={createBrowserRouter(router)} />;
+}
 
 export default Routes;

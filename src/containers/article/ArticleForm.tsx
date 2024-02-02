@@ -1,92 +1,59 @@
-import { Stack, Button } from '@mui/material';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from "react"
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { IArticle, IArticleInput } from '../../types/article.type';
-import { articleSchema } from '../../utils/vaildations/article.validations';
-import { useForm, FormProvider, SubmitHandler} from 'react-hook-form';
-import TextField from '../../components/form/TextField';
+import { IArticle, IArticleInput } from "../../types/article.types"
+import TextField from "../../components/form/fields/TextField";
+import Form from "../../components/form/Form";
+import { articleSchema } from "../../validations/article.validations";
 
-const getInitialValues = (article: IArticle | null | undefined) => {
-  // edition
-  if (article) {
-    return {
-      title: article.title
-    }
-  }
+const initialValues = {
+  title: '',
+  content: '',
+};
 
-  // creation
-  return {
-    title: ''
-  }
-}
 type Props = {
-  onSave: (values: IArticleInput) => void;
-  article?: IArticle;
+  onSubmit: (values: IArticleInput) => void;
+  article?: IArticle | null;
+  loading?: boolean;
 }
-const ArticleForm = ({ onSave, article }: Props) => {
-  // const [values, setValues] = useState<IArticleInput>({
-  //   title: '',
-  // })
 
+const ArticleForm = ({ onSubmit, article, loading }: Props) => {
   const form = useForm({
+    defaultValues: initialValues,
     resolver: zodResolver(articleSchema),
-    defaultValues: getInitialValues(article)
   });
 
-  const { handleSubmit } = form;
+  const { handleSubmit, reset } = form;
 
-  // useEffect(() => {
-  //   if (!article) return;
-  //   setValues({ title: (article as IArticle).title })
-  // }, [article])
+  useEffect(() => {
+    if (!article) return;
+    reset({
+      title: article.get("title"),
+      content: article.get("content"),
+    })
+  }, [article, reset])
 
-
-  // const handleSave = (event: any) => {
-  //   event.preventDefault();
-  //   onSave(values)
-  // }
-
-  // const handleChange = async (event: ChangeEvent<HTMLInputElement>) => {
-  //   const newValues = {
-  //     ...values,
-  //     [event.target.name]: event.target.value
-  //   };
-  
-  //   const validation = await articleSchema.parseAsync(newValues)
-
-  //   if (!(validation as any).success) {
-  //     console.log('validation: ', validation);
-  //     return;
-  //   }
-
-  //   setValues(newValues)
-  // };
-
-  const onSubmit: SubmitHandler<IArticleInput> = async values => {
-    onSave(values)
+  const _onSubmit: SubmitHandler<IArticleInput> = (values) => {
+    onSubmit(values);
+    reset(initialValues);
   }
 
   return (
-    <FormProvider {...form}>
-    {/* <FormProvider form={form}> */}
-      <form onSubmit={handleSubmit(onSubmit as any)}>
-        <Stack spacing={2}>
-          {/* <TextField name="title" label="Title" onChange={handleChange} value={values?.title} /> */}
-          {/* <Controller
-            name="title"
-            control={control}
-            render={({ field }: any) => <TextField {...field} label="Title" />}
-          /> */}
-          <TextField name="title" label="Title" />
-          {/* <TextField name="description" label="description" /> */}
-          <Button type="submit" variant="contained">
-            Save
-          </Button>              
-        </Stack>
-      </form>
-    </FormProvider>
+    <Form form={form} onSubmit={handleSubmit(_onSubmit)} loading={loading}>
+      <TextField
+        label="Title"
+        name="title"
+      />
 
+      <TextField
+        label="Content"
+        name="content"
+        multiline
+        maxRows={4}
+      />
+    </Form>
   )
 }
 
-export default ArticleForm;
+export default ArticleForm

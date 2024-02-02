@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { LinearProgress } from "@mui/material";
+import { Card, CardContent, LinearProgress, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 
-import ArticleForm from "./ArticleForm";
-import { editArticle, getArticle } from "../../actions/articles.action";
-import { IArticle, IArticleInput } from "../../types/article.types";
-import Notification from "../../components/Notification";
+import { getArticle } from "../../actions/articles.action";
+import { IArticle } from "../../types/article.types";
 
-const EditArticle = () => {
+const Article = () => {
   const [article, setArticle] = useState<IArticle | null>(null)
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
@@ -33,33 +31,19 @@ const EditArticle = () => {
     init();
   }, [id])
 
-  const handleSubmitArticle = async (values: IArticleInput) => {
-    if (!id) return;
-    setLoading(true);
-    try {
-      // -------- creation -------- //
-      const updatedArticle = await editArticle(id, values);
-      navigate("/articles/" + updatedArticle.id);
-      setLoading(false);
-    } catch (error) {
-      setError(error as string);
-      setLoading(false);
-    }
-  }
 
 
   return (
     <div css={{ minHeight: "100vh", position: "relative" }} className="flexColumn">
       {loading && <LinearProgress css={{ height: 4, position: "absolute", top: 0, left: 0, right: 0 }} className="stretchSelf" />}
-      <h1>EditArticle</h1>
-      <ArticleForm
-        onSubmit={handleSubmitArticle}
-        loading={loading}
-        article={article}
-      />
-      <Notification message={error} show={!!error} severity="error" />
+      <Card>
+        <CardContent>
+          <Typography>Title: {article?.get('title')}</Typography>
+          <Typography>Content: {article?.get('content')}</Typography>
+        </CardContent>
+      </Card>
     </div>
   )
 }
 
-export default EditArticle
+export default Article
