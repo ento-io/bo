@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { loginSchema, signUpSchema } from "../validations/auth.validations";
-import { IUser } from "./user.types";
+import { IUser } from "./user.type";
 
 export type ISignUpInput = z.infer<typeof signUpSchema>;
 export type ILoginInput = z.infer<typeof loginSchema>;

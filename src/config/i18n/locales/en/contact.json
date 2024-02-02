@@ -1,0 +1,14 @@
+{
+  "errors": {
+    "contactToUpdateNotFound": "The contact you are attempting to update does not exists, it may have been deleted.",
+    "contactToDeleteNotFound": "The contact you are attempting to delete does not exists, it may have been deleted.",
+    "hasNoRightToDelete": "You can not delete this contact",
+    "hasNoRightToUpdate": "You can not update this contact",
+    "hasNoRightToCreate": "You can not create a contact"
+  },
+  "contacts": "Contacts",
+  "contact": "Contact",
+  "thisContact": "This contact",
+  "contactFrom": "Message from {{user}}",
+  "seeAllMessages": "See all messages"
+}

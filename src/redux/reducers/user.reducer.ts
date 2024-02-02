@@ -1,0 +1,110 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IUser, IUserState } from '@/types/user.type';
+
+const initialState: IUserState = {
+  loading: false,
+  user: null,
+  users: [],
+  count: 0,
+  search: null,
+};
+
+export const user = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    loadUsersSlice: (state: IUserState, action: PayloadAction<IUser[]>) => {
+      state.users = action.payload;
+    },
+    loadUserSlice: (state: IUserState, action: PayloadAction<IUser>) => {
+      state.user = action.payload;
+    },
+    setUsersCountSlice: (state: IUserState, action: PayloadAction<number>) => {
+      state.count = action.payload;
+    },
+    setUserSearchSlice: (state: IUserState, action: PayloadAction<any>) => {
+      state.search = {
+        ...state.search,
+        ...action.payload,
+      };
+    },
+    clearUserSearchSlice: (state: IUserState) => {
+      state.search = null;
+    },
+    clearUserSlice: (state: IUserState) => {
+      state.user = null;
+    },
+    clearUsersSlice: (state: IUserState) => {
+      state.users = [];
+    },
+    updateUsersByUserSlice: (state: IUserState, action: PayloadAction<IUser>) => {
+      const newUsers = [];
+
+      for (const user of state.users) {
+        if (user.objectId === action.payload.objectId) {
+          // push the updated user to the first line
+          newUsers.unshift({
+            ...user,
+            ...action.payload,
+          });
+        } else {
+          newUsers.push(user);
+        }
+      }
+
+      state.users = newUsers;
+      state.user = action.payload;
+    },
+    updateUsersByUsersSlice: (state: IUserState, action: PayloadAction<IUser[]>) => {
+      const newUsers = [];
+
+      for (const user of state.users) {
+        const currentUser = action.payload.find((updatedUser: IUser) => updatedUser.objectId === user.objectId);
+        if (currentUser) {
+          // push the updated users to the first line
+          newUsers.unshift({
+            ...user,
+            ...currentUser,
+          });
+        } else {
+          newUsers.push(user);
+        }
+      }
+
+      state.users = newUsers;
+    },
+    setUserLoadingSlice: (state: IUserState, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    clearUserCountSlice: (state: IUserState) => {
+      state.count = 0;
+    },
+  },
+});
+
+export const {
+  setUserLoadingSlice,
+  clearUserSlice,
+  loadUserSlice,
+  loadUsersSlice,
+  setUsersCountSlice,
+  updateUsersByUserSlice,
+  updateUsersByUsersSlice,
+  clearUsersSlice,
+  setUserSearchSlice,
+  clearUserSearchSlice,
+  clearUserCountSlice,
+} = user.actions;
+
+// ---------------------------------------------- //
+// ------------------ SELECTOR ------------------ //
+// ---------------------------------------------- //
+// NOTE: do not use RootState as state type to avoid import circular dependencies (from store.ts)
+// we can not commit to git if there is circular dependencies
+export const getUserSelector = (state: Record<string, any>): IUserState => state.user;
+export const getUserUserSelector = (state: Record<string, any>): IUser => state.user.user;
+export const getUserLoadingSelector = (state: Record<string, any>): boolean => state.user.loading;
+export const getUserUsersSelector = (state: Record<string, any>): IUser[] => state.user.users;
+export const getUserCountSelector = (state: Record<string, any>): number => state.user.count;
+
+export default user.reducer;

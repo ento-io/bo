@@ -1,0 +1,14 @@
+{
+  "errors": {
+    "contactToUpdateNotFound": "Le contact que vous tentez de mettre à jour n'existe pas, il a peut-être été supprimé.",
+    "contactToDeleteNotFound": "Le contact que vous tentez de supprimer n'existe pas, il a peut-être été supprimé.",
+    "hasNoRightToDelete": "Vous ne pouvez pas supprimer ce contact",
+    "hasNoRightToUpdate": "Vous ne pouvez pas modifier ce contact",
+    "hasNoRightToCreate": "Vous ne pouvez pas créer un contact"
+  },
+  "contacts": "Contacts",
+  "contact": "Contact",
+  "thisContact": "Ce contact",
+  "contactFrom": "Message de {{user}}",
+  "seeAllMessages": "Voir tous les messages"
+}
