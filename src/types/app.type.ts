@@ -68,11 +68,7 @@ export interface IPagination extends IOrderList {
   rowsPerPage: number;
 }
 
-// image returned by the upload api
-export interface IFileCloud {
-  url: string;
-  publicId: string;
-}
+// image returned by the upload ap
 export interface IDefaultPagination extends Omit<IPagination, 'currentPage'> {
   rowsPerPageOptions?: number[];
 }
