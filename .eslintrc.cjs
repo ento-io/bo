@@ -26,6 +26,7 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    'import/extensions': "off",
     "prefer-template": "off",
     '@typescript-eslint/no-explicit-any': 0,
     'react/react-in-jsx-scope': 'off',

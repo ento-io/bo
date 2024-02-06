@@ -17,6 +17,8 @@ module.exports = {
     '^@/config/(.*)$',
     '^@/containers/(.*)$',
     '^@/hooks/(.*)$',
+    '^@/pages/(.*)$',
+    '^@/routes /(.*)$',
     '^@/validations/(.*)$',
     '^@/utils/(.*)$',
     '',
