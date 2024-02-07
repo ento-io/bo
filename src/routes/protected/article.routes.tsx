@@ -1,36 +1,35 @@
-import { createRoute } from "@tanstack/react-router";
-import Articles from "@/pages/articles/Articles";
-import Article from "@/pages/articles/Article";
-// eslint-disable-next-line import/no-cycle
-import DashboardLayoutRoutes from "./private.routes";
-import ArticlesLayout from "@/pages/articles/ArticleLayout";
+import { Outlet, createRoute } from "@tanstack/react-router";
+import { z } from "zod";
 
-const ArticleLayoutRoutes = createRoute({
-  getParentRoute: () => DashboardLayoutRoutes,
-  component: ArticlesLayout,
+import Articles from "../../pages/articles/Articles";
+import Article from "../../pages/articles/Article";
+import { privateLayout } from "../private.routes";
+// import { getArticle, getArticles } from "../../actions/article.actions";
+import { IIdParams } from "@/types/app.type";
+
+export const articlesLayout = createRoute({
+  getParentRoute: () => privateLayout,
+  component: () => <Outlet />,
   path: "/articles",
 });
 
-const ArticlesRoute = createRoute({
-  getParentRoute: () => ArticleLayoutRoutes,
+export const articlesRoute = createRoute({
+  getParentRoute: () => articlesLayout,
+  // loader: getArticles,
   component: Articles,
   path: "/",
 });
 
-export const ArticleRoute = createRoute({
-  getParentRoute: () => ArticleLayoutRoutes,
+export const articleRoute = createRoute({
+  parseParams: (params: IIdParams) => ({
+    id: z.string().parse(params.id),
+  }),
+  // loader: ({ params }: { params: IIdParams }) => getArticle(params.id),
+  getParentRoute: () => articlesLayout,
   component: Article,
   path: "$id",
-  // loader: (params) => console.log(params),
 });
 
-export const EditArticleRoute = createRoute({
-  getParentRoute: () => ArticleLayoutRoutes,
-  component: Article,
-  path: "$id/edit",
-  // loader: (params) => console.log(params),
-});
+const articleRoutes = [articlesRoute, articleRoute];
 
-ArticleLayoutRoutes.addChildren([ArticlesRoute, ArticleRoute, EditArticleRoute]);
-
-export default ArticleLayoutRoutes;
+export default articleRoutes;

@@ -1,18 +1,22 @@
-import { ThemeProvider } from '@mui/material'
-import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
-import { RouterProvider } from '@tanstack/react-router';
-import { GlobalStyles } from './GlobalStyles';
-import { theme } from './utils/theme';
-import router from './routes/routes';
+import { Provider } from 'react-redux';
+import { Suspense } from 'react';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from './redux/store';
+import MuiThemeProvider from './MuiThemeProvider';
+import RouterProvider from './routes/RouterProvider';
+
 
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <EmotionThemeProvider theme={theme}>
-        <GlobalStyles theme={theme} />
-        <RouterProvider router={router} />
-      </EmotionThemeProvider>
-    </ThemeProvider>
+    <Suspense fallback={<span>Loading</span>}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <MuiThemeProvider>
+            <RouterProvider store={store} />
+          </MuiThemeProvider>
+        </PersistGate>
+      </Provider>
+    </Suspense>
   )
 }
 

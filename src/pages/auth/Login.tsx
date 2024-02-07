@@ -1,55 +1,29 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Stack, Typography } from "@mui/material";
-import MUILink from "@mui/material/Link";
-// import { Link } from "react-router-dom";
-import { useNavigate, Link } from "@tanstack/react-router";
-import { ILoginInput } from "@/types/auth.types";
-import { loginSchema } from "@/validations/auth.validations";
-import TextField from "@/components/form/fields/TextField";
-import Form from "@/components/form/Form";
-import { login } from "@/actions/auth.action";
+import { Stack } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+
+import Head from '@/components/Head';
+
+
+import AuthLink from './AuthLink';
+import LoginForm from '@/containers/auth/LoginForm';
 
 const Login = () => {
-  const navigate = useNavigate();
-  const form = useForm<ILoginInput>({
-    resolver: zodResolver(loginSchema),
-  });
-
-  const { handleSubmit } = form;
-
-  const onFormSubmit: SubmitHandler<ILoginInput> = async (values) => {
-    await login(values);
-    navigate({ to: "/" });
-  }
+  const { t } = useTranslation();
 
   return (
-    <div className="flexCenter flex1 stretchSelf">
-      <Typography variant="h3" gutterBottom>
-        Login
-      </Typography>
-      <div className="stretchSelf">
-        <Stack spacing={2}>
-          <Form form={form} onSubmit={handleSubmit(onFormSubmit)}>
-            <TextField
-              label="Email"
-              name="email"
-              type="email"
-            />
-            <TextField
-              label="Password"
-              name="password"
-              type="password"
-            />
-          </Form>
-          <Typography variant="body1">
-            Don't have an account? <MUILink component={Link} to="/signup">Sign up</MUILink>
-          </Typography>
+    <>
+      <Head title={t('user:login')} />
+        <LoginForm />
+        <Stack spacing={1}>
+          <AuthLink label={t('user:haveNoAccountYet')} text={t('user:signUp')} url="/signup" />
+          {/* <AuthLink
+            label={t('user:forgottenPassword')}
+            text={t('user:resetPassword')}
+            onClick={handleForgottenPassword}
+          /> */}
         </Stack>
-
-      </div>
-    </div>
+    </>
   );
-}
+};
 
-export default Login
+export default Login;

@@ -1,30 +1,45 @@
-import { FormHelperText, Stack, TextFieldProps } from "@mui/material";
-import { Controller, useFormContext } from "react-hook-form";
-import TextInput from "../inputs/TextInput";
+import { ChangeEvent } from 'react';
+
+import { Stack, FormHelperText } from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+
+import TextFieldInput, { CustomTextFieldInputProps } from '../inputs/TextFieldInput';
 
 type Props = {
   name: string;
-} & TextFieldProps;
+  errorMessage?: string;
+  onFieldChange?: (value: string | number) => void;
+} & CustomTextFieldInputProps;
 
-const TextField = ({ name, ...inputProps }: Props) => {
-  const { control, formState: { errors } } = useFormContext();
+const TextField = ({ name, errorMessage, onFieldChange, ...inputProps }: Props) => {
+  // hooks
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <Controller
-      name={name}
       control={control}
+      name={name}
+      defaultValue=""
       render={({ field }) => (
-        <Stack spacing={1}>
-          <TextInput
-            error={!!errors?.[name]}
+        <Stack>
+          <TextFieldInput
             {...field}
             {...inputProps}
+            variant="outlined"
+            error={!!errors[name] || !!errorMessage}
+            onChange={(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+              field.onChange(event.target.value);
+              onFieldChange?.(event.target.value);
+            }}
           />
-          {errors?.[name] && <FormHelperText error>{(errors as any)[name]?.message}</FormHelperText>}
+          {errors[name] && <FormHelperText error>{(errors as any)[name].message}</FormHelperText>}
         </Stack>
       )}
     />
-  )
-}
+  );
+};
 
 export default TextField;

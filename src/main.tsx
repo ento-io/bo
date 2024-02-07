@@ -2,11 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import { initParse } from './utils/utils';
-import privateRouter from "./routes/protected/private.routes";
-import publicRouter from "./routes/public/public.routes";
+import privateRouter from "./routes/private.routes";
+import publicRouter from "./routes/public.routes";
 
 initParse();
-
 
 declare module "@tanstack/react-router" {
   interface Register {

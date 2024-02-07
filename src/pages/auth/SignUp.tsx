@@ -1,69 +1,30 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Stack, Typography } from "@mui/material";
-import MUILink from "@mui/material/Link";
-// import { Link, useNavigate } from "react-router-dom";
-import { useNavigate, Link } from "@tanstack/react-router";
-import { ISignUpInput } from "@/types/auth.types";
-import { signUpSchema } from "@/validations/auth.validations";
-import TextField from "@/components/form/fields/TextField";
-import Form from "@/components/form/Form";
-import { signUp } from "@/actions/auth.action";
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
+
+import Head from '@/components/Head';
+
+import { signUp } from '@/redux/actions/auth.action';
+
+import AuthLink from './AuthLink';
+import { ISignUpInput } from '@/types/auth.types';
+import SignUpForm from '@/containers/auth/SignUpForm';
 
 const SignUp = () => {
-  const navigate = useNavigate();
-  const form = useForm<ISignUpInput>({
-    resolver: zodResolver(signUpSchema),
-  });
+  const dispatch = useDispatch();
+  const { t } = useTranslation(['user']);
+  const title = t('user:createAnAccount');
 
-  const { handleSubmit } = form;
-
-  const onFormSubmit: SubmitHandler<ISignUpInput> = async (values) => {
-    await signUp(values);
-    navigate({ to: "/login" });
-  }
+  const handleSubmitAccount = (values: ISignUpInput) => {
+    dispatch(signUp(values));
+  };
 
   return (
-    <div className="flexCenter flex1 stretchSelf">
-      <Typography variant="h3" gutterBottom>
-        Sign up
-      </Typography>
-      <div className="stretchSelf">
-        <Stack spacing={2}>
-          <Form form={form} onSubmit={handleSubmit(onFormSubmit)}>
-            <TextField
-              label="First name"
-              name="firstName"
-            />
-            <TextField
-              label="Last name"
-              name="lastName"
-            />
-            <TextField
-              label="Email"
-              name="email"
-              type="email"
-            />
-
-            <TextField
-              label="Password"
-              name="password"
-              type="password"
-            />
-            <TextField
-              label="Password confirmation"
-              name="passwordConfirmation"
-              type="password"
-            />
-          </Form>
-          <Typography variant="body1">
-            Already have an account? <MUILink component={Link} to="/login">Login</MUILink>
-          </Typography>
-        </Stack>
-
-      </div>
-    </div>
+    <>
+      <Head title={title} />
+      <SignUpForm onSubmit={handleSubmitAccount} />
+      <AuthLink label={t('user:alreadyHaveAccount')} text={t('user:login')} url="/login" />
+    </>
   );
-}
+};
 
-export default SignUp
+export default SignUp;

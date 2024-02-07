@@ -8,7 +8,7 @@ module.exports = {
   bracketSameLine: false,
   endOfLine: "lf",
   importOrder: [
-    '^(react/(.*)$)|^(react$)',
+    '^react$',
     '',
     '<THIRD_PARTY_MODULES>',
     '',
@@ -18,6 +18,7 @@ module.exports = {
     '^@/containers/(.*)$',
     '^@/hooks/(.*)$',
     '^@/pages/(.*)$',
+    '^@/providers/(.*)$',
     '^@/routes /(.*)$',
     '^@/validations/(.*)$',
     '^@/utils/(.*)$',
