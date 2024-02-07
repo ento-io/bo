@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { useNavigate } from '@tanstack/react-router';
 import PasswordField from '@/components/form/fields/PasswordField';
 import TextField from '@/components/form/fields/TextField';
 import Form from '@/components/form/Form';
@@ -18,6 +19,7 @@ import { loginSchema } from '@/validations/auth.validation';
 const LoginForm = () => {
   const { t } = useTranslation(['user']);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const loading = useSelector(getUserLoadingSelector);
   const error = useSelector(getAppErrorSelector);
 
@@ -28,7 +30,7 @@ const LoginForm = () => {
   const { handleSubmit } = form;
 
   const onSubmitHandler: SubmitHandler<ILoginInput> = async values => {
-    dispatch(login(values));
+    dispatch(login(values, navigate));
   };
 
   return (

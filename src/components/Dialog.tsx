@@ -1,8 +1,6 @@
 import { MouseEventHandler, ReactNode } from 'react';
 
-import CloseIcon from '@mui/icons-material/Close';
-import { LoadingButton } from '@mui/lab';
-import { AppBar, Box, IconButton, styled, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, CircularProgress, IconButton, styled, Toolbar, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import MUIDialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -10,6 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useTranslation } from 'react-i18next';
+import { FiX } from 'react-icons/fi';
 
 const StyledDialog = styled(MUIDialog)(({ theme }) => ({
   '& .MuiDialog-root': {
@@ -61,7 +60,7 @@ const Dialog = ({
 
   const closeIcon = (
     <IconButton edge="start" color="inherit" onClick={toggle} aria-label="close">
-      <CloseIcon />
+      <FiX />
     </IconButton>
   );
 
@@ -115,14 +114,13 @@ const Dialog = ({
 
           {/* confirm button */}
           {onPrimaryButtonAction && (
-            <LoadingButton
+            <Button
               onClick={handlePrimaryButtonAction}
               autoFocus
-              loading={loading}
               variant="contained"
               sx={{ textTransform: 'capitalize' }}>
-              {primaryButtonText ?? t('confirm')}
-            </LoadingButton>
+              {loading ? <CircularProgress size={20} /> : primaryButtonText ?? t('confirm')}
+            </Button>
           )}
 
           {/* form button */}

@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { getServerUrl } from '@utils/utils';
+import { getServerUrl } from '@/utils/utils';
 
 // =================
 // ? The issue: why use a factory instead of a static instance?

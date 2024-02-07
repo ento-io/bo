@@ -1,19 +1,17 @@
 import { useEffect, useState } from "react";
 
 import { Card, CardContent, LinearProgress, Typography } from "@mui/material";
-// import { useNavigate, useParams } from "react-router-dom";
 
 import { getArticle } from "@/actions/articles.action";
 import { IArticle } from "@/types/article.types";
-import { ArticleRoute } from '@/routes/protected/article.routes';
-import { useNavigate } from "@tanstack/react-router";
+import { articleRoute } from '@/routes/protected/article.routes';
 
 const Article = () => {
   const [article, setArticle] = useState<IArticle | null>(null)
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { id } = ArticleRoute.useParams();
+  const { id } = articleRoute.useParams();
   // const navigate = useNavigate();
 
   // load initial article list
@@ -32,8 +30,6 @@ const Article = () => {
     
     init();
   }, [id])
-
-
 
   return (
     <div css={{ minHeight: "100vh", position: "relative" }} className="flexColumn">

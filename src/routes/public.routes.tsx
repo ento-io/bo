@@ -6,6 +6,7 @@ import Login from "@/pages/auth/Login";
 import SignUp from "@/pages/auth/SignUp";
 import { getAppCurrentUserSelector } from "@/redux/reducers/app.reducer";
 import AuthLayout from "@/pages/auth/AuthLayout";
+import { PATH_NAMES } from "@/utils/pathnames";
 
 /**
  * add id to pathless route (sub layouts)
@@ -36,13 +37,13 @@ const loginRoute = createRoute({
   }),
   getParentRoute: () => publicLayout,
   component: Login,
-  path: "/login",
+  path: PATH_NAMES.login,
 });
 
 const signUpRoute = createRoute({
   getParentRoute: () => publicLayout,
   component: SignUp,
-  path: "/signup",
+  path: PATH_NAMES.signUp,
 });
 
 const publicRoutes = publicLayout.addChildren([loginRoute, signUpRoute]);

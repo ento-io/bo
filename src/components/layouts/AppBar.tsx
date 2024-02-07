@@ -1,4 +1,3 @@
-import { back } from '@lagunovsky/redux-react-router';
 import { Divider, styled } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -6,14 +5,13 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import { FiArrowLeft, FiMenu } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 
-import { useBreakpoint } from '@hooks/useBreakpoint';
+import { useRouter, useRouterState } from '@tanstack/react-router';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
-import { getSettingsIsSideBarOpenSelector } from '@redux/reducers/settings.reducer';
+import { getSettingsIsSideBarOpenSelector } from '@/redux/reducers/settings.reducer';
 
-import { RESPONSIVE_BREAKPOINT, SIDEBAR_WIDTH, TOOLBAR_SMALL_SCREEN_HEIGHT } from '@utils/constants';
+import { RESPONSIVE_BREAKPOINT, SIDEBAR_WIDTH, TOOLBAR_SMALL_SCREEN_HEIGHT } from '@/utils/constants';
 
 import Logo from './Logo';
 import UserMenu from './notifications/UserMenu';
@@ -63,12 +61,11 @@ type Props = {
 
 const AppBar = ({ onOpenDrawer }: Props) => {
   const isSideBarOpen = useSelector(getSettingsIsSideBarOpenSelector);
-  const location = useLocation();
-  const dispatch = useDispatch();
+  const { location } = useRouterState();
   const isDesktopDown = useBreakpoint();
-
+  const router = useRouter();
   // go back (left button) click
-  const handleGoBack = () => dispatch(back());
+  const handleGoBack = () => router.history.back();
 
   return (
     <StyledAppBar position="fixed" open={isSideBarOpen} elevation={1}>

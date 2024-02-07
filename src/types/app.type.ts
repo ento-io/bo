@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { IUser } from "./user.type";
 import { confirmDeletionSchema, settingsSchema } from "@/validations/app.validations";
 import { Store } from "@/redux/store";
+import { DateType } from "./util.type";
 
 export type ISettingsInput = z.infer<typeof settingsSchema>;
 export type ConfirmDeletionInput = z.infer<typeof confirmDeletionSchema>;
@@ -93,3 +94,12 @@ export interface ICardRadio<T = string> extends ISelectOption<T> {
 }
 
 export type INavigate = ReturnType<typeof useNavigate>;
+
+export interface INotificationMenu {
+  objectId: string;
+  user?: IUser;
+  title: string;
+  description: string;
+  date: DateType;
+  onClick?: () => void; // mainly id
+}

@@ -15,12 +15,12 @@ import {
 import { grey } from '@mui/material/colors';
 import { useTranslation } from 'react-i18next';
 
-import Avatar from '@components/Avatar';
+import Avatar from '@/components/Avatar';
 
-import { fromNow } from '@utils/date.utils';
-import { capitalizeFirstLetter, cutText } from '@utils/utils';
+import { fromNow } from '@/utils/date.utils';
+import { capitalizeFirstLetter, cutText } from '@/utils/utils';
 
-import { INotificationMenu } from 'types/app.type';
+import { INotificationMenu } from '@/types/app.type';
 
 const sx = {
   menu: {
