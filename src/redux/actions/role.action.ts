@@ -1,3 +1,4 @@
+import Parse from 'parse';
 import i18n from '@/config/i18n';
 
 import { setMessageSlice } from '@/redux/reducers/app.reducer';

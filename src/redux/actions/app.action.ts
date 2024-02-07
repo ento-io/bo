@@ -1,3 +1,4 @@
+import Parse from 'parse';
 import { actionWithLoader } from '@/utils/app.utils';
 import { ISettingsInput } from '@/types/app.type';
 import { Lang } from '@/types/setting.type';
@@ -101,5 +102,3 @@ export const changeSettings = (values: ISettingsInput): any => {
 // // this route does not exist, we just need to trigger the 404 page
 // export const goToNotFound = (): UpdateLocationActions => push('/not-found');
 
-export const goToHome = () => '/';
-export const goToSettings = (): string => '/settings';

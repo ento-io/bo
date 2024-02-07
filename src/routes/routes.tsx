@@ -23,7 +23,7 @@ export const appLayout = createRootRouteWithContext<IRouteContext>()({
 });
 
 const logoutRoute = createRoute({
-  path: "/logout",
+  path: PATH_NAMES.logout,
   getParentRoute: () => appLayout,
   component: () => <>..Loading</>,
   beforeLoad: async ({ context, location }) => {

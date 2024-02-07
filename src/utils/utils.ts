@@ -22,7 +22,7 @@ export const initParse = () => {
   (window as any).PREPROD = PREPROD;
   (window as any).PROD = PROD;
   
-  const parseServerURL = LOCAL ? 'http://localhost:8082/parse' : `${origin}/parse`;
+  const parseServerURL = LOCAL ? 'http://localhost:8088/parse' : `${origin}/parse`;
   
   Parse.serverURL = parseServerURL;
 }

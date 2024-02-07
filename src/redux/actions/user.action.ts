@@ -1,4 +1,4 @@
-import { Attributes } from 'parse';
+import Parse, { Attributes } from 'parse';
 
 import { actionWithLoader } from '@/utils/app.utils';
 import { PAGINATION, DEFAULT_PAGINATION } from '@/utils/constants';

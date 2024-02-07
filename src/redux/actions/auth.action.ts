@@ -1,4 +1,5 @@
 
+import Parse from 'parse';
 import { IChangePasswordInput, ILoginInput, ResetPasswordInput, ISignUpInput } from '@/types/auth.types';
 import { IUser } from '@/types/user.type';
 import { IOnRouteEnterInput } from '@/types/util.type';

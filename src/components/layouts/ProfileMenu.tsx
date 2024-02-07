@@ -5,16 +5,17 @@ import { grey } from '@mui/material/colors';
 import { useTranslation } from 'react-i18next';
 import { FiChevronDown, FiChevronUp, FiPower, FiUser } from 'react-icons/fi';
 import { IoPersonCircle } from 'react-icons/io5';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
+import { useNavigate } from '@tanstack/react-router';
 import Avatar from '@/components/Avatar';
 
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
-import { logout } from '@/redux/actions/auth.action';
 import { getAppCurrentUserSelector } from '@/redux/reducers/app.reducer';
 
 import { getCuttedFirstName, getUserFullName } from '@/utils/user.utils';
+import { PATH_NAMES } from '@/utils/pathnames';
 
 const AVATAR_SIZE = 100;
 
@@ -31,11 +32,11 @@ const sx = {
 const ProfileMenu = () => {
   const currentUser = useSelector(getAppCurrentUserSelector);
   const theme = useTheme();
-  const dispatch = useDispatch();
   const isDesktopDown = useBreakpoint();
   const { t } = useTranslation(['user']);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
 
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -46,12 +47,11 @@ const ProfileMenu = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logout());
+    navigate({ to: PATH_NAMES.logout });
   };
 
   const handleGoToProfile = () => {
-    // TODO: navigate to profile
-    console.log('Go to profile');
+    navigate({ to: PATH_NAMES.profile });
   };
 
   return (
