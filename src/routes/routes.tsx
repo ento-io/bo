@@ -20,6 +20,9 @@ export const appLayout = createRootRouteWithContext<IRouteContext>()({
       <TanStackRouterDevtools position="bottom-right" />
     </>
   ),
+  notFoundComponent: () => {
+    return <p>page not found!  (not cool this page design, right? 😁)</p>
+  },
 });
 
 const logoutRoute = createRoute({
