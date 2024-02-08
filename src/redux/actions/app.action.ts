@@ -26,21 +26,6 @@ export const onDashboardEnter = (): any => {
   };
 };
 
-
-// export const onAdministrationEnter = ({ params }: IOnRouteEnterInput): any => {
-//   return async (dispatch: AppDispatch): Promise<void> => {
-//     if (!params) return;
-//     // const filters = { filters: { deleted: true } };
-//     // ----------------------------- //
-//     // -------- contact tab -------- //
-//     // ----------------------------- //
-//     if (params.tab.includes(ADMINISTRATION_TAB_PATHNAMES.employees)) {
-//       // dispatch(loadRoles({ withAdminOrBetter: true, withUsersCount: false, selects: ['objectId', 'name'] }));
-//     }
-//   };
-// };
-
-
 /**
  * mark an entity as seen
  * used mainly when entering a page with the entity id
@@ -88,16 +73,16 @@ export const changeSettings = (values: ISettingsInput): any => {
   });
 };
 
-// -------------------------------------- //
-// ------------ redirections ------------ //
-// -------------------------------------- //
-// export const goToHome = (): UpdateLocationActions => push('/');
-// export const goToRecycleBin = (tab: string): UpdateLocationActions => push('/' + PATH_NAMES.recycleBin + '/' + tab);
-// export const goToSettings = (): UpdateLocationActions => push('/' + PATH_NAMES.settings);
-// export const goToStatistics = (tab: string): UpdateLocationActions => push('/' + PATH_NAMES.statistics + '/' + tab);
-// export const goToAdministration = (tab: string): UpdateLocationActions =>
-//   push('/' + PATH_NAMES.administration + '/' + tab);
-
-// // this route does not exist, we just need to trigger the 404 page
-// export const goToNotFound = (): UpdateLocationActions => push('/not-found');
+/**
+ * this function is called in route beforeLoad or loader
+ * NOTE: it's a simple function, not a thunk (dispatched action)
+ * it's take a params as thunk (function) and return a function
+ * @param routeParams 
+ * @returns 
+ */
+export const onEnter = (routeParams: any) => (onEnterAction: (...values: any) => void) => {
+  const { store } = routeParams.context;
+  if (!store) return;
+  store.dispatch(onEnterAction(routeParams))
+}
 

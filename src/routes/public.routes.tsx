@@ -1,10 +1,10 @@
 import { createRoute , redirect } from "@tanstack/react-router";
 
+import Parse from "parse";
 import { z } from "zod";
 import { appLayout } from "./routes";
 import Login from "@/pages/auth/Login";
 import SignUp from "@/pages/auth/SignUp";
-import { getAppCurrentUserSelector } from "@/redux/reducers/app.reducer";
 import AuthLayout from "@/pages/auth/AuthLayout";
 import { PATH_NAMES } from "@/utils/pathnames";
 
@@ -16,6 +16,23 @@ const publicLayout = createRoute({
   id: "public",
   getParentRoute: () => appLayout,
   component: AuthLayout,
+  beforeLoad: async ({ context, location }) => {
+    // If the user is logged in, redirect them to the home page
+    // only in signup and login page
+    if ([PATH_NAMES.login, PATH_NAMES.signUp].includes(location.pathname)) {
+      const { store } = context;
+      if (store) {
+        const user = await Parse.User.currentAsync();
+        if (user) {
+          // If the user is logged out, redirect them to the login page
+          throw redirect({
+            to: "/",
+            replace: true,
+          });
+        }
+      }
+    }
+  },
 });
 
 const loginRoute = createRoute({
@@ -25,21 +42,6 @@ const loginRoute = createRoute({
   getParentRoute: () => publicLayout,
   component: Login,
   path: PATH_NAMES.login,
-  // beforeLoad: ({ context }) => {
-  //   const { store } = context;
-  //   if (store) {
-  //     const user = getAppCurrentUserSelector(store.getState());
-  //     console.log("public 01");
-  //     if (user) {
-  //       // If the user is logged out, redirect them to the login page
-  //       throw redirect({
-  //         to: "/",
-  //         replace: true,
-  //       });
-  //     }
-
-  //   }
-  // },
 });
 
 const signUpRoute = createRoute({
