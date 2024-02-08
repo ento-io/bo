@@ -1,5 +1,5 @@
 import Typography from '@mui/material/Typography';
-import { Link } from '@tanstack/react-router';
+import Link from '@/components/Link';
 
 type Props = {
   url?: string;
