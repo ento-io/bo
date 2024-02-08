@@ -1,7 +1,7 @@
 import { PaletteColorOptions, PaletteMode, PaletteOptions, Theme, createTheme } from '@mui/material';
 import { grey, teal } from '@mui/material/colors';
 import { IThemeColors } from '@/types/setting.type';
-import { RESPONSIVE_BREAKPOINT } from './constants';
+import { LAYOUT_CONTENT_PADDING, RESPONSIVE_BREAKPOINT } from './constants';
 
 export const DASHBOARD_BACKGROUND_COLOR = '#FAFBFB';
 export const DEFAULT_THEME_COLOR = 'green';
@@ -170,9 +170,34 @@ const defaultTheme = {
         root: {
           fontSize: 16,
           fontWeight: 500,
+          textDecoration: 'none',
         },
       },
     },
+    MuiStack: {
+      defaultProps: {
+        useFlexGap: true,
+      },
+      // mui stack has no, so overrides in the variants instead
+      // ISSUE: https://stackoverflow.com/questions/72382224/styleoverrides-not-being-applied-with-styled-components-in-mui
+      variants: [
+        {
+          props: {},
+          style: {
+            flexWrap: 'wrap',
+          },
+        },
+      ],
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          paddingTop: LAYOUT_CONTENT_PADDING,
+          paddingBottom: LAYOUT_CONTENT_PADDING,
+        },
+      },
+    },
+    
   },
 };
 

@@ -1,6 +1,7 @@
 import { IDefaultPagination, IPagination } from '@/types/app.type';
 import { Lang } from '@/types/setting.type';
 
+export const LAYOUT_CONTENT_PADDING = 24;
 export const FORCE_DEBUG = false; // show console.log for important data
 export const FORCE_DELETE_STORED_DATA = false; // force to delete local stored data
 export const SPACING = 16;
