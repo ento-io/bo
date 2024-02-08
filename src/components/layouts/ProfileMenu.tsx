@@ -54,13 +54,15 @@ const ProfileMenu = () => {
     navigate({ to: PATH_NAMES.profile });
   };
 
+  if (!currentUser) return null;
+
   return (
     <Box>
       <Button onClick={handleOpen} className="flexRow alignCenter" sx={{ textTransform: 'capitalize' }} color="inherit">
         <Avatar user={currentUser} size={isDesktopDown ? 24 : 32} />
         {!isDesktopDown && (
           <>
-            <Typography sx={sx.profileLabel}>{getCuttedFirstName(currentUser)}</Typography>
+            {currentUser && <Typography sx={sx.profileLabel}>{getCuttedFirstName(currentUser)}</Typography>}
             {open ? (
               <FiChevronUp size={18} color={getIconColor(theme)} />
             ) : (

@@ -21,7 +21,7 @@ import { renderLanguageLabel } from '@/utils/settings.utils';
 
 import { ISettingsInput } from '@/types/app.type';
 
-import SettingsTheme from '@/containers/settings/SettingsTheme';
+import SettingsTheme from '@/pages/settings/SettingsTheme';
 
 const StyledGridContainer = styled(Grid)(({ theme }) => ({
   '& .MuiGrid-item': {

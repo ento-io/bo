@@ -11,7 +11,6 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { getAppNotificationsSelector } from '../reducers/app.reducer';
 import { getRolesForUser } from '@/utils/role.utils';
 
-
 // ----------------------------------------------------- //
 // ------------------- Redux Actions ------------------- //
 // ----------------------------------------------------- //

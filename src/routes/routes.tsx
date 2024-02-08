@@ -29,19 +29,14 @@ const logoutRoute = createRoute({
   path: PATH_NAMES.logout,
   getParentRoute: () => appLayout,
   component: () => <>..Loading</>,
-  beforeLoad: async ({ context, location }) => {
+  beforeLoad: async ({ context }) => {
     const { store } = context;
     if (store) {
       await store.dispatch(logout());
       // If the user is logged out, redirect them to the login page
       throw redirect({
         to: PATH_NAMES.login,
-        search: {
-          // Use the current location to power a redirect after login
-          // (Do not use `router.state.resolvedLocation` as it can
-          // potentially lag behind the actual current location)
-          redirect: location.href,
-        },
+        replace: true,
       });
     }
   },

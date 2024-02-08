@@ -16,19 +16,6 @@ const publicLayout = createRoute({
   id: "public",
   getParentRoute: () => appLayout,
   component: AuthLayout,
-  beforeLoad: ({ context }) => {
-    const { store } = context;
-    if (store) {
-      const user = getAppCurrentUserSelector(store.getState());
-      if (user) {
-        // If the user is logged out, redirect them to the login page
-        throw redirect({
-          to: "/",
-        });
-      }
-
-    }
-  },
 });
 
 const loginRoute = createRoute({
@@ -38,6 +25,21 @@ const loginRoute = createRoute({
   getParentRoute: () => publicLayout,
   component: Login,
   path: PATH_NAMES.login,
+  // beforeLoad: ({ context }) => {
+  //   const { store } = context;
+  //   if (store) {
+  //     const user = getAppCurrentUserSelector(store.getState());
+  //     console.log("public 01");
+  //     if (user) {
+  //       // If the user is logged out, redirect them to the login page
+  //       throw redirect({
+  //         to: "/",
+  //         replace: true,
+  //       });
+  //     }
+
+  //   }
+  // },
 });
 
 const signUpRoute = createRoute({

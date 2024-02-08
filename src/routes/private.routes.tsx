@@ -1,13 +1,14 @@
 import { createRoute , redirect } from "@tanstack/react-router";
-import DashboardLayout from "../pages/DashboardLayout";
+import Parse from "parse";
+import DashboardLayout from "@/pages/DashboardLayout";
 
 import { appLayout } from "./routes";
 import Home from "@/pages/Home";
 import Profile from "@/pages/Profile";
 import articleRoutes, { articlesLayout } from "./protected/article.routes";
-import { getAppCurrentUserSelector } from "@/redux/reducers/app.reducer";
 import { PATH_NAMES } from "@/utils/pathnames";
 import Settings from "@/pages/Settings";
+import { checkSession } from "@/redux/actions/auth.action";
 
 /**
  * add id to pathless route (sub layouts)
@@ -17,12 +18,15 @@ export const privateLayout = createRoute({
   id: "private",
   getParentRoute: () => appLayout,
   component: DashboardLayout,
-  beforeLoad: ({ context, location }) => {
+  beforeLoad: async ({ context, location }) => {
     const { store } = context;
+    // check if there is user and if the session is still valid before entering the dashboard
+    await store?.dispatch(checkSession());
     if (store) {
-      const user = getAppCurrentUserSelector(store.getState());
+      const user = await Parse.User.currentAsync();
       if (!user) {
         // If the user is logged out, redirect them to the login page
+        // NOTE: redirect is only available in beforeLoad and loader (not in component or in action)
         throw redirect({
           to: PATH_NAMES.login,
             search: {
@@ -33,7 +37,6 @@ export const privateLayout = createRoute({
           },
         });
       }
-
     }
   },
 });

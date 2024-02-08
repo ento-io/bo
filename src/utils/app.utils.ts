@@ -58,7 +58,7 @@ export const actionWithLoader = (
     } catch (error) {
       if (typeof error === 'string') {
         dispatch(setErrorSlice(translatedError(error)));
-      } else {
+      } else if (error instanceof Error) {
         dispatch(setErrorSlice(translatedError((error as any).message)));
       }
     } finally {

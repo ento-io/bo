@@ -7,7 +7,7 @@ import i18n from '@/config/i18n';
 
 import { actionWithLoader } from '@/utils/app.utils';
 import { DISABLE_USER_ACCOUNT_CONFIRMATION } from '@/utils/constants';
-import { clearUserIntoLocalStorage, updateUserIntoLocalStorage } from '@/utils/user.utils';
+import { clearUserIntoLocalStorage, retrieveUserFromLocalStorage, updateUserIntoLocalStorage } from '@/utils/user.utils';
 import { setValues } from '@/utils/utils';
 
 import { AppDispatch, RootState } from '@/redux/store';
@@ -24,6 +24,7 @@ import {
   setAlertSlice,
   clearAlertSlice,
   getAppCurrentUserSelector,
+  clearCurrentUserSlice,
 } from '@/redux/reducers/app.reducer';
 import { toggleIsAuthenticatedSlice } from '@/redux/reducers/settings.reducer';
 import { INavigate } from '@/types/app.type';
@@ -83,9 +84,10 @@ export const signUp = (values: ISignUpInput, navigate: INavigate): any => {
  * check connected user
  * @returns {function(*=, *=): Promise<void>}
  */
-export const loginSuccess = (redirectToHome: boolean, navigate: INavigate): any => {
+export const loginSuccess = (redirectToHome?: boolean, navigate?: INavigate): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState) => {
     const state = getState?.() as RootState;
+    // current user from parse or from store (not persisted)
     const currentUser = (await Parse.User.currentAsync()) ?? getAppCurrentUserSelector(state);
     dispatch(clearAccountEmailSlice());
   
@@ -101,7 +103,8 @@ export const loginSuccess = (redirectToHome: boolean, navigate: INavigate): any 
       // update user into localStorage
       updateUserIntoLocalStorage(userJson as IUser);
 
-      if (redirectToHome) {
+      // navigate is only available in a component (from hooks)
+      if (redirectToHome && navigate) {
         // redirection after login
         navigate({ to: PATH_NAMES.home });
       }
@@ -113,7 +116,9 @@ export const loginSuccess = (redirectToHome: boolean, navigate: INavigate): any 
     // ------------- login failed ---------------//
     // ------------------------------------------//
     dispatch(setErrorSlice(i18n.t('user:error.sessionTokenExpired')));
+    if (!navigate) return;
     // retry login
+    // navigate is only available in a component (from hooks)
     navigate({ to: PATH_NAMES.login });
   });
 };
@@ -152,6 +157,73 @@ export const login = (values: ILoginInput, navigate: INavigate): any => {
   }, setUserLoadingSlice);
 };
 
+export const logout = (): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    await Parse.User.logOut();
+    // clear local storage
+    clearUserIntoLocalStorage();
+
+    // clear store
+    dispatch(toggleIsAuthenticatedSlice(false));
+    dispatch(clearUsersSlice());
+    dispatch(clearCurrentUserSlice());
+    // the redirection is in the root
+  });
+};
+
+/**
+ * check if user is logged in and if a session is valid
+ * this should be used 
+ * @returns
+ */
+export const checkSession = (): any => {
+  return actionWithLoader(async (dispatch: AppDispatch) => {
+    let currentUser;
+    // retrieve store user from local storage
+    const userFromLocalStorage = retrieveUserFromLocalStorage(); // it should be before await Parse.User.currentAsync()
+  
+    try {
+      currentUser = await Parse.User.currentAsync(); // it can throw (rarely)
+      if (currentUser) {
+        // is the session valid ? (some issues might happen)
+        try {
+          await Parse.Session.current();
+        } catch (error) {
+          console.log('Error retrieving the session object => 400 but, in fact, invalid token => logout');
+          currentUser = null;
+
+          throw new Error('Bad session');
+        }
+      }
+    } catch (error) {
+      const invalidSession = (error as any).message === 'Bad session';
+      if (invalidSession) {
+        // ---- bad session ----//
+        // clean up user into localStorage
+        clearUserIntoLocalStorage();
+        dispatch(toggleIsAuthenticatedSlice(false));
+        dispatch(setErrorSlice(i18n.t('user:errors.badSession')))
+      }
+  
+      if ((currentUser && !currentUser.equals(userFromLocalStorage as any)) || invalidSession) {
+        try {
+          await Parse.User.logOut();
+        } catch (err2) {
+          // might happen, but swallowed
+        }
+      }
+    }
+  
+    if (currentUser) {
+      await dispatch(loginSuccess()); // no redirection if successful
+    } else {
+      // redirect to login if in dashboard
+      // remain in the same page if in auth pages (login, signUp, ...)
+      await dispatch(logout());
+    }
+  }, setUserLoadingSlice);
+};
+
 /**
  * change password
  * @param values
@@ -183,20 +255,6 @@ export const deleteAccount = (): any => {
   return actionWithLoader(async (): Promise<void> => {
     console.log('delete account');
   }, setUserLoadingSlice);
-};
-
-export const logout = (): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    await Parse.User.logOut();
-
-    // clear local storage
-    clearUserIntoLocalStorage();
-
-    // clear store
-    dispatch(toggleIsAuthenticatedSlice(false));
-    dispatch(clearUsersSlice());
-    // the redirection is in the root
-  });
 };
 
 export const verifyCodeSentByEmail = (code: string, type = 'resetPassword'): any => {

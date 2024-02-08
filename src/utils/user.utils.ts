@@ -1,3 +1,4 @@
+import Parse from 'parse';
 import i18n from '@/config/i18n';
 
 import { ISelectOption } from '@/types/app.type';
@@ -127,7 +128,7 @@ export const getUserFullNameAbbreviation = (person: Record<string, any>): string
  * await Parse.User.currentAsync() save an user as bad ParseUser into localStorage
  * see https://github.com/parse-community/Parse-SDK-JS/issues/992
  */
-const currentUserPath = 'Parse/i-tatitra/currentUser';
+const currentUserPath = 'Parse/ento/currentUser';
 
 /**
  * get currentUser from LocalStorage
@@ -162,11 +163,11 @@ export const updateUserIntoLocalStorage = (user: IUser): void | null => {
 };
 
 export const getCuttedFirstName = (user: IUser): string => {
-  if (!user.firstName) {
-    return cutText(user.lastName);
+  if (user.firstName) {
+    const name = user.firstName.split(' ')[0];
+    return cutText(name);
   }
-  const name = user.firstName.split(' ')[0];
-  return cutText(name);
+  return cutText(user.lastName);
 };
 
 export const getFullPhoneNumber = (phone: Phone): string => {

@@ -198,7 +198,8 @@
     "notTranslated": "Not translated",
     "noOtherImages": "No other images",
     "noField": "No {{field}}",
-    "cooperativeAlreadyExists": "This cooperative's name already exists. Please enter another one."
+    "cooperativeAlreadyExists": "This cooperative's name already exists. Please enter another one.",
+    "badSession": "Invalid session. Please login again"
   },
   "totalPrice": "Total price",
   "place": "Seat",
