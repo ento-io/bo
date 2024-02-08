@@ -1,58 +1,69 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
+  "name": "blogy",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --fix --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
   "dependencies": {
-    "@emotion/react": "^11.11.0",
+    "@emotion/css": "^11.11.2",
+    "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@fontsource/roboto": "^4.5.8",
-    "@hookform/resolvers": "^3.1.0",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.12.3",
-    "@tanstack/react-query": "^4.29.7",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.26",
-    "@types/react": "^18.2.5",
-    "@types/react-dom": "^18.2.4",
-    "parse": "^4.1.0",
+    "@hookform/resolvers": "^3.3.4",
+    "@mui/material": "^5.15.2",
+    "@mui/x-date-pickers": "^6.19.3",
+    "@reduxjs/toolkit": "^2.1.0",
+    "@tanstack/react-router": "^1.15.16",
+    "axios": "^1.6.7",
+    "dayjs": "^1.11.10",
+    "i18next": "^23.8.2",
+    "i18next-browser-languagedetector": "^7.2.0",
+    "lodash": "^4.17.21",
+    "parse": "^4.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.43.9",
-    "react-router-dom": "^6.11.1",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4",
-    "zod": "^3.21.4"
-  },
-  "scripts": {
-    "dev": "set PORT=3006 && react-scripts start",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "react-dropzone": "^14.2.3",
+    "react-helmet-async": "^2.0.4",
+    "react-hook-form": "^7.49.2",
+    "react-i18next": "^14.0.1",
+    "react-icons": "^4.12.0",
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.21.1",
+    "react-select": "^5.8.0",
+    "redux-persist": "^6.0.0",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/parse": "^3.0.4"
+    "@emotion/babel-plugin": "^11.11.0",
+    "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
+    "@tanstack/router-devtools": "^1.15.19",
+    "@types/lodash": "^4.14.202",
+    "@types/parse": "^3.0.9",
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-next": "^14.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-babel-module": "^5.3.2",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-prefer-arrow-functions": "^3.2.4",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "prettier": "^3.2.2",
+    "typescript": "^5.2.2",
+    "vite": "5.0.8",
+    "vite-tsconfig-paths": "^4.3.1"
   }
 }
