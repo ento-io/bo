@@ -6,6 +6,8 @@ import Home from "@/pages/Home";
 import Profile from "@/pages/Profile";
 import articleRoutes, { articlesLayout } from "./protected/article.routes";
 import { getAppCurrentUserSelector } from "@/redux/reducers/app.reducer";
+import { PATH_NAMES } from "@/utils/pathnames";
+import Settings from "@/pages/Settings";
 
 /**
  * add id to pathless route (sub layouts)
@@ -22,7 +24,7 @@ export const privateLayout = createRoute({
       if (!user) {
         // If the user is logged out, redirect them to the login page
         throw redirect({
-          to: "/login",
+          to: PATH_NAMES.login,
             search: {
             // Use the current location to power a redirect after login
             // (Do not use `router.state.resolvedLocation` as it can
@@ -45,7 +47,13 @@ const homeRoute = createRoute({
 const profileRoute = createRoute({
   getParentRoute: () => privateLayout,
   component: Profile,
-  path: "/profile",
+  path: PATH_NAMES.profile,
+});
+
+const settingsRoute = createRoute({
+  getParentRoute: () => privateLayout,
+  component: Settings,
+  path: PATH_NAMES.settings,
 });
 
 const privateRoutes = privateLayout.addChildren([
@@ -53,6 +61,7 @@ const privateRoutes = privateLayout.addChildren([
   // use addChildren in the root because of type errors
   articlesLayout.addChildren(articleRoutes),
   profileRoute,
+  settingsRoute
 ]);
 
 export default privateRoutes;
