@@ -1,13 +1,11 @@
-import { z } from "zod";
-import { loginSchema, signUpSchema } from "../validations/auth.validations";
-import { IUser } from "./user.types";
+import { z } from 'zod';
+import { changePasswordSchema, emailSchema, loginSchema, resetPasswordSchema, signUpSchema } from '@/validations/auth.validation';
 
 export type ISignUpInput = z.infer<typeof signUpSchema>;
 export type ILoginInput = z.infer<typeof loginSchema>;
 
 
-export interface IUserResponse {
-  success: boolean;
-  user: IUser;
-}
+export type IChangePasswordInput = z.infer<typeof changePasswordSchema>;
 
+export type EmailInput = z.infer<typeof emailSchema>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;

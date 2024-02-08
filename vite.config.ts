@@ -25,6 +25,6 @@ export default defineConfig({
         plugins: ['@emotion/babel-plugin'],
       },
     }),
-    tsconfigPaths()
+    tsconfigPaths(),
   ],
 })
