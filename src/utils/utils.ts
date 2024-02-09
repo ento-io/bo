@@ -10,7 +10,7 @@ import { APP_NAME, CURRENCY, PERSISTED_STATE_KEY, SERVER_URL } from './constants
 import { boPalette, websitePalette } from './theme.utils';
 
 export const initParse = () => {
-  Parse.initialize("ento.io");
+  Parse.initialize(import.meta.env.VITE_PARSE_APP_ID);
 
   const {origin} = window.location;
   
