@@ -5,7 +5,8 @@ import { PAGINATION, DEFAULT_PAGINATION } from '@/utils/constants';
 import { uploadFileAPI } from '@/utils/file.utils';
 import { canAccessTo, getRolesForUser } from '@/utils/role.utils';
 import { isUserFromBO } from '@/utils/user.utils';
-import { escapeText, isBoolean , setValues } from '@/utils/utils';
+import { escapeText, isBoolean } from '@/utils/utils';
+import { setValues } from '@/utils/parse.utils';
 
 import { IQueriesInput } from '@/types/app.type';
 import { ISignUpInput } from '@/types/auth.types';

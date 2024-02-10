@@ -5,13 +5,13 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import utc from 'dayjs/plugin/utc';
 import App from './App'
-import { initParse } from './utils/utils';
 import privateRouter from "./routes/private.routes";
 import publicRouter from "./routes/public.routes";
 
 import 'dayjs/locale/de';
 import 'dayjs/locale/en';
 import 'dayjs/locale/fr';
+import { initParse } from './utils/parse.utils';
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);

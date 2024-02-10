@@ -1,7 +1,7 @@
 import Parse from "parse";
 
 import { IArticleInput } from "@/types/article.types";
-import { setValues } from "@/utils/utils";
+import { setValues } from "@/utils/parse.utils";
 
 const ARTICLE_PROPERTIES = new Set(['title', 'content']);
 
