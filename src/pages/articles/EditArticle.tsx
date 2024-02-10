@@ -2,19 +2,20 @@ import { useEffect, useState } from "react";
 
 import { LinearProgress } from "@mui/material";
 
+import { useNavigate } from "@tanstack/react-router";
 import ArticleForm from "./ArticleForm";
 import { editArticle, getArticle } from "@/actions/articles.action";
 import { IArticle, IArticleInput } from "@/types/article.types";
-import { EditArticleRoute } from "@/routes/protected/article.routes";
-import { useNavigate } from "@tanstack/react-router";
+import { articleRoute } from "@/routes/protected/article.routes";
 // import Notification from "@/components/Notification";
 
 const EditArticle = () => {
   const [article, setArticle] = useState<IArticle | null>(null)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { id } = EditArticleRoute.useParams();
+  const { id } = articleRoute.useParams();
   const navigate = useNavigate();
 
   // load initial article list

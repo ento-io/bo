@@ -8,6 +8,7 @@ import { articleRoute } from '@/routes/protected/article.routes';
 
 const Article = () => {
   const [article, setArticle] = useState<IArticle | null>(null)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 

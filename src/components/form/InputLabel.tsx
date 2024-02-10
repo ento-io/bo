@@ -29,7 +29,7 @@ const InputLabel = ({ label, sx, tooltip, required }: Props) => {
   const { t } = useTranslation();
 
   return (
-    <Box sx={{ mb: 0.8, display: 'flex', alignItems: 'center', ...(sx ? sx : {}) }}>
+    <Box sx={{ mb: 0.8, display: 'flex', alignItems: 'center', ...(sx || {}) }}>
       <StyledFixedLabelText>{label}</StyledFixedLabelText>{' '}
       {tooltip && (
         <Tooltip title={tooltip} placement="top">
