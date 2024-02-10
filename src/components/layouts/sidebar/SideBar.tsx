@@ -115,9 +115,9 @@ const SideBar = ({ open, roles, onClose }: Props) => {
       title: 'Apps',
       subMenus: [
         {
-          id: PATH_NAMES.users.index,
+          id: PATH_NAMES.users,
           label: t('user:users'),
-          onClick: () => navigate({ to: PATH_NAMES.users.index }),
+          onClick: () => navigate({ to: PATH_NAMES.users }),
           icon: <FiUsers size={ICON_SIZE} />,
           className: '_User',
         },

@@ -395,6 +395,25 @@ export const toggleBanUser = (id: string): any => {
   });
 };
 
+export const inviteUser: any = (values: ISignUpInput): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    const newValues = { ...values, username: values.email };
+
+    // ---------- user creation ---------- //
+    let user = await Parse.Cloud.run('getUserByEmail', { email: values.email });
+
+    if (!user) {
+      const newUser = new Parse.User();
+      setValues(newUser, newValues, SIGNUP_PROPERTIES);
+      user = await newUser.save();
+    }
+
+
+    dispatch(setMessageSlice(i18n.t('user:messages.employeeAddedSuccessfully')));
+  }, setUserLoadingSlice);
+};
+
+
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
@@ -472,24 +491,6 @@ export const onUserEnter = ({ params }: IOnRouteEnterInput): any => {
 
     dispatch(loadUserSlice(userJSON));
   });
-};
-
-export const inviteUser: any = (values: ISignUpInput): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    const newValues = { ...values, username: values.email };
-
-    // ---------- user creation ---------- //
-    let user = await Parse.Cloud.run('getUserByEmail', { email: values.email });
-
-    if (!user) {
-      const newUser = new Parse.User();
-      setValues(newUser, newValues, SIGNUP_PROPERTIES);
-      user = await newUser.save();
-    }
-
-
-    dispatch(setMessageSlice(i18n.t('user:messages.employeeAddedSuccessfully')));
-  }, setUserLoadingSlice);
 };
 
 // ---------------------------------------- //

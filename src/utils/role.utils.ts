@@ -1,3 +1,4 @@
+import Parse from 'parse';
 import i18n from '@/config/i18n';
 
 import { IRights, IRightsItem, IRole } from '@/types/role.type';
@@ -20,26 +21,6 @@ export const ENTITIES_WITH_RIGHTS_OPTIONS: Omit<IRightsItem, 'rights'>[] = [
   {
     label: i18n.t('user:role.roles'),
     className: '_Role',
-  },
-  {
-    label: i18n.t('ride:rides'),
-    className: 'Ride',
-  },
-  {
-    label: i18n.t('contact:contacts'),
-    className: 'Contact',
-  },
-  {
-    label: i18n.t('ride:requests'),
-    className: 'Request',
-  },
-  {
-    label: i18n.t('vehicle:vehicles'),
-    className: 'Vehicle',
-  },
-  {
-    label: i18n.t('page:pages'),
-    className: 'Page',
   },
   {
     label: i18n.t('page:articles'),
@@ -69,7 +50,7 @@ export const getUsersIdsFromRoles = async (roleNames = HIGHEST_LEVEL_DEFAULT_ROL
  * @param {ParseObject} user
  * @returns {Promise<IRole>}
  */
-export const getRolesForUser = async (user?: Record<string, any>, toJson = true, all = false): Promise<any> => {
+export const getRolesForUser = async (user?: Record<string, any> | null, toJson = true, all = false): Promise<any> => {
   let parseUser: any = user;
 
   // current user by default
@@ -84,6 +65,7 @@ export const getRolesForUser = async (user?: Record<string, any>, toJson = true,
 
   const query = new Parse.Query(Parse.Role);
   query.equalTo('users', parseUser);
+  console.log('parseUser: ', parseUser);
 
   if (!all) {
     query.notEqualTo('name', HIGHEST_LEVEL_DEFAULT_ROLES[0]);

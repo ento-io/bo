@@ -20,7 +20,7 @@ import { getRolesForUser } from '@/utils/role.utils';
  */
 export const onDashboardEnter = (): any => {
   return async (dispatch: AppDispatch): Promise<void> => {
-    const [currentUserRoles] = await Promise.all([getRolesForUser()]);
+    const [currentUserRoles] = await Promise.all([getRolesForUser(null, true, true)]);
 
     dispatch(loadCurrentUserRolesSlice(currentUserRoles));
   };
@@ -80,7 +80,7 @@ export const changeSettings = (values: ISettingsInput): any => {
  * @param routeParams 
  * @returns 
  */
-export const onEnter = (routeParams: any) => (onEnterAction: (...values: any) => void) => {
+export const onEnter =  (onEnterAction: (...values: any) => void) => (routeParams: any) => {
   const { store } = routeParams.context;
   if (!store) return;
   store.dispatch(onEnterAction(routeParams))
