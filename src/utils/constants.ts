@@ -50,6 +50,7 @@ export const COLORS = {
 };
 
 export const HIGHEST_LEVEL_DEFAULT_ROLES = ['Owner', 'Administrator'];
+export const DEFAULT_ROLES = ['Manager'];
 export const SHOW_NOTIFICATIONS_APP_BAR = false;
 
 export const DEFAULT_PAGINATION: IPagination = {

@@ -99,7 +99,10 @@
     "deleteRoleSuccessfully" : "Delete {{name}} role successfully.",
     "sureToDeleteRoleWithUsers" : "Are you sure to delete {{name}}? This role has {{userCount}} associated user.",
     "sureToDeleteRoleWithUsers_plural" : "Are you sure to delete {{name}}? This role has {{userCount}} associated users.",
-    "theRoleName": "the role name"
+    "theRoleName": "the role name",
+    "roleNotFound": "Role not found",
+    "roleCannotBeDeleted": "This Role cannot be deleted",
+    "noRightToDelete": "You do not have the right to delete this role"
   },
   "accountAwaitValidation": "An administrator will validate it as soon as possible.",
   "emailWithCodeSentConfirmCodeBelow": "An email with code have been sent to you. Enter the code below.",

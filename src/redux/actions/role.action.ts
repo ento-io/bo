@@ -12,10 +12,8 @@ import {
 } from '@/redux/reducers/role.reducer';
 import { AppDispatch, RootState } from '@/redux/store';
 
-// import { PATH_NAMES } from '@/routes/pathnames';
-
 import { actionWithLoader } from '@/utils/app.utils';
-import { HIGHEST_LEVEL_DEFAULT_ROLES, ROLE_DEFAULT_LIMIT } from '@/utils/constants';
+import { DEFAULT_ROLES, HIGHEST_LEVEL_DEFAULT_ROLES, ROLE_DEFAULT_LIMIT } from '@/utils/constants';
 
 import { ILoadRolesInput, IRole, IRoleInput, RolesForUserInput } from '@/types/role.type';
 
@@ -169,10 +167,18 @@ export const destroyRole = (id: string): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     // update the database
     const role = await new Parse.Query(Parse.Role).equalTo('objectId', id).first();
-    // display success message
-    await role?.destroy();
+    if (!role) {
+      throw new Error(i18n.t('user:role.roleNotFound'));
+    }
 
-    dispatch(setMessageSlice(i18n.t('user:role.deleteRoleSuccessfully', { name: role?.getName() })));
+    if (DEFAULT_ROLES.includes(role.getName())) {
+      throw new Error(i18n.t('user:role.roleCannotBeDeleted'));
+    }
+
+    // display success message
+    await role.destroy();
+
+    dispatch(setMessageSlice(i18n.t('user:role.deleteRoleSuccessfully', { name: role.getName() })));
 
     // reload the list of deleted rides
     await dispatch(destroyRoleSlice(id));
@@ -187,8 +193,3 @@ export const onRolesEnter = (): any => {
     dispatch(loadRoles({ withAdminOrBetter: false, withUsersCount: true }));
   };
 };
-
-// --------------------------------------- //
-// ------------- redirection ------------- //
-// --------------------------------------- //
-// export const goToRoles = (): UpdateLocationAction<'push'> => push(PATH_NAMES.roles);

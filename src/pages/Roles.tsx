@@ -97,24 +97,24 @@ const Roles = () => {
                   <TableCell scope="row">{displayDate(role.createdAt, false, true)}</TableCell>
                   <TableCell scope="row">{role.count || 0}</TableCell>
                   <TableCell scope="row">
-                        <ButtonActions
-                          onDelete={role.count < 1 ? () => handleDelete(role) : undefined}
-                          onEdit={() => setSelectedRole(role)}
+                    <ButtonActions
+                      onDelete={role.count < 1 ? () => handleDelete(role) : undefined}
+                      onEdit={() => setSelectedRole(role)}
+                      value={role.name}
+                      dialogDescription={
+                        role.count > 0
+                          ? t('user:role.sureToDeleteRoleWithUsers', { name: role.name, userCount: role.count })
+                          : null
+                      }>
+                      {role.count > 0 && (
+                        <ConfirmDeletionFormModalAction
                           value={role.name}
-                          dialogDescription={
-                            role.count > 0
-                              ? t('user:role.sureToDeleteRoleWithUsers', { name: role.name, userCount: role.count })
-                              : null
-                          }>
-                          {role.count > 0 && (
-                            <ConfirmDeletionFormModalAction
-                              value={role.name}
-                              onConfirmed={() => handleDelete(role)}
-                              label={lowerFirstLetter(t('user:role.thisRole'))}
-                              type={t('user:role.theRoleName')}
-                            />
-                          )}
-                        </ButtonActions>
+                          onConfirmed={() => handleDelete(role)}
+                          label={lowerFirstLetter(t('user:role.thisRole'))}
+                          type={t('user:role.theRoleName')}
+                        />
+                      )}
+                    </ButtonActions>
                   </TableCell>
                 </TableRow>
               ))}
