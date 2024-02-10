@@ -6,7 +6,7 @@ import i18n from '@/config/i18n';
 import { setMessageSlice, setNotificationsSlice } from '@/redux/reducers/app.reducer';
 import { loadCurrentUserRolesSlice } from '@/redux/reducers/role.reducer';
 import { setLang } from '@/redux/reducers/settings.reducer';
-import { AppDispatch, RootState } from '@/redux/store';
+import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { getAppNotificationsSelector } from '../reducers/app.reducer';
 import { getRolesForUser } from '@/utils/role.utils';
@@ -80,9 +80,15 @@ export const changeSettings = (values: ISettingsInput): any => {
  * @param routeParams 
  * @returns 
  */
-export const onEnter =  (onEnterAction: (...values: any) => void) => (routeParams: any) => {
+export const onEnter = (onEnterAction: (dispatch: AppDispatch, getState?: () => RootState) => AppThunkAction) => (routeParams: any) =>  {
+  // get store from context (passed in RouterProvider)
   const { store } = routeParams.context;
   if (!store) return;
-  store.dispatch(onEnterAction(routeParams))
+  const newContext = { ...routeParams };
+  // remove the store passed to a thunk (action function)
+  // because it's already has dispatch and getState
+  delete newContext.context.store;
+  // run the thunk
+  onEnterAction(newContext)(store.dispatch, store.getState);
 }
 

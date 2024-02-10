@@ -19,7 +19,9 @@ const Users = () => {
   const navigate = useNavigate();
   const users = useSelector(getUserUsersSelector);
 
-  const goToUser = (id: string) => navigate({ to: PATH_NAMES.users, params: { id } });
+  const goToUser = (id: string) => {
+    navigate({ to: `${PATH_NAMES.users}/$id`, params: { id } })
+  };
 
   return (
     <div>
@@ -46,7 +48,7 @@ const Users = () => {
                   {user.email}
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton color="info" onClick={() => goToUser(user.id)}>
+                  <IconButton color="info" onClick={() => goToUser(user.objectId)}>
                     <FiEye />
                   </IconButton>
                 </TableCell>

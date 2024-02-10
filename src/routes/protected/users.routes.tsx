@@ -17,7 +17,7 @@ export const usersLayout = createRoute({
 
 export const usersRoute = createRoute({
   getParentRoute: () => usersLayout,
-  loader: onEnter(onUsersEnter()),
+  loader: onEnter(onUsersEnter),
   component: Users,
   path: "/",
 });

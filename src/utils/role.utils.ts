@@ -65,7 +65,6 @@ export const getRolesForUser = async (user?: Record<string, any> | null, toJson 
 
   const query = new Parse.Query(Parse.Role);
   query.equalTo('users', parseUser);
-  console.log('parseUser: ', parseUser);
 
   if (!all) {
     query.notEqualTo('name', HIGHEST_LEVEL_DEFAULT_ROLES[0]);

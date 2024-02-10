@@ -11,9 +11,8 @@ import { setValues } from '@/utils/parse.utils';
 import { IQueriesInput } from '@/types/app.type';
 import { ISignUpInput } from '@/types/auth.types';
 import { ProfileUserInfoInput, IUser } from '@/types/user.type';
-import { IOnRouteEnterInput } from '@/types/util.type';
 import i18n from '@/config/i18n';
-import { AppDispatch } from '@/redux/store';
+import { AppDispatch, AppThunkAction } from '@/redux/store';
 import {
   clearUserCountSlice,
   clearUserSlice,
@@ -419,6 +418,7 @@ export const inviteUser: any = (values: ISignUpInput): any => {
 // ---------------------------------------- //
 export const onUsersEnter = (): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    // console.log('dispatch: ', dispatch);
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
     const canFind = canAccessTo(roles, '_User', 'find');
@@ -454,7 +454,7 @@ export const onUsersEnter = (): any => {
   });
 };
 
-export const onUserEnter = ({ params }: IOnRouteEnterInput): any => {
+export const onUserEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const notification = getAppNotificationsSelector(state as any);
@@ -468,8 +468,9 @@ export const onUserEnter = ({ params }: IOnRouteEnterInput): any => {
       return;
     }
 
+    if (!route.params?.id) return ;
     const user = await new Parse.Query(Parse.User)
-      .equalTo('objectId', params.id)
+      .equalTo('objectId', route.params.id)
       .exclude('sessionToken', 'ACL')
       .first();
 

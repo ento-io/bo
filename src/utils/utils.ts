@@ -8,10 +8,6 @@ import { EnvironmentEnum, IPagination, IQueriesInput, ISelectOption } from '@/ty
 import { APP_NAME, CURRENCY, PERSISTED_STATE_KEY, SERVER_URL } from './constants';
 import { boPalette, websitePalette } from './theme.utils';
 
-export const getUserFullName = (user: any) => {
-  return `${user.get('firstName')} ${user.get('lastName')}`;
-}
-
 const isCleanedString = (string: string | Record<string, any> | number): boolean => {
   return !!(!string || typeof string !== 'string' || (string && string.trim().length === 0));
 };
