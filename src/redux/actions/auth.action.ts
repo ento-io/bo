@@ -8,7 +8,7 @@ import i18n from '@/config/i18n';
 import { actionWithLoader } from '@/utils/app.utils';
 import { DISABLE_USER_ACCOUNT_CONFIRMATION } from '@/utils/constants';
 import { clearUserIntoLocalStorage, retrieveUserFromLocalStorage, updateUserIntoLocalStorage } from '@/utils/user.utils';
-import { setValues } from '@/utils/utils';
+import { setValues } from '@/utils/parse.utils';
 
 import { AppDispatch, RootState } from '@/redux/store';
 import { setUserLoadingSlice, clearUsersSlice } from '@/redux/reducers/user.reducer';

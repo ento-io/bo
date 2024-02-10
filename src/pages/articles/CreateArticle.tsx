@@ -3,13 +3,14 @@ import { useState } from "react";
 import { LinearProgress } from "@mui/material";
 // import { useNavigate } from "react-router-dom";
 
+import { useNavigate } from "@tanstack/react-router";
 import ArticleForm from "./ArticleForm";
 import { createArticle } from "@/actions/articles.action";
 import { IArticleInput } from "@/types/article.types";
-import { useNavigate } from "@tanstack/react-router";
 // import Notification from "@/components/Notification";
 
 const CreateArticle = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 

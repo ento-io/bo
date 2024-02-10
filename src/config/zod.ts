@@ -40,7 +40,7 @@ type MappedZodLiterals<T extends readonly z.Primitive[]> = {
   -readonly [K in keyof T]: z.ZodLiteral<T[K]>;
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+ 
 export const createManyUnion = <A extends Readonly<[z.Primitive, z.Primitive, ...z.Primitive[]]>>(literals: A) => {
   return z.union(literals.map(value => z.literal(value)) as MappedZodLiterals<A>);
 };

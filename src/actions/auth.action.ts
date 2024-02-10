@@ -1,6 +1,6 @@
 import Parse from "parse";
 
-import { setValues } from "@/utils/utils";
+import { setValues } from "@/utils/parse.utils";
 import { ILoginInput, ISignUpInput } from "@/types/auth.types";
 
 const SIGNUP_PROPERTIES = new Set(['email', 'password', 'username', 'firstName', 'lastName']);
