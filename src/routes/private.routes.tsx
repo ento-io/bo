@@ -12,6 +12,7 @@ import { checkSession } from "@/redux/actions/auth.action";
 import userRoutes, { usersLayout } from "./protected/users.routes";
 import { onDashboardEnter } from "@/redux/actions/app.action";
 import { getRoleCurrentUserRolesSelector } from "@/redux/reducers/role.reducer";
+import rolesRoute from "./protected/role.routes";
 
 /**
  * add id to pathless route (sub layouts)
@@ -83,7 +84,8 @@ const privateRoutes = privateLayout.addChildren([
   articlesLayout.addChildren(articleRoutes),
   usersLayout.addChildren(userRoutes),
   profileRoute,
-  settingsRoute
+  settingsRoute,
+  rolesRoute
 ]);
 
 export default privateRoutes;

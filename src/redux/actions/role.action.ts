@@ -17,7 +17,7 @@ import { AppDispatch, RootState } from '@/redux/store';
 import { actionWithLoader } from '@/utils/app.utils';
 import { HIGHEST_LEVEL_DEFAULT_ROLES, ROLE_DEFAULT_LIMIT } from '@/utils/constants';
 
-import { ILoadRolesInput, IRole, RoleInput, RolesForUserInput } from '@/types/role.type';
+import { ILoadRolesInput, IRole, IRoleInput, RolesForUserInput } from '@/types/role.type';
 
 export const loadRoles = ({
   limit = ROLE_DEFAULT_LIMIT,
@@ -70,7 +70,7 @@ export const loadRoles = ({
  * @param values
  * @returns
  */
-export const createRole = (values: RoleInput): any => {
+export const createRole = (values: IRoleInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     // --------- update database --------- //
     const body = {
@@ -90,7 +90,7 @@ export const createRole = (values: RoleInput): any => {
   });
 };
 
-export const updateRole = (name: string, values: RoleInput): any => {
+export const updateRole = (name: string, values: IRoleInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     // --------- update database --------- //
     const body = {
