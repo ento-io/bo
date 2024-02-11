@@ -4,13 +4,13 @@ import { actionWithLoader } from '@/utils/app.utils';
 import { PAGINATION, DEFAULT_PAGINATION } from '@/utils/constants';
 import { uploadFileAPI } from '@/utils/file.utils';
 import { canAccessTo, getRolesForUser } from '@/utils/role.utils';
-import { isUserFromBO } from '@/utils/user.utils';
+import { getUserFullName, isUserFromBO } from '@/utils/user.utils';
 import { escapeText, isBoolean } from '@/utils/utils';
 import { setValues } from '@/utils/parse.utils';
 
 import { IQueriesInput } from '@/types/app.type';
 import { ISignUpInput } from '@/types/auth.types';
-import { ProfileUserInfoInput, IUser } from '@/types/user.type';
+import { ProfileUserInfoInput, IUser, SendEmailInput } from '@/types/user.type';
 import i18n from '@/config/i18n';
 import { AppDispatch, AppThunkAction } from '@/redux/store';
 import {
@@ -492,6 +492,15 @@ export const onUserEnter = (route?: any): AppThunkAction => {
     }
 
     dispatch(loadUserSlice(userJSON));
+  });
+};
+
+export const sendEmailToUser = (user: IUser, values: SendEmailInput): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    console.log('user: ', user, 'values: ', values);
+    // TODO: send email to user here
+    const message = i18n.t('user:emailSentTo', { name: getUserFullName(user) });
+    dispatch(setMessageSlice(message));
   });
 };
 

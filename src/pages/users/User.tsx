@@ -21,8 +21,7 @@ import RoleForUserForm from '@/containers/roles/RoleForUserForm';
 import { useToggle } from '@/hooks/useToggle';
 
 import { addRolesToUser, removeRolesForUser } from '@/redux/actions/role.action';
-import { goToUsers, toggleBanUserById, toggleUserNotification } from '@/redux/actions/user.action';
-import { setMessageSlice } from '@/redux/reducers/app.reducer';
+import { goToUsers, sendEmailToUser, toggleBanUserById, toggleUserNotification } from '@/redux/actions/user.action';
 import { getRoleUserRolesSelector } from '@/redux/reducers/role.reducer';
 import { getUserUserSelector } from '@/redux/reducers/user.reducer';
 
@@ -130,11 +129,9 @@ const User = () => {
     toggleOpenAddRoleToUser();
   };
 
-  const onSendEmailFormSubmit = (input: SendEmailInput) => {
+  const onSendEmailFormSubmit = async (values: SendEmailInput) => {
+    await dispatch(sendEmailToUser(user, values));
     toggleOpenEmailFormDialog();
-    const appMessage = t('user:emailSentTo', { name: userFullName });
-    dispatch(setMessageSlice(appMessage));
-    console.log(appMessage, input);
   };
 
   const handleRemoveRoleForUser = (role: IRole) => {
