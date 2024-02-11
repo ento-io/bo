@@ -5,6 +5,7 @@
   "lastName": "Nom",
   "sex": "Sexe",
   "phoneNumber": "Numéro téléphone",
+  "address": "Adresse",
   "male": "Homme",
   "female": "Femme",
   "detailsAboutYou": "Details sur vous",

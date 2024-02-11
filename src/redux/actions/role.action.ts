@@ -16,6 +16,7 @@ import { actionWithLoader } from '@/utils/app.utils';
 import { DEFAULT_ROLES, HIGHEST_LEVEL_DEFAULT_ROLES, ROLE_DEFAULT_LIMIT } from '@/utils/constants';
 
 import { ILoadRolesInput, IRole, IRoleInput, RolesForUserInput } from '@/types/role.type';
+import { PATH_NAMES } from '@/utils/pathnames';
 
 export const loadRoles = ({
   limit = ROLE_DEFAULT_LIMIT,
@@ -108,10 +109,10 @@ export const updateRole = (name: string, values: IRoleInput): any => {
   });
 };
 
-export const addRolesToUser = (userId: string, values: RolesForUserInput, currentRoles: IRole[]): any => {
+export const addRolesToUser = (userId: string, values: RolesForUserInput, currentRoles?: IRole[]): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     // --------- update database --------- //
-    const currentRoleNames = currentRoles.map((role: IRole): string => role.name);
+    const currentRoleNames = currentRoles?.map((role: IRole): string => role.name) || [];
     const allRoleNames = [...values.roles, ...currentRoleNames];
 
     const body = { userId, roleNames: allRoleNames };
@@ -193,3 +194,8 @@ export const onRolesEnter = (): any => {
     dispatch(loadRoles({ withAdminOrBetter: false, withUsersCount: true }));
   };
 };
+
+// ---------------------------------------- //
+// -------------- redirection ------------- //
+// ---------------------------------------- //
+export const goToRoles = () => ({ to: PATH_NAMES.roles });

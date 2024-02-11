@@ -41,6 +41,7 @@ import {
 import { RootState } from '../store';
 import { SIGNUP_PROPERTIES } from './auth.action';
 import { loadRoles } from './role.action';
+import { PATH_NAMES } from '@/utils/pathnames';
 
 // ----------------------------------------------------- //
 // ------------------- Parse queries ------------------- //
@@ -514,8 +515,5 @@ export const onUserLeave = (): any => {
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //
-// export const goToUsers = (querySearchObject?: Record<string, any>): UpdateLocationActions => {
-//   return push('/' + PATH_NAMES.users + objectToRouteSearchParams(querySearchObject));
-// };
-// export const goToAdmins = (): UpdateLocationActions => push('/' + PATH_NAMES.admins);
-// export const goToUser = (id: string): UpdateLocationActions => push('/' + PATH_NAMES.users + '/' + id);
+export const goToUsers = () => ({ to: PATH_NAMES.users });
+export const goToUser = (id: string) => ({ to: PATH_NAMES.users + '/$id', params: { id }});

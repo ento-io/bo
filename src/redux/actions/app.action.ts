@@ -10,6 +10,7 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { getAppNotificationsSelector } from '../reducers/app.reducer';
 import { getRolesForUser } from '@/utils/role.utils';
+import { PATH_NAMES } from '@/utils/pathnames';
 
 // ----------------------------------------------------- //
 // ------------------- Redux Actions ------------------- //
@@ -92,3 +93,7 @@ export const onEnter = (onEnterAction: (dispatch: AppDispatch, getState?: () => 
   onEnterAction(newContext)(store.dispatch, store.getState);
 }
 
+// --------------------------------------- //
+// ------------- redirection ------------- //
+// --------------------------------------- //
+export const goToSettings = () => ({ to: PATH_NAMES.settings });

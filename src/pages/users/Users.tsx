@@ -13,14 +13,14 @@ import { useSelector } from 'react-redux';
 import { getUserFullName } from '@/utils/user.utils';
 import { getUserUsersSelector } from '@/redux/reducers/user.reducer';
 import { IUser } from '@/types/user.type';
-import { PATH_NAMES } from '@/utils/pathnames';
+import { goToUser } from '@/redux/actions/user.action';
 
 const Users = () => {
   const navigate = useNavigate();
   const users = useSelector(getUserUsersSelector);
 
-  const goToUser = (id: string) => {
-    navigate({ to: `${PATH_NAMES.users}/$id`, params: { id } })
+  const handleGoToUser = (id: string) => {
+    navigate(goToUser(id))
   };
 
   return (
@@ -47,7 +47,7 @@ const Users = () => {
                   {user.email}
                 </TableCell>
                 <TableCell align="right">
-                  <IconButton color="info" onClick={() => goToUser(user.objectId)}>
+                  <IconButton color="info" onClick={() => handleGoToUser(user.objectId)}>
                     <FiEye />
                   </IconButton>
                 </TableCell>
