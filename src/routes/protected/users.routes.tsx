@@ -17,7 +17,7 @@ export const usersLayout = createRoute({
 
 export const usersRoute = createRoute({
   getParentRoute: () => usersLayout,
-  loader: onEnter(onUsersEnter),
+  beforeLoad: onEnter(onUsersEnter),
   component: Users,
   path: "/",
 });
@@ -27,7 +27,7 @@ export const userRoute = createRoute({
     id: z.string().parse(params.id),
   }),
   getParentRoute: () => usersLayout,
-  loader: onEnter(onUserEnter),
+  beforeLoad: onEnter(onUserEnter),
   component: User,
   path: "$id",
 });

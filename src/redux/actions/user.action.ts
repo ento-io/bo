@@ -408,15 +408,11 @@ export const onUserEnter = (route?: any): AppThunkAction => {
     }
 
     if (!route.params?.id) return ;
-    const user = await new Parse.Query(Parse.User)
-      .equalTo('objectId', route.params.id)
-      .exclude('sessionToken', 'ACL')
-      .first();
+    
+    const user = await Parse.Cloud.run('getUser', { id: route.params?.id, shouldMarkAsSeen: true });
 
     if (!user) return;
 
-    // decrement contact notification count
-    await Parse.Cloud.run('markUserAsSeen', { id: user.id });
     dispatch(setNotificationsSlice({ user: count - 1 })); // from sidebar
 
     // save user to store (in json)
