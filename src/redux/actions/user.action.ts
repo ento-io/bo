@@ -97,7 +97,7 @@ export const loadUsers = ({
 }: IQueriesInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     // user from BO
-    const fromBO = filters && isBoolean(filters?.fromBO);
+    const fromBO = isBoolean(filters?.fromBO);
 
     // result with count
     const result: Record<string, any> = await Parse.Cloud.run('getUsers', {
@@ -115,6 +115,7 @@ export const loadUsers = ({
     if (fromBO) {
       for (const user of result.results) {
         const rolesForUser = await getRolesForUser(user, false);
+        // add roles to user if admin (created from bo)
         users.push({
           ...user.toJSON(),
           roles: rolesForUser.map((role: Parse.Role) => role.toJSON()),
