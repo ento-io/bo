@@ -9,10 +9,8 @@ import { FiPlus , FiEdit2 , FiTrash2 , FiEye } from "react-icons/fi";
 
 import { Fab, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
 import { useNavigate } from '@tanstack/react-router';
 import { deleteArticle, getArticles } from '@/actions/articles.action';
-// import Notification from '@/components/Notification';
 import { IArticle } from '@/types/article.types';
 import { getUserFullName } from '@/utils/user.utils';
 
