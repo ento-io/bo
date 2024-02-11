@@ -5,6 +5,7 @@
   "lastName": "Nom",
   "sex": "Sexe",
   "phoneNumber": "Numéro téléphone",
+  "address": "Adresse",
   "male": "Homme",
   "female": "Femme",
   "detailsAboutYou": "Details sur vous",
@@ -84,6 +85,8 @@
     "rights": "Droits",
     "addRight": "Ajouter un droit",
     "addRole": "Ajouter un nouveau rôle",
+    "addPost": "Ajouter un poste",
+    "userHasNotPost": "Cet utilisateur n'a pas de poste",
     "editRole": "Modifier {{role}}",
     "otherRoles": "Autres roles",
     "childRoles": "Roles enfants",
@@ -100,7 +103,10 @@
     "deleteRoleSuccessfully" : "Role {{name}} supprimé avec succès.",
     "sureToDeleteRoleWithUsers" : "Etes-vous sûr de vouloir supprimé {{name}}? Ce rôle a {{userCount}} utilisateur associé.",
     "sureToDeleteRoleWithUsers_plural" : "Etes-vous sûr de vouloir supprimé {{name}}? Ce rôle a {{userCount}} utilisateurs associés.",
-    "theRoleName": "le nom du role"
+    "theRoleName": "le nom du role",
+    "roleNotFound": "Role introuvable",
+    "roleCannotBeDeleted": "Ce role ne peut pas être supprimé",
+    "noRightToDelete": "Vous n'avez pas le droit de supprimer ce role"
   },
   "accountCreatedSuccessfully": "Compte crée avec succès",
   "accountAwaitValidation": "Un administrateur va le valider dans le plus bref delais.",

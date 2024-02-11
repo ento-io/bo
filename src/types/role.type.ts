@@ -2,7 +2,7 @@ import { Attributes } from 'parse';
 import { z } from 'zod';
 import { roleSchema, rolesForUserSchema } from '@/validations/role.validations';
 
-export type RoleInput = z.infer<typeof roleSchema>
+export type IRoleInput = z.infer<typeof roleSchema>
 export type RolesForUserInput = z.infer<typeof rolesForUserSchema>
 
 export interface IRights {

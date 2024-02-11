@@ -2,7 +2,7 @@ import Parse from 'parse';
 import i18n from '@/config/i18n';
 
 import { ISelectOption } from '@/types/app.type';
-import { Phone, Sex, SexEnum, IUser } from '@/types/user.type';
+import { Phone, Sex, SexEnum, IUser, PlatformEnum } from '@/types/user.type';
 
 import { cutText } from './utils';
 
@@ -27,6 +27,10 @@ export const userPlatformOptions: ISelectOption[] = [
   {
     label: 'Web',
     value: 'web',
+  },
+  {
+    label: 'Back office',
+    value: 'bo',
   },
 ];
 
@@ -175,4 +179,4 @@ export const getFullPhoneNumber = (phone: Phone): string => {
 };
 
 // user created from back office
-export const isUserFromBO = (user: IUser): boolean => user.platform === 'bo';
+export const isUserFromBO = (user: IUser): boolean => user.platform === PlatformEnum.BO;

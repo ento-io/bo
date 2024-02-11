@@ -5,6 +5,7 @@
   "lastName": "Anarana",
   "sex": "Sex",
   "phoneNumber": "Laharan-taroby",
+  "address": "Adiresy",
   "male": "Lehilahy",
   "female": "Vehivavy",
   "detailsAboutYou": "Mombamomba anao",
@@ -82,6 +83,8 @@
     "rights": "Zo",
     "addRight": "Hamorona zo",
     "addRole": "Hamorona rôle vaovao",
+    "addPost": "Hampiana andraikitra",
+    "userHasNotPost": "Tsy misy andraikitra ity mpampiasa ity",
     "editRole": "Ovaina {{role}}",
     "otherRoles": "Andraikitra hafa",
     "childRoles": "Zanak'andraikitra",
@@ -98,7 +101,10 @@
     "deleteRoleSuccessfully" : "andraikitra {{name}} voafafa",
     "sureToDeleteRoleWithUsers" : "Vonona ve ianao hamafa an'ny {{name}}? Ito andraikitra ito dia manana mpampiasa mihisa {{userCount}}",
     "sureToDeleteRoleWithUsers_plural" : "Vonona ve ianao hamafa an'ny {{name}}? Ito andraikitra ito dia manana mpampiasa mihisa {{userCount}}",
-    "theRoleName": "ny anaran'ny andraikitra"
+    "theRoleName": "ny anaran'ny andraikitra",
+    "roleNotFound": "Andraikitra tsy hita",
+    "roleCannotBeDeleted": "Andraikitra tsy azo fafàna",
+    "noRightToDelete": "Tsy afaka ny mamafa an'io andraikitra io ianao"
   },
   "accountAwaitValidation": "Ny mpitantana iray dia hanamarina izany haingana araka izay azo atao.",
   "emailWithCodeSentConfirmCodeBelow": "Nandefasana email misy kaody ianao. Fenoy etsy ambany ny kaody.",

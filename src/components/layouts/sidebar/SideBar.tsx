@@ -12,6 +12,9 @@ import { canAccessTo } from '@/utils/role.utils';
 import { IRole } from '@/types/role.type';
 import SideBarItem from './SideBarItem';
 import { PATH_NAMES } from '@/utils/pathnames';
+import { goToUsers } from '@/redux/actions/user.action';
+import { goToRoles } from '@/redux/actions/role.action';
+import { goToSettings } from '@/redux/actions/app.action';
 
 const TEXT_COLOR = grey[700];
 /**
@@ -115,9 +118,9 @@ const SideBar = ({ open, roles, onClose }: Props) => {
       title: 'Apps',
       subMenus: [
         {
-          id: PATH_NAMES.users.index,
+          id: PATH_NAMES.users,
           label: t('user:users'),
-          onClick: () => navigate({ to: PATH_NAMES.users.index }),
+          onClick: () => navigate(goToUsers()),
           icon: <FiUsers size={ICON_SIZE} />,
           className: '_User',
         },
@@ -129,14 +132,14 @@ const SideBar = ({ open, roles, onClose }: Props) => {
         {
           id: PATH_NAMES.roles,
           label: t('user:role.rights'),
-          onClick: () => navigate({ to: PATH_NAMES.roles }),
+          onClick: () => navigate(goToRoles()),
           icon: <FaLockOpen size={ICON_SIZE} />,
           className: '_Role',
         },
         {
           id: PATH_NAMES.settings,
           label: t('common:settings'),
-          onClick: () => navigate({ to: PATH_NAMES.settings }),
+          onClick: () => navigate(goToSettings()),
           icon: <FiSettings size={ICON_SIZE} />,
         },
       ],

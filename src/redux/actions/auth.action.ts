@@ -1,7 +1,7 @@
 
 import Parse from 'parse';
 import { IChangePasswordInput, ILoginInput, ResetPasswordInput, ISignUpInput } from '@/types/auth.types';
-import { IUser } from '@/types/user.type';
+import { IPlatform, IUser, PlatformEnum } from '@/types/user.type';
 import { IOnRouteEnterInput } from '@/types/util.type';
 import i18n from '@/config/i18n';
 
@@ -30,10 +30,11 @@ import { toggleIsAuthenticatedSlice } from '@/redux/reducers/settings.reducer';
 import { INavigate } from '@/types/app.type';
 import { PATH_NAMES } from '@/utils/pathnames';
 
-export const SIGNUP_PROPERTIES = new Set(['firstName', 'lastName', 'email', 'password', 'username']);
+export const SIGNUP_PROPERTIES = new Set(['firstName', 'lastName', 'email', 'password', 'username', 'platform']);
 
 interface SignUpI extends Partial<ISignUpInput> {
   username: string;
+  platform: IPlatform;
 }
 /**
  * create user account
@@ -48,7 +49,7 @@ export const signUp = (values: ISignUpInput, navigate: INavigate): any => {
       dispatch(closeErrorSlice());
     }
 
-    const newValues: SignUpI = { ...values, username: values.email };
+    const newValues: SignUpI = { ...values, username: values.email, platform: PlatformEnum.BO };
     delete newValues.passwordConfirmation; // passwordConfirmation should not be saved to db
 
     // create the new user with corresponding fields
@@ -202,7 +203,7 @@ export const checkSession = (): any => {
         // clean up user into localStorage
         clearUserIntoLocalStorage();
         dispatch(toggleIsAuthenticatedSlice(false));
-        dispatch(setErrorSlice(i18n.t('user:errors.badSession')))
+        dispatch(setErrorSlice(i18n.t('common:errors.badSession')))
       }
   
       if ((currentUser && !currentUser.equals(userFromLocalStorage as any)) || invalidSession) {
