@@ -203,7 +203,7 @@ export const checkSession = (): any => {
         // clean up user into localStorage
         clearUserIntoLocalStorage();
         dispatch(toggleIsAuthenticatedSlice(false));
-        dispatch(setErrorSlice(i18n.t('user:errors.badSession')))
+        dispatch(setErrorSlice(i18n.t('common:errors.badSession')))
       }
   
       if ((currentUser && !currentUser.equals(userFromLocalStorage as any)) || invalidSession) {

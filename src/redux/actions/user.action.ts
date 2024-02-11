@@ -96,81 +96,19 @@ export const loadUsers = ({
   search,
 }: IQueriesInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    let query = await new Parse.Query(Parse.User);
-
-    // full text search
-    // should be before all other queries
-    if (search?.text) {
-      const text = escapeText(search.text);
-
-      query = Parse.Query.or(
-        new Parse.Query(Parse.User).matches('lastName', text),
-        new Parse.Query(Parse.User).matches('firstName', text),
-        new Parse.Query(Parse.User).matches('username', text),
-      );
-    }
-
-    query.limit(+limit).skip(+skip);
     // user from BO
     const fromBO = filters && isBoolean(filters?.fromBO);
 
-    // mainly for page (url)
-    if (filters) {
-      if (isBoolean(filters?.deleted)) {
-        query.equalTo('deleted', filters.deleted);
-      }
-
-      if (isBoolean(filters?.seen)) {
-        query.equalTo('seen', filters.seen);
-      }
-    }
-
-    // Advanced search
-    if (search) {
-      if (search.lastName) {
-        query.matches('lastName', escapeText(search.lastName));
-      }
-      if (search.firstName) {
-        query.matches('firstName', escapeText(search.firstName));
-      }
-      if (search.email) {
-        query.matches('username', escapeText(search.email));
-      }
-      if (search.sex) {
-        query.containedIn('sex', search.sex);
-      }
-
-      if (search.platform) {
-        query.containedIn('platform', search.platform);
-      }
-
-      if (search.isOnline) {
-        // if online or offline
-        if (search.isOnline.length !== 2) {
-          // offline
-          if (search.isOnline.length === 1 && !search.isOnline[0]) {
-            query.notEqualTo('isOnline', true);
-            // online
-          } else {
-            query.equalTo('isOnline', true);
-          }
-        }
-      }
-    }
-
-    if (fromBO) {
-      query.equalTo('platform', 'bo');
-    } else {
-      query.notEqualTo('platform', 'bo');
-    }
-
-    if (order === 'desc') {
-      query.descending(orderBy);
-    } else {
-      query.ascending(orderBy);
-    }
-
-    const result: Record<string, any> = await query.withCount().find();
+    // result with count
+    const result: Record<string, any> = await Parse.Cloud.run('getUsers', {
+      limit,
+      skip,
+      orderBy,
+      order,
+      filters,
+      search,
+      fromBO
+    });
 
     // get and display user roles depending on the role of the current user
     const users = [];
@@ -179,7 +117,7 @@ export const loadUsers = ({
         const rolesForUser = await getRolesForUser(user, false);
         users.push({
           ...user.toJSON(),
-          roles: rolesForUser.map((role: any) => role.toJSON()),
+          roles: rolesForUser.map((role: Parse.Role) => role.toJSON()),
         });
       }
     } else {
