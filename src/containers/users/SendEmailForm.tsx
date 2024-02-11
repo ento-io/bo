@@ -17,7 +17,7 @@ type Props = {
 };
 
 const SendEmailForm = ({ formId, onSubmit }: Props) => {
-  const { t } = useTranslation(['user']);
+  const { t } = useTranslation();
   const loading = useSelector(getUserLoadingSelector);
   const appError = useSelector(getAppErrorSelector);
 
