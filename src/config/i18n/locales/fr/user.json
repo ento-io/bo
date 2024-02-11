@@ -85,6 +85,8 @@
     "rights": "Droits",
     "addRight": "Ajouter un droit",
     "addRole": "Ajouter un nouveau rôle",
+    "addPost": "Ajouter un poste",
+    "userHasNotPost": "Cet utilisateur n'a pas de poste",
     "editRole": "Modifier {{role}}",
     "otherRoles": "Autres roles",
     "childRoles": "Roles enfants",

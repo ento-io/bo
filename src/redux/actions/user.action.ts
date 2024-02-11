@@ -399,6 +399,7 @@ export const onUserEnter = (route?: any): AppThunkAction => {
     const notification = getAppNotificationsSelector(state as any);
     const count = notification?.user ?? 0;
     const roles = getRoleCurrentUserRolesSelector(state as any);
+    console.log('roles: ', roles);
     const canPreview = canAccessTo(roles, '_User', 'get');
 
     // redirect to not found page
@@ -408,7 +409,7 @@ export const onUserEnter = (route?: any): AppThunkAction => {
     }
 
     if (!route.params?.id) return ;
-    
+
     const user = await Parse.Cloud.run('getUser', { id: route.params?.id, shouldMarkAsSeen: true });
 
     if (!user) return;

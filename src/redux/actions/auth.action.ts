@@ -30,7 +30,7 @@ import { toggleIsAuthenticatedSlice } from '@/redux/reducers/settings.reducer';
 import { INavigate } from '@/types/app.type';
 import { PATH_NAMES } from '@/utils/pathnames';
 
-export const SIGNUP_PROPERTIES = new Set(['firstName', 'lastName', 'email', 'password', 'username']);
+export const SIGNUP_PROPERTIES = new Set(['firstName', 'lastName', 'email', 'password', 'username', 'platform']);
 
 interface SignUpI extends Partial<ISignUpInput> {
   username: string;

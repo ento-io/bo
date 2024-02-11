@@ -1,7 +1,7 @@
-import { Box, Chip, ListItemIcon, MenuItem, Stack } from '@mui/material';
+import { Box, Button, Chip, ListItemIcon, MenuItem, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
-import { FiCheck } from 'react-icons/fi';
+import { FiCheck, FiPlus } from 'react-icons/fi';
 import { IoWarning } from 'react-icons/io5';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -172,10 +172,23 @@ const User = () => {
             {/* show add or edit role only for user created from BO */}
             {isUserFromBO(user) && (
               <Layout cardTitle={t('user:role.roles')}>
-                <Stack spacing={1} direction="row">
-                  <RolesChip roles={roles} onRemove={handleRemoveRoleForUser} />
-                  <Chip label="+" color="primary" sx={{ fontSize: 22 }} onClick={toggleOpenAddRoleToUser} />
-                </Stack>
+                {roles.length > 0 ? (
+                  <Stack spacing={1} direction="row">
+                    <RolesChip roles={roles} onRemove={handleRemoveRoleForUser} />
+                    <Chip label="+" color="primary" sx={{ fontSize: 22 }} onClick={toggleOpenAddRoleToUser} />
+                  </Stack>
+                ): (
+                  <div css={{ marginTop: 2 }}>
+                    <Stack spacing={1}>
+                      <Typography variant="body2" color="textSecondary">
+                        {t('user:role.userHasNotPost')}
+                      </Typography>
+                      <Button onClick={toggleOpenAddRoleToUser} startIcon={<FiPlus />} size="small">
+                        {t('user:role.addPost')}
+                      </Button>
+                    </Stack>
+                  </div>
+                )}
               </Layout>
             )}
 
