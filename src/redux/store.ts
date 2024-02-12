@@ -7,10 +7,12 @@ import appReducer from './reducers/app.reducer';
 import roleReducer from './reducers/role.reducer';
 import settingsReducer from './reducers/settings.reducer';
 import userReducer from './reducers/user.reducer';
+import articleReducer from './reducers/article.reducer';
 
 const reducers = {
   app: appReducer,
   user: userReducer,
+  article: articleReducer,
   settings: settingsReducer,
   role: roleReducer,
 };

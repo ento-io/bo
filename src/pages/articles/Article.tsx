@@ -1,46 +1,35 @@
-import { useEffect, useState } from "react";
+import { Card, CardContent, IconButton, Typography } from "@mui/material";
 
-import { Card, CardContent, LinearProgress, Typography } from "@mui/material";
-
-import { getArticle } from "@/actions/articles.action";
-import { IArticle } from "@/types/article.types";
-import { articleRoute } from '@/routes/protected/article.routes';
+import { useDispatch, useSelector } from "react-redux";
+import { FiTrash2 } from "react-icons/fi";
+import { useNavigate } from "@tanstack/react-router";
+import { getArticleArticleSelector } from "@/redux/reducers/article.reducer";
+import { articleRoute } from "@/routes/protected/article.routes";
+import { deleteArticle, goToArticles } from "@/redux/actions/article.action";
 
 const Article = () => {
-  const [article, setArticle] = useState<IArticle | null>(null)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const params = articleRoute.useParams();
+  const article = useSelector(getArticleArticleSelector);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { id } = articleRoute.useParams();
-  // const navigate = useNavigate();
+  if (!article) return null;
 
-  // load initial article list
-  useEffect(() => {
-    if (!id) return;
-    const init = async () => {
-      try {
-        setLoading(true);
-        const article = await getArticle(id);
-        setArticle(article as IArticle);
-        setLoading(false);
-      } catch (error) {
-        setError(error as string);
-      }
-    }
-    
-    init();
-  }, [id])
+  const handleDelete = async (id: string) => {
+    await dispatch(deleteArticle(id));
+    navigate(goToArticles())
+  }
 
   return (
-    <div css={{ minHeight: "100vh", position: "relative" }} className="flexColumn">
-      {loading && <LinearProgress css={{ height: 4, position: "absolute", top: 0, left: 0, right: 0 }} className="stretchSelf" />}
+    <div className="flexColumn">
       <Card>
         <CardContent>
-          <Typography>Title: {article?.get('title')}</Typography>
-          <Typography>Content: {article?.get('content')}</Typography>
+          <Typography>Title: {article.title}</Typography>
         </CardContent>
       </Card>
+      <IconButton color="error" onClick={() => handleDelete(params.id)}>
+        <FiTrash2 />
+      </IconButton>
     </div>
   )
 }

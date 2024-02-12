@@ -1,6 +1,7 @@
 {
   "users": "utilisateurs",
   "admins": "admins",
+  "articles": "articles",
   "login": "connexion",
   "signup": "creation-compte",
   "changePassword": "changer-mot-de-passe",

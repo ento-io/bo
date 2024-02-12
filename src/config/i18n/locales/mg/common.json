@@ -1,4 +1,9 @@
 {
+  "article": {
+    "article": "Lahatsoratra",
+    "articles": "Lahatsoratra"
+  },
+  "greeting": "Salama, {{name}}!",
   "language": "Fiteny",
   "languages": "Fiteny",
   "lang": {
