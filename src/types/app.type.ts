@@ -68,6 +68,14 @@ export interface IQueriesInput extends Partial<IFilterInput> {
   include?: string[];
 }
 
+export interface TableHeadCell<D> {
+  disablePadding: boolean;
+  id: D;
+  label: string;
+  numeric?: boolean;
+  align?: 'left' | 'center' | 'right';
+}
+
 export interface IPagination extends IOrderList {
   selected?: any[];
   currentPage: number;

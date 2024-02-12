@@ -1,8 +1,10 @@
 import { Attributes } from "parse";
 import { z } from "zod";
 import { sendEmailSchema } from "@/validations/email.validation";
+import { userFilterSchema } from "@/validations/user.validation";
 
 export type SendEmailInput = z.infer<typeof sendEmailSchema>;
+export type UserFiltersInput = z.infer<typeof userFilterSchema>;
 
 export enum SexEnum {
   MALE = 'male',

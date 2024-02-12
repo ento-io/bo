@@ -1,7 +1,7 @@
 import Parse, { Attributes } from 'parse';
 
 import { actionWithLoader } from '@/utils/app.utils';
-import { PAGINATION, DEFAULT_PAGINATION } from '@/utils/constants';
+import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { uploadFileAPI } from '@/utils/file.utils';
 import { canAccessTo, getRolesForUser } from '@/utils/role.utils';
 import { getUserFullName, isUserFromBO } from '@/utils/user.utils';
@@ -36,6 +36,7 @@ import {
   setMessageSlice,
   getAppNotificationsSelector,
   setNotificationsSlice,
+  setErrorSlice,
 } from '@/redux/reducers/app.reducer';
 
 import { RootState } from '../store';
@@ -358,7 +359,6 @@ export const inviteUser: any = (values: ISignUpInput): any => {
 // ---------------------------------------- //
 export const onUsersEnter = (): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
-    // console.log('dispatch: ', dispatch);
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
     const canFind = canAccessTo(roles, '_User', 'find');
@@ -366,6 +366,7 @@ export const onUsersEnter = (): any => {
     // redirect to not found page
     if (!canFind) {
       // dispatch(goToNotFound());
+      dispatch(setErrorSlice(i18n.t('common:errors.accessDenied')))
       return;
     }
 
