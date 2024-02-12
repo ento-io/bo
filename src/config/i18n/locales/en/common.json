@@ -1,4 +1,9 @@
 {
+  "article": {
+    "article": "Article",
+    "articles": "Articles"
+  },
+  "greeting": "Hello, {{name}}!",
   "language": "Language",
   "languages": "Languages",
   "lang": {

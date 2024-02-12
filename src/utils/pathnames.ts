@@ -3,6 +3,7 @@ import i18n from "@/config/i18n";
 export const PATH_NAMES = {
   home: '/',
   users: '/' + i18n.t('route:users'),
+  articles: '/' + i18n.t('route:articles'),
   admins: '/' + i18n.t('route:admins'),
   login: '/' + i18n.t('route:login'),
   signUp: '/' + i18n.t('route:signup'),

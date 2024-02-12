@@ -130,8 +130,6 @@ const Users = () => {
     return usersData;
   }, [users, onDelete, onPreview, roles]);
 
-
-
   return (
     <>
       <Head title="Users" />

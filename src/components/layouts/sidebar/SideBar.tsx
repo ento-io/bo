@@ -5,7 +5,7 @@ import { grey } from '@mui/material/colors';
 import List from '@mui/material/List';
 import { useTranslation } from 'react-i18next';
 import { FaLockOpen } from 'react-icons/fa';
-import { FiChevronRight, FiChevronUp, FiHome, FiSettings, FiUsers } from 'react-icons/fi';
+import { FiChevronRight, FiChevronUp, FiClipboard, FiHome, FiSettings, FiUsers } from 'react-icons/fi';
 
 import { useNavigate, useRouterState , RouterState } from '@tanstack/react-router';
 import { canAccessTo } from '@/utils/role.utils';
@@ -15,6 +15,7 @@ import { PATH_NAMES } from '@/utils/pathnames';
 import { goToUsers } from '@/redux/actions/user.action';
 import { goToRoles } from '@/redux/actions/role.action';
 import { goToSettings } from '@/redux/actions/app.action';
+import { goToArticles } from '@/redux/actions/article.action';
 
 const TEXT_COLOR = grey[700];
 /**
@@ -123,6 +124,13 @@ const SideBar = ({ open, roles, onClose }: Props) => {
           onClick: () => navigate(goToUsers()),
           icon: <FiUsers size={ICON_SIZE} />,
           className: '_User',
+        },
+        {
+          id: PATH_NAMES.articles,
+          label: t('common:article.articles'),
+          onClick: () => navigate(goToArticles()),
+          icon: <FiClipboard size={ICON_SIZE} />,
+          className: 'Article',
         },
       ],
     },

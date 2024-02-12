@@ -1,28 +1,17 @@
-import { z } from "zod";
-import { articleSchema } from "../validations/article.validations";
+import { Attributes } from "parse";
+import { IUser } from "./user.type";
 
-export interface IArticle extends Parse.Object {
-  id: string;
+export interface IArticle extends Attributes {
+  objectId: string;
   title: string;
-  content: string;
-  // author: IUser;
+  updatedAt?: string;
+  createdAt?: string;
+  author: IUser;
 }
 
-export type IArticleInput = z.infer<typeof articleSchema>;
-
-export interface IArticleResponse {
-  success: boolean;
-  article: IArticle;
-}
-
-export interface IArticleResponse {
-  success: boolean;
-  article: IArticle;
-}
-
-export interface IArticleData {
-  success: boolean;
+export interface IArticleState {
   loading: boolean;
-  articles?: IArticle[];
-  error?: string;
+  article: IArticle | null;
+  articles: IArticle[];
+  count: number;
 }

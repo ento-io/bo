@@ -2,6 +2,7 @@
   "users": "users",
   "admins": "admins",
   "login": "login",
+  "articles": "articles",
   "signup": "signup",
   "changePassword": "change-password",
   "contacts": "contacts",
