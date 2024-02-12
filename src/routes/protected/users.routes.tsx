@@ -16,8 +16,19 @@ export const usersLayout = createRoute({
 });
 
 export const usersRoute = createRoute({
+  // validateSearch: (search) => z
+  // .object({
+  //   // sortBy: z.enum(['name', 'id', 'email']).optional(),
+  //   // filterBy: z.string().optional(),
+  //   page: z.number().optional(),
+  //   per_page: z.number().optional(),
+  // }).parse(search),
+  // loaderDeps: ({ search }) => ({
+  //   page: search?.page,
+  //   perPage: search?.per_page,
+  // }),
   getParentRoute: () => usersLayout,
-  beforeLoad: onEnter(onUsersEnter),
+  loader: onEnter(onUsersEnter),
   component: Users,
   path: "/",
 });
