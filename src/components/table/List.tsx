@@ -21,7 +21,7 @@ import Table from './Table';
 import TableToolbar from './TableToolbar';
 import SearchContainer from './SearchContainer';
 
-type Props = {
+type Props<IQuery> = {
   items: Record<string, any>[];
   headCells: any[];
   count: number;
@@ -34,9 +34,10 @@ type Props = {
   renderFilter: any,
   border?: boolean;
   onUpdateData: any;
+  defaultFilters?: IQuery;
 };
 
-const List = ({
+const List = <IQuery extends IQueriesInput['filters'],>({
   items,
   headCells,
   count,
@@ -48,8 +49,9 @@ const List = ({
   canUpdate,
   onUpdateData,
   renderFilter,
+  defaultFilters,
   border = false,
-}: Props) => {
+}: Props<IQuery>) => {
   const [initPagination, setInitPagination] = useState<boolean>(false);
   const [pagination, setPagination] = useState<IPagination>(DEFAULT_PAGINATION);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -64,6 +66,17 @@ const List = ({
     if (isDesktopDown) return;
     setView('table');
   }, [isDesktopDown]);
+
+  useEffect(() => {
+    if (!defaultFilters) return;
+    setQueries((prev) => ({
+      ...prev,
+      filters: {
+        ...prev.filters,
+        ...defaultFilters,
+      }
+    }));
+  }, [defaultFilters]);
 
   // remove the checkboxes if there is no multiple actions
   const canMultipleSelect = !!(onDeleteSelected ?? onMarkAsSeenSelected);

@@ -16,3 +16,8 @@ export const userFilterSchema = object({
   platform: array(string().optional()).optional(),
   isOnline: array(boolean().optional()).optional(),
 });
+
+export const usersRouteSearchParams = object({
+  role: string().optional(),
+  from: string().optional(),
+})

@@ -16,6 +16,10 @@ export const usersLayout = createRoute({
 });
 
 export const usersRoute = createRoute({
+  validateSearch: (search) => z.object({
+    role: z.string().optional(),
+    from: z.string().optional(),
+  }).parse(search),
   getParentRoute: () => usersLayout,
   beforeLoad: onEnter(onUsersEnter),
   component: Users,
