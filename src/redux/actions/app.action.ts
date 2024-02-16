@@ -97,3 +97,4 @@ export const onEnter = (onEnterAction: (dispatch: AppDispatch, getState?: () => 
 // ------------- redirection ------------- //
 // --------------------------------------- //
 export const goToSettings = () => ({ to: PATH_NAMES.settings });
+export const goToHome = () => ({ to: '/' });
