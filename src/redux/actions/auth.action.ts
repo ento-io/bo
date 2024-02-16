@@ -327,7 +327,6 @@ export const sendResetPasswordVerificationCode = (email: string): any => {
     await Parse.Cloud.run('sendResetPasswordVerificationCode', { email });
 
     dispatch(setMessageSlice(i18n.t('user:emailWithCodeSent')));
-    // dispatch(goToResetPasswordConfirmCode());
   }, setUserLoadingSlice);
 };
 
@@ -387,12 +386,8 @@ export const goToLogin = () => ({ to: PATH_NAMES.login });
 // export const goToSignUp = (): UpdateLocationActions => push('/' + PATH_NAMES.signUp);
 // export const goToChangePassword = (): UpdateLocationActions => push('/' + PATH_NAMES.changePassword);
 // export const goToProfile = (): UpdateLocationActions => push('/' + PATH_NAMES.profile);
-// export const goToSendEmailResetPassword = (): UpdateLocationActions => {
-//   return push('/' + PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword);
-// };
-// export const goToResetPasswordConfirmCode = (): UpdateLocationActions => {
-//   return push('/' + PATH_NAMES.account.root + '/' + PATH_NAMES.account.confirmResetPasswordCode);
-// };
+export const goToSendEmailResetPassword = () => ({ to: PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword });
+export const goToResetPasswordConfirmCode = () => ({ to: PATH_NAMES.account.root + '/' + PATH_NAMES.account.confirmResetPasswordCode });
 // export const goToResetPassword = (email: string): UpdateLocationActions =>
 //   push('/' + PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword + '/' + email);
 

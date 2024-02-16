@@ -1,6 +1,7 @@
 import Typography from '@mui/material/Typography';
 import { MouseEvent } from 'react';
 import Link from '@/components/Link';
+import { getLinkStyles } from '@/utils/theme.utils';
 
 type Props = {
   url?: string;
@@ -23,8 +24,10 @@ const AuthLink = ({ url, text, label, onClick }: Props) => {
       {/* ------- button ------- */}
 
       {!!onClick && (
-        <button type="button" onClick={handleClick}>
-          {text}
+        <button type="button" onClick={handleClick} className="transparentButton">
+          <Typography css={getLinkStyles}>
+            {text}
+          </Typography>
         </button>
       )}
 
