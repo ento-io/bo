@@ -48,7 +48,7 @@
     "insufficientAuth": "Tsy manana zo anao an'io ianao",
     "canNotDeleteUser": "Tsy afaka ny mamàfa mpampiasa ianao",
     "canNotUpdateUser": "Tsy afaka ny manova mpampiasa ianao",
-    "userNotVerified": "Mbola tsy voamarina ny kaontinao",
+    "userNotVerified": "Mbola tsy voamarina ny kaontinao. Jereo ny mailaka fa misy kaody fanamarinana ny kaontinao any",
     "invalidEmail": "Mailaka invalide",
     "noAccountByEmail": "Kaonty tsy misy amin'io mailaka io",
     "incorrectCode": "kaody diso",

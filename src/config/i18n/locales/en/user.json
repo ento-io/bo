@@ -49,7 +49,7 @@
     "insufficientAuth": "You have no right to do this action",
     "canNotDeleteUser": "You can not delete an user",
     "canNotUpdateUser": "You can not update an user",
-    "userNotVerified": "Your account is not verified yet",
+    "userNotVerified": "Your account is not verified yet. An email has been sent to you. Please check your email and enter the code in that email.",
     "invalidEmail": "Invalid email",
     "noAccountByEmail": "No account found with matching email",
     "noVerificationSend": "No code has been sent",
