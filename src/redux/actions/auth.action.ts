@@ -26,7 +26,7 @@ import {
   getAppCurrentUserSelector,
   clearCurrentUserSlice,
 } from '@/redux/reducers/app.reducer';
-import { toggleIsAuthenticatedSlice } from '@/redux/reducers/settings.reducer';
+import { getSettingsLangSelector, toggleIsAuthenticatedSlice } from '@/redux/reducers/settings.reducer';
 import { INavigate } from '@/types/app.type';
 import { PATH_NAMES } from '@/utils/pathnames';
 
@@ -323,8 +323,10 @@ export const sendEmailVerificationCode = (email: string): any => {
 };
 
 export const sendResetPasswordVerificationCode = (email: string): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    await Parse.Cloud.run('sendResetPasswordVerificationCode', { email });
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    const lang = getSettingsLangSelector(state as any);
+    await Parse.Cloud.run('sendResetPasswordVerificationCode', { email, lang, subject: i18n.t('user:resetPassword')});
 
     dispatch(setMessageSlice(i18n.t('user:emailWithCodeSent')));
   }, setUserLoadingSlice);
