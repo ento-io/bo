@@ -1,7 +1,7 @@
 
 import Parse from 'parse';
 import { IChangePasswordInput, ILoginInput, ResetPasswordInput, ISignUpInput } from '@/types/auth.types';
-import { IUser } from '@/types/user.type';
+import { IPlatform, IUser, PlatformEnum } from '@/types/user.type';
 import { IOnRouteEnterInput } from '@/types/util.type';
 import i18n from '@/config/i18n';
 
@@ -30,10 +30,11 @@ import { toggleIsAuthenticatedSlice } from '@/redux/reducers/settings.reducer';
 import { INavigate } from '@/types/app.type';
 import { PATH_NAMES } from '@/utils/pathnames';
 
-export const SIGNUP_PROPERTIES = new Set(['firstName', 'lastName', 'email', 'password', 'username']);
+export const SIGNUP_PROPERTIES = new Set(['firstName', 'lastName', 'email', 'password', 'username', 'platform']);
 
 interface SignUpI extends Partial<ISignUpInput> {
   username: string;
+  platform: IPlatform;
 }
 /**
  * create user account
@@ -48,7 +49,7 @@ export const signUp = (values: ISignUpInput, navigate: INavigate): any => {
       dispatch(closeErrorSlice());
     }
 
-    const newValues: SignUpI = { ...values, username: values.email };
+    const newValues: SignUpI = { ...values, username: values.email, platform: PlatformEnum.BO };
     delete newValues.passwordConfirmation; // passwordConfirmation should not be saved to db
 
     // create the new user with corresponding fields
@@ -64,13 +65,22 @@ export const signUp = (values: ISignUpInput, navigate: INavigate): any => {
       // by default, it logged in automatically after the user is created
       // we need to login manually after the user is created
       // so we logged out the newly created user and redirect to the login page
-      navigate({ to: PATH_NAMES.logout })
+
+      if (DISABLE_USER_ACCOUNT_CONFIRMATION) {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        await dispatch(logout());
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
+        navigate(goToLogin())
+        return ;
+      }
+
       // instead of redirecting to the login page,
       // redirect to the email confirmation page.
       // And pass the email to the the ConfirmEmail Page Component
-      if (!DISABLE_USER_ACCOUNT_CONFIRMATION) {
-        // dispatch(goToAccountVerificationCode());
-      }
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      await dispatch(logout());
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      navigate(goToAccountVerificationCode());
     } catch (error) {
       // account already exists
       if ((error as any).code === 202) {
@@ -142,14 +152,17 @@ export const login = (values: ILoginInput, navigate: INavigate): any => {
       dispatch(loginSuccess(true, navigate)); // redirect
     } catch (error) {
       console.log('login error: ', error);
-      // invalid username / email error
       if (!DISABLE_USER_ACCOUNT_CONFIRMATION) {
+        // if the user account is not verified yet
+        // the confirmation code is send automatically in the beforeLogin trigger
         if ((error as any).code === 141) {
           dispatch(setErrorSlice(i18n.t('user:errors.userNotVerified')));
-          // dispatch(goToAccountVerificationCode());
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          navigate(goToAccountVerificationCode());
           dispatch(setAccountEmailSlice(values.email));
         }
       }
+      // invalid username / email error
       if ((error as any).code === 101) {
         dispatch(setErrorSlice(i18n.t('user:errors.invalidUsername')));
       }
@@ -202,7 +215,7 @@ export const checkSession = (): any => {
         // clean up user into localStorage
         clearUserIntoLocalStorage();
         dispatch(toggleIsAuthenticatedSlice(false));
-        dispatch(setErrorSlice(i18n.t('user:errors.badSession')))
+        dispatch(setErrorSlice(i18n.t('common:errors.badSession')))
       }
   
       if ((currentUser && !currentUser.equals(userFromLocalStorage as any)) || invalidSession) {
@@ -257,7 +270,7 @@ export const deleteAccount = (): any => {
   }, setUserLoadingSlice);
 };
 
-export const verifyCodeSentByEmail = (code: string, type = 'resetPassword'): any => {
+export const verifyCodeSentByEmail = (code: string, type: 'resetPassword' | 'accountVerification' = 'resetPassword'): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     await Parse.Cloud.run('verifyAccountEmail', { code, type });
 
@@ -280,6 +293,24 @@ export const verifyCodeSentByEmail = (code: string, type = 'resetPassword'): any
     // }
 
     // dispatch(goToHome());
+  });
+};
+
+export const verifyAccountEmail = (code: string): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    await Parse.Cloud.run('verifyAccountEmail', { code, type: 'accountVerification' });
+
+    dispatch(
+      setAlertSlice({
+        type: 'accountVerification',
+        severity: 'success',
+        duration: 'permanent',
+        message: i18n.t('user:messages.emailVerifiedSuccess'),
+        title: i18n.t('user:messages.accountCreatedSuccessfully'),
+      }),
+    );
+
+    dispatch(closeErrorSlice());
   });
 };
 
@@ -352,7 +383,7 @@ export const onSignUpLeave = (): any => {
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //
-// export const goToLogin = (): UpdateLocationActions => push('/' + PATH_NAMES.login);
+export const goToLogin = () => ({ to: PATH_NAMES.login });
 // export const goToSignUp = (): UpdateLocationActions => push('/' + PATH_NAMES.signUp);
 // export const goToChangePassword = (): UpdateLocationActions => push('/' + PATH_NAMES.changePassword);
 // export const goToProfile = (): UpdateLocationActions => push('/' + PATH_NAMES.profile);
@@ -365,6 +396,4 @@ export const onSignUpLeave = (): any => {
 // export const goToResetPassword = (email: string): UpdateLocationActions =>
 //   push('/' + PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword + '/' + email);
 
-// export const goToAccountVerificationCode = (): UpdateLocationActions => {
-//   return push('/' + PATH_NAMES.account.root + '/' + PATH_NAMES.account.verifyAccount);
-// };
+export const goToAccountVerificationCode = () => ({ to: PATH_NAMES.account.root + '/' + PATH_NAMES.account.verifyAccount });

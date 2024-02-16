@@ -5,6 +5,7 @@
   "lastName": "Anarana",
   "sex": "Sex",
   "phoneNumber": "Laharan-taroby",
+  "address": "Adiresy",
   "male": "Lehilahy",
   "female": "Vehivavy",
   "detailsAboutYou": "Mombamomba anao",
@@ -47,7 +48,7 @@
     "insufficientAuth": "Tsy manana zo anao an'io ianao",
     "canNotDeleteUser": "Tsy afaka ny mamàfa mpampiasa ianao",
     "canNotUpdateUser": "Tsy afaka ny manova mpampiasa ianao",
-    "userNotVerified": "Mbola tsy voamarina ny kaontinao",
+    "userNotVerified": "Mbola tsy voamarina ny kaontinao. Jereo ny mailaka fa misy kaody fanamarinana ny kaontinao any",
     "invalidEmail": "Mailaka invalide",
     "noAccountByEmail": "Kaonty tsy misy amin'io mailaka io",
     "incorrectCode": "kaody diso",
@@ -57,7 +58,8 @@
     "requiredSenderEmail": "Ilavaina mailaky ny mpandefa",
     "emailTitleMax": "Ny titre ny mailaka dia tsy mihoatra ny 86 teny",
     "requiredEmailSubject": "Sujet ny mailaka ilaina",
-    "sessionTokenExpired": "Tapitra ny session-anao. Miverena indray mihiditra."
+    "sessionTokenExpired": "Tapitra ny session-anao. Miverena indray mihiditra.",
+    "emailNotSent": "Tsy lasa ny mailaka. Manasa hamerina indray afaka fotoana fohy"
   },
   "users": "Mpampiasa",
   "user": "Mpampiasa",
@@ -82,6 +84,8 @@
     "rights": "Zo",
     "addRight": "Hamorona zo",
     "addRole": "Hamorona rôle vaovao",
+    "addPost": "Hampiana andraikitra",
+    "userHasNotPost": "Tsy misy andraikitra ity mpampiasa ity",
     "editRole": "Ovaina {{role}}",
     "otherRoles": "Andraikitra hafa",
     "childRoles": "Zanak'andraikitra",
@@ -98,7 +102,10 @@
     "deleteRoleSuccessfully" : "andraikitra {{name}} voafafa",
     "sureToDeleteRoleWithUsers" : "Vonona ve ianao hamafa an'ny {{name}}? Ito andraikitra ito dia manana mpampiasa mihisa {{userCount}}",
     "sureToDeleteRoleWithUsers_plural" : "Vonona ve ianao hamafa an'ny {{name}}? Ito andraikitra ito dia manana mpampiasa mihisa {{userCount}}",
-    "theRoleName": "ny anaran'ny andraikitra"
+    "theRoleName": "ny anaran'ny andraikitra",
+    "roleNotFound": "Andraikitra tsy hita",
+    "roleCannotBeDeleted": "Andraikitra tsy azo fafàna",
+    "noRightToDelete": "Tsy afaka ny mamafa an'io andraikitra io ianao"
   },
   "accountAwaitValidation": "Ny mpitantana iray dia hanamarina izany haingana araka izay azo atao.",
   "emailWithCodeSentConfirmCodeBelow": "Nandefasana email misy kaody ianao. Fenoy etsy ambany ny kaody.",

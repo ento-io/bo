@@ -1,4 +1,9 @@
 {
+  "article": {
+    "article": "Article",
+    "articles": "Articles"
+  },
+  "greeting": "Hello, {{name}}!",
   "language": "Language",
   "languages": "Languages",
   "lang": {
@@ -199,7 +204,8 @@
     "noOtherImages": "No other images",
     "noField": "No {{field}}",
     "cooperativeAlreadyExists": "This cooperative's name already exists. Please enter another one.",
-    "badSession": "Invalid session. Please login again"
+    "badSession": "Invalid session. Please login again",
+    "accessDenied": "Access denied"
   },
   "totalPrice": "Total price",
   "place": "Seat",

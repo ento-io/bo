@@ -5,13 +5,17 @@ import { grey } from '@mui/material/colors';
 import List from '@mui/material/List';
 import { useTranslation } from 'react-i18next';
 import { FaLockOpen } from 'react-icons/fa';
-import { FiChevronRight, FiChevronUp, FiHome, FiSettings, FiUsers } from 'react-icons/fi';
+import { FiChevronRight, FiChevronUp, FiClipboard, FiHome, FiSettings, FiUsers } from 'react-icons/fi';
 
 import { useNavigate, useRouterState , RouterState } from '@tanstack/react-router';
 import { canAccessTo } from '@/utils/role.utils';
 import { IRole } from '@/types/role.type';
 import SideBarItem from './SideBarItem';
 import { PATH_NAMES } from '@/utils/pathnames';
+import { goToUsers } from '@/redux/actions/user.action';
+import { goToRoles } from '@/redux/actions/role.action';
+import { goToSettings } from '@/redux/actions/app.action';
+import { goToArticles } from '@/redux/actions/article.action';
 
 const TEXT_COLOR = grey[700];
 /**
@@ -115,11 +119,18 @@ const SideBar = ({ open, roles, onClose }: Props) => {
       title: 'Apps',
       subMenus: [
         {
-          id: PATH_NAMES.users.index,
+          id: PATH_NAMES.users,
           label: t('user:users'),
-          onClick: () => navigate({ to: PATH_NAMES.users.index }),
+          onClick: () => navigate(goToUsers()),
           icon: <FiUsers size={ICON_SIZE} />,
           className: '_User',
+        },
+        {
+          id: PATH_NAMES.articles,
+          label: t('common:article.articles'),
+          onClick: () => navigate(goToArticles()),
+          icon: <FiClipboard size={ICON_SIZE} />,
+          className: 'Article',
         },
       ],
     },
@@ -129,14 +140,14 @@ const SideBar = ({ open, roles, onClose }: Props) => {
         {
           id: PATH_NAMES.roles,
           label: t('user:role.rights'),
-          onClick: () => navigate({ to: PATH_NAMES.roles }),
+          onClick: () => navigate(goToRoles()),
           icon: <FaLockOpen size={ICON_SIZE} />,
           className: '_Role',
         },
         {
           id: PATH_NAMES.settings,
           label: t('common:settings'),
-          onClick: () => navigate({ to: PATH_NAMES.settings }),
+          onClick: () => navigate(goToSettings()),
           icon: <FiSettings size={ICON_SIZE} />,
         },
       ],

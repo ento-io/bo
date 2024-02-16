@@ -1,4 +1,9 @@
 {
+  "article": {
+    "article": "Lahatsoratra",
+    "articles": "Lahatsoratra"
+  },
+  "greeting": "Salama, {{name}}!",
   "language": "Fiteny",
   "languages": "Fiteny",
   "lang": {
@@ -199,7 +204,8 @@
     "noOtherImages": "Tsy misy sary hafa",
     "noField": "Tsy misy {{field}}",
     "cooperativeAlreadyExists": "Efa misy coopérative manana an'io anarana io. Mampidira hafa azafady.",
-    "badSession": "Session tsy mety. Miverena miditra indray."
+    "badSession": "Session tsy mety. Miverena miditra indray.",
+    "accessDenied": "Tsy afaka miditra"
   },
   "totalPrice": "Vola azo rehetra",
   "place": "Seza",

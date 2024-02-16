@@ -2,7 +2,7 @@ import { createRoute , redirect } from "@tanstack/react-router";
 
 import Parse from "parse";
 import { z } from "zod";
-import { appLayout } from "./routes";
+import { appLayout } from "../routes";
 import Login from "@/pages/auth/Login";
 import SignUp from "@/pages/auth/SignUp";
 import AuthLayout from "@/pages/auth/AuthLayout";
@@ -12,7 +12,7 @@ import { PATH_NAMES } from "@/utils/pathnames";
  * add id to pathless route (sub layouts)
  * @see: https://github.com/TanStack/router/discussions/696
  */
-const publicLayout = createRoute({
+const authPublicLayout = createRoute({
   id: "public",
   getParentRoute: () => appLayout,
   component: AuthLayout,
@@ -39,17 +39,17 @@ const loginRoute = createRoute({
   validateSearch: z.object({
     redirect: z.string().optional(),
   }),
-  getParentRoute: () => publicLayout,
+  getParentRoute: () => authPublicLayout,
   component: Login,
   path: PATH_NAMES.login,
 });
 
 const signUpRoute = createRoute({
-  getParentRoute: () => publicLayout,
+  getParentRoute: () => authPublicLayout,
   component: SignUp,
   path: PATH_NAMES.signUp,
 });
 
-const publicRoutes = publicLayout.addChildren([loginRoute, signUpRoute]);
+const authPublicRoutes = authPublicLayout.addChildren([loginRoute, signUpRoute]);
 
-export default publicRoutes;
+export default authPublicRoutes;

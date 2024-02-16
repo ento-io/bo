@@ -6,10 +6,11 @@ import i18n from '@/config/i18n';
 import { setMessageSlice, setNotificationsSlice } from '@/redux/reducers/app.reducer';
 import { loadCurrentUserRolesSlice } from '@/redux/reducers/role.reducer';
 import { setLang } from '@/redux/reducers/settings.reducer';
-import { AppDispatch, RootState } from '@/redux/store';
+import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { getAppNotificationsSelector } from '../reducers/app.reducer';
 import { getRolesForUser } from '@/utils/role.utils';
+import { PATH_NAMES } from '@/utils/pathnames';
 
 // ----------------------------------------------------- //
 // ------------------- Redux Actions ------------------- //
@@ -20,7 +21,7 @@ import { getRolesForUser } from '@/utils/role.utils';
  */
 export const onDashboardEnter = (): any => {
   return async (dispatch: AppDispatch): Promise<void> => {
-    const [currentUserRoles] = await Promise.all([getRolesForUser()]);
+    const [currentUserRoles] = await Promise.all([getRolesForUser(null, true, true)]);
 
     dispatch(loadCurrentUserRolesSlice(currentUserRoles));
   };
@@ -80,9 +81,20 @@ export const changeSettings = (values: ISettingsInput): any => {
  * @param routeParams 
  * @returns 
  */
-export const onEnter = (routeParams: any) => (onEnterAction: (...values: any) => void) => {
+export const onEnter = (onEnterAction: (dispatch: AppDispatch, getState?: () => RootState) => AppThunkAction) => (routeParams: any) =>  {
+  // get store from context (passed in RouterProvider)
   const { store } = routeParams.context;
   if (!store) return;
-  store.dispatch(onEnterAction(routeParams))
+  const newContext = { ...routeParams };
+  // remove the store passed to a thunk (action function)
+  // because it's already has dispatch and getState
+  delete newContext.context.store;
+  // run the thunk
+  onEnterAction(newContext)(store.dispatch, store.getState);
 }
 
+// --------------------------------------- //
+// ------------- redirection ------------- //
+// --------------------------------------- //
+export const goToSettings = () => ({ to: PATH_NAMES.settings });
+export const goToHome = () => ({ to: '/' });

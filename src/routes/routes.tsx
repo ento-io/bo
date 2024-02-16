@@ -7,10 +7,11 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 import { IRouteContext } from "@/types/app.type";
-import publicRoutes from "./public.routes";
-import privateRoutes from "./private.routes";
+import authPublicRoutes from "./public/auth.routes";
+import privateRoutes from "./protected/app.routes";
 import { PATH_NAMES } from "@/utils/pathnames";
 import { logout } from "@/redux/actions/auth.action";
+import accountPublicRoutes from "./public/account.routes";
 
 
 export const appLayout = createRootRouteWithContext<IRouteContext>()({
@@ -43,7 +44,8 @@ const logoutRoute = createRoute({
 });
 
 const routeTree = appLayout.addChildren([
-  publicRoutes,
+  authPublicRoutes,
+  accountPublicRoutes,
   privateRoutes,
   logoutRoute,
 ]);

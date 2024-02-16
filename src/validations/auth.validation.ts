@@ -55,8 +55,6 @@ export const signUpSchema = userSchema
     path: ['passwordConfirmation'],
   });
 
-// const sexSchema = union([literal('male'), literal('female')]);
-
 export const signUpInfoSchema = object({
   lastName: string({ errorMap })
     .min(1, i18n.t('form.error.required', { field: i18n.t('user:lastName') }))

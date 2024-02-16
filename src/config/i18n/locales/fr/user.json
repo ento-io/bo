@@ -5,6 +5,7 @@
   "lastName": "Nom",
   "sex": "Sexe",
   "phoneNumber": "Numéro téléphone",
+  "address": "Adresse",
   "male": "Homme",
   "female": "Femme",
   "detailsAboutYou": "Details sur vous",
@@ -48,7 +49,7 @@
     "insufficientAuth": "Vous n'avez pas le droit de faire ça",
     "canNotDeleteUser": "Vous ne pouvez pas supprimer un utilisateur",
     "canNotUpdateUser": "Vous ne pouvez pas update un utilisateur",
-    "userNotVerified": "Votre compte n'a pas encore été verifié",
+    "userNotVerified": "Votre compte n'a pas encore été verifié. Un email vous a été envoyé. Veuillez entrer le code contenu dans l'email.",
     "invalidEmail": "Email invalide",
     "noAccountByEmail": "Compte introuvable ou inexistant avec cet email",
     "incorrectCode": "Code incorrect",
@@ -58,7 +59,8 @@
     "requiredSenderEmail": "L'email de l'expéditeur obligatoire",
     "emailTitleMax": "Le titre de l'email ne doit pas dépasser 86 caractères",
     "requiredEmailSubject": "Sujet de l'email requis",
-    "sessionTokenExpired": "Votre session est expirée. Veuillez vous reconnectez."
+    "sessionTokenExpired": "Votre session est expirée. Veuillez vous reconnectez.",
+    "emailNotSent": "Email non envoyé. Veuillez réessayer ultérieurement."
   },
   "users": "Utilisateurs",
   "user": "Utilisateur",
@@ -84,6 +86,8 @@
     "rights": "Droits",
     "addRight": "Ajouter un droit",
     "addRole": "Ajouter un nouveau rôle",
+    "addPost": "Ajouter un poste",
+    "userHasNotPost": "Cet utilisateur n'a pas de poste",
     "editRole": "Modifier {{role}}",
     "otherRoles": "Autres roles",
     "childRoles": "Roles enfants",
@@ -100,7 +104,10 @@
     "deleteRoleSuccessfully" : "Role {{name}} supprimé avec succès.",
     "sureToDeleteRoleWithUsers" : "Etes-vous sûr de vouloir supprimé {{name}}? Ce rôle a {{userCount}} utilisateur associé.",
     "sureToDeleteRoleWithUsers_plural" : "Etes-vous sûr de vouloir supprimé {{name}}? Ce rôle a {{userCount}} utilisateurs associés.",
-    "theRoleName": "le nom du role"
+    "theRoleName": "le nom du role",
+    "roleNotFound": "Role introuvable",
+    "roleCannotBeDeleted": "Ce role ne peut pas être supprimé",
+    "noRightToDelete": "Vous n'avez pas le droit de supprimer ce role"
   },
   "accountCreatedSuccessfully": "Compte crée avec succès",
   "accountAwaitValidation": "Un administrateur va le valider dans le plus bref delais.",

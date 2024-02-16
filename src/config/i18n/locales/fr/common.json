@@ -1,4 +1,9 @@
 {
+  "article": {
+    "article": "Article",
+    "articles": "Articles"
+  },
+  "greeting": "Bonjour, {{name}}!",
   "language": "Langue",
   "languages": "Langues",
   "lang": {
@@ -217,7 +222,8 @@
     "noOtherImages": "Pas d'autres images",
     "noField": "Pas de {{field}}",
     "cooperativeAlreadyExists": "Une coopérative avec le même nom existe déjà. Veuillez entrez une autre.",
-    "badSession": "Session invalide. Veuillez vous reconnecter"
+    "badSession": "Session invalide. Veuillez vous reconnecter",
+    "accessDenied": "Accès refusé"
   },
   "totalPrice": "Prix total",
   "place": "Place",

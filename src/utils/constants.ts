@@ -18,17 +18,6 @@ export const SERVER_URL = {
   prod: 'https://ento.io.herokuapp.com',
 };
 
-const DEFAULT_LIMIT = 20;
-export const ROLE_DEFAULT_LIMIT = 10;
-export const RELATION_OPTIONS_LIMIT = 200;
-export const PAGINATION: IDefaultPagination = {
-  selected: [],
-  rowsPerPage: DEFAULT_LIMIT,
-  rowsPerPageOptions: [DEFAULT_LIMIT, 50, 75],
-  orderBy: 'updatedAt',
-  order: 'desc',
-};
-
 export const PREVIEW_PAGE_GRID = {
   left: { xs: 12, md: 8, lg: 9 },
   right: { xs: 12, md: 4, lg: 3 },
@@ -50,7 +39,21 @@ export const COLORS = {
 };
 
 export const HIGHEST_LEVEL_DEFAULT_ROLES = ['Owner', 'Administrator'];
+export const DEFAULT_ROLES = ['Manager'];
 export const SHOW_NOTIFICATIONS_APP_BAR = false;
+
+export const ROLE_DEFAULT_LIMIT = 10;
+export const RELATION_OPTIONS_LIMIT = 200;
+
+const DEFAULT_LIMIT = 1;
+
+export const PAGINATION: IDefaultPagination = {
+  selected: [],
+  rowsPerPage: DEFAULT_LIMIT,
+  rowsPerPageOptions: [DEFAULT_LIMIT, 50, 75],
+  orderBy: 'updatedAt',
+  order: 'desc',
+};
 
 export const DEFAULT_PAGINATION: IPagination = {
   currentPage: 0,

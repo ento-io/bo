@@ -2,13 +2,17 @@ import { createRoute , redirect } from "@tanstack/react-router";
 import Parse from "parse";
 import DashboardLayout from "@/pages/DashboardLayout";
 
-import { appLayout } from "./routes";
+import { appLayout } from "../routes";
 import Home from "@/pages/Home";
 import Profile from "@/pages/Profile";
-import articleRoutes, { articlesLayout } from "./protected/article.routes";
+import articleRoutes, { articlesLayout } from "./article.routes";
 import { PATH_NAMES } from "@/utils/pathnames";
 import Settings from "@/pages/Settings";
 import { checkSession } from "@/redux/actions/auth.action";
+import userRoutes, { usersLayout } from "./users.routes";
+import { onDashboardEnter } from "@/redux/actions/app.action";
+import { getRoleCurrentUserRolesSelector } from "@/redux/reducers/role.reducer";
+import rolesRoute from "./role.routes";
 
 /**
  * add id to pathless route (sub layouts)
@@ -24,9 +28,24 @@ export const privateLayout = createRoute({
     await store?.dispatch(checkSession());
     if (store) {
       const user = await Parse.User.currentAsync();
+      // load / check roles
+      await store.dispatch(onDashboardEnter());
+      // get current user roles (from store)
+      const roles = getRoleCurrentUserRolesSelector(store.getState());
+
+      // only those with roles can access the dashboard
+      if (roles.length === 0) {
+        throw redirect({
+          to: PATH_NAMES.logout,
+          search: {
+            redirect: location.href,
+          },
+        });
+      }
+
+      // If the user is logged out, redirect them to the login page
+      // NOTE: redirect is only available in beforeLoad and loader (not in component or in action)
       if (!user) {
-        // If the user is logged out, redirect them to the login page
-        // NOTE: redirect is only available in beforeLoad and loader (not in component or in action)
         throw redirect({
           to: PATH_NAMES.login,
             search: {
@@ -63,8 +82,10 @@ const privateRoutes = privateLayout.addChildren([
   homeRoute,
   // use addChildren in the root because of type errors
   articlesLayout.addChildren(articleRoutes),
+  usersLayout.addChildren(userRoutes),
   profileRoute,
-  settingsRoute
+  settingsRoute,
+  rolesRoute
 ]);
 
 export default privateRoutes;
