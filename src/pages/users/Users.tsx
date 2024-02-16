@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo } from 'react';
 import { getUserCountSelector, getUserUsersSelector } from '@/redux/reducers/user.reducer';
-import { IUser } from '@/types/user.type';
+import { IUser, IUsersRouteSearchParams, PlatformEnum } from '@/types/user.type';
 import { deleteUserById, deleteUsersById, goToUser, loadUsers } from '@/redux/actions/user.action';
 import List from '@/components/table/List';
 import { displayDate } from '@/utils/date.utils';
@@ -20,6 +20,7 @@ import { getUserFullName } from '@/utils/user.utils';
 import Head from '@/components/Head';
 import SearchInput from '@/components/form/inputs/SearchInput';
 import UserAdvancedFilterForm from '@/containers/users/UserAdvancedFilterForm';
+import { usersRoute } from '@/routes/protected/users.routes';
 
 
 interface Data {
@@ -60,11 +61,28 @@ const headCells: TableHeadCell<keyof Data>[] = [
   },
 ];
 
+/**
+ * parse search params to queries input
+ */
+const getDefaultFilters = (searchParams: IUsersRouteSearchParams) => {
+  const values: Record<string, any> = {};
+
+  if (searchParams.role) {
+    values.roles = [searchParams.role];
+  }
+  if (searchParams.from) {
+    values.fromBO = searchParams.from === PlatformEnum.BO;
+  }
+
+  return values;
+}
+
 const Users = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const users = useSelector(getUserUsersSelector);
   const count = useSelector(getUserCountSelector);
+  const searchParams = usersRoute.useSearch()
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
 
@@ -134,6 +152,8 @@ const Users = () => {
     <>
       <Head title="Users" />
       <List
+        // @see users.routes.tsx for search params definition
+        defaultFilters={getDefaultFilters(searchParams)}
         onUpdateData={onUpdateData}
         items={dataTable}
         onDeleteSelected={handleDeleteSelected}

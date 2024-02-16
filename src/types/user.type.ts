@@ -1,10 +1,12 @@
 import { Attributes } from "parse";
 import { z } from "zod";
 import { sendEmailSchema } from "@/validations/email.validation";
-import { userFilterSchema } from "@/validations/user.validation";
+import { userFilterSchema, usersRouteSearchParams } from "@/validations/user.validation";
+import { IQueriesInput } from "./app.type";
 
 export type SendEmailInput = z.infer<typeof sendEmailSchema>;
 export type UserFiltersInput = z.infer<typeof userFilterSchema>;
+export type IUsersRouteSearchParams = z.infer<typeof usersRouteSearchParams>;
 
 export enum SexEnum {
   MALE = 'male',
@@ -49,4 +51,13 @@ export type ProfileUserInfoInput = Pick<IUser, 'lastName' | 'firstName'>;
 
 export interface IStoredCurrentUser extends Pick<IUser, 'objectId' | 'firstName' | 'lastName' | 'image'> {
   email?: string;
+}
+
+export interface IUserQueriesInput extends IQueriesInput {
+  roles?: string[];
+}
+
+export interface IUserCloudInput extends Omit<IUserQueriesInput, 'roles'> {
+  ids?: string[];
+  fromBO?: boolean;
 }

@@ -5,12 +5,11 @@ import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { uploadFileAPI } from '@/utils/file.utils';
 import { canAccessTo, getRolesForUser } from '@/utils/role.utils';
 import { getUserFullName, isUserFromBO } from '@/utils/user.utils';
-import { escapeText, isBoolean } from '@/utils/utils';
+import { capitalizeFirstLetter, escapeText, isBoolean } from '@/utils/utils';
 import { setValues } from '@/utils/parse.utils';
 
-import { IQueriesInput } from '@/types/app.type';
 import { ISignUpInput } from '@/types/auth.types';
-import { ProfileUserInfoInput, IUser, SendEmailInput } from '@/types/user.type';
+import { ProfileUserInfoInput, IUser, SendEmailInput, IUserCloudInput, PlatformEnum } from '@/types/user.type';
 import i18n from '@/config/i18n';
 import { AppDispatch, AppThunkAction } from '@/redux/store';
 import {
@@ -43,6 +42,7 @@ import { RootState } from '../store';
 import { SIGNUP_PROPERTIES } from './auth.action';
 import { loadRoles } from './role.action';
 import { PATH_NAMES } from '@/utils/pathnames';
+import { IQueriesInput } from '@/types/app.type';
 
 // ----------------------------------------------------- //
 // ------------------- Parse queries ------------------- //
@@ -100,8 +100,7 @@ export const loadUsers = ({
     // user from BO
     const fromBO = isBoolean(filters?.fromBO);
 
-    // result with count
-    const result: Record<string, any> = await Parse.Cloud.run('getUsers', {
+    const params: IUserCloudInput = {
       limit,
       skip,
       orderBy,
@@ -109,7 +108,14 @@ export const loadUsers = ({
       filters,
       search,
       fromBO
-    });
+    };
+
+    if (filters?.roles && filters.roles.length > 0) {
+      params.ids = await Parse.Cloud.run('getUserIdsFromRoles', { roleNames: filters.roles });
+    }
+
+    // result with count
+    const result: Record<string, any> = await Parse.Cloud.run('getUsers', params);
 
     // get and display user roles depending on the role of the current user
     const users = [];
@@ -357,7 +363,7 @@ export const inviteUser: any = (values: ISignUpInput): any => {
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
-export const onUsersEnter = (): any => {
+export const onUsersEnter = (params: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
@@ -377,17 +383,12 @@ export const onUsersEnter = (): any => {
       order: DEFAULT_PAGINATION.order,
     };
 
-    const filters: Record<string, boolean> = {};
+    const filters: Record<string, boolean | string[]> = {};
 
-    // add role to filter
-    // if (location?.pathname.includes('admins')) {
-    //   filters.fromBO = true;
-    // }
-
-    // if (searchParams) {
-    //   const seenTab = tabToFilters(searchParams.tab);
-    //   filters.seen = seenTab?.seen;
-    // }
+    if (params.location.search?.from === PlatformEnum.BO) {
+      filters.fromBO = true;
+      filters.roles = [capitalizeFirstLetter(params.location.search.role)];
+    }
 
     values.filters = filters;
 
@@ -401,7 +402,6 @@ export const onUserEnter = (route?: any): AppThunkAction => {
     const notification = getAppNotificationsSelector(state as any);
     const count = notification?.user ?? 0;
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    console.log('roles: ', roles);
     const canPreview = canAccessTo(roles, '_User', 'get');
 
     // redirect to not found page
