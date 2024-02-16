@@ -59,7 +59,8 @@
     "requiredSenderEmail": "Sender email required",
     "emailTitleMax": "Email title must be less than 86 characters",
     "requiredEmailSubject": "Required email subject",
-    "sessionTokenExpired": "Your session has expired. Please try to log in."
+    "sessionTokenExpired": "Your session has expired. Please try to log in.",
+    "emailNotSent": "Email not sent. Please try again."
   },
   "users": "Users",
   "user": "User",

@@ -59,7 +59,8 @@
     "requiredSenderEmail": "L'email de l'expéditeur obligatoire",
     "emailTitleMax": "Le titre de l'email ne doit pas dépasser 86 caractères",
     "requiredEmailSubject": "Sujet de l'email requis",
-    "sessionTokenExpired": "Votre session est expirée. Veuillez vous reconnectez."
+    "sessionTokenExpired": "Votre session est expirée. Veuillez vous reconnectez.",
+    "emailNotSent": "Email non envoyé. Veuillez réessayer ultérieurement."
   },
   "users": "Utilisateurs",
   "user": "Utilisateur",

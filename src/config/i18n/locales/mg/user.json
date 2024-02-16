@@ -58,7 +58,8 @@
     "requiredSenderEmail": "Ilavaina mailaky ny mpandefa",
     "emailTitleMax": "Ny titre ny mailaka dia tsy mihoatra ny 86 teny",
     "requiredEmailSubject": "Sujet ny mailaka ilaina",
-    "sessionTokenExpired": "Tapitra ny session-anao. Miverena indray mihiditra."
+    "sessionTokenExpired": "Tapitra ny session-anao. Miverena indray mihiditra.",
+    "emailNotSent": "Tsy lasa ny mailaka. Manasa hamerina indray afaka fotoana fohy"
   },
   "users": "Mpampiasa",
   "user": "Mpampiasa",
