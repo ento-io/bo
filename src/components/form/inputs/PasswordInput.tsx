@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react';
+import { MouseEvent, forwardRef } from 'react';
 
 import { IconButton } from '@mui/material';
 
@@ -9,7 +9,7 @@ import { COLORS } from '@/utils/constants';
 
 import TextFieldInput, { CustomTextFieldInputProps } from './TextFieldInput';
 
-const PasswordInput = ({ ...otherProps }: CustomTextFieldInputProps) => {
+const PasswordInput =  forwardRef<HTMLDivElement, CustomTextFieldInputProps>(({ ...otherProps }, ref) => {
   const { open: showPassword, toggle: toggleShowPassword } = useToggle();
 
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
@@ -18,6 +18,7 @@ const PasswordInput = ({ ...otherProps }: CustomTextFieldInputProps) => {
 
   return (
     <TextFieldInput
+      ref={ref}
       {...otherProps}
       type={showPassword ? 'text' : 'password'}
       right={
@@ -33,6 +34,6 @@ const PasswordInput = ({ ...otherProps }: CustomTextFieldInputProps) => {
       }
     />
   );
-};
+});
 
 export default PasswordInput;
