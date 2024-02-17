@@ -33,6 +33,7 @@ import { RESPONSIVE_BREAKPOINT, SIDEBAR_WIDTH } from '@/utils/constants';
 
 import AppBar from '../components/layouts/AppBar';
 import SideBar from '../components/layouts/sidebar/SideBar';
+import Logo from '@/components/Logo';
 
 const openedMixin = (theme: Theme): CSSObject => ({
   [theme.breakpoints.up(RESPONSIVE_BREAKPOINT)]: {
@@ -200,13 +201,9 @@ const DashboardLayout = () => {
             </Box>
           ) : (
             <Box
-              display="flex"
-              alignItems="center"
-              alignSelf="stretch"
-              flex={1}
-              justifyContent="space-between"
+              className="flexRow stretchSelf spaceBetween center flex1"
               pl={{ xs: 0, xl: 2 }}>
-              <span>Ento</span>
+              <Logo />
               <IconButton onClick={handleDrawerClose}>
                 <FiMenu />
               </IconButton>

@@ -7,7 +7,7 @@ import { PATH_NAMES } from "@/utils/pathnames";
 import ConfirmAccount from "@/pages/auth/ConfirmAccount";
 import SendEmailResetPassword from "@/pages/auth/SendEmailResetPassword";
 import { onEnter } from "@/redux/actions/app.action";
-import { onEnterResetPassword } from "@/redux/actions/auth.action";
+import { onEnterResetPassword, onEnterSendResetPasswordEmail } from "@/redux/actions/auth.action";
 import ConfirmResetPasswordCodeSentByEmail from "@/pages/auth/ConfirmResetPasswordCodeSentByEmail";
 import ResetPassword from "@/pages/auth/ResetPassword";
 
@@ -39,6 +39,7 @@ const resetPasswordPublicLayout = createRoute({
 const senEmailResetPasswordRoute = createRoute({
   getParentRoute: () => resetPasswordPublicLayout,
   component: SendEmailResetPassword,
+  beforeLoad: onEnter(onEnterSendResetPasswordEmail),
   path: '/',
 });
 

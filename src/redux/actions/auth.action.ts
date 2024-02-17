@@ -342,6 +342,12 @@ export const onEnterResetPassword = ({ params }: any): any => {
   });
 };
 
+export const onEnterSendResetPasswordEmail = (): any => {
+  return actionWithLoader(async (dispatch: AppDispatch) => {
+    dispatch(closeErrorSlice());
+  });
+};
+
 // ---------------------------------------- //
 // ------------- on page leave ------------ //
 // ---------------------------------------- //
