@@ -30,6 +30,7 @@
   "logout": "Logout",
   "forgottenPassword": "Forgotten password?",
   "resetPassword": "Reset password",
+  "enterResetPasswordCode": "Enter the code you received by email",
   "password": "Password",
   "passwordConfirmation": "Password confirmation",
   "email": "Email",

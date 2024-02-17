@@ -2,7 +2,6 @@
 import Parse from 'parse';
 import { IChangePasswordInput, ILoginInput, ResetPasswordInput, ISignUpInput } from '@/types/auth.types';
 import { IPlatform, IUser, PlatformEnum } from '@/types/user.type';
-import { IOnRouteEnterInput } from '@/types/util.type';
 import i18n from '@/config/i18n';
 
 import { actionWithLoader } from '@/utils/app.utils';
@@ -270,29 +269,12 @@ export const deleteAccount = (): any => {
   }, setUserLoadingSlice);
 };
 
-export const verifyCodeSentByEmail = (code: string, type: 'resetPassword' | 'accountVerification' = 'resetPassword'): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    await Parse.Cloud.run('verifyAccountEmail', { code, type });
+export const verifyCodeSentByEmail = (code: string, navigate: INavigate): any => {
+  return actionWithLoader(async (): Promise<void> => {
+    const result = await Parse.Cloud.run('verifyAccountEmail', { code, type: 'resetPassword' });
 
-    if (type === 'accountVerification') {
-      dispatch(
-        setAlertSlice({
-          type: 'accountVerification',
-          severity: 'success',
-          duration: 'permanent',
-          message: i18n.t('user:messages.emailVerifiedSuccess'),
-          title: i18n.t('user:messages.accountCreatedSuccessfully'),
-        }),
-      );
-      // return;
-    }
-
-    // if (type === 'resetPassword') {
-    //   // dispatch(goToResetPassword(result.email));
-    //   return;
-    // }
-
-    // dispatch(goToHome());
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    navigate(goToResetPassword(result.email))
   });
 };
 
@@ -352,7 +334,7 @@ export const resetPassword = (values: ResetPasswordInput): any => {
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
-export const onEnterResetPassword = ({ params }: IOnRouteEnterInput): any => {
+export const onEnterResetPassword = ({ params }: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch) => {
     await Parse.Cloud.run('isUserExistsByEmail', { email: params.email });
 
@@ -390,7 +372,7 @@ export const goToLogin = () => ({ to: PATH_NAMES.login });
 // export const goToProfile = (): UpdateLocationActions => push('/' + PATH_NAMES.profile);
 export const goToSendEmailResetPassword = () => ({ to: PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword });
 export const goToResetPasswordConfirmCode = () => ({ to: PATH_NAMES.account.root + '/' + PATH_NAMES.account.confirmResetPasswordCode });
-// export const goToResetPassword = (email: string): UpdateLocationActions =>
+export const goToResetPassword = (email: string) => ({ to:  PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword + '/$email', params: { email } });
 //   push('/' + PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword + '/' + email);
 
 export const goToAccountVerificationCode = () => ({ to: PATH_NAMES.account.root + '/' + PATH_NAMES.account.verifyAccount });
