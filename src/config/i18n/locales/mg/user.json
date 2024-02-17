@@ -30,6 +30,7 @@
   "logout": "Hiala",
   "forgottenPassword": "Mot de passe adino?",
   "resetPassword": "Hanavao mot de passe",
+  "enterResetPasswordCode": "Ampidiro ny kaody nalefa mailaka",
   "passwordConfirmation": "Fanamasina ny mot passe",
   "email": "Email",
   "yourEmail": "Mailakanao",

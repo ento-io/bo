@@ -106,7 +106,7 @@ export const onArticleEnter = (route?: any): AppThunkAction => {
 
     if (!article) return;
 
-    dispatch(loadArticleSlice(article.toJSON()));
+    dispatch(loadArticleSlice((article as Parse.Attributes).toJSON()));
   });
 };
 
