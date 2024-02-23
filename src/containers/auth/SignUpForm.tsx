@@ -13,6 +13,8 @@ import { getUserLoadingSelector } from '@/redux/reducers/user.reducer';
 import { COLORS } from '@/utils/constants';
 import { ISignUpInput } from '@/types/auth.types';
 import { signUpSchema } from '@/validations/auth.validation';
+import { Typography } from '@mui/material';
+import Logo from '@/components/Logo';
 
 
 type Props = {
@@ -40,36 +42,49 @@ const SignUpForm = ({ onSubmit, formId, from = 'signUp' }: Props) => {
   };
 
   return (
-    <Form
-      form={form}
-      formId={formId}
-      onSubmit={handleSubmit(onSubmitHandler)}
-      loading={loading}
-      error={error}
-      buttonClassName="textCapitalize bR10"
-      isDisabled={false}
-      primaryButtonText={button}>
-      <TextField
-        bgcolor={color}
-        mode={mode}
-        name="email"
-        placeholder={t('user:email')}
-        type="email"
-        fullWidth
-        required
-      />
-      <TextField bgcolor={color} mode={mode} name="firstName" placeholder={t('user:firstName')} fullWidth />
-      <TextField bgcolor={color} mode={mode} name="lastName" placeholder={t('user:lastName')} fullWidth required />
-      <PasswordField bgcolor={color} mode={mode} name="password" placeholder={t('user:password')} fullWidth required />
-      <PasswordField
-        bgcolor={color}
-        mode={mode}
-        name="passwordConfirmation"
-        placeholder="Confirm password"
-        fullWidth
-        required
-      />
+    <div className='flexCenter'>
+      <div css={{ paddingBottom: 20 }}>
+        <Logo />
+      </div>
+      <div>
+        <Typography variant="h3" gutterBottom >
+          {t('user:signUp')}
+        </Typography>
+      </div>
+      <div className="stretchSelf">
+      <Form
+          form={form}
+          formId={formId}
+          onSubmit={handleSubmit(onSubmitHandler)}
+          loading={loading}
+          error={error}
+          buttonClassName="textCapitalize bR10"
+          isDisabled={false}
+          primaryButtonText={button}>
+          <TextField
+            bgcolor={color}
+            mode={mode}
+            name="email"
+            placeholder={t('user:email')}
+            type="email"
+            fullWidth
+            required
+          />
+          <TextField bgcolor={color} mode={mode} name="firstName" placeholder={t('user:firstName')} fullWidth />
+          <TextField bgcolor={color} mode={mode} name="lastName" placeholder={t('user:lastName')} fullWidth required />
+          <PasswordField bgcolor={color} mode={mode} name="password" placeholder={t('user:password')} fullWidth required />
+          <PasswordField
+            bgcolor={color}
+            mode={mode}
+            name="passwordConfirmation"
+            placeholder="Confirm password"
+            fullWidth
+            required
+        />
     </Form>
+      </div> 
+    </div>
+    
   );
 };
 

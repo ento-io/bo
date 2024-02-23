@@ -15,6 +15,9 @@ import { getUserLoadingSelector } from '@/redux/reducers/user.reducer';
 import { COLORS } from '@/utils/constants';
 import { ILoginInput } from '@/types/auth.types';
 import { loginSchema } from '@/validations/auth.validation';
+import { Typography } from '@mui/material';
+import Head from '@/components/Head';
+import Logo from '@/components/Logo';
 
 const LoginForm = () => {
   const { t } = useTranslation(['user']);
@@ -34,32 +37,44 @@ const LoginForm = () => {
   };
 
   return (
-    <Form
-      form={form}
-      onSubmit={handleSubmit(onSubmitHandler)}
-      loading={loading}
-      primaryButtonText={t('user:login')}
-      error={error}
-      isDisabled={false}
-      buttonClassName="textCapitalize bR10">
-      <TextField
-        bgcolor={COLORS.authBackground}
-        mode="dark"
-        name="email"
-        placeholder={t('user:email')}
-        type="email"
-        fullWidth
-        required
-      />
-      <PasswordField
-        bgcolor={COLORS.authBackground}
-        mode="dark"
-        name="password"
-        placeholder={t('user:password')}
-        fullWidth
-        required
-      />
-    </Form>
+    <div className='flexCenter'>
+      <div css={{ paddingBottom: 20}}>
+        <Logo />
+      </div>
+      <div>
+        <Typography variant="h3" gutterBottom >
+          {t('user:login')}
+        </Typography>
+      </div>
+      <div className="stretchSelf">
+          <Form
+              form={form}
+              onSubmit={handleSubmit(onSubmitHandler)}
+              loading={loading}
+              primaryButtonText={t('user:login')}
+              error={error}
+              isDisabled={false}
+              buttonClassName="textCapitalize bR10">
+                <TextField
+                  bgcolor={COLORS.authBackground}
+                  mode="dark"
+                  name="email"
+                  placeholder={t('user:email')}
+                  type="email"
+                  fullWidth
+                  required
+                />
+              <PasswordField
+                bgcolor={COLORS.authBackground}
+                mode="dark"
+                name="password"
+                placeholder={t('user:password')}
+                fullWidth
+                required
+              />
+        </Form>
+      </div>
+    </div>
   );
 };
 
