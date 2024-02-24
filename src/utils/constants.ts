@@ -45,7 +45,7 @@ export const SHOW_NOTIFICATIONS_APP_BAR = false;
 export const ROLE_DEFAULT_LIMIT = 10;
 export const RELATION_OPTIONS_LIMIT = 200;
 
-const DEFAULT_LIMIT = 1;
+const DEFAULT_LIMIT = 20;
 
 export const PAGINATION: IDefaultPagination = {
   selected: [],
