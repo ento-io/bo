@@ -11,7 +11,6 @@ import AuthLink from './AuthLink';
 import { ISignUpInput } from '@/types/auth.types';
 import SignUpForm from '@/containers/auth/SignUpForm';
 import { PATH_NAMES } from '@/utils/pathnames';
-import Logo from '@/components/Logo';
 
 const SignUp = () => {
   const dispatch = useDispatch();

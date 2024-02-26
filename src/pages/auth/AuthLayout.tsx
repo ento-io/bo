@@ -13,7 +13,7 @@ const AuthLayout = () => {
         <div css={{ paddingBottom: 40} }>
           <Logo />
         </div>
-       <Card sx={{ minWidth: 400 }} css={{ padding: 26 }} className="flexCenter">
+       <Card css={{ minWidth: 400, padding: 26 }} className="flexCenter">
           <Outlet />
        </Card>
     </div>
