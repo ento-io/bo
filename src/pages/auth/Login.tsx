@@ -22,7 +22,7 @@ const Login = () => {
   return (
     <>
       <Head title={t('user:login')} />
-      <Stack spacing={2}>
+      <Stack spacing={5}>
         <LoginForm />
         <Stack spacing={1}>
           <AuthLink label={t('user:haveNoAccountYet')} text={t('user:signUp')} url={PATH_NAMES.signUp} />
