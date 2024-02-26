@@ -35,7 +35,7 @@ export const IMAGES = {
 };
 
 export const COLORS = {
-  authBackground: "#35C6CF",
+  authBackground: "#000",
   authTextFieldPlaceholder: '#fff',
 };
 

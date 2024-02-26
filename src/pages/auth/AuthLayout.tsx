@@ -1,5 +1,6 @@
 import { Card } from "@mui/material";
 import { Outlet } from "@tanstack/react-router";
+import Logo from "@/components/Logo";
 
 const classes = {
   root: {
@@ -9,7 +10,10 @@ const classes = {
 const AuthLayout = () => {
   return (
     <div css={classes.root} className="flexCenter">
-       <Card sx={{ minWidth: 400 }} css={{ padding: 26 }} className="flexCenter">
+        <div css={{ paddingBottom: 40} }>
+          <Logo />
+        </div>
+       <Card css={{ minWidth: 400, padding: 26 }} className="flexCenter">
           <Outlet />
        </Card>
     </div>

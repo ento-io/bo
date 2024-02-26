@@ -50,6 +50,7 @@ const signUpRoute = createRoute({
   path: PATH_NAMES.signUp,
 });
 
-const authPublicRoutes = authPublicLayout.addChildren([loginRoute, signUpRoute]);
+
+const authPublicRoutes = authPublicLayout.addChildren([loginRoute, signUpRoute ]);
 
 export default authPublicRoutes;

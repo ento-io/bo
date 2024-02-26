@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { Typography } from '@mui/material';
 import PasswordField from '@/components/form/fields/PasswordField';
 import TextField from '@/components/form/fields/TextField';
 import Form from '@/components/form/Form';
@@ -13,6 +14,9 @@ import { getUserLoadingSelector } from '@/redux/reducers/user.reducer';
 import { COLORS } from '@/utils/constants';
 import { ISignUpInput } from '@/types/auth.types';
 import { signUpSchema } from '@/validations/auth.validation';
+import Logo from '@/components/Logo';
+import Layout from '@/components/layouts/Layout';
+import AuthHead from '@/components/Title';
 
 
 type Props = {
@@ -40,36 +44,38 @@ const SignUpForm = ({ onSubmit, formId, from = 'signUp' }: Props) => {
   };
 
   return (
-    <Form
-      form={form}
-      formId={formId}
-      onSubmit={handleSubmit(onSubmitHandler)}
-      loading={loading}
-      error={error}
-      buttonClassName="textCapitalize bR10"
-      isDisabled={false}
-      primaryButtonText={button}>
-      <TextField
-        bgcolor={color}
-        mode={mode}
-        name="email"
-        placeholder={t('user:email')}
-        type="email"
-        fullWidth
-        required
-      />
-      <TextField bgcolor={color} mode={mode} name="firstName" placeholder={t('user:firstName')} fullWidth />
-      <TextField bgcolor={color} mode={mode} name="lastName" placeholder={t('user:lastName')} fullWidth required />
-      <PasswordField bgcolor={color} mode={mode} name="password" placeholder={t('user:password')} fullWidth required />
-      <PasswordField
-        bgcolor={color}
-        mode={mode}
-        name="passwordConfirmation"
-        placeholder="Confirm password"
-        fullWidth
-        required
-      />
+      <Form
+          form={form}
+          formId={formId}
+          onSubmit={handleSubmit(onSubmitHandler)}
+          loading={loading}
+          error={error}
+          buttonClassName="textCapitalize bR10"
+          isDisabled={false}
+          primaryButtonText={button}>
+          <TextField
+            bgcolor={color}
+            mode={mode}
+            name="email"
+            placeholder={t('user:email')}
+            type="email"
+            fullWidth
+            required
+          />
+          <TextField bgcolor={color} mode={mode} name="firstName" placeholder={t('user:firstName')} fullWidth />
+          <TextField bgcolor={color} mode={mode} name="lastName" placeholder={t('user:lastName')} fullWidth required />
+          <PasswordField bgcolor={color} mode={mode} name="password" placeholder={t('user:password')} fullWidth required />
+          <PasswordField
+            bgcolor={color}
+            mode={mode}
+            name="passwordConfirmation"
+            placeholder="Confirm password"
+            fullWidth
+            required
+        />
     </Form>
+    //   </div> 
+    // </div>
   );
 };
 
