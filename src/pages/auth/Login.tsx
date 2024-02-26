@@ -9,9 +9,6 @@ import AuthLink from './AuthLink';
 import LoginForm from '@/containers/auth/LoginForm';
 import { PATH_NAMES } from '@/utils/pathnames';
 import { goToSendEmailResetPassword } from '@/redux/actions/auth.action';
-import Logo from '@/components/Logo';
-import AuthTitle from '@/components/Title';
-import Title from '@/components/Title';
 
 const Login = () => {
   const { t } = useTranslation();
@@ -27,15 +24,12 @@ const Login = () => {
       <Head title={t('user:login')} />
       <Stack spacing={2}>
           <div className='flexCenter'>
-            <div css={{ paddingBottom: 10}}>
-            <Logo />
-            </div>
-            <Typography variant="h3" gutterBottom>
+            <Typography variant="h4" gutterBottom>
               {t('user:login')}
             </Typography>
           </div>
           <LoginForm />
-          <Stack spacing={1}>
+          <Stack spacing={2}>
             <AuthLink label={t('user:haveNoAccountYet')} text={t('user:signUp')} url={PATH_NAMES.signUp} />
             <AuthLink
               label={t('user:forgottenPassword')}

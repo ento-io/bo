@@ -28,15 +28,14 @@ const SignUp = () => {
       <Head title= { title } />
       <Stack spacing={2}>
       <div className='flexCenter'>
-        <div css={{ paddingBottom: 10}}>
-          <Logo />
-        </div>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           {t('user:signUp')}
         </Typography>
       </div>
-          <SignUpForm onSubmit={handleSubmitAccount} />
-          <AuthLink label={t('user:alreadyHaveAccount')} text={t('user:login')} url={PATH_NAMES.login} />
+      <Stack spacing={2}>
+        <SignUpForm onSubmit={handleSubmitAccount} />
+            <AuthLink label={t('user:alreadyHaveAccount')} text={t('user:login')} url={PATH_NAMES.login} />
+        </Stack>    
       </Stack>
     </>
   );
