@@ -37,16 +37,6 @@ const LoginForm = () => {
   };
 
   return (
-    <div className='flexCenter'>
-      <div css={{ paddingBottom: 20}}>
-        <Logo />
-      </div>
-      <div>
-        <Typography variant="h3" gutterBottom >
-          {t('user:login')}
-        </Typography>
-      </div>
-      <div className="stretchSelf">
           <Form
               form={form}
               onSubmit={handleSubmit(onSubmitHandler)}
@@ -73,8 +63,6 @@ const LoginForm = () => {
                 required
               />
         </Form>
-      </div>
-    </div>
   );
 };
 

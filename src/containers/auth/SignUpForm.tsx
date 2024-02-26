@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { Typography } from '@mui/material';
 import PasswordField from '@/components/form/fields/PasswordField';
 import TextField from '@/components/form/fields/TextField';
 import Form from '@/components/form/Form';
@@ -13,8 +14,9 @@ import { getUserLoadingSelector } from '@/redux/reducers/user.reducer';
 import { COLORS } from '@/utils/constants';
 import { ISignUpInput } from '@/types/auth.types';
 import { signUpSchema } from '@/validations/auth.validation';
-import { Typography } from '@mui/material';
 import Logo from '@/components/Logo';
+import Layout from '@/components/layouts/Layout';
+import AuthHead from '@/components/Title';
 
 
 type Props = {
@@ -42,16 +44,6 @@ const SignUpForm = ({ onSubmit, formId, from = 'signUp' }: Props) => {
   };
 
   return (
-    <div className='flexCenter'>
-      <div css={{ paddingBottom: 20 }}>
-        <Logo />
-      </div>
-      <div>
-        <Typography variant="h3" gutterBottom >
-          {t('user:signUp')}
-        </Typography>
-      </div>
-      <div className="stretchSelf">
       <Form
           form={form}
           formId={formId}
@@ -82,9 +74,8 @@ const SignUpForm = ({ onSubmit, formId, from = 'signUp' }: Props) => {
             required
         />
     </Form>
-      </div> 
-    </div>
-    
+    //   </div> 
+    // </div>
   );
 };
 
