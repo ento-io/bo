@@ -4,7 +4,7 @@ import { ReactNode, useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo } from 'react';
-import { getUserCountSelector, getUserUsersSelector } from '@/redux/reducers/user.reducer';
+import { getUserCountSelector, getUserFiltersSelector, getUserUsersSelector } from '@/redux/reducers/user.reducer';
 import { IUser, IUsersRouteSearchParams, PlatformEnum } from '@/types/user.type';
 import { deleteUserById, deleteUsersById, goToUser, loadUsers } from '@/redux/actions/user.action';
 import List from '@/components/table/List';
@@ -25,13 +25,11 @@ import { usersRoute } from '@/routes/protected/users.routes';
 
 interface Data {
   id: string;
-  avatar: ReactNode;
   fullName: string;
   email: string;
   createdAt: ReactNode;
   actions: ReactNode;
   platform: string;
-  birthday: string;
 }
 
 const headCells: TableHeadCell<keyof Data>[] = [
@@ -39,7 +37,13 @@ const headCells: TableHeadCell<keyof Data>[] = [
     id: 'fullName',
     numeric: false,
     disablePadding: false,
-    label: i18n.t('user:lastName'),
+    label: i18n.t('user:fullName'),
+  },
+  {
+    id: 'platform',
+    numeric: true,
+    disablePadding: false,
+    label: i18n.t('common:platform'),
   },
   {
     id: 'email',
@@ -82,6 +86,7 @@ const Users = () => {
   const dispatch = useDispatch();
   const users = useSelector(getUserUsersSelector);
   const count = useSelector(getUserCountSelector);
+  const filters = useSelector(getUserFiltersSelector);
   const searchParams = usersRoute.useSearch()
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
@@ -110,7 +115,8 @@ const Users = () => {
   };
 
   const onUpdateData = (queries: IQueriesInput) => {
-    dispatch(loadUsers(queries))
+    const newQueries = { ...queries, filters: { ...filters, ...queries.filters } };
+    dispatch(loadUsers(newQueries))
   }
 
   // table data

@@ -7,6 +7,7 @@ const initialState: IUserState = {
   users: [],
   count: 0,
   search: null,
+  filters: null,
 };
 
 export const user = createSlice({
@@ -36,6 +37,14 @@ export const user = createSlice({
     },
     clearUsersSlice: (state: IUserState) => {
       state.users = [];
+    },
+    setUserFiltersSlice: (state: IUserState, action: PayloadAction<Record<string, string | boolean>>) => {
+      if (state.filters) {
+        state.filters = { ...state.filters, ...action.payload };
+        return;
+      }
+
+      state.filters = action.payload;
     },
     updateUsersByUserSlice: (state: IUserState, action: PayloadAction<IUser>) => {
       const newUsers = [];
@@ -73,6 +82,12 @@ export const user = createSlice({
 
       state.users = newUsers;
     },
+    deleteUsersSlice: (state: IUserState, action: PayloadAction<string>) => {
+      const newUsers = state.users.filter((user: IUser) => user.objectId !== action.payload);
+
+      state.users = newUsers;
+      state.user = null;
+    },
     setUserLoadingSlice: (state: IUserState, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
@@ -94,6 +109,8 @@ export const {
   setUserSearchSlice,
   clearUserSearchSlice,
   clearUserCountSlice,
+  deleteUsersSlice,
+  setUserFiltersSlice
 } = user.actions;
 
 // ---------------------------------------------- //
@@ -106,5 +123,6 @@ export const getUserUserSelector = (state: Record<string, any>): IUser => state.
 export const getUserLoadingSelector = (state: Record<string, any>): boolean => state.user.loading;
 export const getUserUsersSelector = (state: Record<string, any>): IUser[] => state.user.users;
 export const getUserCountSelector = (state: Record<string, any>): number => state.user.count;
+export const getUserFiltersSelector = (state: Record<string, any>): Record<string, string | boolean> => state.user.filters;
 
 export default user.reducer;
