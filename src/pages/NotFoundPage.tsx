@@ -11,7 +11,7 @@ import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 const classes = {
   card: (theme: Theme) => ({
-    [theme.breakpoints.between('sm', 'md')]: {
+    [theme.breakpoints.between('sm', 'lg')]: {
       boxShadow: 'none'
     },
     padding: 16
