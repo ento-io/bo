@@ -1,5 +1,6 @@
 import { IDefaultPagination, IPagination } from '@/types/app.type';
 import { Lang } from '@/types/setting.type';
+import { bgPalette } from './theme.utils';
 
 export const LAYOUT_CONTENT_PADDING = 24;
 export const FORCE_DEBUG = false; // show console.log for important data
@@ -34,8 +35,8 @@ export const IMAGES = {
 };
 
 export const COLORS = {
-  authBackground: '#1E1E24',
-  authTextFieldPlaceholder: 'rgba(225, 225, 255, 0.6)',
+  authBackground: "#35C6CF",
+  authTextFieldPlaceholder: '#fff',
 };
 
 export const HIGHEST_LEVEL_DEFAULT_ROLES = ['Owner', 'Administrator'];
@@ -45,7 +46,7 @@ export const SHOW_NOTIFICATIONS_APP_BAR = false;
 export const ROLE_DEFAULT_LIMIT = 10;
 export const RELATION_OPTIONS_LIMIT = 200;
 
-const DEFAULT_LIMIT = 1;
+const DEFAULT_LIMIT = 20;
 
 export const PAGINATION: IDefaultPagination = {
   selected: [],

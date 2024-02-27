@@ -30,6 +30,7 @@
   "logout": "Se déconnecter",
   "forgottenPassword": "Mot de passe oublié?",
   "resetPassword": "Réinitialiser mot de passe",
+  "enterResetPasswordCode": "Entrez le code de réinitialisation de mot de passe que vous avez reçu par email.",
   "password": "Mot de passe",
   "passwordConfirmation": "Confirmation de mot passe",
   "email": "Email",

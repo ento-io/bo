@@ -6,6 +6,16 @@ import { LAYOUT_CONTENT_PADDING, RESPONSIVE_BREAKPOINT } from './constants';
 export const DASHBOARD_BACKGROUND_COLOR = '#FAFBFB';
 export const DEFAULT_THEME_COLOR = 'green';
 
+export const getLinkStyles = (theme: Theme) => ({
+  fontSize: 16,
+  fontWeight: '500 !important',
+  textDecoration: 'none',
+  color: theme.palette.primary.main,
+  '&:hover': {
+    textDecoration: 'underline',
+  },
+});
+
 export const themeColorOptions: IThemeColors[] = [
   {
     name: DEFAULT_THEME_COLOR,
@@ -166,12 +176,8 @@ const defaultTheme = {
       },
     },
     MuiLink: {
-      styleOverrides: {
-        root: {
-          fontSize: 16,
-          fontWeight: 500,
-          textDecoration: 'none',
-        },
+      styleOverrides:  {
+        root: ({ theme }: { theme: Theme }) => getLinkStyles(theme),
       },
     },
     MuiStack: {

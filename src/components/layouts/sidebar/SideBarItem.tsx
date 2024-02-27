@@ -109,7 +109,7 @@ const SideBarItem = ({ open, subMenu, rightIcon, isSelected, onClose, isLevel2 =
           <ListItemIcon
             sx={{
               minWidth: 0,
-              mr: open ? 3 : 'auto',
+              mr: open ? 2 : 'auto',
               justifyContent: 'center',
               ...(isSelected ? { color: '#fff' } : { color: palette === 'dark' ? '#fff' : TEXT_COLOR }),
             }}>

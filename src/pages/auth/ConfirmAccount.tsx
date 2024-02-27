@@ -24,6 +24,7 @@ const ConfirmAccount = () => {
     <>
       <Head title={t('user:accountConfirmation')} description={t('user:emailWithCodeSentConfirmCodeBelow')} />
       <Stack>
+        {/* TODO: may make this reusable? */}
         <Stack>
           <Typography variant="h4" align="center" gutterBottom>
             {t('user:accountConfirmation')}

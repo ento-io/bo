@@ -2,7 +2,6 @@
 import Parse from 'parse';
 import { IChangePasswordInput, ILoginInput, ResetPasswordInput, ISignUpInput } from '@/types/auth.types';
 import { IPlatform, IUser, PlatformEnum } from '@/types/user.type';
-import { IOnRouteEnterInput } from '@/types/util.type';
 import i18n from '@/config/i18n';
 
 import { actionWithLoader } from '@/utils/app.utils';
@@ -26,7 +25,7 @@ import {
   getAppCurrentUserSelector,
   clearCurrentUserSlice,
 } from '@/redux/reducers/app.reducer';
-import { toggleIsAuthenticatedSlice } from '@/redux/reducers/settings.reducer';
+import { getSettingsLangSelector, toggleIsAuthenticatedSlice } from '@/redux/reducers/settings.reducer';
 import { INavigate } from '@/types/app.type';
 import { PATH_NAMES } from '@/utils/pathnames';
 
@@ -270,29 +269,12 @@ export const deleteAccount = (): any => {
   }, setUserLoadingSlice);
 };
 
-export const verifyCodeSentByEmail = (code: string, type: 'resetPassword' | 'accountVerification' = 'resetPassword'): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    await Parse.Cloud.run('verifyAccountEmail', { code, type });
+export const verifyCodeSentByEmail = (code: string, navigate: INavigate): any => {
+  return actionWithLoader(async (): Promise<void> => {
+    const result = await Parse.Cloud.run('verifyAccountEmail', { code, type: 'resetPassword' });
 
-    if (type === 'accountVerification') {
-      dispatch(
-        setAlertSlice({
-          type: 'accountVerification',
-          severity: 'success',
-          duration: 'permanent',
-          message: i18n.t('user:messages.emailVerifiedSuccess'),
-          title: i18n.t('user:messages.accountCreatedSuccessfully'),
-        }),
-      );
-      // return;
-    }
-
-    // if (type === 'resetPassword') {
-    //   // dispatch(goToResetPassword(result.email));
-    //   return;
-    // }
-
-    // dispatch(goToHome());
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    navigate(goToResetPassword(result.email))
   });
 };
 
@@ -323,11 +305,12 @@ export const sendEmailVerificationCode = (email: string): any => {
 };
 
 export const sendResetPasswordVerificationCode = (email: string): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    await Parse.Cloud.run('sendResetPasswordVerificationCode', { email });
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    const lang = getSettingsLangSelector(state as any);
+    await Parse.Cloud.run('sendResetPasswordVerificationCode', { email, lang, subject: i18n.t('user:resetPassword')});
 
     dispatch(setMessageSlice(i18n.t('user:emailWithCodeSent')));
-    // dispatch(goToResetPasswordConfirmCode());
   }, setUserLoadingSlice);
 };
 
@@ -351,11 +334,17 @@ export const resetPassword = (values: ResetPasswordInput): any => {
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
-export const onEnterResetPassword = ({ params }: IOnRouteEnterInput): any => {
+export const onEnterResetPassword = ({ params }: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch) => {
     await Parse.Cloud.run('isUserExistsByEmail', { email: params.email });
 
     dispatch(setAccountEmailSlice(params.email));
+  });
+};
+
+export const onEnterSendResetPasswordEmail = (): any => {
+  return actionWithLoader(async (dispatch: AppDispatch) => {
+    dispatch(closeErrorSlice());
   });
 };
 
@@ -387,13 +376,9 @@ export const goToLogin = () => ({ to: PATH_NAMES.login });
 // export const goToSignUp = (): UpdateLocationActions => push('/' + PATH_NAMES.signUp);
 // export const goToChangePassword = (): UpdateLocationActions => push('/' + PATH_NAMES.changePassword);
 // export const goToProfile = (): UpdateLocationActions => push('/' + PATH_NAMES.profile);
-// export const goToSendEmailResetPassword = (): UpdateLocationActions => {
-//   return push('/' + PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword);
-// };
-// export const goToResetPasswordConfirmCode = (): UpdateLocationActions => {
-//   return push('/' + PATH_NAMES.account.root + '/' + PATH_NAMES.account.confirmResetPasswordCode);
-// };
-// export const goToResetPassword = (email: string): UpdateLocationActions =>
+export const goToSendEmailResetPassword = () => ({ to: PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword });
+export const goToResetPasswordConfirmCode = () => ({ to: PATH_NAMES.account.root + '/' + PATH_NAMES.account.confirmResetPasswordCode });
+export const goToResetPassword = (email: string) => ({ to:  PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword + '/$email', params: { email } });
 //   push('/' + PATH_NAMES.account.root + '/' + PATH_NAMES.account.resetPassword + '/' + email);
 
 export const goToAccountVerificationCode = () => ({ to: PATH_NAMES.account.root + '/' + PATH_NAMES.account.verifyAccount });

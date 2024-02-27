@@ -385,10 +385,11 @@ export const onUsersEnter = (params: any): any => {
 
     const filters: Record<string, boolean | string[]> = {};
 
-    if (params.location.search?.from === PlatformEnum.BO) {
+    // TODO: should have admin-only list page
+    // if (params.location.search?.from === PlatformEnum.BO) {
       filters.fromBO = true;
-      filters.roles = [capitalizeFirstLetter(params.location.search.role)];
-    }
+    //   filters.roles = [capitalizeFirstLetter(params.location.search.role)];
+    // }
 
     values.filters = filters;
 
