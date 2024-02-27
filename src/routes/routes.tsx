@@ -12,6 +12,7 @@ import privateRoutes from "./protected/app.routes";
 import { PATH_NAMES } from "@/utils/pathnames";
 import { logout } from "@/redux/actions/auth.action";
 import accountPublicRoutes from "./public/account.routes";
+import NotFoundPage from "@/pages/NotFoundPage";
 
 
 export const appLayout = createRootRouteWithContext<IRouteContext>()({
@@ -21,9 +22,9 @@ export const appLayout = createRootRouteWithContext<IRouteContext>()({
       <TanStackRouterDevtools position="bottom-right" />
     </>
   ),
-  notFoundComponent: () => {
-    return <p>page not found!  (not cool this page design, right? 😁)</p>
-  },
+  notFoundComponent: () => (
+    <NotFoundPage />
+  )
 });
 
 const logoutRoute = createRoute({
