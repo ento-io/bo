@@ -1,6 +1,5 @@
 import { IDefaultPagination, IPagination } from '@/types/app.type';
 import { Lang } from '@/types/setting.type';
-import { bgPalette } from './theme.utils';
 
 export const LAYOUT_CONTENT_PADDING = 24;
 export const FORCE_DEBUG = false; // show console.log for important data
