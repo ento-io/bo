@@ -5,19 +5,21 @@ import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { uploadFileAPI } from '@/utils/file.utils';
 import { canAccessTo, getRolesForUser } from '@/utils/role.utils';
 import { getUserFullName, isUserFromBO } from '@/utils/user.utils';
-import { capitalizeFirstLetter, escapeText, isBoolean } from '@/utils/utils';
+import { escapeText, isBoolean } from '@/utils/utils';
 import { setValues } from '@/utils/parse.utils';
 
 import { ISignUpInput } from '@/types/auth.types';
-import { ProfileUserInfoInput, IUser, SendEmailInput, IUserCloudInput, PlatformEnum } from '@/types/user.type';
+import { ProfileUserInfoInput, IUser, SendEmailInput, IUserCloudInput } from '@/types/user.type';
 import i18n from '@/config/i18n';
 import { AppDispatch, AppThunkAction } from '@/redux/store';
 import {
   clearUserCountSlice,
   clearUserSlice,
   clearUsersSlice,
+  deleteUsersSlice,
   loadUserSlice,
   loadUsersSlice,
+  setUserFiltersSlice,
   setUserLoadingSlice,
   setUsersCountSlice,
   updateUsersByUserSlice,
@@ -116,6 +118,8 @@ export const loadUsers = ({
 
     // result with count
     const result: Record<string, any> = await Parse.Cloud.run('getUsers', params);
+    console.log('result: ', params, result);
+
 
     // get and display user roles depending on the role of the current user
     const users = [];
@@ -188,7 +192,7 @@ export const deleteUserById = (id: string, redirectToRecycleBin = false): any =>
       return;
     }
 
-    dispatch(updateUsersByUserSlice(updatedUser.toJSON() as IUser));
+    dispatch(deleteUsersSlice(updatedUser.id));
   });
 };
 
@@ -383,7 +387,9 @@ export const onUsersEnter = (params: any): any => {
       order: DEFAULT_PAGINATION.order,
     };
 
-    const filters: Record<string, boolean | string[]> = {};
+    const filters: Record<string, boolean | string> = {
+      deleted: false
+    };
 
     // TODO: should have admin-only list page
     // if (params.location.search?.from === PlatformEnum.BO) {
@@ -392,6 +398,7 @@ export const onUsersEnter = (params: any): any => {
     // }
 
     values.filters = filters;
+    dispatch(setUserFiltersSlice(filters))
 
     dispatch(loadUsers(values));
   });

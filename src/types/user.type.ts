@@ -46,6 +46,7 @@ export interface IUserState {
   users: IUser[];
   count: number;
   search: Record<string, any> | null;
+  filters: Record<string, string | boolean> | null;
 }
 export type ProfileUserInfoInput = Pick<IUser, 'lastName' | 'firstName'>;
 
