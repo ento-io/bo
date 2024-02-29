@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import Articles from "../../pages/articles/Articles";
 import Article from "../../pages/articles/Article";
-import { privateLayout } from "./app.routes";
+import { privateLayout } from "./private.routes";
 // import { getArticle, getArticles } from "../../actions/article.actions";
 import { IIdParams } from "@/types/app.type";
 import { PATH_NAMES } from "@/utils/pathnames";
