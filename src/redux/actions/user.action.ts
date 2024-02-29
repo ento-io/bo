@@ -367,7 +367,7 @@ export const inviteUser: any = (values: ISignUpInput): any => {
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
-export const onUsersEnter = (params: any): any => {
+export const onUsersEnter = (): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
