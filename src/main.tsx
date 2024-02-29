@@ -5,7 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import utc from 'dayjs/plugin/utc';
 import App from './App'
-import privateRouter from "./routes/protected/app.routes";
+import privateRouter from "./routes/protected/private.routes";
 import publicRouter from "./routes/public/auth.routes";
 
 import 'dayjs/locale/de';
