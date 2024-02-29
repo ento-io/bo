@@ -1,6 +1,6 @@
 import { createRoute } from "@tanstack/react-router";
 
-import { privateLayout } from "./app.routes";
+import { privateLayout } from "./private.routes";
 import { PATH_NAMES } from "@/utils/pathnames";
 import { onEnter } from "@/redux/actions/app.action";
 import { onRolesEnter } from "@/redux/actions/role.action";
