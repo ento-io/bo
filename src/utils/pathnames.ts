@@ -20,4 +20,5 @@ export const PATH_NAMES = {
   },
   create: i18n.t('route:add'),
   edit: i18n.t('route:edit'),
+  estimates: i18n.t('route:estimate'),
 };
