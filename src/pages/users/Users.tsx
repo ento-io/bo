@@ -93,6 +93,15 @@ const Users = () => {
 
   const { t } = useTranslation();
 
+  // send email
+  const onSendMail = useCallback(
+    (email: string) => {
+      // Implémenter l'envoi d'email ici
+      console.log('Sending email to:', email);
+    },
+    [] 
+  );
+
   // delete a row
   const onDelete = useCallback(
     (user: IUser): void => {
@@ -123,6 +132,7 @@ const Users = () => {
   const dataTable = useMemo((): Data[] => {
     const canDelete = canAccessTo(roles, '_User', 'delete');
     const canPreview = canAccessTo(roles, '_User', 'get');
+    const canSendEmail = canAccessTo(roles, undefined, 'send');
 
     const usersData = users.map((user: IUser) => {
       // default data
@@ -143,6 +153,7 @@ const Users = () => {
           <ButtonActions
             onDelete={canDelete ? () => onDelete(user) : undefined}
             onPreview={canPreview ? () => onPreview(user.objectId) : undefined}
+            onSendMail={canSendEmail ? () => onSendMail(user.email) : undefined}
             value={getUserFullName(user)}
           />  
         )
@@ -152,7 +163,7 @@ const Users = () => {
     });
 
     return usersData;
-  }, [users, onDelete, onPreview, roles]);
+  }, [users, onDelete, onPreview, onSendMail, roles]);
 
   return (
     <>
