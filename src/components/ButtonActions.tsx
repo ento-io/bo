@@ -2,7 +2,7 @@ import { MouseEvent, ReactNode, useState } from 'react';
 
 import { Box, IconButton, Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { FiEdit3, FiEye, FiMail, FiTrash } from 'react-icons/fi';
+import { FiEdit3, FiEye, FiTrash } from 'react-icons/fi';
 
 import Dialog from './Dialog';
 
@@ -10,7 +10,6 @@ type Props = {
   onDelete?: () => void;
   onEdit?: () => void;
   onPreview?: () => void;
-  onSendMail?: () => void;
   value?: any;
   dialogDescription?: string | null;
   children?: ReactNode;
@@ -20,7 +19,6 @@ const ButtonActions = ({
   onDelete,
   onEdit,
   onPreview,
-  onSendMail,
   value,
   dialogDescription,
   children,
@@ -31,10 +29,6 @@ const ButtonActions = ({
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
 
   const toggleDeleteModal = () => setOpenDeleteModal(!openDeleteModal);
-
-  const handleSendMail = () => {
-    
-  };
 
   const handleDelete = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -77,11 +71,6 @@ const ButtonActions = ({
         {onDelete && (
           <IconButton aria-label="delete" onClick={handleDelete} color="error">
             <FiTrash size={20} />
-          </IconButton>
-        )}
-        {onSendMail && (
-          <IconButton aria-label="delete" onClick={handleSendMail}>
-            <FiMail size={20} />
           </IconButton>
         )}
         {children}

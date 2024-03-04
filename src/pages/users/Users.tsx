@@ -1,4 +1,5 @@
-import { ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { FiMail } from 'react-icons/fi';
 
 import { ReactNode, useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +22,6 @@ import Head from '@/components/Head';
 import SearchInput from '@/components/form/inputs/SearchInput';
 import UserAdvancedFilterForm from '@/containers/users/UserAdvancedFilterForm';
 import { usersRoute } from '@/routes/protected/users.routes';
-
 
 interface Data {
   id: string;
@@ -94,13 +94,9 @@ const Users = () => {
   const { t } = useTranslation();
 
   // send email
-  const onSendMail = useCallback(
-    (email: string) => {
-      // Implémenter l'envoi d'email ici
-      console.log('Sending email to:', email);
-    },
-    [] 
-  );
+  const onSendMail = () => {
+
+  };
 
   // delete a row
   const onDelete = useCallback(
@@ -132,7 +128,6 @@ const Users = () => {
   const dataTable = useMemo((): Data[] => {
     const canDelete = canAccessTo(roles, '_User', 'delete');
     const canPreview = canAccessTo(roles, '_User', 'get');
-    const canSendEmail = canAccessTo(roles, undefined, 'send');
 
     const usersData = users.map((user: IUser) => {
       // default data
@@ -153,9 +148,12 @@ const Users = () => {
           <ButtonActions
             onDelete={canDelete ? () => onDelete(user) : undefined}
             onPreview={canPreview ? () => onPreview(user.objectId) : undefined}
-            onSendMail={canSendEmail ? () => onSendMail(user.email) : undefined}
             value={getUserFullName(user)}
-          />  
+          >
+            <IconButton aria-label="sendMail" onClick={onSendMail}>
+              <FiMail size={20} />
+            </IconButton>
+          </ButtonActions>  
         )
       };
 
@@ -163,7 +161,7 @@ const Users = () => {
     });
 
     return usersData;
-  }, [users, onDelete, onPreview, onSendMail, roles]);
+  }, [users, onDelete, onPreview, roles]);
 
   return (
     <>
