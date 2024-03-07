@@ -86,6 +86,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: prop => prop !== 'open' })
       ...openedMixin(theme),
       [theme.breakpoints.up(RESPONSIVE_BREAKPOINT)]: {
         borderRightWidth: theme.palette.mode === 'dark' ? 0 : 1,
+        width: SIDEBAR_WIDTH, // THIS ONLY CHANGES DRAWER WIDTH NOT PAPER WIDTH INSIDE THE DRAWER
+      },
+      [theme.breakpoints.down(RESPONSIVE_BREAKPOINT)]: {
+        width: '100%', // THIS ONLY CHANGES DRAWER WIDTH NOT PAPER WIDTH INSIDE THE DRAWER
       },
     },
   }),
@@ -220,10 +224,10 @@ const DashboardLayout = () => {
           flexGrow: 1,
           px: { xs: 0, lg: 3 },
           pb: 3,
-          bgcolor: (theme: Theme) => theme.palette.background.default,
+          // bgcolor: (theme: Theme) => theme.palette.background.default,
           minHeight: '100vh',
         }} // main background
-        className="flexColumn"
+        className="flexColumn positionRelative"
         open={isSideBarOpen}>
         <AppBar onOpenDrawer={handleDrawerOpen} />
         <DrawerHeader />

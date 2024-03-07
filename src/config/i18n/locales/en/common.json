@@ -283,5 +283,7 @@
   "invite": "Invite",
   "sorry": "Sorry",
   "returnToHome": "Return to home",
-  "estimate": "Estimate"
+  "estimate": "Estimate",
+  "createEstimate": "Create estimate",
+  "estimateCreatedSuccessfully": "Estimate created successfully"
 }
