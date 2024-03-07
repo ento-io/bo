@@ -209,7 +209,11 @@ const User = () => {
         toggle={toggleOpenEmailFormDialog}
         formId={SEND_EMAIL_TO_USER_FORM_ID}
         primaryButtonText={t('send')}>
-        <SendEmailForm formId={SEND_EMAIL_TO_USER_FORM_ID} onSubmit={onSendEmailFormSubmit} />
+        <SendEmailForm
+          formId={SEND_EMAIL_TO_USER_FORM_ID}
+          onSubmit={onSendEmailFormSubmit}
+          initialValues={{ email: user.email }}
+        />
       </Dialog>
 
       <Dialog
