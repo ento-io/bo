@@ -128,7 +128,6 @@ const Users = () => {
   }
 
   const handlePrimaryAction = () => {
-    // Action à effectuer lors du clic sur le bouton principal (confirmation)
     console.log("Action principale exécutée !");
     handleCloseDialog();
   };
@@ -202,17 +201,17 @@ const Users = () => {
         )}
       />
       <Dialog
-        title={selectedUser ? `Envoyer un email à ${getUserFullName(selectedUser)}` : "Envoyer un email à l'utilisateur"}
-        description="Vide..."
+        title={selectedUser ? t(`sendEmailTo ${getUserFullName(selectedUser) }`) : t('sendEmailTo')}
+        description="..." 
         open={!!selectedUser}
         toggle={handleCloseDialog}
-        primaryButtonText="Envoyer"
-        secondaryButtonText="Annuler"
+        primaryButtonText={t('send')}
+        secondaryButtonText={t('canceled')}
         onPrimaryButtonAction={handlePrimaryAction}
         maxWidth="sm"
         loading={false}
       >
-        {/* Contenu de la boîte de dialogue */}
+        {/* Contents of the dialog box */}
         <p>Contenu de la boîte de dialogue...</p>
       </Dialog>
     </>
