@@ -201,7 +201,7 @@ const Users = () => {
         )}
       />
       <Dialog
-        title={selectedUser ? t(`sendEmailTo ${getUserFullName(selectedUser) }`) : t('sendEmailTo')}
+        title={selectedUser ? t('user:sendEmailTo', {name: getUserFullName(selectedUser)}) : t('sendEmail')}
         description="..." 
         open={!!selectedUser}
         toggle={handleCloseDialog}

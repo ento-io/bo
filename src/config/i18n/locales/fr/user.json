@@ -144,5 +144,6 @@
     "employeeBannedSuccessfully": "Emplyé(e) banni avec succès"
   },
   "addEmployee": "Ajouter un employé",
-  "employeeCooperativeExists": "Cet(te) employé(e) existe déjà dans votre coopérative"
+  "employeeCooperativeExists": "Cet(te) employé(e) existe déjà dans votre coopérative",
+  "sendMail": "Envoyer un email"
 }
