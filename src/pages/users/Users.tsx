@@ -4,7 +4,7 @@ import { FiMail } from 'react-icons/fi';
 import { ReactNode, useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { getUserCountSelector, getUserFiltersSelector, getUserUsersSelector } from '@/redux/reducers/user.reducer';
 import { IUser, IUsersRouteSearchParams, PlatformEnum } from '@/types/user.type';
 import { deleteUserById, deleteUsersById, goToUser, loadUsers } from '@/redux/actions/user.action';
@@ -22,6 +22,7 @@ import Head from '@/components/Head';
 import SearchInput from '@/components/form/inputs/SearchInput';
 import UserAdvancedFilterForm from '@/containers/users/UserAdvancedFilterForm';
 import { usersRoute } from '@/routes/protected/users.routes';
+import Dialog from '@/components/Dialog';
 
 interface Data {
   id: string;
@@ -93,11 +94,6 @@ const Users = () => {
 
   const { t } = useTranslation();
 
-  // send email
-  const onSendMail = () => {
-
-  };
-
   // delete a row
   const onDelete = useCallback(
     (user: IUser): void => {
@@ -118,6 +114,23 @@ const Users = () => {
   const handleDeleteSelected = async (ids: string[]): Promise<void | undefined> => {
     dispatch(deleteUsersById(ids));
   };
+
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handlePrimaryAction = () => {
+    // Action à effectuer lors du clic sur le bouton principal (confirmation)
+    console.log("Action principale exécutée !");
+    handleCloseDialog();
+  };
+
 
   const onUpdateData = (queries: IQueriesInput) => {
     const newQueries = { ...queries, filters: { ...filters, ...queries.filters } };
@@ -150,7 +163,7 @@ const Users = () => {
             onPreview={canPreview ? () => onPreview(user.objectId) : undefined}
             value={getUserFullName(user)}
           >
-            <IconButton aria-label="sendMail" onClick={onSendMail}>
+            <IconButton aria-label="sendMail" onClick={handleOpenDialog}>
               <FiMail size={20} />
             </IconButton>
           </ButtonActions>  
@@ -186,6 +199,20 @@ const Users = () => {
           </>
         )}
       />
+      <Dialog
+        title="Envoyer un email"
+        description="Vide..."
+        open={openDialog}
+        toggle={handleCloseDialog}
+        primaryButtonText="Envoyer"
+        secondaryButtonText="Annuler"
+        onPrimaryButtonAction={handlePrimaryAction}
+        maxWidth="xs"
+        loading={false}
+      >
+        {/* Contenu de la boîte de dialogue */}
+        <p>Contenu de la boîte de dialogue...</p>
+      </Dialog>
     </>
   );
 }
