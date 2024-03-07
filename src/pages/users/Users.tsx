@@ -1,10 +1,10 @@
 import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
-import { FiMail } from 'react-icons/fi';
+import { FiSend } from 'react-icons/fi';
 
 import { ReactNode, useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useCallback, useMemo, useState } from 'react';
+import { MouseEvent, useCallback, useMemo, useState } from 'react';
 import { getUserCountSelector, getUserFiltersSelector, getUserUsersSelector } from '@/redux/reducers/user.reducer';
 import { IUser, IUsersRouteSearchParams, PlatformEnum } from '@/types/user.type';
 import { deleteUserById, deleteUsersById, goToUser, loadUsers } from '@/redux/actions/user.action';
@@ -92,6 +92,10 @@ const Users = () => {
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
 
+  // const [openDialog, setOpenDialog] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+  console.log('selectedUser: ', selectedUser);
+
   const { t } = useTranslation();
 
   // delete a row
@@ -115,15 +119,15 @@ const Users = () => {
     dispatch(deleteUsersById(ids));
   };
 
-  const [openDialog, setOpenDialog] = useState(false);
-
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
   const handleCloseDialog = () => {
-    setOpenDialog(false);
+    setSelectedUser(null);
   };
+
+  const handleSelectRow = (user: IUser) => (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+
+    setSelectedUser(user);
+  }
 
   const handlePrimaryAction = () => {
     // Action à effectuer lors du clic sur le bouton principal (confirmation)
@@ -163,8 +167,8 @@ const Users = () => {
             onPreview={canPreview ? () => onPreview(user.objectId) : undefined}
             value={getUserFullName(user)}
           >
-            <IconButton aria-label="sendMail" onClick={handleOpenDialog}>
-              <FiMail size={20} />
+            <IconButton aria-label="sendMail" onClick={handleSelectRow(user)}>
+              <FiSend size={20} />
             </IconButton>
           </ButtonActions>  
         )
@@ -202,12 +206,12 @@ const Users = () => {
       <Dialog
         title="Envoyer un email"
         description="Vide..."
-        open={openDialog}
+        open={!!selectedUser}
         toggle={handleCloseDialog}
         primaryButtonText="Envoyer"
         secondaryButtonText="Annuler"
         onPrimaryButtonAction={handlePrimaryAction}
-        maxWidth="xs"
+        maxWidth="sm"
         loading={false}
       >
         {/* Contenu de la boîte de dialogue */}

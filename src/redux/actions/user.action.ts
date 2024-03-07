@@ -118,8 +118,6 @@ export const loadUsers = ({
 
     // result with count
     const result: Record<string, any> = await Parse.Cloud.run('getUsers', params);
-    console.log('result: ', params, result);
-
 
     // get and display user roles depending on the role of the current user
     const users = [];
