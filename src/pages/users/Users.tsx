@@ -92,9 +92,7 @@ const Users = () => {
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
 
-  // const [openDialog, setOpenDialog] = useState(false);
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
-  console.log('selectedUser: ', selectedUser);
 
   const { t } = useTranslation();
 
