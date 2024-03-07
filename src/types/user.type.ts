@@ -62,3 +62,8 @@ export interface IUserCloudInput extends Omit<IUserQueriesInput, 'roles'> {
   ids?: string[];
   fromBO?: boolean;
 }
+
+export type ISendEmailDefaultValues = {
+  email: string;
+}
+

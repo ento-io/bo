@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { MouseEvent, useCallback, useMemo, useState } from 'react';
 import { getUserCountSelector, getUserFiltersSelector, getUserUsersSelector } from '@/redux/reducers/user.reducer';
-import { IUser, IUsersRouteSearchParams, PlatformEnum } from '@/types/user.type';
-import { deleteUserById, deleteUsersById, goToUser, loadUsers } from '@/redux/actions/user.action';
+import { IUser, IUsersRouteSearchParams, PlatformEnum, SendEmailInput } from '@/types/user.type';
+import { deleteUserById, deleteUsersById, goToUser, loadUsers, sendEmailToUser } from '@/redux/actions/user.action';
 import List from '@/components/table/List';
 import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
@@ -23,6 +23,9 @@ import SearchInput from '@/components/form/inputs/SearchInput';
 import UserAdvancedFilterForm from '@/containers/users/UserAdvancedFilterForm';
 import { usersRoute } from '@/routes/protected/users.routes';
 import Dialog from '@/components/Dialog';
+import SendEmailForm from '@/containers/users/SendEmailForm';
+
+const SEND_EMAIL_TO_USER_FORM_ID = 'send-email-form-id'
 
 interface Data {
   id: string;
@@ -127,11 +130,12 @@ const Users = () => {
     setSelectedUser(user);
   }
 
-  const handlePrimaryAction = () => {
-    console.log("Action principale exécutée !");
+  const onSendEmailFormSubmit = async (values: SendEmailInput) => {
+    console.log('values: ', values);
+    if (!selectedUser) return;
+    await dispatch(sendEmailToUser(selectedUser, values));
     handleCloseDialog();
   };
-
 
   const onUpdateData = (queries: IQueriesInput) => {
     const newQueries = { ...queries, filters: { ...filters, ...queries.filters } };
@@ -202,17 +206,19 @@ const Users = () => {
       />
       <Dialog
         title={selectedUser ? t('user:sendEmailTo', {name: getUserFullName(selectedUser)}) : t('sendEmail')}
-        description="..." 
         open={!!selectedUser}
         toggle={handleCloseDialog}
-        primaryButtonText={t('send')}
-        secondaryButtonText={t('canceled')}
-        onPrimaryButtonAction={handlePrimaryAction}
         maxWidth="sm"
-        loading={false}
-      >
-        {/* Contents of the dialog box */}
-        <p>Contenu de la boîte de dialogue...</p>
+        fullWidth
+        formId={SEND_EMAIL_TO_USER_FORM_ID}
+        primaryButtonText={t('send')}>
+       {selectedUser && (
+         <SendEmailForm
+          formId={SEND_EMAIL_TO_USER_FORM_ID}
+          onSubmit={onSendEmailFormSubmit}
+          initialValues={{ email: selectedUser.email }}
+        />
+       )}
       </Dialog>
     </>
   );
