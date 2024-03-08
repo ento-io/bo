@@ -301,5 +301,7 @@
   "invite": "Inviter",
   "sorry": "Désolé",
   "returnToHome": "Retourner à l'accueil",
-  "estimate": "Devis"
+  "estimate": "Devis",
+  "createEstimate": "Créer un devis",
+  "estimateCreatedSuccessfully": "Devise créé avec succès"
 }

@@ -285,5 +285,7 @@
   "invite": "Asàna",
   "sorry": "Azafady tompoko",
   "returnToHome": "Hiverina amin'ny pejy fandraisana",
-  "estimate": "Fandresena"
+  "estimate": "Fandresena",
+  "createEstimate": "Hamorona tombana",
+  "estimateCreatedSuccessfully": "Voaforona soamantsara ny tombatombana"
 }
