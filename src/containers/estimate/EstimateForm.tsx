@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -16,7 +16,7 @@ import TextField from '@/components/form/fields/TextField';
 
 type Props = {
   formId: string;
-  onSubmit?: () => void;
+  onSubmit: () => void;
 };
 
 const EstimateForm = ( { formId, onSubmit } : Props ) => {

@@ -24,10 +24,7 @@ const Estimates = () => {
 
   const toggleDialog = () => setOpenFormDialog((prev: boolean): boolean => !prev);
 
-  const handleSave = () => {
-    dispatch(createEstimate())
-  }
-
+ 
   const onSubmitHandler: SubmitHandler<IEstimateInput> = async () => {
    await dispatch(createEstimate());
   };
