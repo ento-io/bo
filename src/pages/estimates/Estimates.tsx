@@ -5,6 +5,10 @@ import Head from '@/components/Head';
 import Dialog from '@/components/Dialog';
 import AddFab from '@/components/AddFab';
 import { createEstimate } from '@/redux/actions/estimate.action';
+import EstimateForm from './EstimateForm';
+import { EstimateInput } from '@/types/estimate.type';
+
+const ESTIMATE_FORM_ID = 'estimate-form-id';
 
 const Estimates = () => {
   const { t } = useTranslation();
@@ -14,9 +18,9 @@ const Estimates = () => {
 
   const toggleDialog = () => setOpenFormDialog(!openFormDialog);
 
-  const handleSave = () => {
-    dispatch(createEstimate())
-  }
+  const handleSave = (values: EstimateInput) => {
+    dispatch(createEstimate(values));
+  };
 
   return (
     <div>
@@ -26,12 +30,16 @@ const Estimates = () => {
       <Dialog
         maxWidth="sm"
         fullWidth
-        onPrimaryButtonAction={handleSave}
         primaryButtonText={t('save')}
         title={t('createEstimate')}
         open={openFormDialog}
-        toggle={toggleDialog}>
-        Form here
+        formId={ESTIMATE_FORM_ID}
+        toggle={toggleDialog}
+      >
+        <EstimateForm
+          formId={ESTIMATE_FORM_ID}
+          onSubmit={handleSave}
+        />
       </Dialog>
     </div>
   );
