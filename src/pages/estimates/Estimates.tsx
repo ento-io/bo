@@ -41,15 +41,15 @@ const Estimates = () => {
       <Dialog
         maxWidth="sm"
         fullWidth
-        onPrimaryButtonAction={() => onSubmitHandler}
         primaryButtonText={t('save')}
         title={t('createEstimate')}
         open={openFormDialog}
         toggle={toggleDialog}
+        formId={ESTIMATE_FORM_ID}
         >
           <EstimateForm 
             formId={ESTIMATE_FORM_ID}
-            onSubmit={() => onSubmitHandler} 
+            onSubmit={()=> onSubmitHandler} 
           />
       </Dialog>
     </div>

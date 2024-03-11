@@ -16,7 +16,7 @@ import TextField from '@/components/form/fields/TextField';
 
 type Props = {
   formId: string;
-  onSubmit: () => SubmitHandler<IEstimateInput>;
+  onSubmit?: () => void;
 };
 
 const EstimateForm = ( { formId, onSubmit } : Props ) => {
@@ -36,7 +36,7 @@ const EstimateForm = ( { formId, onSubmit } : Props ) => {
             onSubmit={onSubmit}
             loading={loading}
             error={error}
-            isDisabled={false}
+            isDisabled={true}
             formId={formId}
             >
           <TextField
