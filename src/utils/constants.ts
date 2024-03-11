@@ -36,6 +36,7 @@ export const IMAGES = {
 export const COLORS = {
   authBackground: "#000",
   authTextFieldPlaceholder: '#fff',
+  estimateBackground: '#fff',
 };
 
 export const HIGHEST_LEVEL_DEFAULT_ROLES = ['Owner', 'Administrator'];

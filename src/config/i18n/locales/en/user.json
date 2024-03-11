@@ -143,5 +143,6 @@
   },
   "addEmployee": "Add employee",
   "employeeCooperativeExists": "This employee works already in your cooperative",
-  "sendMail": "send email"
+  "sendMail": "send email",
+  "pasteUrlHere": "Paste URL here"
 }

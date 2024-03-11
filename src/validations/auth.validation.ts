@@ -22,6 +22,9 @@ export const loginSchema = userSchema.pick({ email: true, password: true });
 
 export const emailSchema = loginSchema.pick({ email: true });
 
+
+
+
 const passwordConfirmationSchema = string().min(
   1,
   i18n.t('form.error.required', { field: i18n.t('user:passwordConfirmation') }),

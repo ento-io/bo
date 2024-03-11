@@ -5,18 +5,33 @@ import Head from '@/components/Head';
 import Dialog from '@/components/Dialog';
 import AddFab from '@/components/AddFab';
 import { createEstimate } from '@/redux/actions/estimate.action';
+// import TextField from '@/components/form/fields/TextField';
+import { useNavigate } from '@tanstack/react-router';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { TextField } from '@mui/material';
+import EstimateForm from '@/containers/estimate/EstimateForm';
+import { IEstimateInput } from '@/types/estimate.types';
+
 
 const Estimates = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const ESTIMATE_FORM_ID = 'estimate-form-id';
+
   const [openFormDialog, setOpenFormDialog] = useState<boolean>(false);
 
-  const toggleDialog = () => setOpenFormDialog(!openFormDialog);
+  const toggleDialog = () => setOpenFormDialog((prev: boolean): boolean => !prev);
 
   const handleSave = () => {
     dispatch(createEstimate())
   }
+
+  const onSubmitHandler: SubmitHandler<IEstimateInput> = async () => {
+   await dispatch(createEstimate());
+  };
+
 
   return (
     <div>
@@ -26,12 +41,16 @@ const Estimates = () => {
       <Dialog
         maxWidth="sm"
         fullWidth
-        onPrimaryButtonAction={handleSave}
+        onPrimaryButtonAction={() => onSubmitHandler}
         primaryButtonText={t('save')}
         title={t('createEstimate')}
         open={openFormDialog}
-        toggle={toggleDialog}>
-        Form here
+        toggle={toggleDialog}
+        >
+          <EstimateForm 
+            formId={ESTIMATE_FORM_ID}
+            onSubmit={() => onSubmitHandler} 
+          />
       </Dialog>
     </div>
   );
