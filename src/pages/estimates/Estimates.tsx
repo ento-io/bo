@@ -18,7 +18,7 @@ const Estimates = () => {
 
   const toggleDialog = () => setOpenFormDialog(!openFormDialog);
 
-  const handleSave = async (values: EstimateInput) => {
+  const handleSave = (values: EstimateInput) => {
     dispatch(createEstimate(values));
   };
 
