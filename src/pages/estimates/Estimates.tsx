@@ -1,26 +1,29 @@
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import Head from '@/components/Head';
 import Dialog from '@/components/Dialog';
 import AddFab from '@/components/AddFab';
-import { createEstimate } from '@/redux/actions/estimate.action';
 import EstimateForm from './EstimateForm';
 import { EstimateInput } from '@/types/estimate.type';
+import { SubmitHandler } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { createEstimate } from '@/redux/actions/estimate.action';
 
 const ESTIMATE_FORM_ID = 'estimate-form-id';
 
 const Estimates = () => {
   const { t } = useTranslation();
+
   const dispatch = useDispatch();
+
 
   const [openFormDialog, setOpenFormDialog] = useState<boolean>(false);
 
-  const toggleDialog = () => setOpenFormDialog(!openFormDialog);
-
-  const handleSave = (values: EstimateInput) => {
+  const onSubmitHandler: SubmitHandler<EstimateInput> = values => {
     dispatch(createEstimate(values));
   };
+
+  const toggleDialog = () => setOpenFormDialog(!openFormDialog);
 
   return (
     <div>
@@ -38,7 +41,7 @@ const Estimates = () => {
       >
         <EstimateForm
           formId={ESTIMATE_FORM_ID}
-          onSubmit={handleSave}
+          onSubmit={onSubmitHandler}
         />
       </Dialog>
     </div>

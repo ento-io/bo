@@ -1,8 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-
+import {  useSelector } from 'react-redux';
 import TextField from '@/components/form/fields/TextField';
 import Form from '@/components/form/Form';
 
@@ -27,15 +26,11 @@ const EstimateForm = ({ formId, onSubmit }: Props) => {
 
   const { handleSubmit } = form;
 
-  const onSubmitHandler: SubmitHandler<EstimateInput> = async values => {
-    onSubmit(values);
-  };
-
   return (
     <Form  
       formId={formId}  
       form={form}  
-      onSubmit={handleSubmit(onSubmitHandler)}  
+      onSubmit={handleSubmit(onSubmit)}  
       loading={loading}  
       error={appError}
     >
