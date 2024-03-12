@@ -1,26 +1,28 @@
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import Head from '@/components/Head';
 import Dialog from '@/components/Dialog';
 import AddFab from '@/components/AddFab';
-import { createEstimate } from '@/redux/actions/estimate.action';
 import EstimateForm from './EstimateForm';
 import { EstimateInput } from '@/types/estimate.type';
+import { createEstimate } from '@/actions/estimate.action';
+import { useNavigate } from '@tanstack/react-router';
 
 const ESTIMATE_FORM_ID = 'estimate-form-id';
 
 const Estimates = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
 
   const [openFormDialog, setOpenFormDialog] = useState<boolean>(false);
 
-  const toggleDialog = () => setOpenFormDialog(!openFormDialog);
+  const handleSubmitEstimate = async (values: EstimateInput) => {
+      await createEstimate(values);
+      navigate({ to: '/' });
+  }
 
-  const handleSave = (values: EstimateInput) => {
-    dispatch(createEstimate(values));
-  };
+  const toggleDialog = () => setOpenFormDialog(!openFormDialog);
 
   return (
     <div>
@@ -38,7 +40,7 @@ const Estimates = () => {
       >
         <EstimateForm
           formId={ESTIMATE_FORM_ID}
-          onSubmit={handleSave}
+          onSubmit={ handleSubmitEstimate }
         />
       </Dialog>
     </div>
