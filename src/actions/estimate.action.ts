@@ -12,7 +12,7 @@ export const createEstimate = async (values: EstimateInput): Promise<Parse.Objec
     const estimate = new Estimate();
     setValues(estimate, values, ESTIMATE_PROPERTIES);
 
-    const savedEstimate = await estimate.save(null, { context: { name: "Estimation" } });
+    const savedEstimate = await estimate.save();
 
     return savedEstimate;
   } catch (error) {

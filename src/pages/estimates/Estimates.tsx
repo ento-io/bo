@@ -6,20 +6,17 @@ import AddFab from '@/components/AddFab';
 import EstimateForm from './EstimateForm';
 import { EstimateInput } from '@/types/estimate.type';
 import { createEstimate } from '@/actions/estimate.action';
-import { useNavigate } from '@tanstack/react-router';
 
 const ESTIMATE_FORM_ID = 'estimate-form-id';
 
 const Estimates = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
 
   const [openFormDialog, setOpenFormDialog] = useState<boolean>(false);
 
   const handleSubmitEstimate = async (values: EstimateInput) => {
       await createEstimate(values);
-      navigate({ to: '/' });
   }
 
   const toggleDialog = () => setOpenFormDialog(!openFormDialog);
@@ -40,7 +37,7 @@ const Estimates = () => {
       >
         <EstimateForm
           formId={ESTIMATE_FORM_ID}
-          onSubmit={ handleSubmitEstimate }
+          onSubmit={handleSubmitEstimate}
         />
       </Dialog>
     </div>
