@@ -5,10 +5,9 @@ import Dialog from '@/components/Dialog';
 import AddFab from '@/components/AddFab';
 import EstimateForm from './EstimateForm';
 import { EstimateInput } from '@/types/estimate.type';
-import { createEstimate } from '@/actions/estimate.action';
 import { SubmitHandler } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { createEstimateAction } from '@/redux/actions/estimate.action';
+import { createEstimate } from '@/redux/actions/estimate.action';
 
 const ESTIMATE_FORM_ID = 'estimate-form-id';
 
@@ -20,13 +19,8 @@ const Estimates = () => {
 
   const [openFormDialog, setOpenFormDialog] = useState<boolean>(false);
 
-  const handleSubmitEstimate = async (values: EstimateInput) => {
-      await createEstimate(values);
-  }
-
-  const onSubmitHandler: SubmitHandler<EstimateInput> = async values => {
-    await handleSubmitEstimate(values);
-    dispatch(createEstimateAction(values));
+  const onSubmitHandler: SubmitHandler<EstimateInput> = values => {
+    dispatch(createEstimate(values));
   };
 
   const toggleDialog = () => setOpenFormDialog(!openFormDialog);
