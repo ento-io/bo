@@ -6,7 +6,7 @@ import { setMessageSlice } from "../reducers/app.reducer";
 import i18n from "@/config/i18n";
 import { EstimateInput } from "@/types/estimate.type";
 
-export const createEstimate = (values: EstimateInput): any => {
+export const createEstimateAction = (values: EstimateInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
   console.log('values: ', values);
 
