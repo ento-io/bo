@@ -441,6 +441,12 @@ export const onUserEnter = (route?: any): AppThunkAction => {
 export const sendEmailToUser = (user: IUser, values: SendEmailInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     console.log('user: ', user, 'values: ', values);
+    const isSend = await Parse.Cloud.run('sendEmailToUser', values)
+
+    if (!isSend) {
+      dispatch(setErrorSlice(i18n.t('user:emailNotSendTo', { email: values.email })))
+      return 
+    }
     // TODO: send email to user here
     const message = i18n.t('user:emailSentTo', { name: getUserFullName(user) });
     dispatch(setMessageSlice(message));

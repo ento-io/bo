@@ -39,6 +39,7 @@
   "account": "Kaonty",
   "createAnAccount": "Amorona kaonty",
   "errors": {
+    "emailNotSendTo": "tsy lasa ny mailaka any amin'i {{email}}",
     "usernameTaken": "Efa misy ny kaonty amin'io mailaka io",
     "userWithEmailNotFound": "Tsy misy kaonty misoratra amin'io mailaka io",
     "accessDenied": "Tsy afaka miditra",
