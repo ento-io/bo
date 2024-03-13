@@ -285,5 +285,7 @@
   "returnToHome": "Return to home",
   "estimate": "Estimate",
   "createEstimate": "Create estimate",
-  "estimateCreatedSuccessfully": "Estimate created successfully"
+  "estimateCreatedSuccessfully": "Estimate created successfully",
+  "invoice": "Invoice",
+  "createInvoice": "Create invoice"
 }
