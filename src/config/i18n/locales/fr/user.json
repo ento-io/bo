@@ -40,6 +40,7 @@
   "account": "Compte",
   "createAnAccount": "Créer un compte",
   "errors": {
+    "emailNotSendTo": "Email non envoyé à {{email}}",
     "usernameTaken": "Le compte avec cet email existe déjà",
     "userWithEmailNotFound": "Un compte avec l'email specifié est introuvable",
     "accessDenied": "Accès refusé",

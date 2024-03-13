@@ -40,6 +40,7 @@
   "account": "Account",
   "createAnAccount": "Create an account",
   "errors": {
+    "emailNotSendTo": "Send email to {{email}} failed",
     "usernameTaken": "Account already exists",
     "userWithEmailNotFound": "A user with the specified email was not found",
     "accessDenied": "Access denied",
