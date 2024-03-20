@@ -305,5 +305,6 @@
   "createEstimate": "Créer un devis",
   "estimateCreatedSuccessfully": "Devise créé avec succès",
   "invoice": "Facture",
-  "createInvoice": "Créer une facture"
+  "createInvoice": "Créer une facture",
+  "supplierName": "Nom du fournisseur"
 }
