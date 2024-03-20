@@ -289,5 +289,6 @@
   "createEstimate": "Hamorona tombana",
   "estimateCreatedSuccessfully": "Voaforona soamantsara ny tombatombana",
   "invoice": "Faktiora",
-  "createInvoice": "Hamorona faktiora"
+  "createInvoice": "Hamorona faktiora",
+  "supplierName": "Anaran'ny mpamatsy"
 }
