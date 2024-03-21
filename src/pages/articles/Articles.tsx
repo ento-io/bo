@@ -16,6 +16,7 @@ import { IArticle } from '@/types/article.types';
 import { getArticleArticlesSelector } from '@/redux/reducers/article.reducer';
 import { createArticle, deleteArticle, goToArticle } from '@/redux/actions/article.action';
 import Head from '@/components/Head';
+import { getUserFullName } from '@/utils/user.utils';
 
 const Articles = () => {
   const articles = useSelector(getArticleArticlesSelector);
@@ -29,9 +30,9 @@ const Articles = () => {
     dispatch(createArticle(values));
   }
 
-  const handleDelete = (id: string) => {
-    dispatch(deleteArticle(id));
-  }
+  // const handleDelete = (id: string) => {
+  //   dispatch(deleteArticle(id));
+  // }
 
   const handlePreview = (id: string) => {
     navigate(goToArticle(id));
@@ -46,7 +47,7 @@ const Articles = () => {
             <TableRow>
               <TableCell>Id</TableCell>
               <TableCell align="right">Title</TableCell>
-              {/* <TableCell align="right">Author</TableCell> */}
+              <TableCell align="right">Author</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -60,9 +61,9 @@ const Articles = () => {
                   {article.objectId}
                 </TableCell>
                 <TableCell align="right">{article.title}</TableCell>
-                {/* <TableCell component="th" scope="row">
+                <TableCell component="th" scope="row">
                   {article.has("author") ? getUserFullName(article.get("author")) : "-"}
-                </TableCell> */}
+                </TableCell>
                 <TableCell align="right">
                   <IconButton color="info" onClick={() => handlePreview(article.objectId)}>
                     <FiEye />
@@ -70,9 +71,9 @@ const Articles = () => {
                   {/* <IconButton color="info" onClick={() => handleEdit(article.id)}>
                     <FiEdit2 />
                   </IconButton> */}
-                  <IconButton color="error" onClick={() => handleDelete(article.objectId)}>
+                  {/* <IconButton color="error" onClick={() => handleDelete(article.objectId)}>
                     <FiTrash2 />
-                  </IconButton>
+                  </IconButton> */}
                 </TableCell>
               </TableRow>
             ))}

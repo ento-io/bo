@@ -81,7 +81,7 @@ export const changeSettings = (values: ISettingsInput): any => {
  * @param routeParams 
  * @returns 
  */
-export const onEnter = (onEnterAction: (dispatch: AppDispatch, getState?: () => RootState) => AppThunkAction) => (routeParams: any) =>  {
+export const  onEnter = (onEnterAction: (dispatch: AppDispatch, getState?: () => RootState) => AppThunkAction) => (routeParams: any) =>  {
   // get store from context (passed in RouterProvider)
   const { store } = routeParams.context;
   if (!store) return;

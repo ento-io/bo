@@ -1,5 +1,6 @@
 import { Dayjs } from "dayjs";
 import { ISelectOption } from "./app.type";
+import { Attributes } from "parse";
 
 export type DateType = string | number | Date | Dayjs | null | undefined;
 
@@ -21,3 +22,8 @@ export interface ICreatableSelectOption extends Partial<ISelectOption> {
   inputValue?: any;
   disabled?: boolean;
 }
+
+export interface ParseResult {
+  results: Attributes[];
+}
+
