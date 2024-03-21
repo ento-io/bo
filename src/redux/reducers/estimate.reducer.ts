@@ -16,13 +16,17 @@ export const estimate = createSlice({
     },
     loadEstimatesSlice: (state: IEstimateState, action: PayloadAction<IEstimate[]>) => {
       state.estimates = action.payload;
-    }
+    },
+    deleteEstimateFromEstimatesSlice: (state: IEstimateState, action: PayloadAction<string>) => {
+      state.estimates = state.estimates.filter((estimate: IEstimate) => estimate.objectId !== action.payload);
+    },
   },
 });
 
 export const {
   addEstimateToEstimateSlice,
-  loadEstimatesSlice
+  loadEstimatesSlice,
+  deleteEstimateFromEstimatesSlice
 } = estimate.actions;
 
 // ---------------------------------------------- //
@@ -34,7 +38,6 @@ export const {
 // export const getArticleArticleSelector = (state: Record<string, any>): IArticle => state.article.article;
 // export const getArticleLoadingSelector = (state: Record<string, any>): boolean => state.article.loading;
 export const getEstimateEstimatesSelector = (state: Record<string, any>): IEstimate[] => state.estimate.estimates;
-console.log('getEstimateEstimatesSelector------- : ', getEstimateEstimatesSelector );
 
 
 // export const getArticleCountSelector = (state: Record<string, any>): number => state.article.count;

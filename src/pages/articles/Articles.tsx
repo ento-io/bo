@@ -47,7 +47,7 @@ const Articles = () => {
             <TableRow>
               <TableCell>Id</TableCell>
               <TableCell align="right">Title</TableCell>
-              {/* <TableCell align="right">Author</TableCell> */}
+              <TableCell align="right">Author</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>

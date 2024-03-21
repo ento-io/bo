@@ -7,16 +7,19 @@ import EstimateForm from './EstimateForm';
 import { EstimateInput } from '@/types/estimate.type';
 import { SubmitHandler } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { createEstimate } from '@/redux/actions/estimate.action';
+import { createEstimate, deleteEstimate, goToEstimates } from '@/redux/actions/estimate.action';
+import { useNavigate } from '@tanstack/react-router';
 
 const ESTIMATE_FORM_ID = 'estimate-form-id';
+
+// eslint-disable-next-line react-hooks/rules-of-hooks
 
 const Estimate = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
-
+  
   const [openFormDialog, setOpenFormDialog] = useState<boolean>(false);
 
   const onSubmitHandler: SubmitHandler<EstimateInput> = values => {
