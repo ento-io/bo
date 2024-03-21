@@ -131,7 +131,6 @@ const Users = () => {
   }
 
   const onSendEmailFormSubmit = async (values: SendEmailInput) => {
-    console.log('values: ', values);
     if (!selectedUser) return;
     await dispatch(sendEmailToUser(selectedUser, values));
     handleCloseDialog();
