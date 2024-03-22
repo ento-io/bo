@@ -288,5 +288,6 @@
   "estimateCreatedSuccessfully": "Estimate created successfully",
   "invoice": "Invoice",
   "createInvoice": "Create invoice",
-  "supplierName": "Supplier name"
+  "supplierName": "Supplier name",
+  "invoiceCreatedSuccessfully": "Invoice created successfully"
 }
