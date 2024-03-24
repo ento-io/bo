@@ -315,5 +315,16 @@
     "estimateCreatedSuccessfully": "Devise créé avec succès",
     "estimateEditedSuccessfully": "Devis modifié avec succès {{value}",
     "estimateDeletedSuccessfully": "Devis supprimé avec succès {{value}}"
+  },
+  "invoices": {
+    "supplierName": "Nom du fournisseur",
+    "invoice": "Facture",
+    "invoices": "Factures",
+    "searchInvoice": "Rechercher facture",
+    "createInvoice": "Créer une facture",
+    "editInvoice": "Modifier la facture {{value}}",
+    "invoiceCreatedSuccessfully": "Facture créé avec succès",
+    "invoiceEditedSuccessfully": "Facture {{value}} modifié avec succès",
+    "invoiceDeletedSuccessfully": "Facture {{value}} supprimé avec succès"
   }
 }
