@@ -7,3 +7,5 @@ export const estimateSchema = z.object({
     .string({ errorMap })
     .url()
 });
+
+export const estimateFilterSchema = estimateSchema

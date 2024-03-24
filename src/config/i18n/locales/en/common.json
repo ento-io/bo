@@ -51,7 +51,7 @@
   "selectTime": "Select time",
   "save": "Save",
   "edit": "Edit",
-  "delete": "Delete",
+  "delete": "Delete {{value}}",
   "details": "Details",
   "seePreview": "See preview",
   "owner": "Owner",
@@ -283,11 +283,19 @@
   "invite": "Invite",
   "sorry": "Sorry",
   "returnToHome": "Return to home",
-  "estimate": "Estimate",
-  "createEstimate": "Create estimate",
-  "estimateCreatedSuccessfully": "Estimate created successfully",
   "invoice": "Invoice",
   "createInvoice": "Create invoice",
   "supplierName": "Supplier name",
-  "invoiceCreatedSuccessfully": "Invoice created successfully"
+  "invoiceCreatedSuccessfully": "Invoice created successfully",
+  "link": "Link",
+  "estimates": {
+    "reference": "Reference",
+    "searchEstimate": "Search estimate",
+    "createEstimate": "Create estimate",
+    "editEstimate": "Edit estimate {{value}}",
+    "estimate": "Estimate",
+    "estimateCreatedSuccessfully": "Estimate created successfully",
+    "estimateEditedSuccessfully": "Estimate {{value}} edited successfully",
+    "estimateDeletedSuccessfully": "Estimate {{value}} deleted successfully"
+  }
 }

@@ -361,6 +361,38 @@ export const inviteUser: any = (values: ISignUpInput): any => {
   }, setUserLoadingSlice);
 };
 
+export const sendEmailToUser = (user: IUser, values: SendEmailInput): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    console.log('user: ', user, 'values: ', values);
+    const isSend = await Parse.Cloud.run('sendEmailToUser', values)
+
+    if (!isSend) {
+      dispatch(setErrorSlice(i18n.t('user:emailNotSendTo', { email: values.email })))
+      return 
+    }
+    // TODO: send email to user here
+    const message = i18n.t('user:emailSentTo', { name: getUserFullName(user) });
+    dispatch(setMessageSlice(message));
+  });
+};
+
+// ---------------------------------------- //
+// ------------- on page leave ------------ //
+// ---------------------------------------- //
+export const onUsersLeave = (): any => {
+  return (dispatch: AppDispatch): void => {
+    dispatch(clearUsersSlice());
+    dispatch(clearUserCountSlice());
+  };
+};
+
+export const onUserLeave = (): any => {
+  return (dispatch: AppDispatch): void => {
+    dispatch(clearCurrentUserRolesSlice());
+    dispatch(clearRolesSlice());
+  };
+};
+
 
 // ---------------------------------------- //
 // ------------- on page load ------------- //
@@ -436,38 +468,6 @@ export const onUserEnter = (route?: any): AppThunkAction => {
 
     dispatch(loadUserSlice(userJSON));
   });
-};
-
-export const sendEmailToUser = (user: IUser, values: SendEmailInput): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    console.log('user: ', user, 'values: ', values);
-    const isSend = await Parse.Cloud.run('sendEmailToUser', values)
-
-    if (!isSend) {
-      dispatch(setErrorSlice(i18n.t('user:emailNotSendTo', { email: values.email })))
-      return 
-    }
-    // TODO: send email to user here
-    const message = i18n.t('user:emailSentTo', { name: getUserFullName(user) });
-    dispatch(setMessageSlice(message));
-  });
-};
-
-// ---------------------------------------- //
-// ------------- on page leave ------------ //
-// ---------------------------------------- //
-export const onUsersLeave = (): any => {
-  return (dispatch: AppDispatch): void => {
-    dispatch(clearUsersSlice());
-    dispatch(clearUserCountSlice());
-  };
-};
-
-export const onUserLeave = (): any => {
-  return (dispatch: AppDispatch): void => {
-    dispatch(clearCurrentUserRolesSlice());
-    dispatch(clearRolesSlice());
-  };
 };
 
 // --------------------------------------- //
