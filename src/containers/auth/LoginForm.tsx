@@ -15,9 +15,6 @@ import { getUserLoadingSelector } from '@/redux/reducers/user.reducer';
 import { COLORS } from '@/utils/constants';
 import { ILoginInput } from '@/types/auth.types';
 import { loginSchema } from '@/validations/auth.validation';
-import { Typography } from '@mui/material';
-import Head from '@/components/Head';
-import Logo from '@/components/Logo';
 
 const LoginForm = () => {
   const { t } = useTranslation(['user']);
