@@ -299,5 +299,16 @@
     "estimateCreatedSuccessfully": "Voaforona soamantsara ny tombana",
     "estimateEditedSuccessfully": "Voaova soamantsara ny tombana {{value}}",
     "estimateDeletedSuccessfully": "Voafafa somantsara ny tombana {{value}}"
+  },
+  "invoices": {
+    "supplierName": "Anaran'ny mpamatsy",
+    "invoice": "Faktiora",
+    "invoices": "Faktiora",
+    "searchInvoice": "Hitady faktiora",
+    "createInvoice": "Hamorona faktiora",
+    "editInvoice": "Hanova ny faktiora {{value}}",
+    "invoiceCreatedSuccessfully": "Voaforona soamantsara ny faktiora",
+    "invoiceEditedSuccessfully": "Faktiora {{value}} voaova soamantsara",
+    "invoiceDeletedSuccessfully": "Faktiora {{value}} voafafa soamantsara"
   }
 }

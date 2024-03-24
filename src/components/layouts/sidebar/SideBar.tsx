@@ -5,7 +5,7 @@ import { grey } from '@mui/material/colors';
 import List from '@mui/material/List';
 import { useTranslation } from 'react-i18next';
 import { FaLockOpen } from 'react-icons/fa';
-import { FiChevronRight, FiChevronUp, FiClipboard, FiHome, FiSettings, FiUsers , FiCloudSnow} from 'react-icons/fi';
+import { FiChevronRight, FiChevronUp, FiClipboard, FiHome, FiSettings, FiUsers , FiCloudSnow, FiPrinter} from 'react-icons/fi';
 
 import { useNavigate, useRouterState , RouterState } from '@tanstack/react-router';
 import { canAccessTo } from '@/utils/role.utils';
@@ -17,6 +17,7 @@ import { goToRoles } from '@/redux/actions/role.action';
 import { goToSettings } from '@/redux/actions/app.action';
 import { goToArticles } from '@/redux/actions/article.action';
 import { goToEstimates } from '@/redux/actions/estimate.action';
+import { goToInvoices } from '@/redux/actions/invoice.action';
 
 const TEXT_COLOR = grey[700];
 /**
@@ -135,10 +136,17 @@ const SideBar = ({ open, roles, onClose }: Props) => {
         },
         {
           id: PATH_NAMES.estimates,
-          label: t('common:estimate'),
+          label: t('common:estimates.estimate'),
           onClick: () => navigate(goToEstimates()),
           icon: <FiCloudSnow size={ICON_SIZE} />,
           className: 'Estimate',
+        },
+        {
+          id: PATH_NAMES.invoices,
+          label: t('common:invoices.invoice'),
+          onClick: () => navigate(goToInvoices()),
+          icon: <FiPrinter size={ICON_SIZE} />,
+          className: 'Invoice',
         },
       ],
     },

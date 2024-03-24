@@ -17,7 +17,7 @@ import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
 
-const Estimate = Parse.Object.extend("Estimate");
+export const Estimate = Parse.Object.extend("Estimate");
 
 const ESTIMATE_PROPERTIES = new Set(['url']);
 

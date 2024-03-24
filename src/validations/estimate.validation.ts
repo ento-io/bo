@@ -8,4 +8,4 @@ export const estimateSchema = z.object({
     .url()
 });
 
-export const estimateFilterSchema = estimateSchema
+export const estimateFilterSchema = estimateSchema;

@@ -2,8 +2,8 @@ import { ReactNode, useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
-import { getEstimateCountSelector, getEstimateFiltersSelector, getEstimateEstimatesSelector } from '@/redux/reducers/estimate.reducer';
-import { createEstimate, deleteEstimate, editEstimate, goToEstimate, loadEstimates, toggleEstimatesByIds } from '@/redux/actions/estimate.action';
+import { getInvoiceCountSelector, getInvoiceFiltersSelector, getInvoiceInvoicesSelector } from '@/redux/reducers/invoice.reducer';
+import { createInvoice, deleteInvoice, editInvoice, goToInvoice, loadInvoices, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
 import List from '@/components/table/List';
 import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
@@ -13,20 +13,20 @@ import { IQueriesInput, TableHeadCell } from '@/types/app.type';
 import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
 import SearchInput from '@/components/form/inputs/SearchInput';
-import { estimatesRoute } from '@/routes/protected/estimate.routes';
+import { invoicesRoute } from '@/routes/protected/invoice.routes';
 import Dialog from '@/components/Dialog';
 import UserCell from '@/components/UserCell';
-import { EstimateInput, IEstimate } from '@/types/estimate.types';
-import EstimateForm from '../../containers/estimates/EstimateForm';
-import EstimateAdvancedFilterForm from '@/containers/estimates/EstimateAdvancedFilterForm';
+import { InvoiceInput, IInvoice } from '@/types/invoice.type';
+import InvoiceForm from '../../containers/invoices/InvoiceForm';
+import InvoiceAdvancedFilterForm from '@/containers/invoices/InvoiceAdvancedFilterForm';
 import AddFab from '@/components/AddFab';
 import { useToggle } from '@/hooks/useToggle';
 
-const ESTIMATE_FORM_ID = 'send-email-form-id'
+const INVOICES_FORM_ID = 'send-email-form-id'
 
 interface Data {
   reference: string;
-  url: string;
+  supplierName: string;
   createdBy: string;
   updatedBy: string;
   createdAt: ReactNode;
@@ -41,7 +41,7 @@ const headCells: TableHeadCell<keyof Data>[] = [
     label: i18n.t('common:estimates.reference'),
   },
   {
-    id: 'url',
+    id: 'supplierName',
     numeric: false,
     disablePadding: false,
     label: i18n.t('common:link'),
@@ -72,26 +72,26 @@ const headCells: TableHeadCell<keyof Data>[] = [
   },
 ];
 
-const Estimates = () => {
+const Invoices = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const estimates = useSelector(getEstimateEstimatesSelector);
-  const count = useSelector(getEstimateCountSelector);
-  const filters = useSelector(getEstimateFiltersSelector);
-  const searchParams = estimatesRoute.useSearch()
+  const invoices = useSelector(getInvoiceInvoicesSelector);
+  const count = useSelector(getInvoiceCountSelector);
+  const filters = useSelector(getInvoiceFiltersSelector);
+  const searchParams = invoicesRoute.useSearch()
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
   const canCreate = canAccessTo(roles, 'Contact', 'create');
 
-  const [selectedEstimate, setSelectedEstimate] = useState<IEstimate | null>(null);
+  const [selectedInvoice, setSelectedInvoice] = useState<IInvoice | null>(null);
   const { open: isOpenCreation, toggle: toggleOpenCreation } = useToggle();
 
   const { t } = useTranslation();
 
   // delete a row
   const onDelete = useCallback(
-    (estimate: IEstimate): void => {
-      dispatch(deleteEstimate(estimate.objectId));
+    (invoice: IInvoice): void => {
+      dispatch(deleteInvoice(invoice.objectId));
     },
     [dispatch],
   );
@@ -99,14 +99,14 @@ const Estimates = () => {
   // go to preview page
   const onPreview = useCallback(
     (id: string): void => {
-      navigate(goToEstimate(id));
+      navigate(goToInvoice(id));
     },
     [navigate],
   );
 
   const onEdit = useCallback(
-    (estimate: IEstimate): void => {
-      setSelectedEstimate(estimate);
+    (invoice: IInvoice): void => {
+      setSelectedInvoice(invoice);
       toggleOpenCreation();
     },
     [toggleOpenCreation],
@@ -114,50 +114,50 @@ const Estimates = () => {
 
   // delete selected rows
   const handleDeleteSelected = async (ids: string[]): Promise<void | undefined> => {
-    dispatch(toggleEstimatesByIds(ids, 'deleted', false));
+    dispatch(toggleInvoicesByIds(ids, 'deleted', false));
   };
 
   const handleCloseDialog = () => {
-    setSelectedEstimate(null);
+    setSelectedInvoice(null);
     toggleOpenCreation();
   };
 
-  const handleFormSubmit = (values: EstimateInput) => {
-    if (selectedEstimate) {
-      dispatch(editEstimate(selectedEstimate.objectId, values));
+  const handleFormSubmit = (values: InvoiceInput) => {
+    if (selectedInvoice) {
+      dispatch(editInvoice(selectedInvoice.objectId, values));
       handleCloseDialog();
       return;
     }
 
-    dispatch(createEstimate(values));
+    dispatch(createInvoice(values));
     handleCloseDialog();
   };
 
   const onUpdateData = (queries: IQueriesInput) => {
     const newQueries = { ...queries, filters: { ...filters, ...queries.filters } };
-    dispatch(loadEstimates(newQueries))
+    dispatch(loadInvoices(newQueries))
   }
 
   // table data
   const dataTable = useMemo((): Data[] => {
-    const canDelete = canAccessTo(roles, 'Estimate', 'delete');
-    const canPreview = canAccessTo(roles, 'Estimate', 'get');
-    const canEdit = canAccessTo(roles, 'Estimate', 'edit');
+    const canDelete = canAccessTo(roles, 'Invoice', 'delete');
+    const canPreview = canAccessTo(roles, 'Invoice', 'get');
+    const canEdit = canAccessTo(roles, 'Invoice', 'edit');
 
-    const estimatesData = estimates.map((estimate: IEstimate) => {
+    const invoicesData = invoices.map((invoice: IInvoice) => {
       // default data
       const data: Record<string, any> = {
-        reference: estimate.reference,
-        url: estimate.url,
-        createdBy: <UserCell user={estimate.createdBy} />,
-        updatedBy: estimate.updatedBy ? <UserCell user={estimate.updatedBy} /> : '-',
-        createdAt: displayDate(estimate.createdAt, false, true),
+        reference: invoice.estimate.reference,
+        supplierName: invoice.supplierName,
+        createdBy: <UserCell user={invoice.createdBy} />,
+        updatedBy: invoice.updatedBy ? <UserCell user={invoice.updatedBy} /> : '-',
+        createdAt: displayDate(invoice.createdAt, false, true),
         actions:(
           <ButtonActions
-            onDelete={canDelete ? () => onDelete(estimate) : undefined}
-            onPreview={canPreview ? () => onPreview(estimate.objectId) : undefined}
-            onEdit={canEdit ? () => onEdit(estimate) : undefined}
-            value={estimate.reference}
+            onDelete={canDelete ? () => onDelete(invoice) : undefined}
+            onPreview={canPreview ? () => onPreview(invoice.objectId) : undefined}
+            onEdit={canEdit ? () => onEdit(invoice) : undefined}
+            value={invoice.estimate.reference}
           />
         )
       };
@@ -165,29 +165,29 @@ const Estimates = () => {
       return data as Data;
     });
 
-    return estimatesData;
-  }, [estimates, onDelete, onPreview, roles, onEdit]);
+    return invoicesData;
+  }, [invoices, onDelete, onPreview, roles, onEdit]);
 
   return (
     <>
-      <Head title="Estimates" />
+      <Head title="Invoices" />
       <List
-        // @see estimates.routes.tsx for search params definition
+        // @see invoices.routes.tsx for search params definition
         defaultFilters={searchParams}
         onUpdateData={onUpdateData}
         items={dataTable}
         onDeleteSelected={handleDeleteSelected}
         headCells={headCells}
         count={count}
-        canDelete={canAccessTo(roles, 'Estimate', 'delete')}
-        canUpdate={canAccessTo(roles, 'Estimate', 'update')}
+        canDelete={canAccessTo(roles, 'Invoice', 'delete')}
+        canUpdate={canAccessTo(roles, 'Invoice', 'update')}
         renderFilter={(
           onSearch: (search: string) => void,
           onAdvancedSearch: (values: Record<string, any>) => void
         ) => (
           <>
             <SearchInput onChange={onSearch} placeholder={t('user:searchByNameOrEmail')} />
-            <EstimateAdvancedFilterForm onSubmit={onAdvancedSearch} />
+            <InvoiceAdvancedFilterForm onSubmit={onAdvancedSearch} />
           </>
         )}
       />
@@ -195,28 +195,28 @@ const Estimates = () => {
       {canCreate && (
         <AddFab
           onClick={() => {
-            setSelectedEstimate(null);
+            setSelectedInvoice(null);
             toggleOpenCreation();
           }}
         />
       )}
 
       <Dialog
-        title={selectedEstimate ? t('common:estimates.editEstimate', { value: selectedEstimate.reference }) : t('common:estimates.createEstimate')}
-        open={!!selectedEstimate || isOpenCreation}
+        title={selectedInvoice ? t('common:invoices.editInvoice', { value: selectedInvoice.reference }) : t('common:invoices.createInvoice')}
+        open={!!selectedInvoice || isOpenCreation}
         toggle={handleCloseDialog}
         maxWidth="sm"
         fullWidth
-        formId={ESTIMATE_FORM_ID}
+        formId={INVOICES_FORM_ID}
       >
-        <EstimateForm
-          formId={ESTIMATE_FORM_ID}
+        <InvoiceForm
+          formId={INVOICES_FORM_ID}
           onSubmit={handleFormSubmit}
-          estimate={selectedEstimate}
+          invoice={selectedInvoice}
         />
       </Dialog>
     </>
   );
 }
 
-export default Estimates;
+export default Invoices;

@@ -297,5 +297,16 @@
     "estimateCreatedSuccessfully": "Estimate created successfully",
     "estimateEditedSuccessfully": "Estimate {{value}} edited successfully",
     "estimateDeletedSuccessfully": "Estimate {{value}} deleted successfully"
+  },
+  "invoices": {
+    "supplierName": "Supplier name",
+    "invoice": "Invoice",
+    "invoices": "Invoices",
+    "searchInvoice": "Search invoice",
+    "createInvoice": "Create invoice",
+    "editInvoice": "Edit invoice {{value}}",
+    "invoiceCreatedSuccessfully": "Invoice created successfully",
+    "invoiceEditedSuccessfully": "Invoice {{value}} edited successfully",
+    "invoiceDeletedSuccessfully": "Invoice {{value}} deleted successfully"
   }
 }

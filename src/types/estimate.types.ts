@@ -11,6 +11,7 @@ export interface IEstimate extends Attributes {
   createdAt?: string;
   createdBy: IUser;
   updatedBy?: IUser;
+  deletedBy?: IUser;
 }
 
 export interface IEstimateState {
