@@ -78,7 +78,7 @@ const ButtonActions = ({
 
       {/* ---------- delete confirmation modal */}
       <Dialog
-        title={t('delete')}
+        title={t('delete', { value })}
         description={dialogDescription ?? t('sureToDelete', { value })}
         toggle={toggleDeleteModal}
         open={openDeleteModal}

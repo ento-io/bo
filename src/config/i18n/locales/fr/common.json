@@ -301,11 +301,19 @@
   "invite": "Inviter",
   "sorry": "Désolé",
   "returnToHome": "Retourner à l'accueil",
-  "estimate": "Devis",
-  "createEstimate": "Créer un devis",
-  "estimateCreatedSuccessfully": "Devise créé avec succès",
   "invoice": "Facture",
   "createInvoice": "Créer une facture",
   "supplierName": "Nom du fournisseur",
-  "invoiceCreatedSuccessfully": "Facture créé avec succès"
+  "invoiceCreatedSuccessfully": "Facture créé avec succès",
+  "link": "Lien",
+  "estimates": {
+    "reference": "Reference",
+    "searchEstimate": "Rechercher devis",
+    "createEstimate": "Créer un devis",
+    "editEstimate": "Modifier le devis",
+    "estimate": "Devis",
+    "estimateCreatedSuccessfully": "Devise créé avec succès",
+    "estimateEditedSuccessfully": "Devis modifié avec succès {{value}",
+    "estimateDeletedSuccessfully": "Devis supprimé avec succès {{value}}"
+  }
 }

@@ -21,5 +21,6 @@
   "verifyAccount": "verify",
   "edit": "edit",
   "add": "add",
-  "administration": "administration"
+  "administration": "administration",
+  "estimates": "estimates"
 }

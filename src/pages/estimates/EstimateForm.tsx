@@ -1,27 +1,34 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import {  useSelector } from 'react-redux';
 import TextField from '@/components/form/fields/TextField';
 import Form from '@/components/form/Form';
 
-import { getAppErrorSelector } from '@/redux/reducers/app.reducer';
-import { getUserLoadingSelector } from '@/redux/reducers/user.reducer';
-import { EstimateInput } from '@/types/estimate.type';
+import { EstimateInput, IEstimate } from '@/types/estimate.types';
 import { estimateSchema } from '@/validations/estimate.validation';
 
+const getInitialValues = (estimate: IEstimate | null): EstimateInput => {
+  if (!estimate) {
+    return {
+      url: '',
+    };
+  }
+  return {
+    url: estimate.url,
+  };
+}
 type Props = {
   formId: string;
   onSubmit: (input: EstimateInput) => void;
+  estimate: IEstimate | null;
 };
 
-const EstimateForm = ({ formId, onSubmit }: Props) => {
+const EstimateForm = ({ formId, onSubmit, estimate }: Props) => {
   const { t } = useTranslation();
-  const loading = useSelector(getUserLoadingSelector);
-  const appError = useSelector(getAppErrorSelector);
 
   const form = useForm<EstimateInput>({
     resolver: zodResolver(estimateSchema),
+    defaultValues: getInitialValues(estimate),
   });
 
   const { handleSubmit } = form;
@@ -31,10 +38,8 @@ const EstimateForm = ({ formId, onSubmit }: Props) => {
       formId={formId}  
       form={form}  
       onSubmit={handleSubmit(onSubmit)}  
-      loading={loading}  
-      error={appError}
     >
-      <TextField name="url" label={t('url')} type="url" variant="standard" required />
+      <TextField name="url" label={t('url')} type="url" required />
     </Form>
   );
 };

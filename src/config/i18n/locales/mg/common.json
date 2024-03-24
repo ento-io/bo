@@ -285,11 +285,19 @@
   "invite": "Asàna",
   "sorry": "Azafady tompoko",
   "returnToHome": "Hiverina amin'ny pejy fandraisana",
-  "estimate": "Fandresena",
-  "createEstimate": "Hamorona tombana",
-  "estimateCreatedSuccessfully": "Voaforona soamantsara ny tombatombana",
   "invoice": "Faktiora",
   "createInvoice": "Hamorona faktiora",
   "supplierName": "Anaran'ny mpamatsy",
-  "invoiceCreatedSuccessfully": "Voaforona soamantsara ny faktiora"
+  "invoiceCreatedSuccessfully": "Voaforona soamantsara ny faktiora",
+  "link": "Rohy",
+  "estimates": {
+    "reference": "Reference",
+    "searchEstimate": "Mitady tombana",
+    "createEstimate": "Hamorona tombana",
+    "editEstimate": "Hanova tombana",
+    "estimate": "Tombana",
+    "estimateCreatedSuccessfully": "Voaforona soamantsara ny tombana",
+    "estimateEditedSuccessfully": "Voaova soamantsara ny tombana {{value}}",
+    "estimateDeletedSuccessfully": "Voafafa somantsara ny tombana {{value}}"
+  }
 }
