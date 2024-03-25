@@ -27,7 +27,7 @@ const createInstance = () =>
 export const protectRequest = (sessionToken: string, hasFile = false): AxiosRequestConfig => {
   return {
     headers: {
-      'X-i-tatitra-Key': import.meta.env.VITE_REST_API_KEY ?? '',
+      'X-ento-key': import.meta.env.VITE_REST_API_KEY ?? '',
       'X-Parse-Session-Token': sessionToken,
       'Content-Type': hasFile ? 'multipart/form-data' : 'application/json',
     },
