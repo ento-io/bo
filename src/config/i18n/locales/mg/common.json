@@ -309,6 +309,9 @@
     "editInvoice": "Hanova ny faktiora {{value}}",
     "invoiceCreatedSuccessfully": "Voaforona soamantsara ny faktiora",
     "invoiceEditedSuccessfully": "Faktiora {{value}} voaova soamantsara",
-    "invoiceDeletedSuccessfully": "Faktiora {{value}} voafafa soamantsara"
+    "invoiceDeletedSuccessfully": "Faktiora {{value}} voafafa soamantsara",
+    "invoiceDownloadedSuccessfully": "Faktiora {{value}} voa-télécharger soamantsara",
+    "missingParamsId": "Tsy ampy ny id ny faktiora",
+    "missingParamsReference": "Tsy ampy ny reference ny faktiora"
   }
 }

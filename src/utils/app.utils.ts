@@ -1,6 +1,6 @@
 import i18n from '@/config/i18n';
 
-import { endLoadingSlice, setErrorSlice, startLoadingSlice } from '@/redux/reducers/app.reducer';
+import { closeMessageSlice, endLoadingSlice, getAppMessageSelector, setErrorSlice, startLoadingSlice } from '@/redux/reducers/app.reducer';
 import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 import { ISelectOption } from '@/types/app.type';
 
@@ -27,8 +27,13 @@ export const orderSelectOptions: ISelectOption[] = [
   },
 ];
 
+/**
+ * mainly a translated key from server
+ * @param text 
+ * @returns 
+ */
 const translatedError = (text: string): string => {
-  const hasDot = text.includes(':') && text.includes('.');
+  const hasDot = text.includes(':');
   if (hasDot) {
     return i18n.t(text);
   }
@@ -46,6 +51,8 @@ export const actionWithLoader = (
   localLoadingAction?: (value: boolean) => any,
 ): AppThunkAction => {
   return async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.() as RootState;
+    const message = getAppMessageSelector(state);
     // --------------- start loading --------------- //
     if (localLoadingAction) {
       dispatch(localLoadingAction(true));
@@ -56,6 +63,12 @@ export const actionWithLoader = (
       // --------------- dispatch action --------------- //
       await longPromiseCreatorOrPromise(dispatch, getState ?? undefined);
     } catch (error) {
+      // clear success message first
+      if (message) {
+        dispatch(closeMessageSlice())
+      }
+
+      // display error message
       if (typeof error === 'string') {
         dispatch(setErrorSlice(translatedError(error)));
       } else if (error instanceof Error) {

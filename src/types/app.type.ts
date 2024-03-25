@@ -111,3 +111,13 @@ export interface INotificationMenu {
   date: DateType;
   onClick?: () => void; // mainly id
 }
+
+export interface IApiError {
+  error: string;
+  details: {
+    // mainly a translated key
+    // @see: middlewars/validation.middleware in the server
+    message: string;
+    key: string;
+  }[];
+}

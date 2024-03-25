@@ -123,12 +123,14 @@ const Invoices = () => {
   };
 
   const handleFormSubmit = (values: InvoiceInput) => {
+    // edit
     if (selectedInvoice) {
       dispatch(editInvoice(selectedInvoice.objectId, values));
       handleCloseDialog();
       return;
     }
 
+    // create
     dispatch(createInvoice(values));
     handleCloseDialog();
   };

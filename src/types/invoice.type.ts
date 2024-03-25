@@ -22,6 +22,16 @@ export interface IInvoiceState {
   filters: Record<string, string | boolean> | null;
 }
 
+export interface IInvoiceGenerationBody {
+  id: string;
+  reference: string;
+}
+
+
+export interface IInvoiceAPIInput extends IInvoiceGenerationBody {
+  sessionToken: string;
+}
+
 export type EstimateInput = z.infer<typeof invoiceSchema>;
 export type EstimateFiltersInput = z.infer<typeof invoiceFilterSchema>;
 
