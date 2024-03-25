@@ -17,6 +17,7 @@ import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
 import { IInvoice, InvoiceInput } from '@/types/invoice.type';
 import { Estimate, loadEstimates } from './estimate.action';
+import { downloadInvoicePDFApi } from '@/api/invoice.api';
 
 const Invoice = Parse.Object.extend('Invoice');
 
@@ -130,6 +131,29 @@ export const toggleInvoicesByIds = (ids: string[], field: string, value = true):
   });
 };
 
+/**
+ * download invoice pdf
+ * @param invoiceId 
+ * @returns 
+ */
+export const downloadInvoicePDF = (invoiceId: string): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    const currentUser = await Parse.User.currentAsync();
+    if (!currentUser) return;
+
+    const invoice = await getInvoice(invoiceId);
+    if (!invoice) return;
+    
+    await downloadInvoicePDFApi({
+      sessionToken: currentUser.getSessionToken(),
+      id: invoiceId,
+      reference: invoice.get('reference')
+    })
+
+    await dispatch(setMessageSlice(i18n.t('common:invoices.invoiceDownloadedSuccessfully', { value: invoice.get('reference') })));
+  });
+};
+
 export const createInvoice = (values: InvoiceInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
     const invoice = new Invoice();
@@ -146,8 +170,9 @@ export const createInvoice = (values: InvoiceInput): any => {
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
     const savedInvoice = await invoice.save();
     dispatch(addInvoiceToInvoicesSlice((savedInvoice as Attributes).toJSON()));
-    dispatch(setMessageSlice(i18n.t('common:invoices.invoiceCreatedSuccessfully')));
+    await dispatch(setMessageSlice(i18n.t('common:invoices.invoiceCreatedSuccessfully')));
 
+    dispatch(downloadInvoicePDF(savedInvoice.id));
   });
 };
 

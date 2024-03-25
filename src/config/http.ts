@@ -37,13 +37,35 @@ export const protectRequest = (sessionToken: string, hasFile = false): AxiosRequ
 // get the data field response directly
 const responseBody = <O>(response: AxiosResponse<O>) => response.data;
 
+const catchError = (error: any) => {
+  if (error.response) {
+    // The request was made and the server responded with a status code
+    // that falls out of the range of 2xx
+    const { data } = error.response;
+
+    // @see server/src/middlewares/validation.middleware.ts for the structure of the error response
+    if (data.details?.length) {
+      const { message } = data.details[0];
+      throw new Error(message);
+    } else {
+      throw new Error(data);
+    }
+  } else if (error.request) {
+    // The request was made but no response was received
+    throw new Error(error.request);
+  } else {
+    // Something happened in setting up the request that triggered an Error
+    throw error;
+  }
+}
+
 export const http = {
   get: <O>(url: string, config?: AxiosRequestConfig): Promise<O> =>
-    createInstance().get<O>(url, config).then(responseBody),
+    createInstance().get<O>(url, config).then(responseBody).catch(catchError),
   post: <I, O>(url: string, body: I, config?: AxiosRequestConfig): Promise<O> =>
-    createInstance().post<O>(url, body, config).then(responseBody),
+    createInstance().post<O>(url, body, config).then(responseBody).catch(catchError),
   put: <I, O>(url: string, body: I, config?: AxiosRequestConfig): Promise<O> =>
-    createInstance().put<O>(url, body, config).then(responseBody),
+    createInstance().put<O>(url, body, config).then(responseBody).catch(catchError),
   delete: <O>(url: string, config?: AxiosRequestConfig): Promise<O> =>
-    createInstance().delete<O>(url, config).then(responseBody),
+    createInstance().delete<O>(url, config).then(responseBody).catch(catchError),
 };

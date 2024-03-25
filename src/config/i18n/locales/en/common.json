@@ -307,6 +307,9 @@
     "editInvoice": "Edit invoice {{value}}",
     "invoiceCreatedSuccessfully": "Invoice created successfully",
     "invoiceEditedSuccessfully": "Invoice {{value}} edited successfully",
-    "invoiceDeletedSuccessfully": "Invoice {{value}} deleted successfully"
+    "invoiceDeletedSuccessfully": "Invoice {{value}} deleted successfully",
+    "invoiceDownloadedSuccessfully": "Invoice {{value}} downloaded successfully",
+    "missingParamsId": "Invoice id is missing",
+    "missingParamsReference": "Invoice reference is missing"
   }
 }

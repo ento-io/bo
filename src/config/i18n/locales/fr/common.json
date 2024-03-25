@@ -325,6 +325,9 @@
     "editInvoice": "Modifier la facture {{value}}",
     "invoiceCreatedSuccessfully": "Facture créé avec succès",
     "invoiceEditedSuccessfully": "Facture {{value}} modifié avec succès",
-    "invoiceDeletedSuccessfully": "Facture {{value}} supprimé avec succès"
+    "invoiceDeletedSuccessfully": "Facture {{value}} supprimé avec succès",
+    "invoiceDownloadedSuccessfully": "Facture {{value}} télécharger avec succès",
+    "missingParamsId": "L'identifiant de la facture est manquant",
+    "missingParamsReference": "La référence de la facture est manquante"
   }
 }
