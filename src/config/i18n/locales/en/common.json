@@ -11,6 +11,7 @@
     "english": "English",
     "french": "French"
   },
+  "alreadyExists": "Already exists",
   "form": {
     "error": {
       "invalidStringType": "Excepted text",
@@ -310,6 +311,8 @@
     "invoiceDeletedSuccessfully": "Invoice {{value}} deleted successfully",
     "invoiceDownloadedSuccessfully": "Invoice {{value}} downloaded successfully",
     "missingParamsId": "Invoice id is missing",
-    "missingParamsReference": "Invoice reference is missing"
+    "missingParamsReference": "Invoice reference is missing",
+    "invoiceAlreadyExists": "Invoice with reference {{value}} already exists",
+    "thisInvoiceAlreadyExists": "This invoice already exists"
   }
 }

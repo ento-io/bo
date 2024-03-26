@@ -5,10 +5,10 @@ import { actionWithLoader } from '@/utils/app.utils';
 import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
-import { addInvoiceToInvoicesSlice, deleteInvoiceFromInvoicesSlice, deleteInvoicesSlice, loadInvoiceSlice, loadInvoicesSlice, setInvoicesCountSlice, updateInvoicesByInvoiceSlice } from '../reducers/invoice.reducer';
+import { addInvoiceToInvoicesSlice, deleteInvoiceFromInvoicesSlice, deleteInvoicesSlice, loadInvoiceSlice, loadInvoicesSlice, setInvoiceErrorSlice, setInvoicesCountSlice, updateInvoicesByInvoiceSlice } from '../reducers/invoice.reducer';
 import { setErrorSlice, setMessageSlice } from '../reducers/app.reducer';
 import { setValues } from '@/utils/parse.utils';
-import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
+import { DEFAULT_PAGINATION, PAGINATION, SERVER_CUSTOM_ERROR_CODES } from '@/utils/constants';
 import { IQueriesInput } from '@/types/app.type';
 import { searchUserPointerQuery } from './user.action';
 import { isBoolean } from '@/utils/utils';
@@ -168,11 +168,19 @@ export const createInvoice = (values: InvoiceInput): any => {
     // the master key can only accessible in server side
     // so we use the parse cloud function to do that, instead of a REST API
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
-    const savedInvoice = await invoice.save();
-    dispatch(addInvoiceToInvoicesSlice((savedInvoice as Attributes).toJSON()));
-    await dispatch(setMessageSlice(i18n.t('common:invoices.invoiceCreatedSuccessfully')));
-
-    dispatch(downloadInvoicePDF(savedInvoice.id));
+    try {
+      const savedInvoice = await invoice.save();
+      dispatch(addInvoiceToInvoicesSlice((savedInvoice as Attributes).toJSON()));
+      await dispatch(setMessageSlice(i18n.t('common:invoices.invoiceCreatedSuccessfully')));
+  
+      dispatch(downloadInvoicePDF(savedInvoice.id));
+    } catch (error) {
+      // use local error instead of the global app error in actionWithLoader() in app.utils.ts
+      // we use this to display a dialog instead of a global snackbar
+      if ((error as Error).message === SERVER_CUSTOM_ERROR_CODES.invoiceAlreadyExists) {
+        dispatch(setInvoiceErrorSlice(i18n.t('common:invoices.thisInvoiceAlreadyExists')));
+      }
+    }
   });
 };
 

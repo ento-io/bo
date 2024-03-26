@@ -21,6 +21,12 @@ export const Estimate = Parse.Object.extend("Estimate");
 
 const ESTIMATE_PROPERTIES = new Set(['url']);
 
+/**
+ * query to get one estimate by its id
+ * @param id 
+ * @param include pointers (relations) to include in the response
+ * @returns 
+ */
 export const getEstimate = async (id: string, include: 'updatedBy'[] = []): Promise<Parse.Object | undefined> => {
   const estimate = await new Parse.Query(Estimate)
     .equalTo('objectId', id)

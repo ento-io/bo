@@ -80,3 +80,7 @@ export const VERIFICATION_CODE_LENGTH = 6;
  */
 export const LOCAL_NETWORK_HOSTNAME = '192.168.88.10';
 // export const LOCAL_NETWORK_HOSTNAME = 'localhost';
+
+export const SERVER_CUSTOM_ERROR_CODES = {
+  invoiceAlreadyExists: '1000',
+}

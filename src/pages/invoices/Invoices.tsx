@@ -2,7 +2,7 @@ import { ReactNode, useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
-import { getInvoiceCountSelector, getInvoiceFiltersSelector, getInvoiceInvoicesSelector } from '@/redux/reducers/invoice.reducer';
+import { clearInvoiceErrorSlice, getInvoiceCountSelector, getInvoiceErrorSelector, getInvoiceFiltersSelector, getInvoiceInvoicesSelector } from '@/redux/reducers/invoice.reducer';
 import { createInvoice, deleteInvoice, editInvoice, goToInvoice, loadInvoices, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
 import List from '@/components/table/List';
 import { displayDate } from '@/utils/date.utils';
@@ -81,6 +81,7 @@ const Invoices = () => {
   const searchParams = invoicesRoute.useSearch()
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
+  const error = useSelector(getInvoiceErrorSelector);
   const canCreate = canAccessTo(roles, 'Contact', 'create');
 
   const [selectedInvoice, setSelectedInvoice] = useState<IInvoice | null>(null);
@@ -170,6 +171,10 @@ const Invoices = () => {
     return invoicesData;
   }, [invoices, onDelete, onPreview, roles, onEdit]);
 
+  const handleCloseErrorDialog = () => {
+    dispatch(clearInvoiceErrorSlice());
+  }
+
   return (
     <>
       <Head title="Invoices" />
@@ -217,6 +222,18 @@ const Invoices = () => {
           invoice={selectedInvoice}
         />
       </Dialog>
+
+      {/* if an invoice with this reference exists */}
+      <Dialog
+        description={t(error)}
+        title={t('common:alreadyExists')}
+        open={!!error}
+        withCancelButton={false}
+        primaryButtonText="Ok"
+        onPrimaryButtonAction={handleCloseErrorDialog}
+        toggle={handleCloseErrorDialog}
+        maxWidth="xs"
+      />
     </>
   );
 }

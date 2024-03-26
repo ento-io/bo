@@ -11,6 +11,7 @@
     "english": "Anglais",
     "french": "Français"
   },
+  "alreadyExists": "Déjà existant",
   "form": {
     "error": {
       "invalidStringType": "Devrait être une chaîne de caractère",
@@ -328,6 +329,8 @@
     "invoiceDeletedSuccessfully": "Facture {{value}} supprimé avec succès",
     "invoiceDownloadedSuccessfully": "Facture {{value}} télécharger avec succès",
     "missingParamsId": "L'identifiant de la facture est manquant",
-    "missingParamsReference": "La référence de la facture est manquante"
+    "missingParamsReference": "La référence de la facture est manquante",
+    "invoiceAlreadyExists": "Facture avec la référence {{value}} existe déjà",
+    "thisInvoiceAlreadyExists": "Cette facture existe déjà"
   }
 }
