@@ -9,18 +9,17 @@ import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
-import { IQueriesInput, TableHeadCell } from '@/types/app.type';
+import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.type';
 import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
-import SearchInput from '@/components/form/inputs/SearchInput';
 import { estimatesRoute } from '@/routes/protected/estimate.routes';
 import Dialog from '@/components/Dialog';
 import UserCell from '@/components/UserCell';
 import { EstimateInput, IEstimate } from '@/types/estimate.types';
 import EstimateForm from '../../containers/estimates/EstimateForm';
-import EstimateAdvancedFilterForm from '@/containers/estimates/EstimateAdvancedFilterForm';
 import AddFab from '@/components/AddFab';
 import { useToggle } from '@/hooks/useToggle';
+import SearchEstimates from '@/containers/estimates/SearchEstimates';
 
 const ESTIMATE_FORM_ID = 'send-email-form-id'
 
@@ -181,15 +180,7 @@ const Estimates = () => {
         count={count}
         canDelete={canAccessTo(roles, 'Estimate', 'delete')}
         canUpdate={canAccessTo(roles, 'Estimate', 'update')}
-        renderFilter={(
-          onSearch: (search: string) => void,
-          onAdvancedSearch: (values: Record<string, any>) => void
-        ) => (
-          <>
-            <SearchInput onChange={onSearch} placeholder={t('user:searchByNameOrEmail')} />
-            <EstimateAdvancedFilterForm onSubmit={onAdvancedSearch} />
-          </>
-        )}
+        renderFilter={(prop: IRenderSearchProps) => <SearchEstimates {...prop} />}
       />
 
       {canCreate && (

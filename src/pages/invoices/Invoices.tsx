@@ -9,18 +9,17 @@ import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
-import { IQueriesInput, TableHeadCell } from '@/types/app.type';
+import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.type';
 import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
-import SearchInput from '@/components/form/inputs/SearchInput';
 import { invoicesRoute } from '@/routes/protected/invoice.routes';
 import Dialog from '@/components/Dialog';
 import UserCell from '@/components/UserCell';
 import { InvoiceInput, IInvoice } from '@/types/invoice.type';
 import InvoiceForm from '../../containers/invoices/InvoiceForm';
-import InvoiceAdvancedFilterForm from '@/containers/invoices/InvoiceAdvancedFilterForm';
 import AddFab from '@/components/AddFab';
 import { useToggle } from '@/hooks/useToggle';
+import SearchInvoices from '@/containers/invoices/SearchInvoices';
 
 const INVOICES_FORM_ID = 'send-email-form-id'
 
@@ -196,15 +195,7 @@ const Invoices = () => {
         count={count}
         canDelete={canAccessTo(roles, 'Invoice', 'delete')}
         canUpdate={canAccessTo(roles, 'Invoice', 'update')}
-        renderFilter={(
-          onSearch: (search: string) => void,
-          onAdvancedSearch: (values: Record<string, any>) => void
-        ) => (
-          <>
-            <SearchInput onChange={onSearch} placeholder={t('user:searchByNameOrEmail')} />
-            <InvoiceAdvancedFilterForm onSubmit={onAdvancedSearch} />
-          </>
-        )}
+        renderFilter={(prop: IRenderSearchProps) => <SearchInvoices {...prop} />}
       />
 
       {canCreate && (

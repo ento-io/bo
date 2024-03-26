@@ -299,7 +299,8 @@
     "estimate": "Tombana",
     "estimateCreatedSuccessfully": "Voaforona soamantsara ny tombana",
     "estimateEditedSuccessfully": "Voaova soamantsara ny tombana {{value}}",
-    "estimateDeletedSuccessfully": "Voafafa somantsara ny tombana {{value}}"
+    "estimateDeletedSuccessfully": "Voafafa somantsara ny tombana {{value}}",
+    "searchText": "hitady reference, rohy, ..."
   },
   "invoices": {
     "supplierName": "Anaran'ny mpamatsy",

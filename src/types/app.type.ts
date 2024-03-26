@@ -121,3 +121,8 @@ export interface IApiError {
     key: string;
   }[];
 }
+
+export type IRenderSearchProps = {
+  onSearch: (name: string, value: string) => void;
+  onAdvancedSearch: (values: Record<string, any>) => void;
+}
