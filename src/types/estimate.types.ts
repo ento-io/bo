@@ -9,7 +9,7 @@ export interface IEstimate extends Attributes {
   reference: string;
   updatedAt?: string;
   createdAt?: string;
-  createdBy: IUser;
+  user: IUser;
   updatedBy?: IUser;
   deletedBy?: IUser;
 }

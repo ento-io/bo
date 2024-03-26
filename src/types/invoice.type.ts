@@ -12,6 +12,7 @@ export interface IInvoice extends Attributes {
   updatedBy?: IUser;
   createdBy: IUser;
   deletedBy?: IUser;
+  user: IUser;
 }
 
 export interface IInvoiceState {

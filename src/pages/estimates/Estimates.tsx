@@ -27,7 +27,7 @@ const ESTIMATE_FORM_ID = 'send-email-form-id'
 interface Data {
   reference: string;
   url: string;
-  createdBy: string;
+  user: string;
   updatedBy: string;
   createdAt: ReactNode;
   actions: ReactNode;
@@ -47,10 +47,10 @@ const headCells: TableHeadCell<keyof Data>[] = [
     label: i18n.t('common:link'),
   },
   {
-    id: 'createdBy',
+    id: 'user',
     numeric: false,
     disablePadding: false,
-    label: i18n.t('user:createdBy'),
+    label: i18n.t('user:user'),
   },
   {
     id: 'updatedBy',
@@ -149,7 +149,7 @@ const Estimates = () => {
       const data: Record<string, any> = {
         reference: estimate.reference,
         url: estimate.url,
-        createdBy: <UserCell user={estimate.createdBy} />,
+        user: <UserCell user={estimate.user} />,
         updatedBy: estimate.updatedBy ? <UserCell user={estimate.updatedBy} /> : '-',
         createdAt: displayDate(estimate.createdAt, false, true),
         actions:(

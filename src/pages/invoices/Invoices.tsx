@@ -29,6 +29,7 @@ interface Data {
   supplierName: string;
   createdBy: string;
   updatedBy: string;
+  user: string;
   createdAt: ReactNode;
   actions: ReactNode;
 }
@@ -57,6 +58,12 @@ const headCells: TableHeadCell<keyof Data>[] = [
     numeric: false,
     disablePadding: false,
     label: i18n.t('user:updatedBy'),
+  },
+  {
+    id: 'user',
+    numeric: false,
+    disablePadding: false,
+    label: i18n.t('user:user'),
   },
   {
     id: 'createdAt',
@@ -154,6 +161,7 @@ const Invoices = () => {
         supplierName: invoice.supplierName,
         createdBy: <UserCell user={invoice.createdBy} />,
         updatedBy: invoice.updatedBy ? <UserCell user={invoice.updatedBy} /> : '-',
+        user: invoice.user ? <UserCell user={invoice.user} /> : '-',
         createdAt: displayDate(invoice.createdAt, false, true),
         actions:(
           <ButtonActions
