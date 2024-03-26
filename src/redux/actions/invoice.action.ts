@@ -189,8 +189,12 @@ export const editInvoice = (id: string, values: InvoiceInput): any => {
     const invoice = await getInvoice(id);
 
     if (!invoice) return;
+    const newValues = { ...values };
 
-    setValues(invoice, values, INVOICE_PROPERTIES);
+    // the estimate can not be changed, so we delete it
+    delete (newValues as Partial<InvoiceInput>).estimate;
+
+    setValues(invoice, newValues, INVOICE_PROPERTIES);
 
 
     // only the user or the MasterKey can update or deleted its own account
