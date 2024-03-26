@@ -58,7 +58,13 @@ const InvoiceForm = ({ formId, onSubmit, invoice }: Props) => {
       onSubmit={handleSubmit(onSubmit)}  
     >
       <TextField name="supplierName" label={t('invoices.supplierName')} required fixedLabel />
-      <SelectField name="estimate" options={getEstimateOptions(estimates)} label={t('estimates.estimate')} isClearable />
+      <SelectField
+        name="estimate"
+        options={getEstimateOptions(estimates)}
+        label={t('estimates.estimate')}
+        isClearable
+        isDisabled={!!invoice}
+      />
     </Form>
   );
 };
