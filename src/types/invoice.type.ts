@@ -20,6 +20,7 @@ export interface IInvoiceState {
   invoices: IInvoice[];
   count: number;
   filters: Record<string, string | boolean> | null;
+  error: string;
 }
 
 export interface IInvoiceGenerationBody {

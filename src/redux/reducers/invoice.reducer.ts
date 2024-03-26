@@ -7,6 +7,7 @@ const initialState: IInvoiceState = {
   invoices: [],
   count: 0,
   filters: null,
+  error: '',
 };
 
 export const invoice = createSlice({
@@ -84,6 +85,12 @@ export const invoice = createSlice({
       const newContacts = state.invoices.filter((prevInvoice: IInvoice) => !action.payload.includes(prevInvoice.objectId));
       state.invoices = newContacts;
     },
+    setInvoiceErrorSlice: (state: IInvoiceState, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
+    clearInvoiceErrorSlice: (state: IInvoiceState) => {
+      state.error = '';
+    },
   },
 });
 
@@ -100,7 +107,9 @@ export const {
   markInvoicesAsSeenSlice,
   deleteInvoicesSlice,
   setInvoiceFiltersSlice,
-  updateInvoicesByInvoiceSlice
+  updateInvoicesByInvoiceSlice,
+  setInvoiceErrorSlice,
+  clearInvoiceErrorSlice
 } = invoice.actions;
 
 // ---------------------------------------------- //
@@ -113,6 +122,7 @@ export const getInvoiceInvoiceSelector = (state: Record<string, any>): IInvoice 
 export const getInvoiceLoadingSelector = (state: Record<string, any>): boolean => state.invoice.loading;
 export const getInvoiceInvoicesSelector = (state: Record<string, any>): IInvoice[] => state.invoice.invoices;
 export const getInvoiceCountSelector = (state: Record<string, any>): number => state.invoice.count;
+export const getInvoiceErrorSelector = (state: Record<string, any>): string => state.invoice.error;
 export const getInvoiceFiltersSelector = (state: Record<string, any>): Record<string, string | boolean> => state.invoice.filters;
 
 export default invoice.reducer;

@@ -11,6 +11,7 @@
     "english": "Anglisy",
     "french": "Frantsay"
   },
+  "alreadyExists": "Efa misy",
   "form": {
     "error": {
       "invalidStringType": "Tokony ho teny",
@@ -312,6 +313,8 @@
     "invoiceDeletedSuccessfully": "Faktiora {{value}} voafafa soamantsara",
     "invoiceDownloadedSuccessfully": "Faktiora {{value}} voa-télécharger soamantsara",
     "missingParamsId": "Tsy ampy ny id ny faktiora",
-    "missingParamsReference": "Tsy ampy ny reference ny faktiora"
+    "missingParamsReference": "Tsy ampy ny reference ny faktiora",
+    "invoiceAlreadyExists": "Efa misy ny faktiora manana ny reference {{value}}",
+    "thisInvoiceAlreadyExists": "Efa misy ny faktiora manana io reference io"
   }
 }

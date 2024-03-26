@@ -65,7 +65,7 @@ export const actionWithLoader = (
     } catch (error) {
       // clear success message first
       if (message) {
-        dispatch(closeMessageSlice())
+        dispatch(closeMessageSlice());
       }
 
       // display error message
