@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
 import { clearInvoiceErrorSlice, getInvoiceCountSelector, getInvoiceErrorSelector, getInvoiceFiltersSelector, getInvoiceInvoicesSelector } from '@/redux/reducers/invoice.reducer';
-import { createInvoice, deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, loadInvoices, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
+import { createInvoice, deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, loadInvoices, regenerateInvoicePDF, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
 import List from '@/components/table/List';
 import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
@@ -151,6 +151,10 @@ const Invoices = () => {
     dispatch(downloadInvoicePDF(invoiceId));
   }, [dispatch])
 
+  const handleRegenerate = useCallback((invoiceId: string) => {
+    dispatch(regenerateInvoicePDF(invoiceId));
+  }, [dispatch])
+
   // table data
   const dataTable = useMemo((): Data[] => {
     const canDelete = canAccessTo(roles, 'Invoice', 'delete');
@@ -173,6 +177,7 @@ const Invoices = () => {
             onEdit={canEdit ? () => onEdit(invoice) : undefined}
             onDownloadPDF={() => handleDownload(invoice.objectId)}
             label={invoice.estimate.reference}
+            onRegeneratePDF={() => handleRegenerate(invoice.objectId)}
           />
         )
       };
@@ -181,7 +186,7 @@ const Invoices = () => {
     });
 
     return invoicesData;
-  }, [invoices, onDelete, onPreview, roles, onEdit, handleDownload]);
+  }, [invoices, onDelete, onPreview, roles, onEdit, handleDownload, handleRegenerate]);
 
   const handleCloseErrorDialog = () => {
     dispatch(clearInvoiceErrorSlice());

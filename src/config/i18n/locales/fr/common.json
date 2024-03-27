@@ -5,6 +5,7 @@
   },
   "greeting": "Bonjour, {{name}}!",
   "download": "télécharger",
+  "regeneratePdf": "Regénerer PDF",
   "language": "Langue",
   "languages": "Langues",
   "lang": {

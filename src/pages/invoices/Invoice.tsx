@@ -14,7 +14,7 @@ import { displayDate } from '@/utils/date.utils';
 import { ISelectOption } from '@/types/app.type';
 import UserInfo from '@/containers/users/UserInfos';
 import { getInvoiceInvoiceSelector } from '@/redux/reducers/invoice.reducer';
-import { deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, goToInvoices } from '@/redux/actions/invoice.action';
+import { deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, goToInvoices, regenerateInvoicePDF } from '@/redux/actions/invoice.action';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import InvoiceMenus from './InvoiceMenus';
@@ -97,6 +97,10 @@ const Invoice = () => {
     toggleDialogEdition();
   };
 
+  const handleRegenerate = () => {
+    dispatch(regenerateInvoicePDF(invoice.objectId));
+  }
+
   return (
     <Layout
       title={t('common:invoices.invoice')}
@@ -108,6 +112,7 @@ const Invoice = () => {
           onEdit={toggleDialogEdition}
           onDownloadPDF={handleDownload}
           goToList={handleGoToList}
+          onRegeneratePDF={handleRegenerate}
           label={invoice.estimate.reference}
         />
       }>

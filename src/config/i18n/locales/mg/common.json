@@ -3,7 +3,8 @@
     "article": "Lahatsoratra",
     "articles": "Lahatsoratra"
   },
-  "download": "télécharger",
+  "download": "Télécharger",
+  "regeneratePdf": "Averina amboarina PDF",
   "greeting": "Salama, {{name}}!",
   "language": "Fiteny",
   "languages": "Fiteny",

@@ -135,6 +135,32 @@ export const downloadInvoicePDF = (invoiceId: string): any => {
   });
 };
 
+/**
+ * regenerate invoice pdf and save it
+ * delete the old one
+ * @param id 
+ * @returns 
+ */
+export const regenerateInvoicePDF = (id: string): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    const currentUser = await Parse.User.currentAsync();
+    if (!currentUser) return;
+
+    const invoice = await Parse.Cloud.run('regenerateInvoicePDF', { id })
+
+    if (!invoice) return;
+    
+    await downloadInvoicePDFApi({
+      sessionToken: currentUser.getSessionToken(),
+      id,
+      reference: invoice.get('reference')
+    })
+
+    await dispatch(setMessageSlice(i18n.t('common:invoices.invoiceDownloadedSuccessfully', { value: invoice.get('reference') })));
+  });
+};
+
+
 export const createInvoice = (values: InvoiceInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
     const invoice = new Invoice();
