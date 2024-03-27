@@ -4,6 +4,7 @@
     "articles": "Articles"
   },
   "download": "Download",
+  "regeneratePdf": "Regenerate PDF",
   "greeting": "Hello, {{name}}!",
   "language": "Language",
   "languages": "Languages",
@@ -316,6 +317,8 @@
     "missingParamsId": "Invoice id is missing",
     "missingParamsReference": "Invoice reference is missing",
     "invoiceAlreadyExists": "Invoice with reference {{value}} already exists",
-    "thisInvoiceAlreadyExists": "This invoice already exists"
+    "thisInvoiceAlreadyExists": "This invoice already exists",
+    "countRegeneratedSuccessfully": "{{count}} invoice(s) regenerated successfully",
+    "regeneratedInvoices": "Regenerate invoices"
   }
 }

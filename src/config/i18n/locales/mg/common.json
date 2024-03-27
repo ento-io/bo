@@ -3,7 +3,8 @@
     "article": "Lahatsoratra",
     "articles": "Lahatsoratra"
   },
-  "download": "télécharger",
+  "download": "Télécharger",
+  "regeneratePdf": "Averina amboarina PDF",
   "greeting": "Salama, {{name}}!",
   "language": "Fiteny",
   "languages": "Fiteny",
@@ -318,6 +319,8 @@
     "missingParamsId": "Tsy ampy ny id ny faktiora",
     "missingParamsReference": "Tsy ampy ny reference ny faktiora",
     "invoiceAlreadyExists": "Efa misy ny faktiora manana ny reference {{value}}",
-    "thisInvoiceAlreadyExists": "Efa misy ny faktiora manana io reference io"
+    "thisInvoiceAlreadyExists": "Efa misy ny faktiora manana io reference io",
+    "countRegeneratedSuccessfully": "{{count}} faktiora amboarina soamantsara",
+    "regeneratedInvoices": "Averina amboarina ny facktiora"
   }
 }

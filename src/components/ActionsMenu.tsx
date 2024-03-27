@@ -52,8 +52,6 @@ const classes = {
   }),
 };
 
-type IOptionMenu = IMenu & { display: boolean };
-
 export type ActionsMenuProps = {
   onEdit?: () => void;
   onDelete?: () => void;
@@ -63,7 +61,7 @@ export type ActionsMenuProps = {
   onPreview?: () => void;
   label?: string;
   className?: string;
-  menus?: IOptionMenu[];
+  menus?: IMenu[];
 };
 
 const ActionsMenu = ({
@@ -153,7 +151,7 @@ const ActionsMenu = ({
       label: t('delete'),
       icon: <FiTrash size={20} css={(theme: Theme) => ({ color: theme.palette.error.main})} />
     },
-  ]
+  ];
 
   return (
     <div className={className}>
