@@ -154,7 +154,6 @@ const Invoices = () => {
     const canEdit = canAccessTo(roles, 'Invoice', 'edit');
 
     const invoicesData = invoices.map((invoice: IInvoice) => {
-      // default data
       const data: Record<string, any> = {
         reference: invoice.estimate.reference,
         supplierName: invoice.supplierName,
