@@ -151,7 +151,7 @@ const ActionsMenu = ({
       onClick: handleDelete,
       display: !!onDelete,
       label: t('delete'),
-      icon: <FiTrash size={20} />
+      icon: <FiTrash size={20} css={(theme: Theme) => ({ color: theme.palette.error.main})} />
     },
   ]
 

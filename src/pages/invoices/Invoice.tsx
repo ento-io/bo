@@ -4,12 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useNavigate } from '@tanstack/react-router';
-import ActionsMenu from '@/components/ActionsMenu';
 import Head from '@/components/Head';
 import Items from '@/components/Items';
 import Layout from '@/components/layouts/Layout';
-
-import { toggleUserNotification } from '@/redux/actions/user.action';
 
 import { PREVIEW_PAGE_GRID } from '@/utils/constants';
 import { displayDate } from '@/utils/date.utils';
@@ -17,16 +14,30 @@ import { displayDate } from '@/utils/date.utils';
 import { ISelectOption } from '@/types/app.type';
 import UserInfo from '@/containers/users/UserInfos';
 import { getInvoiceInvoiceSelector } from '@/redux/reducers/invoice.reducer';
-import { goToInvoices } from '@/redux/actions/invoice.action';
+import { deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, goToInvoices } from '@/redux/actions/invoice.action';
+import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
+import { canAccessTo } from '@/utils/role.utils';
+import InvoiceMenus from './InvoiceMenus';
+import Dialog from '@/components/Dialog';
+import InvoiceForm from '@/containers/invoices/InvoiceForm';
+import { InvoiceInput } from '@/types/invoice.type';
+import { useToggle } from '@/hooks/useToggle';
+
+const INVOICES_FORM_ID = 'send-email-form-id';
 
 const Invoice = () => {
   const { t } = useTranslation(['common', 'user']);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const invoice = useSelector(getInvoiceInvoiceSelector);
+  const roles = useSelector(getRoleCurrentUserRolesSelector);
+  const { open: isOpenEdition, toggle: toggleDialogEdition } = useToggle();
+
+  const canDelete = canAccessTo(roles, 'Invoice', 'delete');
+  const canPreview = canAccessTo(roles, 'Invoice', 'get');
+  const canEdit = canAccessTo(roles, 'Invoice', 'edit');
 
   if (!invoice) return null;
-
 
   const infosItems: ISelectOption[] = [
     {
@@ -67,8 +78,23 @@ const Invoice = () => {
   };
 
   // for notification
-  const handleMarkAsSeen = () => {
-    dispatch(toggleUserNotification(invoice.objectId));
+  const handleDownload = () => {
+    dispatch(downloadInvoicePDF(invoice.objectId));
+  }
+
+  const handlePreview = () => {
+    if (!canPreview) return;
+    navigate(goToInvoice(invoice.objectId));
+  }
+
+  const handleDelete = () => {
+    if (!canDelete) return;
+    navigate(deleteInvoice(invoice.objectId));
+  }
+
+  const handleEdit = (values: InvoiceInput) => {
+    dispatch(editInvoice(invoice.objectId, values));
+    toggleDialogEdition();
   };
 
   return (
@@ -76,7 +102,14 @@ const Invoice = () => {
       title={t('common:invoices.invoice')}
       isCard={false}
       actions={
-        <ActionsMenu label={invoice.lastName} goToList={handleGoToList} onMarkAsSeen={handleMarkAsSeen} />
+        <InvoiceMenus
+          onDelete={handleDelete}
+          onPreview={handlePreview}
+          onEdit={toggleDialogEdition}
+          onDownloadPDF={handleDownload}
+          goToList={handleGoToList}
+          label={invoice.estimate.reference}
+        />
       }>
       <Head title={t('common:invoices.reference')} />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
@@ -106,6 +139,21 @@ const Invoice = () => {
           </Stack>
         </Grid>
       </Grid>
+
+      <Dialog
+        title={t('common:invoices.editInvoice', { value: invoice.reference })}
+        open={canEdit && isOpenEdition}
+        toggle={toggleDialogEdition}
+        maxWidth="sm"
+        fullWidth
+        formId={INVOICES_FORM_ID}
+      >
+        <InvoiceForm
+          formId={INVOICES_FORM_ID}
+          onSubmit={handleEdit}
+          invoice={invoice}
+        />
+      </Dialog>
     </Layout>
   );
 };

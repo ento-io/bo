@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { ImDownload3 } from "react-icons/im";
 import { MouseEvent } from 'react';
+import { Theme } from '@mui/material';
 import ActionsMenu, { ActionsMenuProps } from "@/components/ActionsMenu";
 
 type Props = {
@@ -22,7 +23,7 @@ const InvoiceMenus = ({ onDownloadPDF, ...props }: Props) => {
           onClick: handleDownload,
           display: true,
           label: t('download'),
-          icon: <ImDownload3 size={20} />
+          icon: <ImDownload3 size={20} css={(theme: Theme) => ({ color: theme.palette.info.main })} />
         },
       ]}
     />

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
 import { clearInvoiceErrorSlice, getInvoiceCountSelector, getInvoiceErrorSelector, getInvoiceFiltersSelector, getInvoiceInvoicesSelector } from '@/redux/reducers/invoice.reducer';
-import { createInvoice, deleteInvoice, editInvoice, goToInvoice, loadInvoices, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
+import { createInvoice, deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, loadInvoices, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
 import List from '@/components/table/List';
 import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
@@ -21,7 +21,7 @@ import { useToggle } from '@/hooks/useToggle';
 import SearchInvoices from '@/containers/invoices/SearchInvoices';
 import InvoiceMenus from './InvoiceMenus';
 
-const INVOICES_FORM_ID = 'send-email-form-id'
+const INVOICES_FORM_ID = 'send-email-form-id';
 
 interface Data {
   reference: string;
@@ -147,6 +147,10 @@ const Invoices = () => {
     dispatch(loadInvoices(newQueries))
   }
 
+  const handleDownload = useCallback((invoiceId: string) => {
+    dispatch(downloadInvoicePDF(invoiceId));
+  }, [dispatch])
+
   // table data
   const dataTable = useMemo((): Data[] => {
     const canDelete = canAccessTo(roles, 'Invoice', 'delete');
@@ -167,7 +171,7 @@ const Invoices = () => {
             onDelete={canDelete ? () => onDelete(invoice) : undefined}
             onPreview={canPreview ? () => onPreview(invoice.objectId) : undefined}
             onEdit={canEdit ? () => onEdit(invoice) : undefined}
-            onDownloadPDF={() => console.log('down')}
+            onDownloadPDF={() => handleDownload(invoice.objectId)}
             label={invoice.estimate.reference}
           />
         )
@@ -177,7 +181,7 @@ const Invoices = () => {
     });
 
     return invoicesData;
-  }, [invoices, onDelete, onPreview, roles, onEdit]);
+  }, [invoices, onDelete, onPreview, roles, onEdit, handleDownload]);
 
   const handleCloseErrorDialog = () => {
     dispatch(clearInvoiceErrorSlice());

@@ -27,7 +27,7 @@ type Props = {
   onSelectAll: (event: ChangeEvent<HTMLInputElement>) => void;
   onSort: (_: MouseEvent<unknown> | null, property: any) => void;
   canMultipleSelect: boolean;
-  onRowClick: (data: Record<string, any>) => void;
+  onRowClick: (data: Record<string, any>) => (event: MouseEvent<HTMLElement>) => void;
   isItemSelected: (id: string) => boolean;
   stopCheckboxPropagation: (data: Record<string, any>) => (event: MouseEvent<HTMLElement>) => void;
   onCheckedRow: (objectId: string) => void;
@@ -98,7 +98,7 @@ const Table = ({
                 return (
                   <TableRow
                     hover
-                    onClick={() => onRowClick(data)}
+                    onClick={onRowClick(data)}
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
