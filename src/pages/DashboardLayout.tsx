@@ -234,7 +234,7 @@ const DashboardLayout = () => {
         <Box
           className="flexColumn stretchSelf flex1"
           sx={{
-            p: { xs: 0, lg: 2 },
+            p: { xs: 1.2, lg: 2 },
             pt: 0,
             borderRadius: 1,
           }}>

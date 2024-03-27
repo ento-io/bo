@@ -14,7 +14,7 @@ import { getAppLoadingSelector } from '@/redux/reducers/app.reducer';
 import { DEFAULT_PAGINATION, DEFAULT_QUERIES_INPUT } from '@/utils/constants';
 import { pagePaginationToQueryInput } from '@/utils/utils';
 
-import { IPagination, IQueriesInput, IRenderSearchProps } from '@/types/app.type';
+import { IMenu, IPagination, IQueriesInput, IRenderSearchProps } from '@/types/app.type';
 
 import ListCardsView from './ListCardsView';
 import Table from './Table';
@@ -36,6 +36,7 @@ type Props<IQuery> = {
   onUpdateData: any;
   defaultFilters?: IQuery;
   disableRowClickEvent?: boolean;
+  toolbarMenus?: IMenu[];
 };
 
 const List = <IQuery extends IQueriesInput['filters'],>({
@@ -51,6 +52,7 @@ const List = <IQuery extends IQueriesInput['filters'],>({
   onUpdateData,
   renderFilter,
   defaultFilters,
+  toolbarMenus,
   disableRowClickEvent = true,
   border = false,
 }: Props<IQuery>) => {
@@ -265,6 +267,7 @@ const List = <IQuery extends IQueriesInput['filters'],>({
         numSelected={selectedIds.length}
         onDeleteSelected={canDelete && onDeleteSelected ? handleDeleteSelected : undefined}
         onMarkAsSeenSelected={canUpdate && onMarkAsSeenSelected ? handleMarkAsSeenSelected : undefined}
+        menus={toolbarMenus}
       />
       {/* ------- view selection buttons ------- */}
       {view === 'table' && !isDesktopDown && views}

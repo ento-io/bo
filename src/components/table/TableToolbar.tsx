@@ -10,14 +10,16 @@ import { FaTasks, FaTrashAlt } from 'react-icons/fa';
 import Dialog from '@/components/Dialog';
 
 import { useToggle } from '@/hooks/useToggle';
+import { IMenu } from '@/types/app.type';
 
 interface Props {
   numSelected: number;
   onDeleteSelected: (() => void) | undefined;
   onMarkAsSeenSelected: (() => void) | undefined;
+  menus?: IMenu[];
 }
 
-const TableToolbar = ({ numSelected, onDeleteSelected, onMarkAsSeenSelected }: Props) => {
+const TableToolbar = ({ numSelected, onDeleteSelected, onMarkAsSeenSelected, menus = [] }: Props) => {
   const { t } = useTranslation();
   const theme = useTheme();
 
@@ -30,6 +32,22 @@ const TableToolbar = ({ numSelected, onDeleteSelected, onMarkAsSeenSelected }: P
   const handleDelete = () => {
     onDeleteSelected?.();
   };
+
+  const options = [
+    ...menus, // before delete
+    {
+      onClick: onMarkAsSeenSelected,
+      display: !!onMarkAsSeenSelected,
+      label: t('markAsSeen'),
+      icon: <FaTasks size={20} />
+    },
+    {
+      onClick: toggleDeleteModal,
+      display: !!onDeleteSelected,
+      label: t('delete'),
+      icon: <FaTrashAlt size={20} color={theme.palette.error.main} />
+    },
+  ];
 
   return (
     <>
@@ -48,22 +66,15 @@ const TableToolbar = ({ numSelected, onDeleteSelected, onMarkAsSeenSelected }: P
           {t('selectedCount', { count: numSelected })}
         </Typography>
         <Stack direction="row" spacing={2}>
-          {/* mark as seen icon */}
-          {onMarkAsSeenSelected && (
-            <Tooltip title={t('markAsSeen')}>
-              <IconButton onClick={onMarkAsSeenSelected}>
-                <FaTasks color={theme.palette.success.main} />
-              </IconButton>
-            </Tooltip>
-          )}
-          {/* delete icon */}
-          {onDeleteSelected && (
-            <Tooltip title={t('delete')}>
-              <IconButton onClick={toggleDeleteModal}>
-                <FaTrashAlt color={theme.palette.error.main} size={20} />
-              </IconButton>
-            </Tooltip>
-          )}
+          {options.map((option, index) => (
+            option.display && (
+              <Tooltip title={option.label} key={index}>
+                <IconButton onClick={option.onClick}>
+                  {option.icon}
+                </IconButton>
+              </Tooltip>
+            )
+          ))}
         </Stack>
       </Toolbar>
       {/* ---------- delete confirmation modal */}

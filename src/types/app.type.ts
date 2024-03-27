@@ -131,4 +131,5 @@ export interface IMenu {
   label: string;
   icon?: ReactNode;
   onClick: (event: MouseEvent<HTMLElement>) => void;
+  display?: boolean;
 }
