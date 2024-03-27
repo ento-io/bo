@@ -146,6 +146,7 @@ const Estimates = () => {
     const estimatesData = estimates.map((estimate: IEstimate) => {
       // default data
       const data: Record<string, any> = {
+        id: estimate.objectId, // required even if not displayed
         reference: estimate.reference,
         url: estimate.url,
         user: <UserCell user={estimate.user} />,

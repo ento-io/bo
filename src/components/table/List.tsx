@@ -35,6 +35,7 @@ type Props<IQuery> = {
   border?: boolean;
   onUpdateData: any;
   defaultFilters?: IQuery;
+  disableRowClickEvent?: boolean;
 };
 
 const List = <IQuery extends IQueriesInput['filters'],>({
@@ -50,6 +51,7 @@ const List = <IQuery extends IQueriesInput['filters'],>({
   onUpdateData,
   renderFilter,
   defaultFilters,
+  disableRowClickEvent = true,
   border = false,
 }: Props<IQuery>) => {
   const [initPagination, setInitPagination] = useState<boolean>(false);
@@ -205,14 +207,20 @@ const List = <IQuery extends IQueriesInput['filters'],>({
 
   const isSelected = (name: string): boolean => selectedIds.indexOf(name) !== -1;
 
-  const handleRowClick = (data: Record<string, any>): void | undefined => {
+  const handleRowClick = (data: Record<string, any>) => (event: MouseEvent<HTMLElement>): void | undefined => {
+    if (disableRowClickEvent) {
+      event?.preventDefault();
+    }
+
     // custom click
     if (onRowClick) {
       onRowClick(data.id);
       return;
     }
 
+    if (disableRowClickEvent) return
     // props from Actions component
+    // if enable row click, it will go to preview
     if (data.actions.props.onPreview) {
       data.actions.props.onPreview(data.id);
       return;

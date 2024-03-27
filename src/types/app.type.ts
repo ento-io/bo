@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ReactNode } from "react";
+import { MouseEvent, ReactNode } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { IUser } from "./user.type";
 import { confirmDeletionSchema, settingsSchema } from "@/validations/app.validations";
@@ -125,4 +125,10 @@ export interface IApiError {
 export type IRenderSearchProps = {
   onSearch: (name: string, value: string) => void;
   onAdvancedSearch: (values: Record<string, any>) => void;
+}
+
+export interface IMenu {
+  label: string;
+  icon?: ReactNode;
+  onClick: (event: MouseEvent<HTMLElement>) => void;
 }

@@ -3,6 +3,7 @@
     "article": "Lahatsoratra",
     "articles": "Lahatsoratra"
   },
+  "download": "télécharger",
   "greeting": "Salama, {{name}}!",
   "language": "Fiteny",
   "languages": "Fiteny",
@@ -53,6 +54,7 @@
   "save": "Enregistrer",
   "edit": "Modifier",
   "delete": "Fafàna",
+  "deleteThis": "Fafàna ny {{value}}",
   "seePreview": "Hijery ny topi-maso",
   "details": "Momba azy",
   "owner": "Tompony",

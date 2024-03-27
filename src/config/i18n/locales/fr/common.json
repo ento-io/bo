@@ -4,6 +4,7 @@
     "articles": "Articles"
   },
   "greeting": "Bonjour, {{name}}!",
+  "download": "télécharger",
   "language": "Langue",
   "languages": "Langues",
   "lang": {
@@ -53,6 +54,7 @@
   "save": "Enregistrer",
   "edit": "Modifier",
   "delete": "Supprimer",
+  "deleteThis": "Supprimer {{value}}",
   "seePreview": "Voir l'aperçu",
   "details": "Details",
   "owner": "Proprietaire",

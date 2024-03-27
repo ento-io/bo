@@ -3,6 +3,7 @@
     "article": "Article",
     "articles": "Articles"
   },
+  "download": "Download",
   "greeting": "Hello, {{name}}!",
   "language": "Language",
   "languages": "Languages",
@@ -52,7 +53,8 @@
   "selectTime": "Select time",
   "save": "Save",
   "edit": "Edit",
-  "delete": "Delete {{value}}",
+  "delete": "Delete",
+  "deleteThis": "Delete {{value}}",
   "details": "Details",
   "seePreview": "See preview",
   "owner": "Owner",
