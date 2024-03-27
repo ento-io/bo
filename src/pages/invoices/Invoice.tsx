@@ -17,7 +17,7 @@ import { getInvoiceInvoiceSelector } from '@/redux/reducers/invoice.reducer';
 import { deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, goToInvoices, regenerateInvoicePDF } from '@/redux/actions/invoice.action';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
-import InvoiceMenus from './InvoiceMenus';
+import InvoiceMenus from '../../containers/invoices/InvoiceMenus';
 import Dialog from '@/components/Dialog';
 import InvoiceForm from '@/containers/invoices/InvoiceForm';
 import { InvoiceInput } from '@/types/invoice.type';

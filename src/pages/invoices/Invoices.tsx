@@ -20,7 +20,7 @@ import InvoiceForm from '../../containers/invoices/InvoiceForm';
 import AddFab from '@/components/AddFab';
 import { useToggle } from '@/hooks/useToggle';
 import SearchInvoices from '@/containers/invoices/SearchInvoices';
-import InvoiceMenus from './InvoiceMenus';
+import InvoiceMenus from '../../containers/invoices/InvoiceMenus';
 
 const INVOICES_FORM_ID = 'send-email-form-id';
 
