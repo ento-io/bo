@@ -127,9 +127,9 @@ export type IRenderSearchProps = {
   onAdvancedSearch: (values: Record<string, any>) => void;
 }
 
-export interface IMenu {
+export interface IMenu<TOnClick = MouseEvent<HTMLElement>> {
   label: string;
   icon?: ReactNode;
-  onClick: (event: MouseEvent<HTMLElement>) => void;
+  onClick: (value: TOnClick) => void;
   display?: boolean;
 }

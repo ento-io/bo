@@ -2,14 +2,15 @@ import { ReactNode, useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
+import { FiRefreshCw } from 'react-icons/fi';
 import { clearInvoiceErrorSlice, getInvoiceCountSelector, getInvoiceErrorSelector, getInvoiceFiltersSelector, getInvoiceInvoicesSelector } from '@/redux/reducers/invoice.reducer';
-import { createInvoice, deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, loadInvoices, regenerateInvoicePDF, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
+import { createInvoice, deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, loadInvoices, regenerateInvoicePDF, regenerateInvoicePDFs, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
 import List from '@/components/table/List';
 import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
-import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.type';
+import { IMenu, IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.type';
 import Head from '@/components/Head';
 import { invoicesRoute } from '@/routes/protected/invoice.routes';
 import Dialog from '@/components/Dialog';
@@ -155,6 +156,19 @@ const Invoices = () => {
     dispatch(regenerateInvoicePDF(invoiceId));
   }, [dispatch])
 
+  const handleRegenerateInvoices = useCallback((invoiceIds: string[]) => {
+    dispatch(regenerateInvoicePDFs(invoiceIds));
+  }, [dispatch])
+
+  const toolbarMenus: IMenu<string[]>[] = [
+    {
+      onClick: handleRegenerateInvoices,
+      display: true,
+      label: t('regeneratedInvoices'),
+      icon: <FiRefreshCw size={20} />
+    },
+  ]
+
   // table data
   const dataTable = useMemo((): Data[] => {
     const canDelete = canAccessTo(roles, 'Invoice', 'delete');
@@ -198,6 +212,7 @@ const Invoices = () => {
       <List
         // @see invoices.routes.tsx for search params definition
         defaultFilters={searchParams}
+        toolbarMenus={toolbarMenus}
         onUpdateData={onUpdateData}
         items={dataTable}
         onDeleteSelected={handleDeleteSelected}

@@ -36,7 +36,7 @@ type Props<IQuery> = {
   onUpdateData: any;
   defaultFilters?: IQuery;
   disableRowClickEvent?: boolean;
-  toolbarMenus?: IMenu[];
+  toolbarMenus?: IMenu<string[]>[];
 };
 
 const List = <IQuery extends IQueriesInput['filters'],>({
@@ -204,8 +204,8 @@ const List = <IQuery extends IQueriesInput['filters'],>({
     onRowClick(objectId);
   };
 
-  const handleDeleteSelected = () => onDeleteSelected?.(selectedIds);
-  const handleMarkAsSeenSelected = () => onMarkAsSeenSelected?.(selectedIds);
+  // const handleDeleteSelected = () => onDeleteSelected?.(selectedIds);
+  // const handleMarkAsSeenSelected = () => onMarkAsSeenSelected?.(selectedIds);
 
   const isSelected = (name: string): boolean => selectedIds.indexOf(name) !== -1;
 
@@ -264,9 +264,9 @@ const List = <IQuery extends IQueriesInput['filters'],>({
       </SearchContainer>
       {/* ------- search and filter ------- */}
       <TableToolbar
-        numSelected={selectedIds.length}
-        onDeleteSelected={canDelete && onDeleteSelected ? handleDeleteSelected : undefined}
-        onMarkAsSeenSelected={canUpdate && onMarkAsSeenSelected ? handleMarkAsSeenSelected : undefined}
+        selectedIds={selectedIds}
+        onDeleteSelected={canDelete && onDeleteSelected ? onDeleteSelected : undefined}
+        onMarkAsSeenSelected={canUpdate && onMarkAsSeenSelected ? onMarkAsSeenSelected : undefined}
         menus={toolbarMenus}
       />
       {/* ------- view selection buttons ------- */}

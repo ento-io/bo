@@ -13,13 +13,15 @@ import { useToggle } from '@/hooks/useToggle';
 import { IMenu } from '@/types/app.type';
 
 interface Props {
-  numSelected: number;
-  onDeleteSelected: (() => void) | undefined;
-  onMarkAsSeenSelected: (() => void) | undefined;
-  menus?: IMenu[];
+  selectedIds: string[];
+  onDeleteSelected: ((ids: string[]) => void) | undefined;
+  onMarkAsSeenSelected: ((ids: string[]) => void) | undefined;
+  menus?: IMenu<string[]>[];
 }
 
-const TableToolbar = ({ numSelected, onDeleteSelected, onMarkAsSeenSelected, menus = [] }: Props) => {
+const TableToolbar = ({ selectedIds, onDeleteSelected, onMarkAsSeenSelected, menus = [] }: Props) => {
+  const numSelected = selectedIds.length;
+
   const { t } = useTranslation();
   const theme = useTheme();
 
@@ -30,13 +32,16 @@ const TableToolbar = ({ numSelected, onDeleteSelected, onMarkAsSeenSelected, men
   }
 
   const handleDelete = () => {
-    onDeleteSelected?.();
+    onDeleteSelected?.(selectedIds);
   };
 
   const options = [
-    ...menus, // before delete
+    ...menus.map((menu) => ({
+      ...menu,
+      onClick: () => menu.onClick(selectedIds)
+    })), // before delete
     {
-      onClick: onMarkAsSeenSelected,
+      onClick: () => onMarkAsSeenSelected?.(selectedIds),
       display: !!onMarkAsSeenSelected,
       label: t('markAsSeen'),
       icon: <FaTasks size={20} />
@@ -52,6 +57,7 @@ const TableToolbar = ({ numSelected, onDeleteSelected, onMarkAsSeenSelected, men
   return (
     <>
       <Toolbar
+        className="flexRow center spaceBetween"
         sx={{
           borderRadius: 1,
           mb: 2,
@@ -62,7 +68,7 @@ const TableToolbar = ({ numSelected, onDeleteSelected, onMarkAsSeenSelected, men
           }),
         }}>
         {/* label with count */}
-        <Typography sx={{ flex: '1 1 100%' }} variant="subtitle1">
+        <Typography variant="subtitle1">
           {t('selectedCount', { count: numSelected })}
         </Typography>
         <Stack direction="row" spacing={2}>

@@ -160,6 +160,18 @@ export const regenerateInvoicePDF = (id: string): any => {
   });
 };
 
+export const regenerateInvoicePDFs = (ids: string[]): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    const currentUser = await Parse.User.currentAsync();
+    if (!currentUser) return;
+
+    const count = await Parse.Cloud.run('regenerateInvoicePDFs', { ids })
+
+    await dispatch(setMessageSlice(i18n.t('common:invoices.countRegeneratedSuccessfully', { count })));
+  });
+};
+
+
 
 export const createInvoice = (values: InvoiceInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
