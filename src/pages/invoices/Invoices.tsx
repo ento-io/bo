@@ -155,6 +155,7 @@ const Invoices = () => {
 
     const invoicesData = invoices.map((invoice: IInvoice) => {
       const data: Record<string, any> = {
+        id: invoice.objectId, // required even if not displayed
         reference: invoice.estimate.reference,
         supplierName: invoice.supplierName,
         createdBy: <UserCell user={invoice.createdBy} />,
