@@ -10,7 +10,6 @@ import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
 import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.type';
-import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
 import { invoicesRoute } from '@/routes/protected/invoice.routes';
 import Dialog from '@/components/Dialog';
@@ -20,6 +19,7 @@ import InvoiceForm from '../../containers/invoices/InvoiceForm';
 import AddFab from '@/components/AddFab';
 import { useToggle } from '@/hooks/useToggle';
 import SearchInvoices from '@/containers/invoices/SearchInvoices';
+import InvoiceMenus from './InvoiceMenus';
 
 const INVOICES_FORM_ID = 'send-email-form-id'
 
@@ -162,11 +162,12 @@ const Invoices = () => {
         user: invoice.user ? <UserCell user={invoice.user} /> : '-',
         createdAt: displayDate(invoice.createdAt, false, true),
         actions:(
-          <ButtonActions
+          <InvoiceMenus
             onDelete={canDelete ? () => onDelete(invoice) : undefined}
             onPreview={canPreview ? () => onPreview(invoice.objectId) : undefined}
             onEdit={canEdit ? () => onEdit(invoice) : undefined}
-            value={invoice.estimate.reference}
+            onDownloadPDF={() => console.log('down')}
+            label={invoice.estimate.reference}
           />
         )
       };
