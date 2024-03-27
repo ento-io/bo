@@ -11,8 +11,6 @@ import { setValues } from '@/utils/parse.utils';
 import { EstimateInput, IEstimate } from '@/types/estimate.types';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { IQueriesInput } from '@/types/app.type';
-import { searchUserPointerQuery } from './user.action';
-import { escapeText, isBoolean } from '@/utils/utils';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
@@ -52,44 +50,16 @@ export const loadEstimates = ({
   search,
 }: IQueriesInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    const query = new Parse.Query(Estimate);
-
-    // full text search
-    // should be before all other queries
-    if (search?.text) {
-      // search estimate by user name or email
-      await searchUserPointerQuery(query, search.text);
-    }
-
-    query.limit(+limit)
-      .skip(+skip)
-      .notEqualTo('deleted', true)
-      .exists('createdBy')
-      .include(['createdBy', 'updatedBy']);
-
-    if (filters) {
-      if (isBoolean(filters?.deleted)) {
-        query.equalTo('deleted', filters.deleted);
-      }
-
-      if (isBoolean(filters?.seen)) {
-        query.equalTo('seen', filters.seen);
-      }
-    }
-
-    if (search) {
-      if (search.message) {
-        query.matches('lastName', escapeText(search.message));
-      }
-    }
-
-    if (order === 'desc') {
-      query.descending(orderBy);
-    } else {
-      query.ascending(orderBy);
-    }
-
-    const result: Record<string, any> = await query.withCount().find();
+    // result with count
+    // we make it server side because we need to get user infos
+    const result: Record<string, any> = await Parse.Cloud.run('getEstimates', {
+      limit,
+      skip,
+      orderBy,
+      order,
+      filters,
+      search,
+    });
 
     // save estimates to store (in json)
     const estimatesJson = result.results.map((estimate: any) => estimate.toJSON());

@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, ReactNode, useEffect, useState } from 'react';
 
 import { IconButton, Stack, Tooltip } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -14,7 +14,7 @@ import { getAppLoadingSelector } from '@/redux/reducers/app.reducer';
 import { DEFAULT_PAGINATION, DEFAULT_QUERIES_INPUT } from '@/utils/constants';
 import { pagePaginationToQueryInput } from '@/utils/utils';
 
-import { IPagination, IQueriesInput } from '@/types/app.type';
+import { IPagination, IQueriesInput, IRenderSearchProps } from '@/types/app.type';
 
 import ListCardsView from './ListCardsView';
 import Table from './Table';
@@ -31,7 +31,7 @@ type Props<IQuery> = {
   onRowClick?: (id: string) => void;
   canDelete?: boolean;
   canUpdate?: boolean;
-  renderFilter: any,
+  renderFilter: (values: IRenderSearchProps) => ReactNode;
   border?: boolean;
   onUpdateData: any;
   defaultFilters?: IQuery;
@@ -122,10 +122,10 @@ const List = <IQuery extends IQueriesInput['filters'],>({
   };
 
   // input search on key up
-  const onSearch = debounce((value: string) => {
+  const onSearch = debounce((name: string, value: string) => {
     const newQueries = {
       ...queries,
-      search: { text: value },
+      search: { ...queries.search, [name]: value },
       filters: {
         ...queries.filters,
       },
@@ -248,7 +248,7 @@ const List = <IQuery extends IQueriesInput['filters'],>({
   return (
     <Box sx={{ width: '100%' }}>
       <SearchContainer>
-        {renderFilter(onSearch, onAdvancedSearch)}
+        {renderFilter({ onSearch, onAdvancedSearch })}
         {/* <SearchInput onChange={onSearch} placeholder={t('user:searchByNameOrEmail')} />
         <UserAdvancedFilter onSubmit={onAdvancedSearch} /> */}
       </SearchContainer>

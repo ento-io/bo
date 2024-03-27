@@ -13,7 +13,7 @@ import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
-import { IQueriesInput, TableHeadCell } from '@/types/app.type';
+import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.type';
 import Avatar from '@/components/Avatar';
 import ButtonActions from '@/components/ButtonActions';
 import { capitalizeFirstLetter } from '@/utils/utils';
@@ -193,13 +193,10 @@ const Users = () => {
         count={count}
         canDelete={canAccessTo(roles, '_User', 'delete')}
         canUpdate={canAccessTo(roles, '_User', 'update')}
-        renderFilter={(
-          onSearch: (search: string) => void,
-          onAdvancedSearch: (values: Record<string, any>) => void
-        ) => (
+        renderFilter={(props: IRenderSearchProps) => (
           <>
-            <SearchInput onChange={onSearch} placeholder={t('user:searchByNameOrEmail')} />
-            <UserAdvancedFilterForm onSubmit={onAdvancedSearch} />
+            <SearchInput onChange={props.onSearch} placeholder={t('user:searchByNameOrEmail')} />
+            <UserAdvancedFilterForm onSubmit={props.onAdvancedSearch} />
           </>
         )}
       />

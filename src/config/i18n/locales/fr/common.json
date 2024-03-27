@@ -315,7 +315,8 @@
     "estimate": "Devis",
     "estimateCreatedSuccessfully": "Devise créé avec succès",
     "estimateEditedSuccessfully": "Devis modifié avec succès {{value}",
-    "estimateDeletedSuccessfully": "Devis supprimé avec succès {{value}}"
+    "estimateDeletedSuccessfully": "Devis supprimé avec succès {{value}}",
+    "searchText": "Rechercher reference, lien, ..."
   },
   "invoices": {
     "supplierName": "Nom du fournisseur",

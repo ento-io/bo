@@ -297,7 +297,8 @@
     "estimate": "Estimate",
     "estimateCreatedSuccessfully": "Estimate created successfully",
     "estimateEditedSuccessfully": "Estimate {{value}} edited successfully",
-    "estimateDeletedSuccessfully": "Estimate {{value}} deleted successfully"
+    "estimateDeletedSuccessfully": "Estimate {{value}} deleted successfully",
+    "searchText": "Search reference, url, ..."
   },
   "invoices": {
     "supplierName": "Supplier name",
