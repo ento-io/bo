@@ -18,6 +18,7 @@ import { ISelectOption } from '@/types/app.type';
 import UserInfo from '@/containers/users/UserInfos';
 import { getEstimateEstimateSelector } from '@/redux/reducers/estimate.reducer';
 import { goToEstimates } from '@/redux/actions/estimate.action';
+import ItemsStatus from '@/components/ItemsStatus';
 
 const Estimate = () => {
   const { t } = useTranslation(['common', 'user']);
@@ -31,7 +32,7 @@ const Estimate = () => {
   const infosItems: ISelectOption[] = [
     {
       label: t('common:link'),
-      value: estimate.url,
+      value: <a href={estimate.url}>{estimate.url}</a> as any,
     },
     {
       label: t('common:estimates.reference'),
@@ -44,6 +45,11 @@ const Estimate = () => {
     {
       label: t('common:updatedAt'),
       value: displayDate(estimate.updatedAt),
+    },
+    {
+      label: t('common:deletedAt'),
+      value: displayDate(estimate.deletedAt),
+      hide: !estimate.deletedAt
     },
   ];
 
@@ -65,6 +71,7 @@ const Estimate = () => {
       }>
       <Head title={t('common:estimates.reference')} />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
+        {/* left */}
         <Grid item {...PREVIEW_PAGE_GRID.left}>
           <Stack spacing={3}>
             <Layout cardTitle={t('common:details')}>
@@ -72,19 +79,35 @@ const Estimate = () => {
             </Layout>
           </Stack>
         </Grid>
-
+        {/* right */}
         <Grid item {...PREVIEW_PAGE_GRID.right}>
           <Stack spacing={3}>
             <Layout  cardTitle={t('user:createdBy')}>
-              <UserInfo user={estimate.createdBy} />
+              <UserInfo user={estimate.user} />
             </Layout>
-
-            {estimate.updatedBy && estimate.updatedBy.objectId !== estimate.createdBy.objectId && (
-              <Layout cardTitle={t('user:updatedBy')}>
-                <UserInfo user={estimate.updatedBy} />
-              </Layout>
-            )}
+            <Layout cardTitle="Status">
+              <ItemsStatus entity={estimate} />
+            </Layout>
           </Stack>
+        </Grid>
+        {/* bottom */}
+        <Grid item {...PREVIEW_PAGE_GRID.left}>
+          <Grid container gap={2}>
+            {estimate.deletedBy && (
+              <Grid item lg={3}>
+                <Layout  cardTitle={t('user:deletedBy')}>
+                  <UserInfo user={estimate.deletedBy} direction="row" />
+                </Layout>
+              </Grid>
+            )}
+            {estimate.updatedBy && estimate.updatedBy.objectId !== estimate.createdBy.objectId && (
+              <Grid item lg={3}>
+                <Layout cardTitle={t('user:updatedBy')}>
+                  <UserInfo user={estimate.updatedBy} />
+                </Layout>
+              </Grid>
+            )}
+          </Grid>
         </Grid>
       </Grid>
     </Layout>
