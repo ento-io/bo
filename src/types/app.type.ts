@@ -69,7 +69,7 @@ export interface IQueriesInput extends Partial<IFilterInput> {
 }
 
 export interface TableHeadCell<D> {
-  disablePadding: boolean;
+  disablePadding?: boolean;
   id: D;
   label: string;
   numeric?: boolean;
