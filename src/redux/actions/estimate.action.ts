@@ -25,12 +25,8 @@ const ESTIMATE_PROPERTIES = new Set(['url']);
  * @param include pointers (relations) to include in the response
  * @returns 
  */
-export const getEstimate = async (id: string, include: 'updatedBy'[] = []): Promise<Parse.Object | undefined> => {
-  const estimate = await new Parse.Query(Estimate)
-    .equalTo('objectId', id)
-    .notEqualTo('deleted', true)
-    .include(['createdBy', ...include])
-    .first();
+export const getEstimate = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
+  const estimate = await Parse.Cloud.run('getEstimate', { id, include });
 
   if (!estimate) {
     throw new Error("Estimate not found");
@@ -217,7 +213,7 @@ export const onEstimateEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     if (!route.params?.id) return ;
 
-    const estimate = await getEstimate(route.params?.id, ['updatedBy']);
+    const estimate = await getEstimate(route.params?.id, ['updatedBy', 'user']);
 
     if (!estimate) return;
 
