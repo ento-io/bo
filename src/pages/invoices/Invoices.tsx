@@ -48,10 +48,6 @@ const headCells: TableHeadCell<keyof Data>[] = [
     label: i18n.t('user:createdBy'),
   },
   {
-    id: 'updatedBy',
-    label: i18n.t('user:updatedBy'),
-  },
-  {
     id: 'user',
     label: i18n.t('user:user'),
   },
@@ -169,7 +165,6 @@ const Invoices = () => {
         reference: invoice.estimate.reference,
         supplierName: invoice.supplierName,
         createdBy: <UserCell user={invoice.createdBy} />,
-        updatedBy: invoice.updatedBy ? <UserCell user={invoice.updatedBy} /> : '-',
         user: invoice.user ? <UserCell user={invoice.user} /> : '-',
         createdAt: displayDate(invoice.createdAt, false, true),
         actions:(
