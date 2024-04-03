@@ -21,6 +21,7 @@ import AddFab from '@/components/AddFab';
 import { useToggle } from '@/hooks/useToggle';
 import SearchInvoices from '@/containers/invoices/SearchInvoices';
 import InvoiceMenus from '../../containers/invoices/InvoiceMenus';
+import InvoiceStatus from '@/containers/invoices/InvoiceStatus';
 
 const INVOICES_FORM_ID = 'send-email-form-id';
 
@@ -30,6 +31,7 @@ interface Data {
   createdBy: string;
   updatedBy: string;
   user: string;
+  status: string;
   createdAt: ReactNode;
   actions: ReactNode;
 }
@@ -41,7 +43,7 @@ const headCells: TableHeadCell<keyof Data>[] = [
   },
   {
     id: 'supplierName',
-    label: i18n.t('common:link'),
+    label: i18n.t('common:supplier'),
   },
   {
     id: 'createdBy',
@@ -50,6 +52,11 @@ const headCells: TableHeadCell<keyof Data>[] = [
   {
     id: 'user',
     label: i18n.t('user:user'),
+  },
+  {
+    id: 'status',
+    align: 'right',
+    label: 'Status',
   },
   {
     id: 'createdAt',
@@ -153,19 +160,20 @@ const Invoices = () => {
     },
   ]
 
-  // table data
+  // table data, the key should match with the column id in headCells
   const dataTable = useMemo((): Data[] => {
     const canDelete = canAccessTo(roles, 'Invoice', 'delete');
     const canPreview = canAccessTo(roles, 'Invoice', 'get');
     const canEdit = canAccessTo(roles, 'Invoice', 'edit');
-
     const invoicesData = invoices.map((invoice: IInvoice) => {
+
       const data: Record<string, any> = {
         id: invoice.objectId, // required even if not displayed
         reference: invoice.estimate.reference,
         supplierName: invoice.supplierName,
         createdBy: <UserCell user={invoice.createdBy} />,
         user: invoice.user ? <UserCell user={invoice.user} /> : '-',
+        status: invoice.status ? <InvoiceStatus status={invoice.status} /> : '-',
         createdAt: displayDate(invoice.createdAt, false, true),
         actions:(
           <InvoiceMenus
