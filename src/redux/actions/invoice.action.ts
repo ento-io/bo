@@ -15,7 +15,7 @@ import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
 import { IInvoice, InvoiceInput } from '@/types/invoice.type';
 import { Estimate, loadEstimates } from './estimate.action';
-import { downloadInvoicePDFApi } from '@/api/invoice.api';
+import { generateAndDownloadInvoicePDFApi } from '@/api/invoice.api';
 
 const Invoice = Parse.Object.extend('Invoice');
 
@@ -113,7 +113,7 @@ export const toggleInvoicesByIds = (ids: string[], field: string, value = true):
  * @param invoiceId 
  * @returns 
  */
-export const downloadInvoicePDF = (invoiceId: string): any => {
+export const generateAndDownloadInvoicePDF = (invoiceId: string): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     const currentUser = await Parse.User.currentAsync();
     if (!currentUser) return;
@@ -121,7 +121,7 @@ export const downloadInvoicePDF = (invoiceId: string): any => {
     const invoice = await getInvoice(invoiceId);
     if (!invoice) return;
     
-    await downloadInvoicePDFApi({
+    await generateAndDownloadInvoicePDFApi({
       sessionToken: currentUser.getSessionToken(),
       id: invoiceId,
       reference: invoice.get('reference')
@@ -146,7 +146,7 @@ export const regenerateInvoicePDF = (id: string): any => {
 
     if (!invoice) return;
     
-    await downloadInvoicePDFApi({
+    await generateAndDownloadInvoicePDFApi({
       sessionToken: currentUser.getSessionToken(),
       id,
       reference: invoice.get('reference')
@@ -188,7 +188,7 @@ export const createInvoice = (values: InvoiceInput): any => {
       dispatch(addInvoiceToInvoicesSlice((savedInvoice as Attributes).toJSON()));
       await dispatch(setMessageSlice(i18n.t('common:invoices.invoiceCreatedSuccessfully')));
   
-      dispatch(downloadInvoicePDF(savedInvoice.id));
+      dispatch(generateAndDownloadInvoicePDF(savedInvoice.id));
     } catch (error) {
       // use local error instead of the global app error in actionWithLoader() in app.utils.ts
       // we use this to display a dialog instead of a global snackbar

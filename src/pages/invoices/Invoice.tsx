@@ -14,7 +14,7 @@ import { displayDate } from '@/utils/date.utils';
 import { ISelectOption } from '@/types/app.type';
 import UserInfo from '@/containers/users/UserInfos';
 import { getInvoiceInvoiceSelector } from '@/redux/reducers/invoice.reducer';
-import { deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, goToInvoices, regenerateInvoicePDF } from '@/redux/actions/invoice.action';
+import { deleteInvoice, generateAndDownloadInvoicePDF, editInvoice, goToInvoice, goToInvoices, regenerateInvoicePDF } from '@/redux/actions/invoice.action';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import InvoiceMenus from '../../containers/invoices/InvoiceMenus';
@@ -95,7 +95,7 @@ const Invoice = () => {
 
   // for notification
   const handleDownload = () => {
-    dispatch(downloadInvoicePDF(invoice.objectId));
+    dispatch(generateAndDownloadInvoicePDF(invoice.objectId));
   }
 
   const handlePreview = () => {

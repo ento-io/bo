@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
 import { clearInvoiceErrorSlice, getInvoiceCountSelector, getInvoiceErrorSelector, getInvoiceFiltersSelector, getInvoiceInvoicesSelector } from '@/redux/reducers/invoice.reducer';
-import { createInvoice, deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, loadInvoices, regenerateInvoicePDF, regenerateInvoicePDFs, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
+import { createInvoice, deleteInvoice, generateAndDownloadInvoicePDF, editInvoice, goToInvoice, loadInvoices, regenerateInvoicePDF, regenerateInvoicePDFs, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
 import List from '@/components/table/List';
 import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
@@ -140,7 +140,7 @@ const Invoices = () => {
   }
 
   const handleDownload = useCallback((invoiceId: string) => {
-    dispatch(downloadInvoicePDF(invoiceId));
+    dispatch(generateAndDownloadInvoicePDF(invoiceId));
   }, [dispatch])
 
   const handleRegenerate = useCallback((invoiceId: string) => {
