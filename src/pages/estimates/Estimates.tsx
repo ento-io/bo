@@ -139,7 +139,7 @@ const Estimates = () => {
   const dataTable = useMemo((): Data[] => {
     const canDelete = canAccessTo(roles, 'Estimate', 'delete');
     const canPreview = canAccessTo(roles, 'Estimate', 'get');
-    const canEdit = canAccessTo(roles, 'Estimate', 'edit');
+    const canEdit = canAccessTo(roles, 'Estimate', 'update');
 
     const estimatesData = estimates.map((estimate: IEstimate) => {
       // default data
