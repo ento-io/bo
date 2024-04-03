@@ -5,9 +5,8 @@ import UserInfo from "./UserInfos";
 import { ISelectOption } from "@/types/app.type";
 
 type Props<T extends object, K extends ISelectOption<(keyof T)>[]> = {
-  // type Props<T extends object, K extends (keyof T)[]> = {
   object: T;
-  keys: K
+  keys: K;
 };
 const UsersForEntity = <T extends object, K extends ISelectOption<(keyof T)>[]>({ object, keys }: Props<T, K>) => {
   return (
