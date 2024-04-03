@@ -13,6 +13,8 @@
     "english": "Anglais",
     "french": "Français"
   },
+  "waiting": "En attente",
+  "sent": "Envoyé",
   "alreadyExists": "Déjà existant",
   "form": {
     "error": {
@@ -323,6 +325,7 @@
   },
   "invoices": {
     "supplierName": "Nom du fournisseur",
+    "supplier": "Fournisseur",
     "invoice": "Facture",
     "invoices": "Factures",
     "searchInvoice": "Rechercher facture",
