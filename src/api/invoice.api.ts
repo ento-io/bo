@@ -9,7 +9,7 @@ import { IInvoiceAPIInput, IInvoiceGenerationBody } from '@/types/invoice.type';
  * @param reference
  * @returns
  */
-export const downloadInvoicePDFApi = async ({ sessionToken, id, reference }: IInvoiceAPIInput): Promise<any> => {
+export const generateAndDownloadInvoicePDFApi = async ({ sessionToken, id, reference }: IInvoiceAPIInput): Promise<any> => {
   const body = { id, reference };
   const response = await http.post<IInvoiceGenerationBody, any>('/invoices/pdf', body, protectRequest(sessionToken, false));
 

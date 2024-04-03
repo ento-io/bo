@@ -5,13 +5,14 @@ import { estimateFilterSchema, estimateSchema } from "@/validations/estimate.val
 
 export interface IEstimate extends Attributes {
   objectId: string;
-  title: string;
   reference: string;
   updatedAt?: string;
   createdAt?: string;
   user: IUser;
   updatedBy?: IUser;
   deletedBy?: IUser;
+  deletedAt?: string;
+  deleted: boolean;
 }
 
 export interface IEstimateState {

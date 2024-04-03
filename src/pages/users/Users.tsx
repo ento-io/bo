@@ -39,32 +39,24 @@ interface Data {
 const headCells: TableHeadCell<keyof Data>[] = [
   {
     id: 'fullName',
-    numeric: false,
-    disablePadding: false,
     label: i18n.t('user:fullName'),
   },
   {
     id: 'platform',
-    numeric: true,
-    disablePadding: false,
     label: i18n.t('common:platform'),
   },
   {
     id: 'email',
-    numeric: true,
-    disablePadding: false,
     label: i18n.t('user:email'),
   },
   {
     id: 'createdAt',
-    numeric: true,
-    disablePadding: false,
+    align: 'right',
     label: i18n.t('common:createdAt'),
   },
   {
     id: 'actions',
-    numeric: true,
-    disablePadding: false,
+    align: 'right',
     label: 'Actions',
   },
 ];

@@ -13,6 +13,8 @@
     "english": "Anglisy",
     "french": "Frantsay"
   },
+  "waiting": "Miandry",
+  "sent": "Lasa",
   "alreadyExists": "Efa misy",
   "form": {
     "error": {
@@ -307,6 +309,7 @@
   },
   "invoices": {
     "supplierName": "Anaran'ny mpamatsy",
+    "supplier": "Mpamatsy",
     "invoice": "Faktiora",
     "invoices": "Faktiora",
     "searchInvoice": "Hitady faktiora",

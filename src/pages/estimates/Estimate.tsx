@@ -18,6 +18,9 @@ import { ISelectOption } from '@/types/app.type';
 import UserInfo from '@/containers/users/UserInfos';
 import { getEstimateEstimateSelector } from '@/redux/reducers/estimate.reducer';
 import { goToEstimates } from '@/redux/actions/estimate.action';
+import ItemsStatus from '@/components/ItemsStatus';
+import UsersForEntity from '@/containers/users/UsersForEntity';
+import { IEstimate } from '@/types/estimate.types';
 
 const Estimate = () => {
   const { t } = useTranslation(['common', 'user']);
@@ -27,11 +30,10 @@ const Estimate = () => {
 
   if (!estimate) return null;
 
-
   const infosItems: ISelectOption[] = [
     {
       label: t('common:link'),
-      value: estimate.url,
+      value: <a href={estimate.url}>{estimate.url}</a> as any,
     },
     {
       label: t('common:estimates.reference'),
@@ -44,6 +46,11 @@ const Estimate = () => {
     {
       label: t('common:updatedAt'),
       value: displayDate(estimate.updatedAt),
+    },
+    {
+      label: t('common:deletedAt'),
+      value: displayDate(estimate.deletedAt),
+      hide: !estimate.deletedAt
     },
   ];
 
@@ -65,6 +72,7 @@ const Estimate = () => {
       }>
       <Head title={t('common:estimates.reference')} />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
+        {/* left */}
         <Grid item {...PREVIEW_PAGE_GRID.left}>
           <Stack spacing={3}>
             <Layout cardTitle={t('common:details')}>
@@ -72,20 +80,31 @@ const Estimate = () => {
             </Layout>
           </Stack>
         </Grid>
-
+        {/* right */}
         <Grid item {...PREVIEW_PAGE_GRID.right}>
           <Stack spacing={3}>
             <Layout  cardTitle={t('user:createdBy')}>
-              <UserInfo user={estimate.createdBy} />
+              <UserInfo user={estimate.user} />
             </Layout>
-
-            {estimate.updatedBy && estimate.updatedBy.objectId !== estimate.createdBy.objectId && (
-              <Layout cardTitle={t('user:updatedBy')}>
-                <UserInfo user={estimate.updatedBy} />
-              </Layout>
-            )}
+            <Layout cardTitle="Status">
+              <ItemsStatus entity={estimate} />
+            </Layout>
           </Stack>
         </Grid>
+        {/* bottom */}
+        <UsersForEntity<IEstimate, ISelectOption<('createdBy' | 'updatedBy' | 'deletedBy')>[]>
+          object={estimate}
+          keys={[{
+            label: t('user:createdBy'),
+            value: 'createdBy',
+          }, {
+            label: t('user:updatedBy'),
+            value: 'updatedBy',
+          }, {
+            label: t('user:deletedBy'),
+            value: 'deletedBy',
+          }]}
+        />
       </Grid>
     </Layout>
   );

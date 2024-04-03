@@ -13,6 +13,7 @@ export interface ISelectOption<T = string> {
   label: string;
   value: T,
   icon?: string | ReactNode;
+  hide?: boolean;
 }
 
 type AppSnackBar = {
@@ -69,7 +70,7 @@ export interface IQueriesInput extends Partial<IFilterInput> {
 }
 
 export interface TableHeadCell<D> {
-  disablePadding: boolean;
+  disablePadding?: boolean;
   id: D;
   label: string;
   numeric?: boolean;

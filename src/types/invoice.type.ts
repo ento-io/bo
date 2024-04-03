@@ -3,16 +3,27 @@ import { z } from "zod";
 import { invoiceFilterSchema, invoiceSchema } from "@/validations/invoice.validation";
 import { IEstimate } from "./estimate.types";
 import { IUser } from "./user.type";
+import { IFileCloud } from "./file.type";
 
+export enum InvoiceStatusEnum {
+  'WAITING' = 'WAITING',
+  'SENT' =  'SENT',
+};
 export interface IInvoice extends Attributes {
   objectId: string;
+  supplierName: string;
   estimate: IEstimate;
+  reference: IEstimate['reference'];
   updatedAt?: string;
   createdAt?: string;
+  deletedAt?: string;
   updatedBy?: IUser;
   createdBy: IUser;
   deletedBy?: IUser;
   user: IUser;
+  file: IFileCloud;
+  deleted: boolean;
+  status: InvoiceStatusEnum;
 }
 
 export interface IInvoiceState {

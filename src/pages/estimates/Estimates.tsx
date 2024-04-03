@@ -35,39 +35,30 @@ interface Data {
 const headCells: TableHeadCell<keyof Data>[] = [
   {
     id: 'reference',
-    numeric: false,
-    disablePadding: false,
     label: i18n.t('common:estimates.reference'),
   },
   {
     id: 'url',
-    numeric: false,
-    disablePadding: false,
+    align: 'center',
     label: i18n.t('common:link'),
   },
   {
     id: 'user',
-    numeric: false,
-    disablePadding: false,
     label: i18n.t('user:user'),
   },
   {
     id: 'updatedBy',
-    numeric: false,
-    disablePadding: false,
     label: i18n.t('user:updatedBy'),
   },
   {
     id: 'createdAt',
-    numeric: true,
-    disablePadding: false,
     label: i18n.t('common:createdAt'),
+    align: 'right',
   },
   {
     id: 'actions',
-    numeric: true,
-    disablePadding: false,
     label: 'Actions',
+    align: 'right',
   },
 ];
 

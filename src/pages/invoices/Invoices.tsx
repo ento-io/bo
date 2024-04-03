@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
 import { FiRefreshCw } from 'react-icons/fi';
 import { clearInvoiceErrorSlice, getInvoiceCountSelector, getInvoiceErrorSelector, getInvoiceFiltersSelector, getInvoiceInvoicesSelector } from '@/redux/reducers/invoice.reducer';
-import { createInvoice, deleteInvoice, downloadInvoicePDF, editInvoice, goToInvoice, loadInvoices, regenerateInvoicePDF, regenerateInvoicePDFs, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
+import { createInvoice, deleteInvoice, generateAndDownloadInvoicePDF, editInvoice, goToInvoice, loadInvoices, regenerateInvoicePDF, regenerateInvoicePDFs, toggleInvoicesByIds } from '@/redux/actions/invoice.action';
 import List from '@/components/table/List';
 import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
@@ -20,7 +20,8 @@ import InvoiceForm from '../../containers/invoices/InvoiceForm';
 import AddFab from '@/components/AddFab';
 import { useToggle } from '@/hooks/useToggle';
 import SearchInvoices from '@/containers/invoices/SearchInvoices';
-import InvoiceMenus from './InvoiceMenus';
+import InvoiceMenus from '../../containers/invoices/InvoiceMenus';
+import InvoiceStatus from '@/containers/invoices/InvoiceStatus';
 
 const INVOICES_FORM_ID = 'send-email-form-id';
 
@@ -30,6 +31,7 @@ interface Data {
   createdBy: string;
   updatedBy: string;
   user: string;
+  status: string;
   createdAt: ReactNode;
   actions: ReactNode;
 }
@@ -37,45 +39,34 @@ interface Data {
 const headCells: TableHeadCell<keyof Data>[] = [
   {
     id: 'reference',
-    numeric: false,
-    disablePadding: false,
     label: i18n.t('common:estimates.reference'),
   },
   {
     id: 'supplierName',
-    numeric: false,
-    disablePadding: false,
-    label: i18n.t('common:link'),
+    label: i18n.t('common:supplier'),
   },
   {
     id: 'createdBy',
-    numeric: false,
-    disablePadding: false,
     label: i18n.t('user:createdBy'),
   },
   {
-    id: 'updatedBy',
-    numeric: false,
-    disablePadding: false,
-    label: i18n.t('user:updatedBy'),
-  },
-  {
     id: 'user',
-    numeric: false,
-    disablePadding: false,
     label: i18n.t('user:user'),
   },
   {
+    id: 'status',
+    align: 'right',
+    label: 'Status',
+  },
+  {
     id: 'createdAt',
-    numeric: true,
-    disablePadding: false,
+    align: 'right',
     label: i18n.t('common:createdAt'),
   },
   {
     id: 'actions',
-    numeric: true,
-    disablePadding: false,
     label: 'Actions',
+    align: 'right'
   },
 ];
 
@@ -149,7 +140,7 @@ const Invoices = () => {
   }
 
   const handleDownload = useCallback((invoiceId: string) => {
-    dispatch(downloadInvoicePDF(invoiceId));
+    dispatch(generateAndDownloadInvoicePDF(invoiceId));
   }, [dispatch])
 
   const handleRegenerate = useCallback((invoiceId: string) => {
@@ -169,20 +160,20 @@ const Invoices = () => {
     },
   ]
 
-  // table data
+  // table data, the key should match with the column id in headCells
   const dataTable = useMemo((): Data[] => {
     const canDelete = canAccessTo(roles, 'Invoice', 'delete');
     const canPreview = canAccessTo(roles, 'Invoice', 'get');
     const canEdit = canAccessTo(roles, 'Invoice', 'edit');
-
     const invoicesData = invoices.map((invoice: IInvoice) => {
+
       const data: Record<string, any> = {
         id: invoice.objectId, // required even if not displayed
         reference: invoice.estimate.reference,
         supplierName: invoice.supplierName,
         createdBy: <UserCell user={invoice.createdBy} />,
-        updatedBy: invoice.updatedBy ? <UserCell user={invoice.updatedBy} /> : '-',
         user: invoice.user ? <UserCell user={invoice.user} /> : '-',
+        status: invoice.status ? <InvoiceStatus status={invoice.status} /> : '-',
         createdAt: displayDate(invoice.createdAt, false, true),
         actions:(
           <InvoiceMenus
