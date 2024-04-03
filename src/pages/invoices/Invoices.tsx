@@ -164,7 +164,7 @@ const Invoices = () => {
   const dataTable = useMemo((): Data[] => {
     const canDelete = canAccessTo(roles, 'Invoice', 'delete');
     const canPreview = canAccessTo(roles, 'Invoice', 'get');
-    const canEdit = canAccessTo(roles, 'Invoice', 'edit');
+    const canEdit = canAccessTo(roles, 'Invoice', 'update');
     const invoicesData = invoices.map((invoice: IInvoice) => {
 
       const data: Record<string, any> = {
