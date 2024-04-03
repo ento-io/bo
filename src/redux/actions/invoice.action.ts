@@ -22,11 +22,7 @@ const Invoice = Parse.Object.extend('Invoice');
 const INVOICE_PROPERTIES = new Set(['supplierName', 'estimate']);
 
 export const getInvoice = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
-  const invoice = await new Parse.Query(Invoice)
-    .equalTo('objectId', id)
-    .equalTo('deleted', false)
-    .include(['estimate', ...include])
-    .first();
+  const invoice = await Parse.Cloud.run('getInvoice', { id, include });
 
   if (!invoice) {
     throw new Error("Invoice not found");
@@ -267,7 +263,7 @@ export const onInvoiceEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     if (!route.params?.id) return ;
 
-    const invoice = await getInvoice(route.params?.id, ['createdBy', 'updatedBy', 'estimate.updatedBy', 'estimate.createdBy']);
+    const invoice = await getInvoice(route.params?.id, ['createdBy', 'updatedBy', 'user']);
 
     if (!invoice) return;
 
