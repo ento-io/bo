@@ -44,7 +44,6 @@ const UserInfo = ({ user, direction = 'column' }: Props) => {
   const theme = useTheme();
 
   return (
-    // <Box className={direction === 'column' ? 'flexCenter' : 'flexRow'} sx={{ gap: 1.5 / 6 }}>
     <Stack direction={direction} spacing={direction === 'column' ? 0 : 1} alignItems={direction === 'column' ? 'center' : 'flex-start'}>
       <div className={direction === 'column' ? '' : 'flexCenter stretchSelf'}>
         <StyledBadge
