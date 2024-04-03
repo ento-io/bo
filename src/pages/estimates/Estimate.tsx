@@ -19,6 +19,8 @@ import UserInfo from '@/containers/users/UserInfos';
 import { getEstimateEstimateSelector } from '@/redux/reducers/estimate.reducer';
 import { goToEstimates } from '@/redux/actions/estimate.action';
 import ItemsStatus from '@/components/ItemsStatus';
+import UsersForEntity from '@/containers/users/UsersForEntity';
+import { IEstimate } from '@/types/estimate.types';
 
 const Estimate = () => {
   const { t } = useTranslation(['common', 'user']);
@@ -27,7 +29,6 @@ const Estimate = () => {
   const estimate = useSelector(getEstimateEstimateSelector);
 
   if (!estimate) return null;
-
 
   const infosItems: ISelectOption[] = [
     {
@@ -91,24 +92,19 @@ const Estimate = () => {
           </Stack>
         </Grid>
         {/* bottom */}
-        <Grid item {...PREVIEW_PAGE_GRID.left}>
-          <Grid container gap={2}>
-            {estimate.deletedBy && (
-              <Grid item lg={3}>
-                <Layout  cardTitle={t('user:deletedBy')}>
-                  <UserInfo user={estimate.deletedBy} direction="row" />
-                </Layout>
-              </Grid>
-            )}
-            {estimate.updatedBy && estimate.updatedBy.objectId !== estimate.createdBy.objectId && (
-              <Grid item lg={3}>
-                <Layout cardTitle={t('user:updatedBy')}>
-                  <UserInfo user={estimate.updatedBy} />
-                </Layout>
-              </Grid>
-            )}
-          </Grid>
-        </Grid>
+        <UsersForEntity<IEstimate, ISelectOption<('createdBy' | 'updatedBy' | 'deletedBy')>[]>
+          object={estimate}
+          keys={[{
+            label: t('user:createdBy'),
+            value: 'createdBy',
+          }, {
+            label: t('user:updatedBy'),
+            value: 'updatedBy',
+          }, {
+            label: t('user:deletedBy'),
+            value: 'deletedBy',
+          }]}
+        />
       </Grid>
     </Layout>
   );
