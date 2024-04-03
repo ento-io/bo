@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, Theme } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,8 +20,19 @@ import { canAccessTo } from '@/utils/role.utils';
 import InvoiceMenus from '../../containers/invoices/InvoiceMenus';
 import Dialog from '@/components/Dialog';
 import InvoiceForm from '@/containers/invoices/InvoiceForm';
-import { InvoiceInput } from '@/types/invoice.type';
+import { IInvoice, InvoiceInput } from '@/types/invoice.type';
 import { useToggle } from '@/hooks/useToggle';
+import InvoiceStatus from '@/containers/invoices/InvoiceStatus';
+import UsersForEntity from '@/containers/users/UsersForEntity';
+
+const classes = {
+  reference: (theme: Theme) => ({
+    color: theme.palette.info.main,
+    marginRight: 20,
+    fontSize: 20,
+    fontWeight: 600,
+  }),
+};
 
 const INVOICES_FORM_ID = 'send-email-form-id';
 
@@ -61,15 +72,20 @@ const Invoice = () => {
   const estimateItems: ISelectOption[] = [
     {
       label: t('common:link'),
-      value: displayDate(invoice.estimate.url),
+      value: <a href={invoice.estimate.url}>{invoice.estimate.url}</a> as any,
     },
     {
-      label: t('common:invoice.createdAt'),
+      label: t('common:createdAt'),
       value: displayDate(invoice.estimate.createdAt),
     },
     {
-      label: t('common:invoice.updatedAt'),
+      label: t('common:updatedAt'),
       value: displayDate(invoice.estimate.updatedAt),
+    },
+    {
+      label: t('common:deletedAt'),
+      value: displayDate(invoice.estimate.deletedAt),
+      hide: !invoice.deletedAt
     },
   ];
 
@@ -103,7 +119,13 @@ const Invoice = () => {
 
   return (
     <Layout
-      title={t('common:invoices.invoice')}
+      title={(
+        <>
+          <span css={{ marginRight: 10 }}>{t('common:invoices.invoice')}</span>
+          <span css={classes.reference}>#{invoice.reference}</span>
+          <InvoiceStatus status={invoice.status} />
+        </>
+      )}
       isCard={false}
       actions={
         <InvoiceMenus
@@ -116,8 +138,9 @@ const Invoice = () => {
           label={invoice.estimate.reference}
         />
       }>
-      <Head title={t('common:invoices.reference')} />
+      <Head title={t('common:estimates.reference')} />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
+        {/* left */}
         <Grid item {...PREVIEW_PAGE_GRID.left}>
           <Stack spacing={3}>
             <Layout cardTitle={t('common:details')}>
@@ -130,19 +153,29 @@ const Invoice = () => {
           </Stack>
         </Grid>
 
+        {/* right */}
         <Grid item {...PREVIEW_PAGE_GRID.right}>
           <Stack spacing={3}>
-            <Layout  cardTitle={t('user:createdBy')}>
-              <UserInfo user={invoice.createdBy} />
+            <Layout cardTitle={t('user:user')}>
+              <UserInfo user={invoice.user} />
             </Layout>
-
-            {invoice.updatedBy && invoice.updatedBy.objectId !== invoice.createdBy.objectId && (
-              <Layout cardTitle={t('user:updatedBy')}>
-                <UserInfo user={invoice.updatedBy} />
-              </Layout>
-            )}
           </Stack>
         </Grid>
+
+        {/* bottom */}
+        <UsersForEntity<IInvoice, ISelectOption<('createdBy' | 'updatedBy' | 'deletedBy')>[]>
+          object={invoice}
+          keys={[{
+            label: t('user:createdBy'),
+            value: 'createdBy',
+          }, {
+            label: t('user:updatedBy'),
+            value: 'updatedBy',
+          }, {
+            label: t('user:deletedBy'),
+            value: 'deletedBy',
+          }]}
+        />
       </Grid>
 
       <Dialog
