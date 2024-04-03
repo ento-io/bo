@@ -80,7 +80,7 @@ const Invoices = () => {
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
   const error = useSelector(getInvoiceErrorSelector);
-  const canCreate = canAccessTo(roles, 'Contact', 'create');
+  const canCreate = canAccessTo(roles, 'Invoice', 'create');
 
   const [selectedInvoice, setSelectedInvoice] = useState<IInvoice | null>(null);
   const { open: isOpenCreation, toggle: toggleOpenCreation } = useToggle();

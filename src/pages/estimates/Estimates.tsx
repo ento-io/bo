@@ -71,7 +71,7 @@ const Estimates = () => {
   const searchParams = estimatesRoute.useSearch()
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
-  const canCreate = canAccessTo(roles, 'Contact', 'create');
+  const canCreate = canAccessTo(roles, 'Estimate', 'create');
 
   const [selectedEstimate, setSelectedEstimate] = useState<IEstimate | null>(null);
   const { open: isOpenCreation, toggle: toggleOpenCreation } = useToggle();
