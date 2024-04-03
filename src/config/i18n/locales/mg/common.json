@@ -302,6 +302,7 @@
     "createEstimate": "Hamorona tombana",
     "editEstimate": "Hanova tombana",
     "estimate": "Tombana",
+    "estimates": "Tombana",
     "estimateCreatedSuccessfully": "Voaforona soamantsara ny tombana",
     "estimateEditedSuccessfully": "Voaova soamantsara ny tombana {{value}}",
     "estimateDeletedSuccessfully": "Voafafa somantsara ny tombana {{value}}",

@@ -300,6 +300,7 @@
     "createEstimate": "Create estimate",
     "editEstimate": "Edit estimate {{value}}",
     "estimate": "Estimate",
+    "estimates": "Estimates",
     "estimateCreatedSuccessfully": "Estimate created successfully",
     "estimateEditedSuccessfully": "Estimate {{value}} edited successfully",
     "estimateDeletedSuccessfully": "Estimate {{value}} deleted successfully",

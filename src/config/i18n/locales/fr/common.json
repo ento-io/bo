@@ -316,6 +316,7 @@
     "reference": "Reference",
     "searchEstimate": "Rechercher devis",
     "createEstimate": "Créer un devis",
+    "estimates": "Devis",
     "editEstimate": "Modifier le devis",
     "estimate": "Devis",
     "estimateCreatedSuccessfully": "Devise créé avec succès",
