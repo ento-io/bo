@@ -7,7 +7,9 @@ import { IFileCloud } from "./file.type";
 
 export enum InvoiceStatusEnum {
   'WAITING' = 'WAITING',
+  'IN_PROGRESS' = 'IN_PROGRESS',
   'SENT' =  'SENT',
+  'PAID' =  'PAID',
 };
 export interface IInvoice extends Attributes {
   objectId: string;

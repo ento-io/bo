@@ -3,6 +3,11 @@ import { z } from "zod";
 import { IUser } from "./user.type";
 import { estimateFilterSchema, estimateSchema } from "@/validations/estimate.validation";
 
+export enum EstimateStatusEnum {
+  'WAITING' = 'WAITING',
+  'DONE' =  'DONE',
+};
+
 export interface IEstimate extends Attributes {
   objectId: string;
   reference: string;
@@ -13,6 +18,7 @@ export interface IEstimate extends Attributes {
   deletedBy?: IUser;
   deletedAt?: string;
   deleted: boolean;
+  status: EstimateStatusEnum;
 }
 
 export interface IEstimateState {

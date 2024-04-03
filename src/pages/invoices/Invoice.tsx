@@ -24,6 +24,7 @@ import { IInvoice, InvoiceInput } from '@/types/invoice.type';
 import { useToggle } from '@/hooks/useToggle';
 import InvoiceStatus from '@/containers/invoices/InvoiceStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
+import EstimateStatus from '@/containers/estimates/EstimateStatus';
 
 const classes = {
   reference: (theme: Theme) => ({
@@ -73,6 +74,10 @@ const Invoice = () => {
     {
       label: t('common:link'),
       value: <a href={invoice.estimate.url}>{invoice.estimate.url}</a> as any,
+    },
+    {
+      label: 'Status',
+      value: <EstimateStatus status={invoice.estimate.status} />,
     },
     {
       label: t('common:createdAt'),

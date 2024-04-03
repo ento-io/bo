@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, Theme } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,6 +21,16 @@ import { goToEstimates } from '@/redux/actions/estimate.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
 import { IEstimate } from '@/types/estimate.types';
+import EstimateStatus from '@/containers/estimates/EstimateStatus';
+
+const classes = {
+  reference: (theme: Theme) => ({
+    color: theme.palette.info.main,
+    marginRight: 20,
+    fontSize: 20,
+    fontWeight: 600,
+  }),
+};
 
 const Estimate = () => {
   const { t } = useTranslation(['common', 'user']);
@@ -65,7 +75,13 @@ const Estimate = () => {
 
   return (
     <Layout
-      title={t('common:estimates.estimate')}
+      title={(
+        <>
+          <span css={{ marginRight: 10 }}>{t('common:estimates.estimate')}</span>
+          <span css={classes.reference}>#{estimate.reference}</span>
+          <EstimateStatus status={estimate.status} />
+        </>
+      )}
       isCard={false}
       actions={
         <ActionsMenu label={estimate.lastName} goToList={handleGoToList} onMarkAsSeen={handleMarkAsSeen} />

@@ -16,6 +16,15 @@
   "waiting": "Miandry",
   "sent": "Lasa",
   "alreadyExists": "Efa misy",
+  "status": {
+    "canceled": "Najanona",
+    "declined": "Tsy nisy fahafahana",
+    "waiting": "Eo am-piandrasana",
+    "sent": "Nivoaka",
+    "inProgress": "Eo ampanaovana",
+    "paid": "Nanaraka",
+    "done": "Tapitra"
+  },
   "form": {
     "error": {
       "invalidStringType": "Tokony ho teny",

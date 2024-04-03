@@ -2,6 +2,7 @@ import { ReactNode, useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
+import { truncate } from 'lodash';
 import { getEstimateCountSelector, getEstimateFiltersSelector, getEstimateEstimatesSelector } from '@/redux/reducers/estimate.reducer';
 import { createEstimate, deleteEstimate, editEstimate, goToEstimate, loadEstimates, toggleEstimatesByIds } from '@/redux/actions/estimate.action';
 import List from '@/components/table/List';
@@ -20,6 +21,7 @@ import EstimateForm from '../../containers/estimates/EstimateForm';
 import AddFab from '@/components/AddFab';
 import { useToggle } from '@/hooks/useToggle';
 import SearchEstimates from '@/containers/estimates/SearchEstimates';
+import EstimateStatus from '@/containers/estimates/EstimateStatus';
 
 const ESTIMATE_FORM_ID = 'send-email-form-id'
 
@@ -27,6 +29,7 @@ interface Data {
   reference: string;
   url: string;
   user: string;
+  status: string;
   updatedBy: string;
   createdAt: ReactNode;
   actions: ReactNode;
@@ -45,6 +48,10 @@ const headCells: TableHeadCell<keyof Data>[] = [
   {
     id: 'user',
     label: i18n.t('user:user'),
+  },
+  {
+    id: 'status',
+    label: 'Status'
   },
   {
     id: 'updatedBy',
@@ -139,8 +146,9 @@ const Estimates = () => {
       const data: Record<string, any> = {
         id: estimate.objectId, // required even if not displayed
         reference: estimate.reference,
-        url: estimate.url,
+        url: <a href={estimate.url}>{truncate(estimate.url, { length: 30 })}</a>,
         user: <UserCell user={estimate.user} />,
+        status: <EstimateStatus status={estimate.status} />,
         updatedBy: estimate.updatedBy ? <UserCell user={estimate.updatedBy} /> : '-',
         createdAt: displayDate(estimate.createdAt, false, true),
         actions:(

@@ -13,9 +13,15 @@
     "english": "English",
     "french": "French"
   },
-  "waiting": "Waiting",
-  "sent": "Sent",
-  "alreadyExists": "Already exists",
+  "status": {
+    "canceled": "Canceled",
+    "declined": "Declined",
+    "waiting": "Waiting",
+    "sent": "Sent",
+    "inProgress": "In progress",
+    "paid": "Paid",
+    "done": "Done"
+  },
   "form": {
     "error": {
       "invalidStringType": "Excepted text",
@@ -66,9 +72,6 @@
   "driver": "Driver",
   "passengers": "Passengers",
   "passenger": "Passenger",
-  "done": "Done",
-  "inProgress": "In Progress",
-  "canceled": "Canceled",
   "comment": "Comment",
   "continue": "Continue",
   "finish": "Finish",

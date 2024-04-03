@@ -13,8 +13,15 @@
     "english": "Anglais",
     "french": "Français"
   },
-  "waiting": "En attente",
-  "sent": "Envoyé",
+  "status": {
+    "canceled": "Annulé",
+    "declined": "Refusé",
+    "waiting": "En attente",
+    "sent": "Envoyé",
+    "inProgress": "En cours",
+    "paid": "Payé",
+    "done": "Terminé"
+  },
   "alreadyExists": "Déjà existant",
   "form": {
     "error": {
@@ -67,8 +74,6 @@
   "passengers": "Passagers",
   "passenger": "Passager",
   "done": "Terminé",
-  "inProgress": "En cours",
-  "canceled": "Annulé",
   "comment": "Commentaire",
   "continue": "Continue",
   "finish": "Terminer",
