@@ -1,9 +1,9 @@
 import { ReactNode, useState } from 'react';
 
-import { TextField, TextFieldProps, Stack, FormHelperText, Typography } from '@mui/material';
+import { TextFieldProps, Stack, FormHelperText, Typography } from '@mui/material';
 import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
 import { isBeforeDate } from '@/utils/date.utils';
@@ -18,9 +18,10 @@ type Props = {
   value: null[] | Dayjs[];
   inputFormat?: string;
   separator?: string | ReactNode;
+  hasError?: boolean;
 } & TextFieldProps;
 
-const DateRangeInput = ({ onChange, value = [null, null], inputFormat, separator, ...inputProps }: Props) => {
+const DateRangeInput = ({ onChange, value = [null, null], inputFormat, separator, hasError, ...inputProps }: Props) => {
   const [error, setError] = useState<Errors | null>(null);
   const { t } = useTranslation();
   const errorMessage = t('errors.startDateBeforeEndDate');
@@ -31,10 +32,10 @@ const DateRangeInput = ({ onChange, value = [null, null], inputFormat, separator
         <Stack direction="row" spacing={2} alignItems="center">
           <DesktopDatePicker
             label={t('start')}
-            inputFormat={inputFormat ?? t('dateOnlyFormat')}
+            format={inputFormat ?? t('dateOnlyFormat')}
             value={value[0]}
             onChange={date => {
-              const start = dayjs(date).toDate();
+              const start = date;
               const end = value[1];
 
               if (end) {
@@ -46,26 +47,25 @@ const DateRangeInput = ({ onChange, value = [null, null], inputFormat, separator
                   return;
                 }
               }
+
               onChange([start, end]);
             }}
-            renderInput={params => (
-              <TextField
-                variant="standard"
-                fullWidth
-                color="primary"
-                error={!!error?.start}
-                {...params}
-                {...inputProps}
-              />
-            )}
+            slotProps={{
+              textField: {
+                error: !!error?.start || hasError,
+                variant: 'standard',
+                className: 'flex1',
+                ...inputProps
+              },
+            }}
           />
           {separator && <Typography>{separator}</Typography>}
           <DesktopDatePicker
             label={t('end')}
-            inputFormat={inputFormat ?? t('dateOnlyFormat')}
+            format={inputFormat ?? t('dateOnlyFormat')}
             value={value[1]}
             onChange={date => {
-              const end = dayjs(date).toDate();
+              const end = date;
               const start = value[0];
               if (start) {
                 const isStartBeforeEnd = isBeforeDate(start, end);
@@ -80,16 +80,14 @@ const DateRangeInput = ({ onChange, value = [null, null], inputFormat, separator
               // change value if no errors
               onChange([start, end]);
             }}
-            renderInput={params => (
-              <TextField
-                variant="standard"
-                fullWidth
-                color="primary"
-                error={!!error?.end}
-                {...params}
-                {...inputProps}
-              />
-            )}
+            slotProps={{
+              textField: {
+                error: !!error?.start || hasError,
+                variant: 'standard',
+                className: 'flex1',
+                ...inputProps
+              },
+            }}
           />
         </Stack>
         {error && <FormHelperText error>{error.start ?? error.end}</FormHelperText>}
