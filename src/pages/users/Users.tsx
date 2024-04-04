@@ -1,18 +1,19 @@
-import { ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { IconButton, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { FiSend } from 'react-icons/fi';
 
 import { ReactNode, useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { useCallback, useMemo } from 'react';
-import { getUserCountSelector, getUserUsersSelector } from '@/redux/reducers/user.reducer';
-import { IUser, IUsersRouteSearchParams, PlatformEnum } from '@/types/user.type';
-import { deleteUserById, deleteUsersById, goToUser, loadUsers } from '@/redux/actions/user.action';
+import { MouseEvent, useCallback, useMemo, useState } from 'react';
+import { getUserCountSelector, getUserFiltersSelector, getUserUsersSelector } from '@/redux/reducers/user.reducer';
+import { IUser, IUsersRouteSearchParams, PlatformEnum, SendEmailInput } from '@/types/user.type';
+import { deleteUserById, deleteUsersById, goToUser, loadUsers, sendEmailToUser } from '@/redux/actions/user.action';
 import List from '@/components/table/List';
 import { displayDate } from '@/utils/date.utils';
 import { getRoleCurrentUserRolesSelector } from '@/redux/reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
-import { IQueriesInput, TableHeadCell } from '@/types/app.type';
+import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.type';
 import Avatar from '@/components/Avatar';
 import ButtonActions from '@/components/ButtonActions';
 import { capitalizeFirstLetter } from '@/utils/utils';
@@ -21,42 +22,41 @@ import Head from '@/components/Head';
 import SearchInput from '@/components/form/inputs/SearchInput';
 import UserAdvancedFilterForm from '@/containers/users/UserAdvancedFilterForm';
 import { usersRoute } from '@/routes/protected/users.routes';
+import Dialog from '@/components/Dialog';
+import SendEmailForm from '@/containers/users/SendEmailForm';
 
+const SEND_EMAIL_TO_USER_FORM_ID = 'send-email-form-id'
 
 interface Data {
   id: string;
-  avatar: ReactNode;
   fullName: string;
   email: string;
   createdAt: ReactNode;
   actions: ReactNode;
   platform: string;
-  birthday: string;
 }
 
 const headCells: TableHeadCell<keyof Data>[] = [
   {
     id: 'fullName',
-    numeric: false,
-    disablePadding: false,
-    label: i18n.t('user:lastName'),
+    label: i18n.t('user:fullName'),
+  },
+  {
+    id: 'platform',
+    label: i18n.t('common:platform'),
   },
   {
     id: 'email',
-    numeric: true,
-    disablePadding: false,
     label: i18n.t('user:email'),
   },
   {
     id: 'createdAt',
-    numeric: true,
-    disablePadding: false,
+    align: 'right',
     label: i18n.t('common:createdAt'),
   },
   {
     id: 'actions',
-    numeric: true,
-    disablePadding: false,
+    align: 'right',
     label: 'Actions',
   },
 ];
@@ -82,9 +82,12 @@ const Users = () => {
   const dispatch = useDispatch();
   const users = useSelector(getUserUsersSelector);
   const count = useSelector(getUserCountSelector);
-  const searchParams = usersRoute.useSearch()
+  const filters = useSelector(getUserFiltersSelector);
+  const searchParams = usersRoute.useSearch();
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
+
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
   const { t } = useTranslation();
 
@@ -109,8 +112,25 @@ const Users = () => {
     dispatch(deleteUsersById(ids));
   };
 
+  const handleCloseDialog = () => {
+    setSelectedUser(null);
+  };
+
+  const handleSelectRow = (user: IUser) => (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+
+    setSelectedUser(user);
+  }
+
+  const onSendEmailFormSubmit = async (values: SendEmailInput) => {
+    if (!selectedUser) return;
+    await dispatch(sendEmailToUser(selectedUser, values));
+    handleCloseDialog();
+  };
+
   const onUpdateData = (queries: IQueriesInput) => {
-    dispatch(loadUsers(queries))
+    const newQueries = { ...queries, filters: { ...filters, ...queries.filters } };
+    dispatch(loadUsers(newQueries))
   }
 
   // table data
@@ -138,7 +158,11 @@ const Users = () => {
             onDelete={canDelete ? () => onDelete(user) : undefined}
             onPreview={canPreview ? () => onPreview(user.objectId) : undefined}
             value={getUserFullName(user)}
-          />  
+          >
+            <IconButton aria-label="sendMail" onClick={handleSelectRow(user)}>
+              <FiSend size={20} />
+            </IconButton>
+          </ButtonActions>  
         )
       };
 
@@ -161,16 +185,29 @@ const Users = () => {
         count={count}
         canDelete={canAccessTo(roles, '_User', 'delete')}
         canUpdate={canAccessTo(roles, '_User', 'update')}
-        renderFilter={(
-          onSearch: (search: string) => void,
-          onAdvancedSearch: (values: Record<string, any>) => void
-        ) => (
+        renderFilter={(props: IRenderSearchProps) => (
           <>
-            <SearchInput onChange={onSearch} placeholder={t('user:searchByNameOrEmail')} />
-            <UserAdvancedFilterForm onSubmit={onAdvancedSearch} />
+            <SearchInput onChange={props.onSearch} placeholder={t('user:searchByNameOrEmail')} />
+            <UserAdvancedFilterForm onSubmit={props.onAdvancedSearch} />
           </>
         )}
       />
+      <Dialog
+        title={selectedUser ? t('user:sendEmailTo', {name: getUserFullName(selectedUser)}) : t('sendEmail')}
+        open={!!selectedUser}
+        toggle={handleCloseDialog}
+        maxWidth="sm"
+        fullWidth
+        formId={SEND_EMAIL_TO_USER_FORM_ID}
+        primaryButtonText={t('send')}>
+       {selectedUser && (
+         <SendEmailForm
+          formId={SEND_EMAIL_TO_USER_FORM_ID}
+          onSubmit={onSendEmailFormSubmit}
+          initialValues={{ email: selectedUser.email }}
+        />
+       )}
+      </Dialog>
     </>
   );
 }

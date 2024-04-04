@@ -13,6 +13,8 @@ import userRoutes, { usersLayout } from "./users.routes";
 import { onDashboardEnter } from "@/redux/actions/app.action";
 import { getRoleCurrentUserRolesSelector } from "@/redux/reducers/role.reducer";
 import rolesRoute from "./role.routes";
+import estimateRoutes, { estimatesLayout } from "./estimate.routes";
+import invoiceRoutes, { invoicesLayout } from "./invoice.routes";
 
 /**
  * add id to pathless route (sub layouts)
@@ -85,7 +87,9 @@ const privateRoutes = privateLayout.addChildren([
   usersLayout.addChildren(userRoutes),
   profileRoute,
   settingsRoute,
-  rolesRoute
+  rolesRoute,
+  estimatesLayout.addChildren(estimateRoutes),
+  invoicesLayout.addChildren(invoiceRoutes),
 ]);
 
 export default privateRoutes;

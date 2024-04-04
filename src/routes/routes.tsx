@@ -8,7 +8,7 @@ import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 import { IRouteContext } from "@/types/app.type";
 import authPublicRoutes from "./public/auth.routes";
-import privateRoutes from "./protected/app.routes";
+import privateRoutes from "./protected/private.routes";
 import { PATH_NAMES } from "@/utils/pathnames";
 import { logout } from "@/redux/actions/auth.action";
 import accountPublicRoutes from "./public/account.routes";

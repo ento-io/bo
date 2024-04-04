@@ -1,4 +1,4 @@
-import { Badge, BadgeProps, Box, Typography, styled, useTheme } from '@mui/material';
+import { Badge, BadgeProps, Box, Stack, StackOwnProps, Typography, styled, useTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
 import Avatar from '@/components/Avatar';
@@ -37,14 +37,15 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 
 type Props = {
   user: IUser;
+  direction?: StackOwnProps['direction'];
 };
 
-const UserInfo = ({ user }: Props) => {
+const UserInfo = ({ user, direction = 'column' }: Props) => {
   const theme = useTheme();
 
   return (
-    <div className="flexCenter">
-      <div>
+    <Stack direction={direction} spacing={direction === 'column' ? 0 : 1} alignItems={direction === 'column' ? 'center' : 'flex-start'}>
+      <div className={direction === 'column' ? '' : 'flexCenter stretchSelf'}>
         <StyledBadge
           overlap="circular"
           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -55,25 +56,27 @@ const UserInfo = ({ user }: Props) => {
               color: user.isOnline ? theme.palette.success.main : theme.palette.error.main,
             },
           }}>
-          <Avatar user={user} size={64} />
+          <Avatar user={user} size={direction === 'column' ? 64 : 32} />
         </StyledBadge>
       </div>
-      <Box mt={1}>
-        <Typography variant="h6" sx={{ textAlign: 'center' }}>
-          <Link
-            to={PATH_NAMES.users + '/$id'}
-            params={{
-              id: user.objectId,
-            }}
-            css={{ textDecoration: 'none', color: '#000' }}>
-            {getUserFullName(user)}
-          </Link>
-        </Typography>
-      </Box>
       <div>
-        <Typography sx={{ color: grey[500] }}>{user.username}</Typography>
+        <Box mt={direction === 'column' ? 1 : 0}>
+          <Typography variant="h6" sx={{ textAlign: direction === 'column' ? 'center' : 'left' }}>
+            <Link
+              to={PATH_NAMES.users + '/$id'}
+              params={{
+                id: user.objectId,
+              }}
+              css={{ textDecoration: 'none', color: '#000' }}>
+              {getUserFullName(user)}
+            </Link>
+          </Typography>
+        </Box>
+        <div>
+          <Typography sx={{ color: grey[500] }}>{user.username}</Typography>
+        </div>
       </div>
-    </div>
+    </Stack>
   );
 };
 

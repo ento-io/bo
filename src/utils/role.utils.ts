@@ -26,6 +26,14 @@ export const ENTITIES_WITH_RIGHTS_OPTIONS: Omit<IRightsItem, 'rights'>[] = [
     label: i18n.t('page:articles'),
     className: 'Article',
   },
+  {
+    label: i18n.t('common:estimates.estimates'),
+    className: 'Estimate',
+  },
+  {
+    label: i18n.t('common:invoices.invoices'),
+    className: 'Invoice',
+  },
 ];
 
 /**

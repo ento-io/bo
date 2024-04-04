@@ -14,6 +14,10 @@ const StyledDialog = styled(MUIDialog)(({ theme }) => ({
   '& .MuiDialog-root': {
     padding: theme.spacing(1.5),
   },
+  '& .MuiPaper-root': {
+    paddingBottom: 0,
+    paddingTop: 0,
+  },
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
@@ -31,6 +35,8 @@ type Props = {
   children?: ReactNode;
   onClick?: MouseEventHandler<HTMLDivElement>;
   loading?: boolean;
+  withCloseButton?: boolean;
+  withCancelButton?: boolean;
   buttonColor?: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
 } & DialogProps;
 
@@ -47,6 +53,8 @@ const Dialog = ({
   onClick,
   loading,
   children,
+  withCloseButton = false,
+  withCancelButton = true,
   buttonColor = 'primary',
   ...dialogProps
 }: Props) => {
@@ -59,7 +67,12 @@ const Dialog = ({
   };
 
   const closeIcon = (
-    <IconButton edge="start" color="inherit" onClick={toggle} aria-label="close">
+    <IconButton
+      edge="start"
+      color="inherit"
+      onClick={toggle}
+      aria-label="close"
+      sx={{ position: "absolute", right: 0, top: 0 }}>
       <FiX />
     </IconButton>
   );
@@ -76,7 +89,7 @@ const Dialog = ({
       {dialogProps.fullScreen ? (
         <AppBar sx={{ position: 'relative' }}>
           <Toolbar>
-            {closeIcon}
+            {withCloseButton && closeIcon}
             <Box sx={{ ml: 2, flex: 1, display: 'flex', flexDirection: 'column' }}>
               <Typography variant="h6" component="div">
                 {title}
@@ -92,7 +105,7 @@ const Dialog = ({
         <DialogTitle id="alert-dialog-title">
           <div className="flexRow spaceBetween center">
             <Typography variant="h5">{title}</Typography>
-            {closeIcon}
+            {withCloseButton && closeIcon}
           </div>
         </DialogTitle>
       )}
@@ -108,9 +121,11 @@ const Dialog = ({
       {!dialogProps.fullScreen && (
         <DialogActions>
           {/* cancel button */}
-          <Button onClick={toggle} color="inherit" sx={{ textTransform: 'capitalize', fontWeight: 500 }}>
-            {secondaryButtonText ?? t('cancel')}
-          </Button>
+          {withCancelButton && (
+            <Button onClick={toggle} color="inherit" sx={{ textTransform: 'capitalize', fontWeight: 500 }}>
+              {secondaryButtonText ?? t('cancel')}
+            </Button>
+          )}
 
           {/* confirm button */}
           {onPrimaryButtonAction && (

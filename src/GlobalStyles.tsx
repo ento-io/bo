@@ -98,7 +98,7 @@ const getGlobalStyles = (theme: ThemeProps['theme']) => {
     }
 
     .justifySelf {
-      justify-self: strech;
+      justify-self: stretch;
     }
 
     .centerSelf {

@@ -25,19 +25,21 @@ const StyledSearchInput = styled(Box, { shouldForwardProp: prop => prop !== 'wid
 );
 
 type Props = {
-  onChange: (value: string) => void;
+  onChange: (name: string, value: string) => void;
   placeholder?: string;
+  // name is use to identify to use in search (ex: filters.user, filters.text, ...), by default it's text
+  name?: string;
   withDivider?: boolean;
   width?: number | string;
 };
 
-const SearchInput = ({ onChange, placeholder, width = '18vw', withDivider = false }: Props) => {
+const SearchInput = ({ onChange, placeholder, width = '18vw', withDivider = false, name = 'text' }: Props) => {
   const { t } = useTranslation();
   const [value, setValue] = useState<string>('');
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     setValue(event.target.value);
-    onChange(event.target.value);
+    onChange(name, event.target.value);
   };
 
   return (

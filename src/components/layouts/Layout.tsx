@@ -46,7 +46,7 @@ const StyledTitle = styled(Typography)(({ theme }) => ({
 
 type Props = {
   children: ReactNode;
-  title?: string;
+  title?: string | ReactNode;
   cardTitle?: string;
   isCard?: boolean;
   sx?: SxProps<Theme>;
@@ -85,7 +85,7 @@ const Layout = ({
       <StyledLayout isCard={isCard}>
         <Box display="flex" justifyContent="space-between">
           {cardTitle && (
-            <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
               {cardTitle}
             </Typography>
           )}

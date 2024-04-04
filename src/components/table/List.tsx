@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, ReactNode, useEffect, useState } from 'react';
 
 import { IconButton, Stack, Tooltip } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -14,14 +14,17 @@ import { getAppLoadingSelector } from '@/redux/reducers/app.reducer';
 import { DEFAULT_PAGINATION, DEFAULT_QUERIES_INPUT } from '@/utils/constants';
 import { pagePaginationToQueryInput } from '@/utils/utils';
 
-import { IPagination, IQueriesInput } from '@/types/app.type';
+import { IListTabValue, IMenu, IPagination, IQueriesInput, IRenderSearchProps } from '@/types/app.type';
 
 import ListCardsView from './ListCardsView';
 import Table from './Table';
 import TableToolbar from './TableToolbar';
 import SearchContainer from './SearchContainer';
+import ListTabs from './ListTabs';
+import { convertTabToFilters } from '@/utils/app.utils';
 
 type Props<IQuery> = {
+  tabs?: IListTabValue[];
   items: Record<string, any>[];
   headCells: any[];
   count: number;
@@ -31,13 +34,16 @@ type Props<IQuery> = {
   onRowClick?: (id: string) => void;
   canDelete?: boolean;
   canUpdate?: boolean;
-  renderFilter: any,
+  renderFilter: (values: IRenderSearchProps) => ReactNode;
   border?: boolean;
   onUpdateData: any;
   defaultFilters?: IQuery;
+  disableRowClickEvent?: boolean;
+  toolbarMenus?: IMenu<string[]>[];
 };
 
 const List = <IQuery extends IQueriesInput['filters'],>({
+  tabs = [],
   items,
   headCells,
   count,
@@ -50,6 +56,8 @@ const List = <IQuery extends IQueriesInput['filters'],>({
   onUpdateData,
   renderFilter,
   defaultFilters,
+  toolbarMenus,
+  disableRowClickEvent = true,
   border = false,
 }: Props<IQuery>) => {
   const [initPagination, setInitPagination] = useState<boolean>(false);
@@ -69,14 +77,20 @@ const List = <IQuery extends IQueriesInput['filters'],>({
 
   useEffect(() => {
     if (!defaultFilters) return;
-    setQueries((prev) => ({
-      ...prev,
-      filters: {
-        ...prev.filters,
-        ...defaultFilters,
+
+    setQueries((prev) => {
+      const newFilters = convertTabToFilters(tabs, defaultFilters.tab, prev.filters);
+
+      return {
+        ...prev,
+        filters: {
+          ...prev.filters,
+          ...defaultFilters,
+          ...newFilters
+        }
       }
-    }));
-  }, [defaultFilters]);
+    });
+  }, [defaultFilters, tabs]);
 
   // remove the checkboxes if there is no multiple actions
   const canMultipleSelect = !!(onDeleteSelected ?? onMarkAsSeenSelected);
@@ -122,10 +136,10 @@ const List = <IQuery extends IQueriesInput['filters'],>({
   };
 
   // input search on key up
-  const onSearch = debounce((value: string) => {
+  const onSearch = debounce((name: string, value: string) => {
     const newQueries = {
       ...queries,
-      search: { text: value },
+      search: { ...queries.search, [name]: value },
       filters: {
         ...queries.filters,
       },
@@ -135,6 +149,37 @@ const List = <IQuery extends IQueriesInput['filters'],>({
     onUpdateData(newQueries);
     setInitPagination(true);
   }, 500);
+
+    /**
+   * reload data for each tab change
+   * it redirect to a new page with the same url but with a search params (ex: ?tab=new)
+   * so the data are in onPageEnter
+   * @param tabValue
+   */
+    const handleTabChange = (tabValue: string) => {
+      // remove prev tab filters (only tab filters)
+      if (queries.filters) {
+        Object.keys(queries.filters).forEach((key: string) => {
+          if (tabs.find((tab: IListTabValue): boolean => [tab.key, tab.tab].includes(key))) {
+            delete queries.filters?.[key];
+          }
+        })
+      }
+
+      // change the tab name to queries
+      // ex: ?tab=new to { seen: false }
+      const filters = convertTabToFilters(tabs, tabValue, queries.filters);
+
+      queries.filters = filters;
+  
+      setQueries(queries);
+      // NOTE:
+      // here we do not need to update the onChange function
+      // the url change will trigger the onPageEnter,
+      // then there we change the url search params to filters for db queries
+      // should always be in page 1 after the search
+      setInitPagination(true);
+    };
 
   const handleSort = (_: MouseEvent<unknown> | null, property: any): void => {
     const isAsc = pagination.orderBy === property && pagination.order === 'asc';
@@ -200,19 +245,25 @@ const List = <IQuery extends IQueriesInput['filters'],>({
     onRowClick(objectId);
   };
 
-  const handleDeleteSelected = () => onDeleteSelected?.(selectedIds);
-  const handleMarkAsSeenSelected = () => onMarkAsSeenSelected?.(selectedIds);
+  // const handleDeleteSelected = () => onDeleteSelected?.(selectedIds);
+  // const handleMarkAsSeenSelected = () => onMarkAsSeenSelected?.(selectedIds);
 
   const isSelected = (name: string): boolean => selectedIds.indexOf(name) !== -1;
 
-  const handleRowClick = (data: Record<string, any>): void | undefined => {
+  const handleRowClick = (data: Record<string, any>) => (event: MouseEvent<HTMLElement>): void | undefined => {
+    if (disableRowClickEvent) {
+      event?.preventDefault();
+    }
+
     // custom click
     if (onRowClick) {
       onRowClick(data.id);
       return;
     }
 
+    if (disableRowClickEvent) return
     // props from Actions component
+    // if enable row click, it will go to preview
     if (data.actions.props.onPreview) {
       data.actions.props.onPreview(data.id);
       return;
@@ -245,18 +296,28 @@ const List = <IQuery extends IQueriesInput['filters'],>({
       </Tooltip>
     </Stack>
   );
+
   return (
     <Box sx={{ width: '100%' }}>
+      {tabs.length > 1 && (
+        <ListTabs
+          onTabChange={handleTabChange}
+          tabs={tabs}
+          searchParams={{ tab: defaultFilters?.tab }}
+        />
+      )}
+
       <SearchContainer>
-        {renderFilter(onSearch, onAdvancedSearch)}
+        {renderFilter({ onSearch, onAdvancedSearch })}
         {/* <SearchInput onChange={onSearch} placeholder={t('user:searchByNameOrEmail')} />
         <UserAdvancedFilter onSubmit={onAdvancedSearch} /> */}
       </SearchContainer>
       {/* ------- search and filter ------- */}
       <TableToolbar
-        numSelected={selectedIds.length}
-        onDeleteSelected={canDelete && onDeleteSelected ? handleDeleteSelected : undefined}
-        onMarkAsSeenSelected={canUpdate && onMarkAsSeenSelected ? handleMarkAsSeenSelected : undefined}
+        selectedIds={selectedIds}
+        onDeleteSelected={canDelete && onDeleteSelected ? onDeleteSelected : undefined}
+        onMarkAsSeenSelected={canUpdate && onMarkAsSeenSelected ? onMarkAsSeenSelected : undefined}
+        menus={toolbarMenus}
       />
       {/* ------- view selection buttons ------- */}
       {view === 'table' && !isDesktopDown && views}

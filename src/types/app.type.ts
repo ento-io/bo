@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ReactNode } from "react";
+import { MouseEvent, ReactNode } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { IUser } from "./user.type";
 import { confirmDeletionSchema, settingsSchema } from "@/validations/app.validations";
@@ -13,6 +13,7 @@ export interface ISelectOption<T = string> {
   label: string;
   value: T,
   icon?: string | ReactNode;
+  hide?: boolean;
 }
 
 type AppSnackBar = {
@@ -69,7 +70,7 @@ export interface IQueriesInput extends Partial<IFilterInput> {
 }
 
 export interface TableHeadCell<D> {
-  disablePadding: boolean;
+  disablePadding?: boolean;
   id: D;
   label: string;
   numeric?: boolean;
@@ -110,4 +111,41 @@ export interface INotificationMenu {
   description: string;
   date: DateType;
   onClick?: () => void; // mainly id
+}
+
+export interface IApiError {
+  error: string;
+  details: {
+    // mainly a translated key
+    // @see: middlewars/validation.middleware in the server
+    message: string;
+    key: string;
+  }[];
+}
+
+export type IRenderSearchProps = {
+  onSearch: (name: string, value: string) => void;
+  onAdvancedSearch: (values: Record<string, any>) => void;
+}
+
+export interface IMenu<TOnClick = MouseEvent<HTMLElement>> {
+  label: string;
+  icon?: ReactNode;
+  onClick: (value: TOnClick) => void;
+  display?: boolean;
+}
+
+export interface ITabSearchParams<T = string> {
+  tab: T;
+}
+
+/**
+ * ex: { key: 'active', value: true, label: 'Active', tab: 'active' }
+ * => ?tab=active => { active: true }
+ */
+export interface IListTabValue<T = string | boolean> {
+  key: string; // key in database
+  value: T; // value in database
+  label: string; // label to display (translated)
+  tab: string; // tab search param (translated)
 }

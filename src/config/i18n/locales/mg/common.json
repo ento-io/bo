@@ -3,6 +3,8 @@
     "article": "Lahatsoratra",
     "articles": "Lahatsoratra"
   },
+  "download": "Télécharger",
+  "regeneratePdf": "Averina amboarina PDF",
   "greeting": "Salama, {{name}}!",
   "language": "Fiteny",
   "languages": "Fiteny",
@@ -10,6 +12,18 @@
     "malagasy": "Malagasy",
     "english": "Anglisy",
     "french": "Frantsay"
+  },
+  "waiting": "Miandry",
+  "sent": "Lasa",
+  "alreadyExists": "Efa misy",
+  "status": {
+    "canceled": "Najanona",
+    "declined": "Tsy nisy fahafahana",
+    "waiting": "Eo am-piandrasana",
+    "sent": "Nivoaka",
+    "inProgress": "Eo ampanaovana",
+    "paid": "Nanaraka",
+    "done": "Tapitra"
   },
   "form": {
     "error": {
@@ -52,6 +66,7 @@
   "save": "Enregistrer",
   "edit": "Modifier",
   "delete": "Fafàna",
+  "deleteThis": "Fafàna ny {{value}}",
   "seePreview": "Hijery ny topi-maso",
   "details": "Momba azy",
   "owner": "Tompony",
@@ -98,6 +113,7 @@
   "from": "Avy amin'i",
   "createdAt": "Noforonina ny",
   "updatedAt": "Novaina ny",
+  "platform": "Teknolojia",
   "addedAt": "Nampidirina ny",
   "deletedAt": "Nofafàna ny",
   "seen": "Hita",
@@ -282,5 +298,42 @@
   "next": "Manaraka",
   "previous": "Miverina",
   "invite": "Asàna",
-  "sorry": "Azafady tompoko"
+  "sorry": "Azafady tompoko",
+  "returnToHome": "Hiverina amin'ny pejy fandraisana",
+  "invoice": "Faktiora",
+  "createInvoice": "Hamorona faktiora",
+  "supplierName": "Anaran'ny mpamatsy",
+  "invoiceCreatedSuccessfully": "Voaforona soamantsara ny faktiora",
+  "link": "Rohy",
+  "estimates": {
+    "reference": "Reference",
+    "searchEstimate": "Mitady tombana",
+    "createEstimate": "Hamorona tombana",
+    "editEstimate": "Hanova tombana",
+    "estimate": "Tombana",
+    "estimates": "Tombana",
+    "estimateCreatedSuccessfully": "Voaforona soamantsara ny tombana",
+    "estimateEditedSuccessfully": "Voaova soamantsara ny tombana {{value}}",
+    "estimateDeletedSuccessfully": "Voafafa somantsara ny tombana {{value}}",
+    "searchText": "hitady reference, rohy, ..."
+  },
+  "invoices": {
+    "supplierName": "Anaran'ny mpamatsy",
+    "supplier": "Mpamatsy",
+    "invoice": "Faktiora",
+    "invoices": "Faktiora",
+    "searchInvoice": "Hitady faktiora",
+    "createInvoice": "Hamorona faktiora",
+    "editInvoice": "Hanova ny faktiora {{value}}",
+    "invoiceCreatedSuccessfully": "Voaforona soamantsara ny faktiora",
+    "invoiceEditedSuccessfully": "Faktiora {{value}} voaova soamantsara",
+    "invoiceDeletedSuccessfully": "Faktiora {{value}} voafafa soamantsara",
+    "invoiceDownloadedSuccessfully": "Faktiora {{value}} voa-télécharger soamantsara",
+    "missingParamsId": "Tsy ampy ny id ny faktiora",
+    "missingParamsReference": "Tsy ampy ny reference ny faktiora",
+    "invoiceAlreadyExists": "Efa misy ny faktiora manana ny reference {{value}}",
+    "thisInvoiceAlreadyExists": "Efa misy ny faktiora manana io reference io",
+    "countRegeneratedSuccessfully": "{{count}} faktiora amboarina soamantsara",
+    "regeneratedInvoices": "Averina amboarina ny facktiora"
+  }
 }

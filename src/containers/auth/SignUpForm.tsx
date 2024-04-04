@@ -14,7 +14,6 @@ import { COLORS } from '@/utils/constants';
 import { ISignUpInput } from '@/types/auth.types';
 import { signUpSchema } from '@/validations/auth.validation';
 
-
 type Props = {
   onSubmit: (values: ISignUpInput) => void;
   from?: 'signUp' | 'invitation'; // invitation from someone
@@ -40,36 +39,38 @@ const SignUpForm = ({ onSubmit, formId, from = 'signUp' }: Props) => {
   };
 
   return (
-    <Form
-      form={form}
-      formId={formId}
-      onSubmit={handleSubmit(onSubmitHandler)}
-      loading={loading}
-      error={error}
-      buttonClassName="textCapitalize bR10"
-      isDisabled={false}
-      primaryButtonText={button}>
-      <TextField
-        bgcolor={color}
-        mode={mode}
-        name="email"
-        placeholder={t('user:email')}
-        type="email"
-        fullWidth
-        required
-      />
-      <TextField bgcolor={color} mode={mode} name="firstName" placeholder={t('user:firstName')} fullWidth />
-      <TextField bgcolor={color} mode={mode} name="lastName" placeholder={t('user:lastName')} fullWidth required />
-      <PasswordField bgcolor={color} mode={mode} name="password" placeholder={t('user:password')} fullWidth required />
-      <PasswordField
-        bgcolor={color}
-        mode={mode}
-        name="passwordConfirmation"
-        placeholder="Confirm password"
-        fullWidth
-        required
-      />
+      <Form
+          form={form}
+          formId={formId}
+          onSubmit={handleSubmit(onSubmitHandler)}
+          loading={loading}
+          error={error}
+          buttonClassName="textCapitalize bR10"
+          isDisabled={false}
+          primaryButtonText={button}>
+          <TextField
+            bgcolor={color}
+            mode={mode}
+            name="email"
+            placeholder={t('user:email')}
+            type="email"
+            fullWidth
+            required
+          />
+          <TextField bgcolor={color} mode={mode} name="firstName" placeholder={t('user:firstName')} fullWidth />
+          <TextField bgcolor={color} mode={mode} name="lastName" placeholder={t('user:lastName')} fullWidth required />
+          <PasswordField bgcolor={color} mode={mode} name="password" placeholder={t('user:password')} fullWidth required />
+          <PasswordField
+            bgcolor={color}
+            mode={mode}
+            name="passwordConfirmation"
+            placeholder="Confirm password"
+            fullWidth
+            required
+        />
     </Form>
+    //   </div> 
+    // </div>
   );
 };
 

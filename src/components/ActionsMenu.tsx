@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 
 import { Theme } from '@emotion/react';
 import { alpha, Button, Typography, useTheme } from '@mui/material';
@@ -12,6 +12,7 @@ import { FiChevronDown, FiEdit3, FiEye, FiList, FiPlus, FiTrash } from 'react-ic
 import { useToggle } from '@/hooks/useToggle';
 
 import Dialog from './Dialog';
+import { IMenu } from '@/types/app.type';
 
 const classes = {
   menu: (theme: Theme) => ({
@@ -51,7 +52,7 @@ const classes = {
   }),
 };
 
-type Props = {
+export type ActionsMenuProps = {
   onEdit?: () => void;
   onDelete?: () => void;
   goToList?: () => void;
@@ -59,8 +60,8 @@ type Props = {
   onCreate?: () => void;
   onPreview?: () => void;
   label?: string;
-  children?: ReactNode;
   className?: string;
+  menus?: IMenu[];
 };
 
 const ActionsMenu = ({
@@ -72,21 +73,85 @@ const ActionsMenu = ({
   onCreate,
   label,
   className,
-  children,
-}: Props) => {
+  menus = []
+}: ActionsMenuProps) => {
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { t } = useTranslation();
+
   const theme = useTheme();
   const { open: openDeleteDialog, toggle: toggleDeleteDialog } = useToggle();
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleDelete = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    toggleDeleteDialog();
+  };
+
+  const handleEdit = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    if (!onEdit) return;
+    onEdit();
+  };
+
+  const handlePreview = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    if (!onPreview) return;
+    onPreview();
+  };
+
+  const handleConfirmDeleteDialogClick = (event: MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+  };
+
+  const options = [
+    {
+      onClick: handleEdit,
+      display: !!onEdit,
+      label: t('edit'),
+      icon: <FiEdit3 size={20} />
+    },
+    {
+      onClick: handlePreview,
+      display: !!onPreview,
+      label: t('seePreview'),
+      icon: <FiEye size={20} />
+    },
+    {
+      onClick: goToList,
+      display: !!goToList,
+      label: t('returnToList'),
+      icon: <FiList size={20} />
+    },
+    {
+      onClick: onCreate,
+      display: !!onCreate,
+      label: t('add'),
+      icon: <FiPlus size={20} />
+    },
+    {
+      onClick: onMarkAsSeen,
+      display: !!onMarkAsSeen,
+      label: t('markAsSeen'),
+      icon: <FaCheckDouble size={20} />
+    },
+    ...menus, // before delete
+    {
+      onClick: handleDelete,
+      display: !!onDelete,
+      label: t('delete'),
+      icon: <FiTrash size={20} css={(theme: Theme) => ({ color: theme.palette.error.main})} />
+    },
+  ];
 
   return (
     <div className={className}>
@@ -111,61 +176,16 @@ const ActionsMenu = ({
         css={classes.menu}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
-        {onEdit && (
-          <MenuItem onClick={onEdit}>
-            <ListItemIcon>
-              <FiEdit3 size={20} />
-            </ListItemIcon>
-            {t('edit')}
-          </MenuItem>
-        )}
-
-        {onPreview && (
-          <MenuItem onClick={onPreview}>
-            <ListItemIcon>
-              <FiEye size={20} />
-            </ListItemIcon>
-            {t('seePreview')}
-          </MenuItem>
-        )}
-
-        {goToList && (
-          <MenuItem onClick={goToList}>
-            <ListItemIcon>
-              <FiList size={20} />
-            </ListItemIcon>
-            {t('returnToList')}
-          </MenuItem>
-        )}
-
-        {onCreate && (
-          <MenuItem onClick={onCreate}>
-            <ListItemIcon>
-              <FiPlus size={20} />
-            </ListItemIcon>
-            {t('add')}
-          </MenuItem>
-        )}
-
-        {onMarkAsSeen && (
-          <MenuItem onClick={onMarkAsSeen}>
-            <ListItemIcon>
-              <FaCheckDouble size={20} />
-            </ListItemIcon>
-            {t('markAsSeen')}
-          </MenuItem>
-        )}
-
-        {children}
-
-        {onDelete && (
-          <MenuItem onClick={toggleDeleteDialog}>
-            <ListItemIcon>
-              <FiTrash size={20} color={theme.palette.error.main} />
-            </ListItemIcon>
-            {t('delete')}
-          </MenuItem>
-        )}
+          {options.map((option, index) => (
+            option.display && (
+              <MenuItem onClick={option.onClick} key={index}>
+                <ListItemIcon>
+                  {option.icon}
+                </ListItemIcon>
+                {option.label}
+              </MenuItem>
+            )
+          ))}
       </Menu>
 
       {/* ---------- delete confirmation modal */}
@@ -176,6 +196,7 @@ const ActionsMenu = ({
         open={openDeleteDialog}
         onPrimaryButtonAction={onDelete}
         maxWidth="xs"
+        onClick={handleConfirmDeleteDialogClick}
       />
     </div>
   );

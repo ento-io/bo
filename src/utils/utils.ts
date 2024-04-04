@@ -112,8 +112,9 @@ export const isDev = (): boolean => process.env.ENVIRONMENT === EnvironmentEnum.
  */
 export const getServerUrl = (): string => {
   if ((window as any).LOCAL) {
-    const SERVER_PORT = 8082;
+    const SERVER_PORT = 8088;
     const { location } = window;
+
     return location.protocol + '//' + location.hostname + ':' + SERVER_PORT;
   }
 

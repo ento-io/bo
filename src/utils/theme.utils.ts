@@ -203,7 +203,18 @@ const defaultTheme = {
         },
       },
     },
-    
+    MuiCard: {
+      styleOverrides: {
+        root: ({ theme }: { theme: Theme }) => ({
+          [theme.breakpoints.up('sm')]: {
+            boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 12px'
+          },
+          [theme.breakpoints.down('sm')]: {
+            boxShadow: 'none'
+          }
+        })
+      }
+    }
   },
 };
 

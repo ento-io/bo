@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import { useNavigate } from '@tanstack/react-router';
@@ -23,17 +23,21 @@ const Login = () => {
     <>
       <Head title={t('user:login')} />
       <Stack spacing={2}>
-        <LoginForm />
-        <Stack spacing={1}>
-          <AuthLink label={t('user:haveNoAccountYet')} text={t('user:signUp')} url={PATH_NAMES.signUp} />
-          <AuthLink
-            label={t('user:forgottenPassword')}
-            text={t('user:resetPassword')}
-            onClick={handleForgottenPassword}
-          />
-        </Stack>        
+          <div className='flexCenter'>
+            <Typography variant="h4" gutterBottom>
+              {t('user:login')}
+            </Typography>
+          </div>
+          <LoginForm />
+          <Stack spacing={2}>
+            <AuthLink label={t('user:haveNoAccountYet')} text={t('user:signUp')} url={PATH_NAMES.signUp} />
+            <AuthLink
+              label={t('user:forgottenPassword')}
+              text={t('user:resetPassword')}
+              onClick={handleForgottenPassword}
+            />
+          </Stack>        
       </Stack>
-
     </>
   );
 };

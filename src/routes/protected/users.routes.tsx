@@ -1,7 +1,7 @@
 import { Outlet, createRoute } from "@tanstack/react-router";
 import { z } from "zod";
 
-import { privateLayout } from "./app.routes";
+import { privateLayout } from "./private.routes";
 import { IIdParams } from "@/types/app.type";
 import { PATH_NAMES } from "@/utils/pathnames";
 import { onEnter } from "@/redux/actions/app.action";

@@ -3,6 +3,8 @@
     "article": "Article",
     "articles": "Articles"
   },
+  "download": "Download",
+  "regeneratePdf": "Regenerate PDF",
   "greeting": "Hello, {{name}}!",
   "language": "Language",
   "languages": "Languages",
@@ -10,6 +12,15 @@
     "malagasy": "Malagasy",
     "english": "English",
     "french": "French"
+  },
+  "status": {
+    "canceled": "Canceled",
+    "declined": "Declined",
+    "waiting": "Waiting",
+    "sent": "Sent",
+    "inProgress": "In progress",
+    "paid": "Paid",
+    "done": "Done"
   },
   "form": {
     "error": {
@@ -52,6 +63,7 @@
   "save": "Save",
   "edit": "Edit",
   "delete": "Delete",
+  "deleteThis": "Delete {{value}}",
   "details": "Details",
   "seePreview": "See preview",
   "owner": "Owner",
@@ -60,9 +72,6 @@
   "driver": "Driver",
   "passengers": "Passengers",
   "passenger": "Passenger",
-  "done": "Done",
-  "inProgress": "In Progress",
-  "canceled": "Canceled",
   "comment": "Comment",
   "continue": "Continue",
   "finish": "Finish",
@@ -281,5 +290,42 @@
   "next": "Next",
   "previous": "Previous",
   "invite": "Invite",
-  "sorry": "Sorry"
+  "sorry": "Sorry",
+  "returnToHome": "Return to home",
+  "invoice": "Invoice",
+  "createInvoice": "Create invoice",
+  "supplierName": "Supplier name",
+  "invoiceCreatedSuccessfully": "Invoice created successfully",
+  "link": "Link",
+  "estimates": {
+    "reference": "Reference",
+    "searchEstimate": "Search estimate",
+    "createEstimate": "Create estimate",
+    "editEstimate": "Edit estimate {{value}}",
+    "estimate": "Estimate",
+    "estimates": "Estimates",
+    "estimateCreatedSuccessfully": "Estimate created successfully",
+    "estimateEditedSuccessfully": "Estimate {{value}} edited successfully",
+    "estimateDeletedSuccessfully": "Estimate {{value}} deleted successfully",
+    "searchText": "Search reference, url, ..."
+  },
+  "invoices": {
+    "supplierName": "Supplier name",
+    "supplier": "Supplier",
+    "invoice": "Invoice",
+    "invoices": "Invoices",
+    "searchInvoice": "Search invoice",
+    "createInvoice": "Create invoice",
+    "editInvoice": "Edit invoice {{value}}",
+    "invoiceCreatedSuccessfully": "Invoice created successfully",
+    "invoiceEditedSuccessfully": "Invoice {{value}} edited successfully",
+    "invoiceDeletedSuccessfully": "Invoice {{value}} deleted successfully",
+    "invoiceDownloadedSuccessfully": "Invoice {{value}} downloaded successfully",
+    "missingParamsId": "Invoice id is missing",
+    "missingParamsReference": "Invoice reference is missing",
+    "invoiceAlreadyExists": "Invoice with reference {{value}} already exists",
+    "thisInvoiceAlreadyExists": "This invoice already exists",
+    "countRegeneratedSuccessfully": "{{count}} invoice(s) regenerated successfully",
+    "regeneratedInvoices": "Regenerate invoices"
+  }
 }

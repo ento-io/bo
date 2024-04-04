@@ -39,6 +39,7 @@
   "account": "Kaonty",
   "createAnAccount": "Amorona kaonty",
   "errors": {
+    "emailNotSendTo": "tsy lasa ny mailaka any amin'i {{email}}",
     "usernameTaken": "Efa misy ny kaonty amin'io mailaka io",
     "userWithEmailNotFound": "Tsy misy kaonty misoratra amin'io mailaka io",
     "accessDenied": "Tsy afaka miditra",
@@ -141,5 +142,6 @@
     "employeeBannedSuccessfully": "Mpiasa voarara soamantsara"
   },
   "addEmployee": "Hampiditra mpiasa",
-  "employeeCooperativeExists": "Efa miasa ao amin'ny coopérative-nao io mpiasa io"
+  "employeeCooperativeExists": "Efa miasa ao amin'ny coopérative-nao io mpiasa io",
+  "sendMail": "mandefa hafatra"
 }

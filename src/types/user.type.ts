@@ -46,6 +46,7 @@ export interface IUserState {
   users: IUser[];
   count: number;
   search: Record<string, any> | null;
+  filters: Record<string, string | boolean> | null;
 }
 export type ProfileUserInfoInput = Pick<IUser, 'lastName' | 'firstName'>;
 
@@ -61,3 +62,8 @@ export interface IUserCloudInput extends Omit<IUserQueriesInput, 'roles'> {
   ids?: string[];
   fromBO?: boolean;
 }
+
+export type ISendEmailDefaultValues = {
+  email: string;
+}
+

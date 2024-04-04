@@ -1,4 +1,4 @@
-import { Box, Button, Chip, ListItemIcon, MenuItem, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { FiCheck, FiPlus } from 'react-icons/fi';
@@ -138,17 +138,26 @@ const User = () => {
     dispatch(removeRolesForUser(user.objectId, [role]));
   };
 
+  const menus = [
+    {
+      onClick: toggleBanUser,
+      display: true,
+      label: user.banned ? t('common:activate') : t('user:ban'),
+      icon: user.banned ? <FiCheck /> : <IoWarning />
+    },
+  ]
+
   return (
     <Layout
       title={t('user:user')}
       isCard={false}
       actions={
-        <ActionsMenu label={user.lastName} goToList={handleGoToList} onMarkAsSeen={handleMarkAsSeen}>
-          <MenuItem onClick={toggleBanUser}>
-            <ListItemIcon>{user.banned ? <FiCheck /> : <IoWarning />}</ListItemIcon>
-            {user.banned ? t('common:activate') : t('user:ban')}
-          </MenuItem>
-        </ActionsMenu>
+        <ActionsMenu
+          label={user.lastName}
+          goToList={handleGoToList}
+          onMarkAsSeen={handleMarkAsSeen}
+          menus={menus}
+        />
       }>
       <Head title={t('user:user')} />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
@@ -209,7 +218,11 @@ const User = () => {
         toggle={toggleOpenEmailFormDialog}
         formId={SEND_EMAIL_TO_USER_FORM_ID}
         primaryButtonText={t('send')}>
-        <SendEmailForm formId={SEND_EMAIL_TO_USER_FORM_ID} onSubmit={onSendEmailFormSubmit} />
+        <SendEmailForm
+          formId={SEND_EMAIL_TO_USER_FORM_ID}
+          onSubmit={onSendEmailFormSubmit}
+          initialValues={{ email: user.email }}
+        />
       </Dialog>
 
       <Dialog

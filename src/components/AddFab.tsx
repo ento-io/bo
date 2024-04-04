@@ -11,7 +11,7 @@ const AddFab = ({ onClick }: Props) => {
       onClick={onClick}
       color="primary"
       aria-label="add"
-      sx={{ margin: 0, top: 'auto', right: 30, bottom: 30, left: 'auto', position: 'fixed' }}>
+      css={{ margin: 0, top: 'auto', right: 30, bottom: 30, left: 'auto', position: 'fixed' }}>
       <FiPlus size={26} />
     </Fab>
   );

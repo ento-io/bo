@@ -34,32 +34,32 @@ const LoginForm = () => {
   };
 
   return (
-    <Form
-      form={form}
-      onSubmit={handleSubmit(onSubmitHandler)}
-      loading={loading}
-      primaryButtonText={t('user:login')}
-      error={error}
-      isDisabled={false}
-      buttonClassName="textCapitalize bR10">
-      <TextField
-        bgcolor={COLORS.authBackground}
-        mode="dark"
-        name="email"
-        placeholder={t('user:email')}
-        type="email"
-        fullWidth
-        required
-      />
-      <PasswordField
-        bgcolor={COLORS.authBackground}
-        mode="dark"
-        name="password"
-        placeholder={t('user:password')}
-        fullWidth
-        required
-      />
-    </Form>
+          <Form
+              form={form}
+              onSubmit={handleSubmit(onSubmitHandler)}
+              loading={loading}
+              primaryButtonText={t('user:login')}
+              error={error}
+              isDisabled={false}
+              buttonClassName="textCapitalize bR10">
+                <TextField
+                  bgcolor={COLORS.authBackground}
+                  mode="dark"
+                  name="email"
+                  placeholder={t('user:email')}
+                  type="email"
+                  fullWidth
+                  required
+                />
+              <PasswordField
+                bgcolor={COLORS.authBackground}
+                mode="dark"
+                name="password"
+                placeholder={t('user:password')}
+                fullWidth
+                required
+              />
+        </Form>
   );
 };
 
