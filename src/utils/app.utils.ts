@@ -113,3 +113,5 @@ export const defaultTabOptions = [
     value: true,
   },
 ];
+
+export const isRecycleBinTab = (searchParamsTab: string): boolean => searchParamsTab === i18n.t('common:route.recycleBin');
