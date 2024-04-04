@@ -1,4 +1,5 @@
 import i18n from "@/config/i18n";
+import { defaultTabOptions } from "./app.utils";
 
 export const estimateStatus = [
   {
@@ -23,4 +24,5 @@ export const estimatesTabOptions = [
     key: 'seen',
     value: false,
   },
-]
+  ...defaultTabOptions,
+];
