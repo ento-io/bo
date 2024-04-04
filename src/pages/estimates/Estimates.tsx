@@ -79,6 +79,7 @@ const Estimates = () => {
   const searchParams = estimatesRoute.useSearch()
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
+  console.log('roles: ', roles);
   const canCreate = canAccessTo(roles, 'Estimate', 'create');
 
   const [selectedEstimate, setSelectedEstimate] = useState<IEstimate | null>(null);
