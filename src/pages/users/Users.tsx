@@ -83,7 +83,7 @@ const Users = () => {
   const users = useSelector(getUserUsersSelector);
   const count = useSelector(getUserCountSelector);
   const filters = useSelector(getUserFiltersSelector);
-  const searchParams = usersRoute.useSearch()
+  const searchParams = usersRoute.useSearch();
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
 
