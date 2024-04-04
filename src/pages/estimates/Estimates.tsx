@@ -32,7 +32,6 @@ interface Data {
   url: string;
   user: string;
   status: string;
-  updatedBy: string;
   createdAt: ReactNode;
   actions: ReactNode;
 }
@@ -55,10 +54,6 @@ const headCells: TableHeadCell<keyof Data>[] = [
     id: 'status',
     label: 'Status',
     align: 'center'
-  },
-  {
-    id: 'updatedBy',
-    label: i18n.t('user:updatedBy'),
   },
   {
     id: 'createdAt',
@@ -155,7 +150,6 @@ const Estimates = () => {
         url: <a href={estimate.url}>{truncate(estimate.url, { length: 30 })}</a>,
         user: <UserCell user={estimate.user} />,
         status: <EstimateStatus status={estimate.status} />,
-        updatedBy: estimate.updatedBy ? <UserCell user={estimate.updatedBy} /> : '-',
         createdAt: displayDate(estimate.createdAt, false, true),
         actions: canDestroy
           ? null
