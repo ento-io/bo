@@ -14,14 +14,17 @@ import { getAppLoadingSelector } from '@/redux/reducers/app.reducer';
 import { DEFAULT_PAGINATION, DEFAULT_QUERIES_INPUT } from '@/utils/constants';
 import { pagePaginationToQueryInput } from '@/utils/utils';
 
-import { IMenu, IPagination, IQueriesInput, IRenderSearchProps } from '@/types/app.type';
+import { IListTabValue, IMenu, IPagination, IQueriesInput, IRenderSearchProps } from '@/types/app.type';
 
 import ListCardsView from './ListCardsView';
 import Table from './Table';
 import TableToolbar from './TableToolbar';
 import SearchContainer from './SearchContainer';
+import ListTabs from './ListTabs';
+import { convertTabToFilters } from '@/utils/app.utils';
 
 type Props<IQuery> = {
+  tabs?: IListTabValue[];
   items: Record<string, any>[];
   headCells: any[];
   count: number;
@@ -40,6 +43,7 @@ type Props<IQuery> = {
 };
 
 const List = <IQuery extends IQueriesInput['filters'],>({
+  tabs = [],
   items,
   headCells,
   count,
@@ -73,14 +77,20 @@ const List = <IQuery extends IQueriesInput['filters'],>({
 
   useEffect(() => {
     if (!defaultFilters) return;
-    setQueries((prev) => ({
-      ...prev,
-      filters: {
-        ...prev.filters,
-        ...defaultFilters,
+
+    setQueries((prev) => {
+      const newFilters = convertTabToFilters(tabs, defaultFilters.tab, prev.filters);
+
+      return {
+        ...prev,
+        filters: {
+          ...prev.filters,
+          ...defaultFilters,
+          ...newFilters
+        }
       }
-    }));
-  }, [defaultFilters]);
+    });
+  }, [defaultFilters, tabs]);
 
   // remove the checkboxes if there is no multiple actions
   const canMultipleSelect = !!(onDeleteSelected ?? onMarkAsSeenSelected);
@@ -139,6 +149,37 @@ const List = <IQuery extends IQueriesInput['filters'],>({
     onUpdateData(newQueries);
     setInitPagination(true);
   }, 500);
+
+    /**
+   * reload data for each tab change
+   * it redirect to a new page with the same url but with a search params (ex: ?tab=new)
+   * so the data are in onPageEnter
+   * @param tabValue
+   */
+    const handleTabChange = (tabValue: string) => {
+      // remove prev tab filters (only tab filters)
+      if (queries.filters) {
+        Object.keys(queries.filters).forEach((key: string) => {
+          if (tabs.find((tab: IListTabValue): boolean => [tab.key, tab.tab].includes(key))) {
+            delete queries.filters?.[key];
+          }
+        })
+      }
+
+      // change the tab name to queries
+      // ex: ?tab=new to { seen: false }
+      const filters = convertTabToFilters(tabs, tabValue, queries.filters);
+
+      queries.filters = filters;
+  
+      setQueries(queries);
+      // NOTE:
+      // here we do not need to update the onChange function
+      // the url change will trigger the onPageEnter,
+      // then there we change the url search params to filters for db queries
+      // should always be in page 1 after the search
+      setInitPagination(true);
+    };
 
   const handleSort = (_: MouseEvent<unknown> | null, property: any): void => {
     const isAsc = pagination.orderBy === property && pagination.order === 'asc';
@@ -255,8 +296,17 @@ const List = <IQuery extends IQueriesInput['filters'],>({
       </Tooltip>
     </Stack>
   );
+
   return (
     <Box sx={{ width: '100%' }}>
+      {tabs.length > 1 && (
+        <ListTabs
+          onTabChange={handleTabChange}
+          tabs={tabs}
+          searchParams={{ tab: defaultFilters?.tab }}
+        />
+      )}
+
       <SearchContainer>
         {renderFilter({ onSearch, onAdvancedSearch })}
         {/* <SearchInput onChange={onSearch} placeholder={t('user:searchByNameOrEmail')} />
