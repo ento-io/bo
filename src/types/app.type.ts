@@ -134,3 +134,18 @@ export interface IMenu<TOnClick = MouseEvent<HTMLElement>> {
   onClick: (value: TOnClick) => void;
   display?: boolean;
 }
+
+export interface ITabSearchParams<T = string> {
+  tab: T;
+}
+
+/**
+ * ex: { key: 'active', value: true, label: 'Active', tab: 'active' }
+ * => ?tab=active => { active: true }
+ */
+export interface IListTabValue<T = string | boolean> {
+  key: string; // key in database
+  value: T; // value in database
+  label: string; // label to display (translated)
+  tab: string; // tab search param (translated)
+}
