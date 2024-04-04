@@ -171,6 +171,7 @@ const List = <IQuery extends IQueriesInput['filters'],>({
       const filters = convertTabToFilters(tabs, tabValue, queries.filters);
 
       queries.filters = filters;
+      queries.search = undefined;
   
       setQueries(queries);
       // NOTE:
@@ -299,7 +300,8 @@ const List = <IQuery extends IQueriesInput['filters'],>({
 
   return (
     <Box sx={{ width: '100%' }}>
-      {tabs.length > 1 && (
+      {/* tabs using search params */}
+      {tabs.length > 0 && (
         <ListTabs
           onTabChange={handleTabChange}
           tabs={tabs}
