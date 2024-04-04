@@ -104,3 +104,12 @@ export const convertTabToFilters = (tabs: IListTabValue[], tabValue: IListTabVal
 
   return newFilters;
 }
+
+export const defaultTabOptions = [
+  {
+    label: i18n.t('common:recycleBin'),
+    tab: i18n.t('common:route.recycleBin'),
+    key: 'deleted',
+    value: true,
+  },
+];
