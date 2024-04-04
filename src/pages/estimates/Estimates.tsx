@@ -22,6 +22,7 @@ import AddFab from '@/components/AddFab';
 import { useToggle } from '@/hooks/useToggle';
 import SearchEstimates from '@/containers/estimates/SearchEstimates';
 import EstimateStatus from '@/containers/estimates/EstimateStatus';
+import { estimatesTabOptions } from '@/utils/estimate.utils';
 
 const ESTIMATE_FORM_ID = 'send-email-form-id'
 
@@ -131,6 +132,7 @@ const Estimates = () => {
   };
 
   const onUpdateData = (queries: IQueriesInput) => {
+    // the on tab change is not used here, we use it in on page enter with search params
     const newQueries = { ...queries, filters: { ...filters, ...queries.filters } };
     dispatch(loadEstimates(newQueries))
   }
@@ -171,6 +173,7 @@ const Estimates = () => {
     <>
       <Head title="Estimates" />
       <List
+        tabs={estimatesTabOptions}
         // @see estimates.routes.tsx for search params definition
         defaultFilters={searchParams}
         onUpdateData={onUpdateData}

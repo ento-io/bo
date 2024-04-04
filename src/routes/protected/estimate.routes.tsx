@@ -16,9 +16,9 @@ export const estimatesLayout = createRoute({
 });
 
 export const estimatesRoute = createRoute({
-  // validateSearch: (search) => z.object({
-  //   from: z.string().optional(),
-  // }).parse(search),
+  validateSearch: (search) => z.object({
+    tab: z.string().optional(),
+  }).parse(search),
   getParentRoute: () => estimatesLayout,
   beforeLoad: onEnter(onEstimatesEnter),
   component: Estimates,
