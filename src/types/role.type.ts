@@ -33,6 +33,7 @@ export interface IRoleState {
   roles: IRole[];
   userRoles: IRole[];
   currentUserRoles: IRole[];
+  isAdmin: boolean;
 }
 
 export type ILoadRolesInput = {
