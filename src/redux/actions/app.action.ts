@@ -1,4 +1,5 @@
 import Parse from 'parse';
+import dayjs from 'dayjs';
 import { actionWithLoader } from '@/utils/app.utils';
 import { ISettingsInput } from '@/types/app.type';
 import { Lang } from '@/types/setting.type';
@@ -11,6 +12,34 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 import { getAppNotificationsSelector } from '../reducers/app.reducer';
 import { getRolesForUser, isAdmin } from '@/utils/role.utils';
 import { PATH_NAMES } from '@/utils/pathnames';
+import { DateType } from '@/types/util.type';
+
+// ----------------------------------------------------- //
+// ------------------- Parse queries ------------------- //
+// ----------------------------------------------------- //
+export const dateRangeQuery = (query: Parse.Query, field: string, range: (DateType | null)[]): void => {
+  if (!Array.isArray(range)) return;
+  const start = range[0];
+  const end = range[1];
+  // greater or equal than start date
+  if (start && !end) {
+    query
+      .greaterThanOrEqualTo(field, dayjs(start).startOf('day').toDate())
+      .lessThanOrEqualTo(field, dayjs(start).endOf('day').toDate());
+  }
+  // lesser or equal than end date
+  if (end && !start) {
+    query
+      .greaterThanOrEqualTo(field, dayjs(end).startOf('day').toDate())
+      .lessThanOrEqualTo(field, dayjs(end).endOf('day').toDate());
+  }
+  // between 2 dates
+  if (start && end) {
+    query
+      .greaterThanOrEqualTo(field, dayjs(start).startOf('day').toDate())
+      .lessThanOrEqualTo(field, dayjs(end).endOf('day').toDate());
+  }
+};
 
 // ----------------------------------------------------- //
 // ------------------- Redux Actions ------------------- //
