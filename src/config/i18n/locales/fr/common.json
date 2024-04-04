@@ -255,7 +255,8 @@
   "all": "Tout",
   "route": {
     "new": "nouveaux",
-    "all": "tout"
+    "all": "tout",
+    "recycleBin": "Corbeille"
   },
   "advancedSearch": "Recherche avancée",
   "start": "Début",
