@@ -1,6 +1,6 @@
 import Parse, { Attributes } from 'parse';
 
-import { actionWithLoader } from '@/utils/app.utils';
+import { actionWithLoader, convertTabToFilters } from '@/utils/app.utils';
 
 import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
@@ -14,6 +14,7 @@ import { IQueriesInput } from '@/types/app.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
+import { estimatesTabOptions } from '@/utils/estimate.utils';
 
 export const Estimate = Parse.Object.extend("Estimate");
 
@@ -180,7 +181,7 @@ export const editEstimate = (id: string, values: EstimateInput): any => {
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
-export const onEstimatesEnter = (): any => {
+export const onEstimatesEnter = (route: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
@@ -203,7 +204,9 @@ export const onEstimatesEnter = (): any => {
       deleted: false
     };
 
-    values.filters = filters;
+    // convert the url search params tab to (db) filters
+    const newFilters = convertTabToFilters(estimatesTabOptions, route.search.tab, filters);
+    values.filters = newFilters;
 
     dispatch(loadEstimates(values));
   });
