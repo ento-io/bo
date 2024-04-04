@@ -235,7 +235,8 @@
   "all": "All",
   "route": {
     "new": "new",
-    "all": "all"
+    "all": "all",
+    "recycleBin": "recycle-bin"
   },
   "advancedSearch": "Advanced search",
   "start": "Start",
