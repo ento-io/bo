@@ -2,7 +2,7 @@ import i18n from '@/config/i18n';
 
 import { closeMessageSlice, endLoadingSlice, getAppMessageSelector, setErrorSlice, startLoadingSlice } from '@/redux/reducers/app.reducer';
 import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
-import { ISelectOption } from '@/types/app.type';
+import { IListTabValue, ISelectOption } from '@/types/app.type';
 
 // options for select input
 export const booleanOptions: ISelectOption<boolean>[] = [
@@ -93,11 +93,14 @@ export const actionWithLoader = (
  * @param tab
  * @returns
  */
-export const tabToFilters = (tab: string): Record<string, any> | void => {
-  const values: Record<string, any> = {};
-  if (tab === i18n.t('common:route.new')) {
-    values.seen = false;
+export const convertTabToFilters = (tabs: IListTabValue[], tabValue: IListTabValue['tab'], filters: any) => {
+  const currentTab = tabs?.find((tab: IListTabValue): boolean => tab.tab === tabValue);
+
+  const newFilters: Record<string, any> = { ...filters };
+
+  if (currentTab) {
+    newFilters[currentTab.key] = currentTab.value as any;
   }
 
-  return values;
-};
+  return newFilters;
+}
