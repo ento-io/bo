@@ -243,7 +243,8 @@
   "all": "Rehetra",
   "route": {
     "new": "vaovao",
-    "all": "rehetra"
+    "all": "rehetra",
+    "recycleBin": "Dabam-pako"
   },
   "advancedSearch": "Fitadiavana lalina",
   "start": "Fiandohana",

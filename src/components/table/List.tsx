@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, ReactNode, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEvent, ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { IconButton, Stack, Tooltip } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -40,6 +40,7 @@ type Props<IQuery> = {
   defaultFilters?: IQuery;
   disableRowClickEvent?: boolean;
   toolbarMenus?: IMenu<string[]>[];
+  enableMultipleSelect?: boolean;
 };
 
 const List = <IQuery extends IQueriesInput['filters'],>({
@@ -59,6 +60,7 @@ const List = <IQuery extends IQueriesInput['filters'],>({
   toolbarMenus,
   disableRowClickEvent = true,
   border = false,
+  enableMultipleSelect = true,
 }: Props<IQuery>) => {
   const [initPagination, setInitPagination] = useState<boolean>(false);
   const [pagination, setPagination] = useState<IPagination>(DEFAULT_PAGINATION);
@@ -93,7 +95,10 @@ const List = <IQuery extends IQueriesInput['filters'],>({
   }, [defaultFilters, tabs]);
 
   // remove the checkboxes if there is no multiple actions
-  const canMultipleSelect = !!(onDeleteSelected ?? onMarkAsSeenSelected);
+  const canMultipleSelect = useMemo((): boolean => {
+    if (!enableMultipleSelect) return false;
+    return !!(onDeleteSelected ?? onMarkAsSeenSelected);
+  }, [onDeleteSelected, onMarkAsSeenSelected, enableMultipleSelect])
 
   useEffect(() => {
     if (initPagination) {
@@ -171,6 +176,7 @@ const List = <IQuery extends IQueriesInput['filters'],>({
       const filters = convertTabToFilters(tabs, tabValue, queries.filters);
 
       queries.filters = filters;
+      queries.search = undefined;
   
       setQueries(queries);
       // NOTE:
@@ -299,7 +305,8 @@ const List = <IQuery extends IQueriesInput['filters'],>({
 
   return (
     <Box sx={{ width: '100%' }}>
-      {tabs.length > 1 && (
+      {/* tabs using search params */}
+      {tabs.length > 0 && (
         <ListTabs
           onTabChange={handleTabChange}
           tabs={tabs}

@@ -71,8 +71,8 @@ export const getRolesForUser = async (user?: Record<string, any> | null, toJson 
     parseUser = await new Parse.Query(Parse.User).equalTo('objectId', user.objectId).first();
   }
 
-  const query = new Parse.Query(Parse.Role);
-  query.equalTo('users', parseUser);
+  const query = new Parse.Query(Parse.Role)
+    .equalTo('users', parseUser);
 
   if (!all) {
     query.notEqualTo('name', HIGHEST_LEVEL_DEFAULT_ROLES[0]);
@@ -81,6 +81,11 @@ export const getRolesForUser = async (user?: Record<string, any> | null, toJson 
   const roles = await query.find();
   return toJson ? roles.map(role => role.toJSON()) : roles;
 };
+
+export const isAdmin = async (): Promise<boolean> => {
+  const hasRole = await Parse.Cloud.run('hasRole', { roleNames: HIGHEST_LEVEL_DEFAULT_ROLES });
+  return hasRole;
+}
 
 /**
  * action based on roles and rights

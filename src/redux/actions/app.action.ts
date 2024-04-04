@@ -4,12 +4,12 @@ import { ISettingsInput } from '@/types/app.type';
 import { Lang } from '@/types/setting.type';
 import i18n from '@/config/i18n';
 import { setMessageSlice, setNotificationsSlice } from '@/redux/reducers/app.reducer';
-import { loadCurrentUserRolesSlice } from '@/redux/reducers/role.reducer';
+import { loadCurrentUserIsAdminSlice, loadCurrentUserRolesSlice } from '@/redux/reducers/role.reducer';
 import { setLang } from '@/redux/reducers/settings.reducer';
 import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { getAppNotificationsSelector } from '../reducers/app.reducer';
-import { getRolesForUser } from '@/utils/role.utils';
+import { getRolesForUser, isAdmin } from '@/utils/role.utils';
 import { PATH_NAMES } from '@/utils/pathnames';
 
 // ----------------------------------------------------- //
@@ -21,9 +21,13 @@ import { PATH_NAMES } from '@/utils/pathnames';
  */
 export const onDashboardEnter = (): any => {
   return async (dispatch: AppDispatch): Promise<void> => {
-    const [currentUserRoles] = await Promise.all([getRolesForUser(null, true, true)]);
+    const [currentUserRoles, admin] = await Promise.all([
+      getRolesForUser(null, true, true),
+      isAdmin()
+    ]);
 
     dispatch(loadCurrentUserRolesSlice(currentUserRoles));
+    dispatch(loadCurrentUserIsAdminSlice(admin));
   };
 };
 

@@ -1,7 +1,9 @@
 import { Box, Tab, Tabs, Theme } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { IListTabValue, ITabSearchParams } from '@/types/app.type';
+import { getRoleCurrentUserIsAdminSelector } from '@/redux/reducers/role.reducer';
 
 const classes = {
   tab: (theme: Theme) => ({
@@ -36,6 +38,7 @@ const ListTabs = <T extends ITabSearchParams>({
 }: Props<T>) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const isAdmin = useSelector(getRoleCurrentUserIsAdminSelector);
 
   // add the translated tab value to the url search params
   // use these url search params as a filter to query in database
@@ -62,15 +65,19 @@ const ListTabs = <T extends ITabSearchParams>({
           value={t('route.all')}
         />
         {/* <Tab disableRipple label={t('news')} value={t('route.new')} /> */}
-        {tabs?.map((tab: IListTabValue, index: number) => (
-          <Tab
-            css={classes.tab}
-            disableRipple
-            label={tab.label}
-            value={tab.tab}
-            key={tab.tab + index}
-          />
-        ))}
+        {tabs?.map((tab: IListTabValue, index: number) => {
+          // admin only can see deleted tab
+          if (tab.key === 'deleted' && !isAdmin) return null;
+          return (
+            <Tab
+              css={classes.tab}
+              disableRipple
+              label={tab.label}
+              value={tab.tab}
+              key={tab.tab + index}
+            />
+          )
+        })}
       </Tabs>
     </Box>
   );
