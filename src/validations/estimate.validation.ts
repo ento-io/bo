@@ -11,4 +11,5 @@ export const estimateSchema = z.object({
 export const estimateFilterSchema = z.object({
   createdAt: z.array(z.coerce.date().nullable()).optional(),
   updatedAt: z.array(z.coerce.date().nullable()).optional(),
+  user: z.string().optional(),
 });
