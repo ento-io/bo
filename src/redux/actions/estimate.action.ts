@@ -6,7 +6,7 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
 import { addEstimateToEstimatesSlice, deleteEstimateFromEstimatesSlice, deleteEstimatesSlice, loadEstimateSlice, loadEstimatesSlice, markEstimatesAsSeenSlice, setEstimatesCountSlice, updateEstimatesByEstimateSlice } from '../reducers/estimate.reducer';
-import { getAppNotificationsSelector, setErrorSlice, setMessageSlice, setNotificationsSlice } from '../reducers/app.reducer';
+import { getAppNotificationsSelector, setMessageSlice, setNotificationsSlice } from '../reducers/app.reducer';
 import { setValues } from '@/utils/parse.utils';
 import { EstimateInput, IEstimate } from '@/types/estimate.types';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
@@ -15,7 +15,7 @@ import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
 import { estimatesTabOptions } from '@/utils/estimate.utils';
-import { markAsSeen } from './app.action';
+import { goToNotFound, markAsSeen } from './app.action';
 
 export const Estimate = Parse.Object.extend("Estimate");
 
@@ -210,7 +210,7 @@ export const onEstimatesEnter = (route: any): any => {
 
     // redirect to not found page
     if (!canFind) {
-      dispatch(setErrorSlice(i18n.t('common:errors.accessDenied')));
+      route.navigate(goToNotFound());
       return;
     }
 
@@ -240,12 +240,23 @@ export const onEstimatesEnter = (route: any): any => {
  * @returns 
  */
 export const onEstimateEnter = (route?: any): AppThunkAction => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const canPreview = canAccessTo(roles, 'Estimate', 'get');
     const { id } = route.params;
-    if (!id) return ;
+
+    // redirect to not found page
+    if (!canPreview || !id) {
+      route.navigate(goToNotFound());
+      return;
+    }
 
     const estimate = await getEstimate(id, ['updatedBy', 'user']);
-    if (!estimate) return;
+    if (!estimate) {
+      route.navigate(goToNotFound());
+      return;
+    };
 
     dispatch(loadEstimateSlice((estimate as Parse.Attributes).toJSON()));
 

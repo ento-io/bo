@@ -450,7 +450,6 @@ export const onUserEnter = (route?: any): AppThunkAction => {
       return;
     }
 
-
     if (!route.params?.id) return ;
 
     const user = await Parse.Cloud.run('getUser', { id: route.params?.id, shouldMarkAsSeen: true });
