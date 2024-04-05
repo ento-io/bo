@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Stack } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -18,6 +17,7 @@ import { userFilterSchema } from '@/validations/user.validation';
 import { sexOptions, userPlatformOptions } from '@/utils/user.utils';
 
 import { UserFiltersInput } from '@/types/user.type';
+import AdvancedSearchFields from '@/components/AdvancedSearchFields';
 
 const USER_FILTER_FORM_ID = 'user-filter';
 
@@ -52,22 +52,52 @@ const UserAdvancedFilterForm = ({ onSubmit }: Props) => {
         toggle={toggleOpenFilterDialog}
         formId={USER_FILTER_FORM_ID}>
         <Form formId={USER_FILTER_FORM_ID} form={form} onSubmit={handleSubmit(onSubmitHandler)}>
-          <Stack direction="row" spacing={2}>
-            <TextField name="lastName" label={t('user:lastName')} type="text" variant="outlined" fullWidth fixedLabel />
-            <TextField
-              name="firstName"
-              label={t('user:firstName')}
-              type="text"
-              variant="outlined"
-              fullWidth
-              fixedLabel
-            />
-          </Stack>
-          <TextField name="email" label={t('user:email')} type="text" variant="outlined" fullWidth fixedLabel />
-          <ToggleButtonsField name="sex" options={sexOptions} label={t('user:sex')} isMulti />
-          <DateRangePickerField name="birthday" label={t('user:birthday')} variant="outlined" />
-          <SelectField name="platform" options={userPlatformOptions} label={t('common:platform')} isMulti isClearable />
-          {/* <ToggleButtonsField name="isOnline" options={onlineOptions} label={t('user:online') + ' ?'} isMulti /> */}
+          <AdvancedSearchFields
+            fields={[
+              {
+                label: t('user:lastName'),
+                name: 'lastName',
+                checked: false,
+                component: <TextField name="lastName" label={t('user:lastName')} fullWidth fixedLabel />,
+              },
+              {
+                label: t('user:firstName'),
+                name: 'firstName',
+                checked: false,
+                component: <TextField name="firstName" label={t('user:firstName')} fullWidth fixedLabel />,
+              },
+              {
+                label: t('common:createdAt'),
+                name: 'createdAt',
+                checked: false,
+                component: <DateRangePickerField name="createdAt" variant="standard" fullWidth />,
+              },
+              {
+                label: t('common:updatedAt'),
+                name: 'updatedAt',
+                checked: false,
+                component: <DateRangePickerField name="updatedAt" variant="standard" fullWidth />,
+              },
+              {
+                label: t('user:birthday'),
+                name: 'birthday',
+                checked: false,
+                component: <DateRangePickerField name="birthday" variant="standard" fullWidth />,
+              },
+              {
+                label: t('user:sex'),
+                name: 'sex',
+                checked: false,
+                component: <ToggleButtonsField name="sex" options={sexOptions} label={t('user:sex')} isMulti />,
+              },
+              {
+                label: t('common:platform'),
+                name: 'platform',
+                checked: false,
+                component: <SelectField name="platform" options={userPlatformOptions} label={t('common:platform')} isMulti isClearable />,
+              },
+            ]}
+          />
         </Form>
       </Dialog>
     </>
