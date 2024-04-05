@@ -124,6 +124,7 @@
   },
   "seeAllNewUsers": "See all {{count}} new users",
   "searchByNameOrEmail": "Search by name or email",
+  "nameOrEmail": "Name or email",
   "online": "Online",
   "offline": "Offline",
   "createdBy": "Created by",

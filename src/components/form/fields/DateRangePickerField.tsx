@@ -21,7 +21,7 @@ const DateRangePickerField = ({ name, label, separator, inputFormat, helperText,
   } = useFormContext();
 
   return (
-    <FormControl component="fieldset" error={!!errors[name]}>
+    <FormControl component="fieldset" error={!!errors[name]} fullWidth>
       {label && (
         <FormLabel component="legend" sx={{ mb: 1 }}>
           {label}
@@ -37,10 +37,15 @@ const DateRangePickerField = ({ name, label, separator, inputFormat, helperText,
             value={value}
             separator={separator}
             inputFormat={inputFormat}
+            hasError={!!errors[name]}
           />
         )}
       />
-      {errors[name] && <FormHelperText error>{(errors as any)[name].message}</FormHelperText>}
+      {errors[name] && (
+        <FormHelperText error>
+          {(errors as any)[name][0].message || (errors as any)[name][1]?.message}
+        </FormHelperText>
+      )}
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );

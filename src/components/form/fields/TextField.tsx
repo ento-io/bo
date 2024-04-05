@@ -28,7 +28,6 @@ const TextField = ({ name, errorMessage, onFieldChange, ...inputProps }: Props) 
           <TextFieldInput
             {...field}
             {...inputProps}
-            variant="outlined"
             error={!!errors[name] || !!errorMessage}
             onChange={(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
               field.onChange(event.target.value);

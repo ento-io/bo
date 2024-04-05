@@ -16,6 +16,7 @@ import { RESPONSIVE_BREAKPOINT, SIDEBAR_WIDTH, TOOLBAR_SMALL_SCREEN_HEIGHT } fro
 import Logo from './Logo';
 import UserMenu from './notifications/UserMenu';
 import ProfileMenu from './ProfileMenu';
+import NotificationIcons from './notifications/NotificationIcons';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -64,6 +65,7 @@ const AppBar = ({ onOpenDrawer }: Props) => {
   const { location } = useRouterState();
   const isDesktopDown = useBreakpoint();
   const router = useRouter();
+  
   // go back (left button) click
   const handleGoBack = () => router.history.back();
 
@@ -99,7 +101,9 @@ const AppBar = ({ onOpenDrawer }: Props) => {
         <Box sx={{ flexGrow: 1 }} />
         {/* ------------ right appBar ------------ */}
         {/* ------------ notifications ----------- */}
+        <NotificationIcons />
         <UserMenu />
+        
         {/* responsive */}
         <Divider orientation="vertical" sx={{ height: 28, display: { xs: 'none', lg: 'block' } }} />
         <Box ml={{ xs: 0, lg: 1 }}>

@@ -150,3 +150,10 @@ export interface IListTabValue<T = string | boolean> {
   tab: string; // tab search param (translated)
   hide?: boolean;
 }
+
+export interface IAdvancedSearchOption {
+  label: string;
+  name: string;
+  checked: boolean;
+  component: ReactNode;
+}

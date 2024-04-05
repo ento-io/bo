@@ -1,4 +1,4 @@
-import { PaletteColorOptions, PaletteMode, PaletteOptions, Theme, createTheme } from '@mui/material';
+import { BadgeProps, PaletteColorOptions, PaletteMode, PaletteOptions, Theme, createTheme } from '@mui/material';
 import { grey, teal } from '@mui/material/colors';
 import { IThemeColors } from '@/types/setting.type';
 import { LAYOUT_CONTENT_PADDING, RESPONSIVE_BREAKPOINT } from './constants';
@@ -144,6 +144,20 @@ const defaultTheme = {
           paddingLeft: 8,
           paddingRight: 8,
         },
+      },
+    },
+    MuiBadge: {
+      styleOverrides: {
+        badge: ({ theme, ownerState }: { theme: Theme, ownerState: BadgeProps }) => {
+          if (ownerState.overlap === 'rectangular') {
+            return {
+              color: '#fff',
+              top: -2,
+              left: 0,
+              border: `1px solid ${theme.palette.background.paper}`,
+            }
+          }
+        }
       },
     },
     MuiButton: {

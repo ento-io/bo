@@ -133,7 +133,7 @@ const Estimates = () => {
   const onUpdateData = (queries: IQueriesInput) => {
     // the on tab change is not used here, we use it in on page enter with search params
     const newQueries = { ...queries, filters: { ...filters, ...queries.filters } };
-    dispatch(loadEstimates(newQueries))
+    dispatch(loadEstimates(newQueries));
   }
 
   // table data
