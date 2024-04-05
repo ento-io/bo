@@ -152,7 +152,9 @@ const User = () => {
       onClick: toggleBanUser,
       display: true,
       label: user.banned ? t('common:activate') : t('user:ban'),
-      icon: user.banned ? <FiCheck /> : <IoWarning />
+      icon: user.banned
+        ? <FiCheck css={(theme: Theme) => ({ color: theme.palette.success.main })} />
+        : <IoWarning css={(theme: Theme) => ({ color: theme.palette.error.main })} />
     },
   ];
 
