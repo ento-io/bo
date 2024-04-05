@@ -13,6 +13,7 @@ import { getAppNotificationsSelector } from '../reducers/app.reducer';
 import { getRolesForUser, isAdmin } from '@/utils/role.utils';
 import { PATH_NAMES } from '@/utils/pathnames';
 import { DateType } from '@/types/util.type';
+import { getNewEstimatesCount } from './estimate.action';
 
 // ----------------------------------------------------- //
 // ------------------- Parse queries ------------------- //
@@ -52,7 +53,8 @@ export const onDashboardEnter = (): any => {
   return async (dispatch: AppDispatch): Promise<void> => {
     const [currentUserRoles, admin] = await Promise.all([
       getRolesForUser(null, true, true),
-      isAdmin()
+      isAdmin(),
+      dispatch(getNewEstimatesCount())
     ]);
 
     dispatch(loadCurrentUserRolesSlice(currentUserRoles));
