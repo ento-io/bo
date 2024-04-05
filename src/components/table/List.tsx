@@ -86,6 +86,7 @@ const List = <IQuery extends IQueriesInput['filters'],>({
       return {
         ...prev,
         filters: {
+          deleted: false, // important, by default get all non-deleted items
           ...prev.filters,
           ...defaultFilters,
           ...newFilters
