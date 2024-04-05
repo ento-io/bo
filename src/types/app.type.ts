@@ -148,7 +148,7 @@ export interface IListTabValue<T = string | boolean> {
   value: T; // value in database
   label: string; // label to display (translated)
   tab: string; // tab search param (translated)
-  hide?: boolean;
+  forAdmin?: boolean;
 }
 
 export interface IAdvancedSearchOption {

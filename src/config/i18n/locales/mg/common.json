@@ -244,7 +244,8 @@
   "route": {
     "new": "vaovao",
     "all": "rehetra",
-    "recycleBin": "Dabam-pako"
+    "recycleBin": "dabam-pako",
+    "administrators": "mpandrindra"
   },
   "advancedSearch": "Fitadiavana lalina",
   "start": "Fiandohana",

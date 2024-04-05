@@ -21,6 +21,7 @@
   "verifyAccount": "verify",
   "edit": "edit",
   "add": "add",
+  "notFound": "not-found",
   "administration": "administration",
   "estimates": "estimates",
   "invoices": "invoices"

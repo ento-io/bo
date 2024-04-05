@@ -236,7 +236,8 @@
   "route": {
     "new": "new",
     "all": "all",
-    "recycleBin": "recycle-bin"
+    "recycleBin": "recycle-bin",
+    "administrators": "administrators"
   },
   "advancedSearch": "Advanced search",
   "start": "Start",

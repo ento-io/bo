@@ -5,6 +5,7 @@ import { ISelectOption } from '@/types/app.type';
 import { Phone, Sex, SexEnum, IUser, PlatformEnum } from '@/types/user.type';
 
 import { cutText } from './utils';
+import { defaultTabOptions } from './app.utils';
 
 // options for user platform
 export const userPlatformOptions: ISelectOption[] = [
@@ -180,3 +181,20 @@ export const getFullPhoneNumber = (phone: Phone): string => {
 
 // user created from back office
 export const isUserFromBO = (user: IUser): boolean => user.platform === PlatformEnum.BO;
+
+export const usersTabOptions = [
+  {
+    label: i18n.t('common:news'),
+    tab: i18n.t('common:route.new'),
+    key: 'seen',
+    value: false,
+  },
+  {
+    label: i18n.t('user:administrators'),
+    tab: i18n.t('common:route.administrators'),
+    key: 'platform',
+    value: PlatformEnum.BO,
+    forAdmin: true
+  },
+  ...defaultTabOptions,
+];
