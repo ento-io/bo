@@ -66,7 +66,7 @@ export const onDashboardEnter = (): any => {
  * mark an entity as seen
  * used mainly when entering a page with the entity id
  * @param parseObj
- * @param notify
+ * @param notify key in store ex: { notifications: { estimate: 2 }, notify here is "estimate" key
  * @returns
  */
 export const markAsSeen = (parseObj: Parse.Object, notify: string): any => {
