@@ -1,7 +1,7 @@
 import i18n from "@/config/i18n";
 import { defaultTabOptions } from "./app.utils";
 
-export const estimateStatus = [
+export const estimateStatusOptions = [
   {
     value: 'WAITING',
     label: i18n.t('common:status.waiting'),
@@ -13,7 +13,7 @@ export const estimateStatus = [
 ];
 
 export const getEstimateStatusLabel = (status: string): string => {
-  const statusObj = estimateStatus.find((s) => s.value === status);
+  const statusObj = estimateStatusOptions.find((s) => s.value === status);
   return statusObj?.value || status;
 }
 
