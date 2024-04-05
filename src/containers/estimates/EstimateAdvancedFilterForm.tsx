@@ -14,6 +14,8 @@ import { estimateFilterSchema } from '@/validations/estimate.validation';
 import DateRangePickerField from '@/components/form/fields/DateRangePickerField';
 import { useAdvancedSearchOptions } from '@/hooks/useAdvancedSearchOptions';
 import TextField from '@/components/form/fields/TextField';
+import SelectField from '@/components/form/fields/SelectField';
+import { estimateStatusOptions } from '@/utils/estimate.utils';
 
 const ESTIMATE_FILTER_FORM_ID = 'estimate-filter';
 
@@ -43,6 +45,12 @@ const EstimateAdvancedFilterForm = ({ onSubmit }: Props) => {
       name: 'user',
       checked: false,
       component: <TextField name="user" placeholder={t('user:nameOrEmail')} variant="standard" fullWidth />,
+    },
+    {
+      label: 'Status',
+      name: 'status',
+      checked: false,
+      component: <SelectField name="status" options={estimateStatusOptions} isMulti isClearable />,
     },
   ]);
 
