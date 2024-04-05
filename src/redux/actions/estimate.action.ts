@@ -196,6 +196,12 @@ export const getNewEstimatesCount = (): any => {
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
+/**
+ * load estimates data from database before the page is loaded (in route)
+ * then load it to the store
+ * @param route 
+ * @returns 
+ */
 export const onEstimatesEnter = (route: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
     const state = getState?.();
@@ -227,6 +233,12 @@ export const onEstimatesEnter = (route: any): any => {
   });
 };
 
+/**
+ * load estimate data by its id from database before the page is loaded (in route)
+ * then load it to the store
+ * @param route 
+ * @returns 
+ */
 export const onEstimateEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     const { id } = route.params;
