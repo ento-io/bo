@@ -30,19 +30,19 @@ const EstimateAdvancedFilterForm = ({ onSubmit }: Props) => {
       label: t('common:createdAt'),
       name: 'createdAt',
       checked: false,
-      component: <DateRangePickerField name="createdAt" variant="outlined" fullWidth />,
+      component: <DateRangePickerField name="createdAt" variant="standard" fullWidth />,
     },
     {
       label: t('common:updatedAt'),
       name: 'updatedAt',
       checked: false,
-      component: <DateRangePickerField name="updatedAt" variant="outlined" fullWidth />,
+      component: <DateRangePickerField name="updatedAt" variant="standard" fullWidth />,
     },
     {
       label: t('common:user'),
       name: 'user',
       checked: false,
-      component: <TextField name="user" placeholder={t('user:nameOrEmail')} variant="outlined" fullWidth />,
+      component: <TextField name="user" placeholder={t('user:nameOrEmail')} variant="standard" fullWidth />,
     },
   ]);
 
