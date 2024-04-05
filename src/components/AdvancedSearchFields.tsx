@@ -34,8 +34,12 @@ const AdvancedSearchFields = ({ fields = [] }: Props) => {
             onChange={handleChangeOptions(option.name)} />}
             label={option.label}
           />
-          {/* display the input when the checkbox is checked */}
-          {option.checked && option.component}
+          {option.checked && (
+            <div css={{ marginBottom: 8 }}>
+              {/* display the input when the checkbox is checked */}
+              {option.component}
+             </div>
+          )}
         </div>
       ))}
   </Stack>
