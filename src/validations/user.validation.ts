@@ -20,4 +20,5 @@ export const userFilterSchema = object({
 export const usersRouteSearchParams = object({
   role: string().optional(),
   from: string().optional(),
+  tab: string().optional(),
 })
