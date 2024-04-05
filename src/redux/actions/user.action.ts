@@ -44,6 +44,7 @@ import { SIGNUP_PROPERTIES } from './auth.action';
 import { loadRoles } from './role.action';
 import { PATH_NAMES } from '@/utils/pathnames';
 import { IQueriesInput } from '@/types/app.type';
+import { goToNotFound } from './app.action';
 
 // ----------------------------------------------------- //
 // ------------------- Parse queries ------------------- //
@@ -399,8 +400,7 @@ export const onUsersEnter = (route: any): any => {
 
     // redirect to not found page
     if (!canFind) {
-      // dispatch(goToNotFound());
-      dispatch(setErrorSlice(i18n.t('common:errors.accessDenied')))
+      route.navigate(goToNotFound());
       return;
     }
 
@@ -446,9 +446,10 @@ export const onUserEnter = (route?: any): AppThunkAction => {
 
     // redirect to not found page
     if (!canPreview) {
-      // dispatch(goToNotFound());
+      route.navigate(goToNotFound());
       return;
     }
+
 
     if (!route.params?.id) return ;
 
