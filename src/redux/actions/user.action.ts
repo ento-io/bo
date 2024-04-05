@@ -358,7 +358,6 @@ export const inviteUser: any = (values: ISignUpInput): any => {
 
 export const sendEmailToUser = (user: IUser, values: SendEmailInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    console.log('user: ', user, 'values: ', values);
     const isSend = await Parse.Cloud.run('sendEmailToUser', values)
 
     if (!isSend) {
@@ -415,7 +414,6 @@ export const onUsersEnter = (route: any): any => {
     const filters: Record<string, boolean | string> = {
       deleted: false
     };
-    console.log('route.search.tab: ', route.search.tab);
 
     // TODO: should have admin-only list page
     // if (params.location.search?.from === PlatformEnum.BO) {
