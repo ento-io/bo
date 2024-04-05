@@ -14,7 +14,7 @@ import { useToggle } from '@/hooks/useToggle';
 
 import { userFilterSchema } from '@/validations/user.validation';
 
-import { sexOptions, userPlatformOptions } from '@/utils/user.utils';
+import { accountVerificationOptions, sexOptions, userPlatformOptions } from '@/utils/user.utils';
 
 import { UserFiltersInput } from '@/types/user.type';
 import AdvancedSearchFields from '@/components/AdvancedSearchFields';
@@ -58,13 +58,19 @@ const UserAdvancedFilterForm = ({ onSubmit }: Props) => {
                 label: t('user:lastName'),
                 name: 'lastName',
                 checked: false,
-                component: <TextField name="lastName" label={t('user:lastName')} fullWidth fixedLabel />,
+                component: <TextField name="lastName" variant="standard" placeholder={t('user:lastName')} fullWidth fixedLabel />,
               },
               {
                 label: t('user:firstName'),
                 name: 'firstName',
                 checked: false,
-                component: <TextField name="firstName" label={t('user:firstName')} fullWidth fixedLabel />,
+                component: <TextField name="firstName" variant="standard" placeholder={t('user:firstName')} fullWidth fixedLabel />,
+              },
+              {
+                label: t('user:accountVerified'),
+                name: 'verified',
+                checked: false,
+                component: <ToggleButtonsField name="verified" options={accountVerificationOptions} />,
               },
               {
                 label: t('common:createdAt'),
@@ -88,7 +94,7 @@ const UserAdvancedFilterForm = ({ onSubmit }: Props) => {
                 label: t('user:sex'),
                 name: 'sex',
                 checked: false,
-                component: <ToggleButtonsField name="sex" options={sexOptions} label={t('user:sex')} isMulti />,
+                component: <ToggleButtonsField name="sex" options={sexOptions} isMulti />,
               },
               {
                 label: t('common:platform'),
