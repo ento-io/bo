@@ -197,6 +197,7 @@ const DashboardLayout = () => {
           keepMounted: true, // Better open performance on mobile.
         }}>
         <DrawerHeader>
+          {/* menu icon */}
           {!isSideBarOpen ? (
             <Box className="flexCenter" alignSelf="stretch" flex={1}>
               <IconButton onClick={handleDrawerOpen}>
@@ -214,6 +215,7 @@ const DashboardLayout = () => {
             </Box>
           )}
         </DrawerHeader>
+        {/* left sidebar */}
         <SideBar open={isSideBarOpen} roles={roles} onClose={handleDrawerClose} />
       </Drawer>
 
@@ -228,7 +230,9 @@ const DashboardLayout = () => {
           minHeight: '100vh',
         }} // main background
         className="flexColumn positionRelative"
-        open={isSideBarOpen}>
+        open={isSideBarOpen}
+      >
+        {/* top app bar */}
         <AppBar onOpenDrawer={handleDrawerOpen} />
         <DrawerHeader />
         <Box
