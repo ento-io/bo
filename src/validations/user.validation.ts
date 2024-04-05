@@ -1,18 +1,18 @@
-import { object, string, date, literal, array, boolean, union } from 'zod';
+import { object, string, literal, array, boolean, union } from 'zod';
 
-import { errorMap } from '@/config/zod';
-
+import { dateForAdvancedSearchSchema } from './app.validations';
 
 export const ABOUT_ME_LENGTH = 500;
 
 const sexSchema = union([literal('male'), literal('female')]);
 
 export const userFilterSchema = object({
-  email: string().email().optional().or(literal('')),
-  lastName: string({ errorMap }),
-  firstName: string({ errorMap }),
+  lastName: string().optional(),
+  firstName: string().optional(),
   sex: array(string().optional()).optional().or(sexSchema).optional(),
-  birthday: array(date().nullable()).optional(),
+  birthday: dateForAdvancedSearchSchema,
+  createdAt: dateForAdvancedSearchSchema,
+  updatedAt: dateForAdvancedSearchSchema,
   platform: array(string().optional()).optional(),
   isOnline: array(boolean().optional()).optional(),
 });
