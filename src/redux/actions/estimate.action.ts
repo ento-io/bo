@@ -15,6 +15,7 @@ import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
 import { estimatesTabOptions } from '@/utils/estimate.utils';
+import { markAsSeen } from './app.action';
 
 export const Estimate = Parse.Object.extend("Estimate");
 
@@ -228,13 +229,15 @@ export const onEstimatesEnter = (route: any): any => {
 
 export const onEstimateEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    if (!route.params?.id) return ;
+    const { id } = route.params;
+    if (!id) return ;
 
-    const estimate = await getEstimate(route.params?.id, ['updatedBy', 'user']);
+    const estimate = await getEstimate(id, ['updatedBy', 'user']);
 
     if (!estimate) return;
 
     dispatch(loadEstimateSlice((estimate as Parse.Attributes).toJSON()));
+    dispatch(markAsSeen(estimate, 'estimate'));
   });
 };
 
