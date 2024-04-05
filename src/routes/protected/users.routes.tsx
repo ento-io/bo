@@ -8,6 +8,7 @@ import { onEnter } from "@/redux/actions/app.action";
 import { onUserEnter, onUsersEnter } from "@/redux/actions/user.action";
 import Users from "@/pages/users/Users";
 import User from "@/pages/users/User";
+import { usersRouteSearchParams } from "@/validations/user.validation";
 
 export const usersLayout = createRoute({
   getParentRoute: () => privateLayout,
@@ -16,10 +17,7 @@ export const usersLayout = createRoute({
 });
 
 export const usersRoute = createRoute({
-  validateSearch: (search) => z.object({
-    role: z.string().optional(),
-    from: z.string().optional(),
-  }).parse(search),
+  validateSearch: (search) => usersRouteSearchParams.parse(search),
   getParentRoute: () => usersLayout,
   beforeLoad: onEnter(onUsersEnter),
   component: Users,
