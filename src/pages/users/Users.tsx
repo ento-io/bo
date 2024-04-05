@@ -17,13 +17,14 @@ import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.ty
 import Avatar from '@/components/Avatar';
 import ButtonActions from '@/components/ButtonActions';
 import { capitalizeFirstLetter } from '@/utils/utils';
-import { getUserFullName } from '@/utils/user.utils';
+import { getUserFullName, usersTabOptions } from '@/utils/user.utils';
 import Head from '@/components/Head';
 import SearchInput from '@/components/form/inputs/SearchInput';
 import UserAdvancedFilterForm from '@/containers/users/UserAdvancedFilterForm';
 import { usersRoute } from '@/routes/protected/users.routes';
 import Dialog from '@/components/Dialog';
 import SendEmailForm from '@/containers/users/SendEmailForm';
+import { isRecycleBinTab } from '@/utils/app.utils';
 
 const SEND_EMAIL_TO_USER_FORM_ID = 'send-email-form-id'
 
@@ -74,6 +75,8 @@ const getDefaultFilters = (searchParams: IUsersRouteSearchParams) => {
     values.fromBO = searchParams.from === PlatformEnum.BO;
   }
 
+  values.tab = searchParams.tab;
+
   return values;
 }
 
@@ -90,6 +93,8 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
 
   const { t } = useTranslation();
+
+  const canDestroy = searchParams.tab && isRecycleBinTab(searchParams.tab);
 
   // delete a row
   const onDelete = useCallback(
@@ -153,29 +158,33 @@ const Users = () => {
         platform: user.platform ? capitalizeFirstLetter(user.platform) : '',
         email: user.username,
         createdAt: displayDate(user.createdAt, false, true),
-        actions:(
-          <ButtonActions
-            onDelete={canDelete ? () => onDelete(user) : undefined}
-            onPreview={canPreview ? () => onPreview(user.objectId) : undefined}
-            value={getUserFullName(user)}
-          >
-            <IconButton aria-label="sendMail" onClick={handleSelectRow(user)}>
-              <FiSend size={20} />
-            </IconButton>
-          </ButtonActions>  
-        )
+        actions: canDestroy
+          ? null
+          : (
+            <ButtonActions
+              onDelete={canDelete ? () => onDelete(user) : undefined}
+              onPreview={canPreview ? () => onPreview(user.objectId) : undefined}
+              value={getUserFullName(user)}
+            >
+              <IconButton aria-label="sendMail" onClick={handleSelectRow(user)}>
+                <FiSend size={20} />
+              </IconButton>
+            </ButtonActions>  
+          )
       };
 
       return data as Data;
     });
 
     return usersData;
-  }, [users, onDelete, onPreview, roles]);
+  }, [users, onDelete, onPreview, roles, canDestroy]);
 
   return (
     <>
       <Head title="Users" />
       <List
+        tabs={usersTabOptions}
+        enableMultipleSelect={!canDestroy}
         // @see users.routes.tsx for search params definition
         defaultFilters={getDefaultFilters(searchParams)}
         onUpdateData={onUpdateData}
