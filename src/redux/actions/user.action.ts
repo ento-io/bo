@@ -1,10 +1,10 @@
 import Parse, { Attributes } from 'parse';
 
-import { actionWithLoader } from '@/utils/app.utils';
+import { actionWithLoader, convertTabToFilters } from '@/utils/app.utils';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { uploadFileAPI } from '@/utils/file.utils';
 import { canAccessTo, getRolesForUser } from '@/utils/role.utils';
-import { getUserFullName, isUserFromBO } from '@/utils/user.utils';
+import { getUserFullName, isUserFromBO, usersTabOptions } from '@/utils/user.utils';
 import { escapeText, isBoolean } from '@/utils/utils';
 import { setValues } from '@/utils/parse.utils';
 
@@ -19,7 +19,6 @@ import {
   deleteUsersSlice,
   loadUserSlice,
   loadUsersSlice,
-  setUserFiltersSlice,
   setUserLoadingSlice,
   setUsersCountSlice,
   updateUsersByUserSlice,
@@ -397,7 +396,7 @@ export const onUserLeave = (): any => {
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
-export const onUsersEnter = (): any => {
+export const onUsersEnter = (route: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
@@ -427,8 +426,10 @@ export const onUsersEnter = (): any => {
     //   filters.roles = [capitalizeFirstLetter(params.location.search.role)];
     // }
 
-    values.filters = filters;
-    dispatch(setUserFiltersSlice(filters))
+    // convert the url search params tab to (db) filters
+    const newFilters = convertTabToFilters(usersTabOptions, route.search.tab, filters);
+    values.filters = newFilters;
+    // dispatch(setUserFiltersSlice(filters))
 
     dispatch(loadUsers(values));
   });
