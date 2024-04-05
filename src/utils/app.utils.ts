@@ -111,6 +111,7 @@ export const defaultTabOptions = [
     tab: i18n.t('common:route.recycleBin'),
     key: 'deleted',
     value: true,
+    forAdmin: true,
   },
 ];
 

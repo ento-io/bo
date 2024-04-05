@@ -67,7 +67,7 @@ const ListTabs = <T extends ITabSearchParams>({
         {/* <Tab disableRipple label={t('news')} value={t('route.new')} /> */}
         {tabs?.map((tab: IListTabValue, index: number) => {
           // admin only can see deleted tab
-          if (tab.key === 'deleted' && !isAdmin) return null;
+          if (!!tab.forAdmin && !isAdmin) return null;
           return (
             <Tab
               css={classes.tab}

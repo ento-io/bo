@@ -194,6 +194,7 @@ export const usersTabOptions = [
     tab: i18n.t('common:route.administrators'),
     key: 'platform',
     value: PlatformEnum.BO,
+    forAdmin: true
   },
   ...defaultTabOptions,
 ];
