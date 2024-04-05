@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { errorMap } from '@/config/zod';
+import { dateForAdvancedSearchSchema } from './app.validations';
 
 export const estimateSchema = z.object({
   url: z
@@ -9,8 +10,8 @@ export const estimateSchema = z.object({
 });
 
 export const estimateFilterSchema = z.object({
-  createdAt: z.array(z.coerce.date().nullable()).optional(),
-  updatedAt: z.array(z.coerce.date().nullable()).optional(),
+  createdAt: dateForAdvancedSearchSchema,
+  updatedAt: dateForAdvancedSearchSchema,
   user: z.string().optional(),
   status: z.array(z.string().optional()).optional(),
 });

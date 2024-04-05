@@ -1,9 +1,10 @@
-import { object, string } from 'zod';
+import { array, coerce, object, string } from 'zod';
 
 import { createManyUnion } from '@/config/zod';
 import { readOnlyLocales } from '@/config/i18n';
 
 export const langSchema = createManyUnion(readOnlyLocales as typeof readOnlyLocales & [string, string, ...string[]]);
+export const dateForAdvancedSearchSchema = array(coerce.date().nullable()).optional();
 
 export const settingsSchema = object({
   lang: langSchema,

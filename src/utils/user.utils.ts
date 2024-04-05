@@ -59,6 +59,18 @@ export const onlineOptions: ISelectOption<boolean>[] = [
   },
 ];
 
+// options for select input
+export const accountVerificationOptions: ISelectOption<boolean>[] = [
+  {
+    label: i18n.t('user:verified'),
+    value: true,
+  },
+  {
+    label: i18n.t('user:unverified'),
+    value: false,
+  },
+];
+
 export const getSexLabelByValue = (sex: Sex): string => {
   const sexOption = sexOptions.find((option: ISelectOption) => option.value === sex);
 

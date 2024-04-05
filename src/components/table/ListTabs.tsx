@@ -7,7 +7,7 @@ import { getRoleCurrentUserIsAdminSelector } from '@/redux/reducers/role.reducer
 
 const classes = {
   tab: (theme: Theme) => ({
-    textTransform: 'none',
+    textTransform: 'none' as const,
     fontWeight: theme.typography.fontWeightMedium,
     fontSize: theme.typography.pxToRem(15),
     marginRight: theme.spacing(1),

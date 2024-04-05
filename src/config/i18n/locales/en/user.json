@@ -1,5 +1,7 @@
 {
   "accountVerified": "Account verified",
+  "verified": "Verified",
+  "unverified": "Unverified",
   "fullName": "Name",
   "birthday": "Birthday",
   "firstName": "First name",
