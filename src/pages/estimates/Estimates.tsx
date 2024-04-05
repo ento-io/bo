@@ -73,7 +73,7 @@ const Estimates = () => {
   const estimates = useSelector(getEstimateEstimatesSelector);
   const count = useSelector(getEstimateCountSelector);
   const filters = useSelector(getEstimateFiltersSelector);
-  const searchParams = estimatesRoute.useSearch()
+  const searchParams = estimatesRoute.useSearch();
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
   const canCreate = canAccessTo(roles, 'Estimate', 'create');
