@@ -15,6 +15,7 @@ export const userFilterSchema = object({
   updatedAt: dateForAdvancedSearchSchema,
   platform: array(string().optional()).optional(),
   isOnline: array(boolean().optional()).optional(),
+  verified: boolean().optional(),
 });
 
 export const usersRouteSearchParams = object({
