@@ -13,6 +13,7 @@ import { EstimateFiltersInput } from '@/types/estimate.types';
 import { estimateFilterSchema } from '@/validations/estimate.validation';
 import DateRangePickerField from '@/components/form/fields/DateRangePickerField';
 import { useAdvancedSearchOptions } from '@/hooks/useAdvancedSearchOptions';
+import TextField from '@/components/form/fields/TextField';
 
 const ESTIMATE_FILTER_FORM_ID = 'estimate-filter';
 
@@ -37,8 +38,13 @@ const EstimateAdvancedFilterForm = ({ onSubmit }: Props) => {
       checked: false,
       component: <DateRangePickerField name="updatedAt" variant="outlined" fullWidth />,
     },
+    {
+      label: t('common:user'),
+      name: 'user',
+      checked: false,
+      component: <TextField name="user" placeholder={t('user:nameOrEmail')} variant="outlined" fullWidth />,
+    },
   ]);
-
 
   const form = useForm<EstimateFiltersInput>({
     resolver: zodResolver(estimateFilterSchema),
