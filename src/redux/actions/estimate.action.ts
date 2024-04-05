@@ -10,7 +10,7 @@ import { getAppNotificationsSelector, setErrorSlice, setMessageSlice, setNotific
 import { setValues } from '@/utils/parse.utils';
 import { EstimateInput, IEstimate } from '@/types/estimate.types';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
-import { IQueriesInput } from '@/types/app.type';
+import { IQueriesInput, ITabSearchParams } from '@/types/app.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
@@ -178,6 +178,20 @@ export const editEstimate = (id: string, values: EstimateInput): any => {
   });
 };
 
+export const getNewEstimatesCount = (): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+    const count = await new Parse.Query(Estimate)
+      .equalTo('seen', false)
+      .equalTo('deleted', false)
+      .limit(100)
+      .count();
+
+    if (!count) return;
+
+    dispatch(setNotificationsSlice({ estimate: count }));
+  });
+};
+
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
@@ -227,5 +241,5 @@ export const onEstimateEnter = (route?: any): AppThunkAction => {
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //
-export const goToEstimates = () => ({ to: PATH_NAMES.estimates });
+export const goToEstimates = (search?: ITabSearchParams) => ({ to: PATH_NAMES.estimates, search });
 export const goToEstimate = (id: string) => ({ to: PATH_NAMES.estimates + '/$id', params: { id }});
