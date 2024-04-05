@@ -233,11 +233,14 @@ export const onEstimateEnter = (route?: any): AppThunkAction => {
     if (!id) return ;
 
     const estimate = await getEstimate(id, ['updatedBy', 'user']);
-
     if (!estimate) return;
 
     dispatch(loadEstimateSlice((estimate as Parse.Attributes).toJSON()));
-    dispatch(markAsSeen(estimate, 'estimate'));
+
+    // set seen as true
+    if (estimate.get('seen') === false) {
+      dispatch(markAsSeen(estimate, 'estimate'));
+    }
   });
 };
 
