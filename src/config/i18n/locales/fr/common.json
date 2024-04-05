@@ -256,8 +256,8 @@
   "route": {
     "new": "nouveaux",
     "all": "tout",
-    "recycleBin": "Corbeille",
-    "administrators": "Administrateurs"
+    "recycleBin": "corbeille",
+    "administrators": "administrateurs"
   },
   "advancedSearch": "Recherche avancée",
   "start": "Début",
