@@ -419,17 +419,24 @@ export const onUsersEnter = (route: any): any => {
     const filters: Record<string, boolean | string> = {
       deleted: false
     };
+    console.log('route.search.tab: ', route.search.tab);
 
     // TODO: should have admin-only list page
     // if (params.location.search?.from === PlatformEnum.BO) {
-      filters.fromBO = true;
+      // filters.fromBO = true;
     //   filters.roles = [capitalizeFirstLetter(params.location.search.role)];
     // }
 
-    // convert the url search params tab to (db) filters
-    const newFilters = convertTabToFilters(usersTabOptions, route.search.tab, filters);
-    values.filters = newFilters;
-    // dispatch(setUserFiltersSlice(filters))
+    // in "All" tab, we fetch all users other than users from BO (admins)
+    if (route.search.tab === undefined) {
+      values.filters = {
+        ...filters,
+        fromBO: false,
+      }
+    } else {
+      const newFilters = convertTabToFilters(usersTabOptions, route.search.tab, filters);
+      values.filters = newFilters;
+    }
 
     dispatch(loadUsers(values));
   });
