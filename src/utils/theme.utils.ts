@@ -146,6 +146,16 @@ const defaultTheme = {
         },
       },
     },
+    MuiBadge: {
+      styleOverrides: {
+        badge: ({ theme }: { theme: Theme }) => ({
+          color: '#fff',
+          top: -2,
+          left: 0,
+          border: `1px solid ${theme.palette.background.paper}`,
+        })
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: ({ theme }: { theme: Theme }) => ({
