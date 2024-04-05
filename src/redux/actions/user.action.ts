@@ -5,7 +5,7 @@ import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { uploadFileAPI } from '@/utils/file.utils';
 import { canAccessTo, getRolesForUser } from '@/utils/role.utils';
 import { getUserFullName, isUserFromBO, usersTabOptions } from '@/utils/user.utils';
-import { escapeText, isBoolean } from '@/utils/utils';
+import { escapeText } from '@/utils/utils';
 import { setValues } from '@/utils/parse.utils';
 
 import { ISignUpInput } from '@/types/auth.types';
@@ -98,9 +98,6 @@ export const loadUsers = ({
   search,
 }: IQueriesInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    // user from BO
-    const fromBO = isBoolean(filters?.fromBO);
-
     const params: IUserCloudInput = {
       limit,
       skip,
@@ -108,7 +105,6 @@ export const loadUsers = ({
       order,
       filters,
       search,
-      fromBO
     };
 
     if (filters?.roles && filters.roles.length > 0) {
@@ -120,7 +116,7 @@ export const loadUsers = ({
 
     // get and display user roles depending on the role of the current user
     const users = [];
-    if (fromBO) {
+    if (filters?.fromBO) {
       for (const user of result.results) {
         const rolesForUser = await getRolesForUser(user, false);
         // add roles to user if admin (created from bo)
