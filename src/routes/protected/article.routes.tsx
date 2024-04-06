@@ -11,6 +11,7 @@ import { onEnter } from "@/redux/actions/app.action";
 import { onArticleEnter, onArticlesEnter, onCreateArticleEnter, onEditArticleEnter } from "@/redux/actions/article.action";
 import CreateArticle from "@/pages/articles/CreateArticle";
 import EditArticle from "@/pages/articles/EditArticle";
+import { tabRouteSearchParams } from "@/validations/app.validations";
 
 export const articlesLayout = createRoute({
   getParentRoute: () => privateLayout,
@@ -19,6 +20,7 @@ export const articlesLayout = createRoute({
 });
 
 export const articlesRoute = createRoute({
+  validateSearch: (search) => tabRouteSearchParams.parse(search),
   getParentRoute: () => articlesLayout,
   beforeLoad: onEnter(onArticlesEnter),
   component: Articles,
