@@ -300,7 +300,7 @@ export const toggleUserNotification = (id: string): any => {
     // increment or decrement notification count
     if (user.get('seen')) {
       count += 1;
-    } else {
+    } else if (count > 0) {
       count -= 1;
     }
 
@@ -465,7 +465,9 @@ export const onUserEnter = (route?: any): AppThunkAction => {
 
     if (!user) return;
 
-    dispatch(setNotificationsSlice({ user: count - 1 })); // from sidebar
+    if (count > 0) {
+      dispatch(setNotificationsSlice({ user: count - 1 })); // from sidebar
+    }
 
     // save user to store (in json)
     const userJSON = user.toJSON() as IUser;
