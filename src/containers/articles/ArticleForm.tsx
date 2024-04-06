@@ -11,7 +11,7 @@ import Form from "@/components/form/Form";
 import { articleSchema } from "@/validations/article.validations";
 import TextEditorField from "@/components/form/fields/TextEditorField";
 import { getTranslatedFormTabErrors } from "@/utils/utils";
-import { TRANSLATED_PAGE_FIELDS, getCmsEditionCmsInitialValues } from "@/utils/cms.utils";
+import { TRANSLATED_CMS_FIELDS, getCmsEditionCmsInitialValues } from "@/utils/cms.utils";
 import TranslatedFormTabs from "@/components/form/translated/TranslatedFormTabs";
 import { Lang } from "@/types/setting.type";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
@@ -58,7 +58,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
       <TranslatedFormTabs
         onTabChange={onTabChange}
         tab={tab}
-        errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_PAGE_FIELDS)}
+        errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_CMS_FIELDS)}
       />
 
       <Box>
