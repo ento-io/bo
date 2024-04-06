@@ -1,14 +1,26 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { t } from "i18next";
+import { useSelector } from "react-redux";
+import { Box } from "@mui/material";
 import { IArticle, IArticleInput } from "@/types/article.types"
 import TextField from "@/components/form/fields/TextField";
 import Form from "@/components/form/Form";
 import { articleSchema } from "@/validations/article.validations";
+import TextEditorField from "@/components/form/fields/TextEditorField";
+import { getTranslatedFormTabErrors } from "@/utils/utils";
+import { TRANSLATED_PAGE_FIELDS } from "@/utils/cms.utils";
+import TranslatedFormTabs from "@/components/form/translated/TranslatedFormTabs";
+import { Lang } from "@/types/setting.type";
+import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
+import { locales } from "@/config/i18n";
+import { DEFAULT_LANGUAGE } from "@/utils/constants";
 
 const initialValues = {
   title: '',
+  content: '',
 };
 
 type Props = {
@@ -18,7 +30,11 @@ type Props = {
 }
 
 const ArticleForm = ({ onSubmit, article, loading }: Props) => {
-  const form = useForm({
+  const language = useSelector(getSettingsLangSelector);
+
+  const [tab, setTab] = useState<Lang>(language);
+
+  const form = useForm<IArticleInput>({
     defaultValues: initialValues,
     resolver: zodResolver(articleSchema),
   });
@@ -29,6 +45,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
     if (!article) return;
     reset({
       title: article.title,
+      content: article.content,
     })
   }, [article, reset])
 
@@ -37,12 +54,37 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
     reset(initialValues);
   }
 
+  const onTabChange = (value: Lang) => setTab(value);
+
   return (
     <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading}>
-      <TextField
-        label="Title"
-        name="title"
+      <TranslatedFormTabs
+        onTabChange={onTabChange}
+        tab={tab}
+        errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_PAGE_FIELDS)}
       />
+
+      <Box>
+        {locales.map((locale: string, index: number) => (
+          <div key={index} css={{ display: locale === tab ? 'block' : 'none' }}>
+            <TextField
+              name={locale + ':title'}
+              label={t('cms:title')}
+              fixedLabel
+              type="text"
+              variant="outlined"
+              required={locale === DEFAULT_LANGUAGE}
+              // onFieldChange={onTitleChange}
+            />
+            <TextEditorField
+              name={locale + ':content'}
+              label={t('cms:content')}
+              // sx={sx.formControl}
+              required={locale === DEFAULT_LANGUAGE}
+            />
+          </div>
+        ))}
+      </Box>
     </Form>
   )
 }

@@ -3,6 +3,11 @@ import { z } from "zod";
 import { IUser } from "./user.type";
 import { articleFilterSchema, articleSchema } from "@/validations/article.validations";
 
+interface ITranslatedFields {
+  title: string;
+  content: string;
+}
+
 export interface IArticle extends Attributes {
   objectId: string;
   title: string;
@@ -13,6 +18,7 @@ export interface IArticle extends Attributes {
   deletedBy?: IUser;
   deletedAt?: string;
   deleted: boolean;
+  translated: ITranslatedFields;
 }
 
 export interface IArticleState {
