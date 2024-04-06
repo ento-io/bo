@@ -1,14 +1,22 @@
 import Parse, { Attributes } from 'parse';
 
-import { actionWithLoader } from '@/utils/app.utils';
+import { actionWithLoader, convertTabToFilters } from '@/utils/app.utils';
 
-import { AppDispatch, AppThunkAction } from '@/redux/store';
+import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
-import { clearArticleSlice, deleteArticleFromArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
-import { setMessageSlice } from '../reducers/app.reducer';
+import { clearArticleSlice, deleteArticleFromArticlesSlice, deleteArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
+import { getAppNotificationsSelector, setMessageSlice } from '../reducers/app.reducer';
 import i18n from '@/config/i18n';
 import { IArticleInput } from '@/types/article.types';
+import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
+import { IQueriesInput } from '@/types/app.type';
+import { searchUserPointerQuery } from './user.action';
+import { filtersDatesQuery, goToNotFound } from './app.action';
+import { escapeText, isBoolean } from '@/utils/utils';
+import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
+import { canAccessTo } from '@/utils/role.utils';
+import { articlesTabOptions } from '@/utils/cms.utils';
 
 
 const Article = Parse.Object.extend("Article");
@@ -29,17 +37,72 @@ export const getArticle = async (id: string): Promise<Parse.Object | undefined> 
 // ------------------- Redux Actions ------------------- //
 // ----------------------------------------------------- //
 
-export const loadArticles = (): any => {
+export const loadArticles = ({
+  limit = PAGINATION.rowsPerPage,
+  skip = 0,
+  orderBy = 'updatedAt',
+  order = 'desc',
+  filters,
+  search,
+}: IQueriesInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    // user from BO
-    const result: any = await new Parse.Query(Article)
-      .withCount()
-      .notEqualTo('deleted', true)
-      .find();
+    // result with count
+    // we make it server side because we need to get user infos
+    let query = new Parse.Query(Article);
 
-    const articles = result.results.map((article: Attributes) => article.toJSON());
+    if (search) {
+      // full text search
+      // should be before all other queries
+      if (search.user) {
+        // search invoice by user name or email
+        await searchUserPointerQuery(query, search.user);
+      }
 
-    dispatch(loadArticlesSlice(articles));
+      if (search.text) {
+        const text = escapeText(search.text);
+
+        query = Parse.Query.or(
+          new Parse.Query(Article).matches('reference', text),
+          new Parse.Query(Article).matches('url', text),
+        );
+      }
+
+      // query dates
+      filtersDatesQuery(query, search);
+
+      if (search.status) {
+        if (Array.isArray(search.status)) {
+          query.containedIn('status', search.status);
+        } else {
+          query.equalTo('status', search.status);
+        }
+      }
+    }
+
+    query.limit(+limit)
+      .skip(+skip)
+      .equalTo('deleted', false)
+      .exists('user')
+      .include(['user', 'updatedBy']);
+
+    if (filters) {
+      if (isBoolean(filters?.deleted)) {
+        query.equalTo('deleted', filters.deleted);
+      }
+    }
+
+    if (order === 'desc') {
+      query.descending(orderBy);
+    } else {
+      query.ascending(orderBy);
+    }
+
+    const result: Record<string, any> = await query.withCount().find();
+
+    // save estimates to store (in json)
+    const estimatesJson = result.results.map((estimate: any) => estimate.toJSON());
+
+    dispatch(loadArticlesSlice(estimatesJson));
     dispatch(setArticlesCountSlice(result.count));
   });
 };
@@ -107,10 +170,61 @@ export const editArticle = (id: string, values: IArticleInput): any => {
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
-export const onArticlesEnter = (): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+/**
+ * load estimates data from database before the page is loaded (in route)
+ * then load it to the store
+ * @param route 
+ * @returns 
+ */
+export const onArticlesEnter = (route: any): any => {
+  return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const canFind = canAccessTo(roles, 'Article', 'find');
 
-    dispatch(loadArticles());
+    // redirect to not found page
+    if (!canFind) {
+      route.navigate(goToNotFound());
+      return;
+    }
+
+    const values: Record<string, any> = {
+      skip: DEFAULT_PAGINATION.currentPage,
+      limit: DEFAULT_PAGINATION.rowsPerPage,
+      orderBy: DEFAULT_PAGINATION.orderBy,
+      order: DEFAULT_PAGINATION.order,
+    };
+
+    const filters: Record<string, boolean | string> = {
+      deleted: false
+    };
+
+    // convert the url search params tab to (db) filters
+    const newFilters = convertTabToFilters(articlesTabOptions, route.search.tab, filters);
+    values.filters = newFilters;
+
+    dispatch(loadArticles(values));
+  });
+};
+
+
+/**
+ * mark seen field as true
+ * so that its not more treated as notification
+ * ex: (['xxx', 'xxxy'], seen, false)
+ * @param ids
+ * @returns
+ */
+export const toggleArticlesByIds = (ids: string[], field: string, value = true): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    // update the database
+    await new Parse.Query(Article).containedIn('objectId', ids).each(async estimate => {
+      estimate.set(field, value);
+
+      await estimate.save();
+    });
+    // delete
+    dispatch(deleteArticlesSlice(ids));
   });
 };
 
