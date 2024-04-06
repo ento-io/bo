@@ -16,6 +16,7 @@ const AdvancedSearchFields = ({ fields = [] }: Props) => {
 
   const handleChangeOptions = (name: string) => (event: ChangeEvent<HTMLInputElement>) => {
     setOptions((prevState: IAdvancedSearchOption[]) => {
+      // update the list with the new checked selected option
       return prevState.map((option: IAdvancedSearchOption) => {
         if (option.name === name) {
           return { ...option, checked: event.target.checked };
