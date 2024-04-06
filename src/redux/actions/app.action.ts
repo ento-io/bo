@@ -14,6 +14,7 @@ import { getRolesForUser, isAdmin } from '@/utils/role.utils';
 import { PATH_NAMES } from '@/utils/pathnames';
 import { DateType } from '@/types/util.type';
 import { getNewEstimatesCount } from './estimate.action';
+import { getNewUsersCount } from './user.action';
 
 // ----------------------------------------------------- //
 // ------------------- Parse queries ------------------- //
@@ -102,6 +103,7 @@ export const onDashboardEnter = (): any => {
       getRolesForUser(null, true, true),
       isAdmin(),
       dispatch(getNewEstimatesCount()),
+      dispatch(getNewUsersCount())
     ]);
 
     dispatch(loadCurrentUserRolesSlice(currentUserRoles));

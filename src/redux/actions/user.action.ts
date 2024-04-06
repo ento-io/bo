@@ -268,6 +268,22 @@ export const toggleBanUserById = (id: string, value: boolean): any => {
 };
 
 /**
+ * count all users with seen = false
+ * it's used for notification count
+ * @returns 
+ */
+export const getNewUsersCount = (): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+    const count = await Parse.Cloud.run('getNewUsersCount');
+
+    if (!count) return;
+
+    dispatch(setNotificationsSlice({ user: count }));
+  });
+};
+
+
+/**
  * mark user notification as seen or not seen
  * @param id
  * @returns
