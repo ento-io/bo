@@ -44,6 +44,23 @@ export const dateRangeQuery = (query: Parse.Query, field: string, range: (DateTy
 };
 
 /**
+ * query multiple date fields
+ * @param query 
+ * @param search 
+ */
+export const filtersDatesQuery = (
+  query: Parse.Query,
+  search: Record<string, string | (DateType | null)[]>,
+  otherDateFields = []
+) => {
+  ['createdAt', 'updatedAt', ...otherDateFields].forEach((field) => { 
+    if (search[field]) {
+      dateRangeQuery(query, field, search[field] as (DateType | null)[]);
+    }
+  });
+}
+
+/**
  * mark an entity as seen
  * used mainly when entering a page with the entity id
  * @param parseObj
