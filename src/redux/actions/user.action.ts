@@ -295,14 +295,7 @@ export const toggleUserNotification = (id: string): any => {
     let count = notification?.user ?? 0;
     const storedUser = (state as any)?.user.user;
 
-    const user = await new Parse.Query(Parse.User).equalTo('objectId', id).first();
-
-    if (!user) {
-      throw new Error(i18n.t('user:errors:notFound'));
-    }
-
-    user.set('seen', !user.get('seen'));
-    await user.save();
+    const user = await Parse.Cloud.run('toggleUserSeen', { id });
 
     // increment or decrement notification count
     if (user.get('seen')) {
