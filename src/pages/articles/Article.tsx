@@ -23,6 +23,7 @@ import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
 import { IArticle } from '@/types/article.types';
 import { useProtect } from '@/hooks/useProtect';
+import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 
 const Article = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
@@ -110,6 +111,9 @@ const Article = () => {
           <Stack spacing={3}>
             <Layout cardTitle={t('common:details')}>
               <Items items={infosItems} />
+            </Layout>
+            <Layout>
+              <TextEditor value={article.content} editable={false} />
             </Layout>
           </Stack>
         </Grid>

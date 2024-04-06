@@ -19,6 +19,8 @@ const EditArticle = () => {
   const article = useSelector(getArticleArticleSelector);
   const { canPreview, canDelete, canCreate, canFind } = useProtect('Article');
 
+  if (!article) return null;
+
   const handlePreview = () => {
     if (!canPreview) return;
     navigate(goToArticle(article.objectId));

@@ -104,8 +104,6 @@ export const loadArticles = ({
   });
 };
 
-
-
 /**
  * for user security reason, we do not delete the data from db
  * instead we just add a field "deleted" = true
@@ -136,6 +134,7 @@ export const createArticle = (values: IArticleInput): any => {
     const article = new Article()
 
     article.set("title", values.title);
+    article.set("content", values.content);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
@@ -153,6 +152,7 @@ export const editArticle = (id: string, values: IArticleInput): any => {
     if (!article) return;
 
     article.set("title", values.title);
+    article.set("content", values.content);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side

@@ -3,6 +3,7 @@ import { dateForAdvancedSearchSchema } from "./app.validations";
 
 export const articleSchema = z.object({
   title: z.string().min(1, { message: 'Title required' }),
+  content: z.string().min(1, { message: 'Content required' }),
 });
 
 export const articleFilterSchema = z.object({
