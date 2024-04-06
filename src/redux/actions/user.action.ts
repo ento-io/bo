@@ -43,7 +43,7 @@ import { RootState } from '../store';
 import { SIGNUP_PROPERTIES } from './auth.action';
 import { loadRoles } from './role.action';
 import { PATH_NAMES } from '@/utils/pathnames';
-import { IQueriesInput } from '@/types/app.type';
+import { IQueriesInput, ITabSearchParams } from '@/types/app.type';
 import { goToNotFound } from './app.action';
 
 // ----------------------------------------------------- //
@@ -268,6 +268,22 @@ export const toggleBanUserById = (id: string, value: boolean): any => {
 };
 
 /**
+ * count all users with seen = false
+ * it's used for notification count
+ * @returns 
+ */
+export const getNewUsersCount = (): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+    const count = await Parse.Cloud.run('getNewUsersCount');
+
+    if (!count) return;
+
+    dispatch(setNotificationsSlice({ user: count }));
+  });
+};
+
+
+/**
  * mark user notification as seen or not seen
  * @param id
  * @returns
@@ -279,19 +295,12 @@ export const toggleUserNotification = (id: string): any => {
     let count = notification?.user ?? 0;
     const storedUser = (state as any)?.user.user;
 
-    const user = await new Parse.Query(Parse.User).equalTo('objectId', id).first();
-
-    if (!user) {
-      throw new Error(i18n.t('user:errors:notFound'));
-    }
-
-    user.set('seen', !user.get('seen'));
-    await user.save();
+    const user = await Parse.Cloud.run('toggleUserSeen', { id });
 
     // increment or decrement notification count
     if (user.get('seen')) {
       count += 1;
-    } else {
+    } else if (count > 0) {
       count -= 1;
     }
 
@@ -456,7 +465,9 @@ export const onUserEnter = (route?: any): AppThunkAction => {
 
     if (!user) return;
 
-    dispatch(setNotificationsSlice({ user: count - 1 })); // from sidebar
+    if (count > 0) {
+      dispatch(setNotificationsSlice({ user: count - 1 })); // from sidebar
+    }
 
     // save user to store (in json)
     const userJSON = user.toJSON() as IUser;
@@ -475,5 +486,5 @@ export const onUserEnter = (route?: any): AppThunkAction => {
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //
-export const goToUsers = () => ({ to: PATH_NAMES.users });
+export const goToUsers = (search?: ITabSearchParams) => ({ to: PATH_NAMES.users, search });
 export const goToUser = (id: string) => ({ to: PATH_NAMES.users + '/$id', params: { id }});

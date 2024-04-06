@@ -5,7 +5,7 @@ import { FiUserPlus } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useNavigate } from '@tanstack/react-router';
-import { loadUsers } from '@/redux/actions/user.action';
+import { goToUser, goToUsers, loadUsers } from '@/redux/actions/user.action';
 import { getAppNotificationsSelector } from '@/redux/reducers/app.reducer';
 import { getUserLoadingSelector, getUserUsersSelector } from '@/redux/reducers/user.reducer';
 
@@ -16,7 +16,6 @@ import { INotificationMenu } from '@/types/app.type';
 import { IUser } from '@/types/user.type';
 
 import NotificationsMenu from './NotificationsMenu';
-import { PATH_NAMES } from '@/utils/pathnames';
 
 const UserMenu = () => {
   const dispatch = useDispatch();
@@ -39,21 +38,20 @@ const UserMenu = () => {
 
   // list of notification
   const items = useMemo((): INotificationMenu[] => {
-    return users.map(
-      (user: IUser): INotificationMenu => ({
+    return users.map((user: IUser): INotificationMenu => ({
         objectId: user.objectId,
         user,
         title: user ? getUserFullName(user) : '',
-        description: user.platform as string, // plateform is an enum, so force it to string
+        description: user.email, // platform is an enum, so force it to string
+        // description: user.platform as string, // platform is an enum, so force it to string
         date: user.createdAt,
-        onClick: () => navigate({ to: PATH_NAMES.users.preview, params: { id: user.objectId }}),
-        
+        onClick: () => navigate(goToUser(user.objectId))
       }),
     );
   }, [users, navigate]);
 
   const onSeeAll = () => {
-   navigate({ to: PATH_NAMES.users.index});
+    navigate(goToUsers({ tab: t('route.new') }));
   };
 
   return (

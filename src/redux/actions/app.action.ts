@@ -14,6 +14,7 @@ import { getRolesForUser, isAdmin } from '@/utils/role.utils';
 import { PATH_NAMES } from '@/utils/pathnames';
 import { DateType } from '@/types/util.type';
 import { getNewEstimatesCount } from './estimate.action';
+import { getNewUsersCount } from './user.action';
 
 // ----------------------------------------------------- //
 // ------------------- Parse queries ------------------- //
@@ -40,26 +41,6 @@ export const dateRangeQuery = (query: Parse.Query, field: string, range: (DateTy
       .greaterThanOrEqualTo(field, dayjs(start).startOf('day').toDate())
       .lessThanOrEqualTo(field, dayjs(end).endOf('day').toDate());
   }
-};
-
-// ----------------------------------------------------- //
-// ------------------- Redux Actions ------------------- //
-// ----------------------------------------------------- //
-/**
- * load data when entering any dashboard page
- * @returns
- */
-export const onDashboardEnter = (): any => {
-  return async (dispatch: AppDispatch): Promise<void> => {
-    const [currentUserRoles, admin] = await Promise.all([
-      getRolesForUser(null, true, true),
-      isAdmin(),
-      dispatch(getNewEstimatesCount())
-    ]);
-
-    dispatch(loadCurrentUserRolesSlice(currentUserRoles));
-    dispatch(loadCurrentUserIsAdminSlice(admin));
-  };
 };
 
 /**
@@ -107,6 +88,27 @@ export const changeSettings = (values: ISettingsInput): any => {
     dispatch(setMessageSlice(i18n.t('common:infoMessages.successfullySaveSettings')));
     dispatch(changeLang(values.lang as Lang));
   });
+};
+
+// ----------------------------------------------------- //
+// ------------------- Redux Actions ------------------- //
+// ----------------------------------------------------- //
+/**
+ * load data when entering any dashboard page
+ * @returns
+ */
+export const onDashboardEnter = (): any => {
+  return async (dispatch: AppDispatch): Promise<void> => {
+    const [currentUserRoles, admin] = await Promise.all([
+      getRolesForUser(null, true, true),
+      isAdmin(),
+      dispatch(getNewEstimatesCount()),
+      dispatch(getNewUsersCount())
+    ]);
+
+    dispatch(loadCurrentUserRolesSlice(currentUserRoles));
+    dispatch(loadCurrentUserIsAdminSlice(admin));
+  };
 };
 
 /**

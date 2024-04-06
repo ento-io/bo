@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useNavigate } from '@tanstack/react-router';
+import { FaCheck, FaCheckDouble } from 'react-icons/fa';
 import ActionsMenu from '@/components/ActionsMenu';
 import Head from '@/components/Head';
 import Items from '@/components/Items';
@@ -73,6 +74,15 @@ const Estimate = () => {
     dispatch(toggleUserNotification(estimate.objectId));
   };
 
+  const menus = [
+    {
+      onClick: handleMarkAsSeen,
+      display: true,
+      label: estimate.seen ? t('markAsUnseen') : t('markAsSeen'),
+      icon: estimate.seen ? <FaCheck /> : <FaCheckDouble />
+    },
+  ];
+
   return (
     <Layout
       title={(
@@ -84,7 +94,7 @@ const Estimate = () => {
       )}
       isCard={false}
       actions={
-        <ActionsMenu label={estimate.lastName} goToList={handleGoToList} onMarkAsSeen={handleMarkAsSeen} />
+        <ActionsMenu label={estimate.lastName} goToList={handleGoToList} menus={menus} />
       }>
       <Head title={t('common:estimates.reference')} />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>

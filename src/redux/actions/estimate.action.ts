@@ -179,6 +179,11 @@ export const editEstimate = (id: string, values: EstimateInput): any => {
   });
 };
 
+/**
+ * count all estimates with seen = false
+ * it's used for notification count
+ * @returns 
+ */
 export const getNewEstimatesCount = (): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
     const count = await new Parse.Query(Estimate)

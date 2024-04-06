@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FaCertificate } from "react-icons/fa6";
 import { ReactNode } from 'react';
 import { useNavigate } from '@tanstack/react-router';
+import { FaCheck, FaCheckDouble } from 'react-icons/fa';
 import ActionsMenu from '@/components/ActionsMenu';
 import BooleanIcons from '@/components/BooleanIcons';
 import Dialog from '@/components/Dialog';
@@ -156,6 +157,12 @@ const User = () => {
         ? <FiCheck css={(theme: Theme) => ({ color: theme.palette.success.main })} />
         : <IoWarning css={(theme: Theme) => ({ color: theme.palette.error.main })} />
     },
+    {
+      onClick: handleMarkAsSeen,
+      display: true,
+      label: user.seen ? t('markAsUnseen') : t('markAsSeen'),
+      icon: user.seen ? <FaCheck /> : <FaCheckDouble />
+    },
   ];
 
   return (
@@ -175,7 +182,6 @@ const User = () => {
         <ActionsMenu
           label={user.lastName}
           goToList={handleGoToList}
-          onMarkAsSeen={handleMarkAsSeen}
           menus={menus}
         />
       }>
