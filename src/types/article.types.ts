@@ -3,7 +3,7 @@ import { z } from "zod";
 import { IUser } from "./user.type";
 import { articleFilterSchema, articleSchema } from "@/validations/article.validations";
 
-interface ITranslatedFields {
+export interface ITranslatedFields {
   title: string;
   content: string;
 }
