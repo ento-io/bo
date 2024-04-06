@@ -24,12 +24,17 @@ import UsersForEntity from '@/containers/users/UsersForEntity';
 import { IArticle } from '@/types/article.types';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
+import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
+import { getDefaultTranslatedField } from '@/utils/settings.utils';
 
 const Article = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const article = useSelector(getArticleArticleSelector);
+  const language = useSelector(getSettingsLangSelector);
+  const title = getDefaultTranslatedField(article, language, 'title', false);
+
   const { canPreview, canDelete, canCreate, canFind } = useProtect('Article');
 
   if (!article) return null;
@@ -37,7 +42,7 @@ const Article = () => {
   const infosItems: ISelectOption[] = [
     {
       label: t('cms:title'),
-      value: article.title,
+      value: title,
     },
     {
       label: t('common:createdAt'),
@@ -91,7 +96,10 @@ const Article = () => {
   return (
     <Layout
       title={(
-        <span css={{ marginRight: 10 }}>{t('cms:article')}</span>
+        <>
+          <span css={{ marginRight: 10 }}>{t('cms:article')}</span>
+          <span>{title}</span>
+        </>
       )}
       isCard={false}
       actions={
@@ -104,7 +112,7 @@ const Article = () => {
           menus={menus}
         />
       }>
-      <Head title={t('common:articles.reference')} />
+      <Head title={title} />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
         {/* left */}
         <Grid item {...PREVIEW_PAGE_GRID.left}>
@@ -113,7 +121,7 @@ const Article = () => {
               <Items items={infosItems} />
             </Layout>
             <Layout>
-              <TextEditor value={article.content} editable={false} />
+              <TextEditor value={getDefaultTranslatedField(article, language, 'content', false)} editable={false} />
             </Layout>
           </Stack>
         </Grid>
