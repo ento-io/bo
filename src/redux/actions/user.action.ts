@@ -43,7 +43,7 @@ import { RootState } from '../store';
 import { SIGNUP_PROPERTIES } from './auth.action';
 import { loadRoles } from './role.action';
 import { PATH_NAMES } from '@/utils/pathnames';
-import { IQueriesInput } from '@/types/app.type';
+import { IQueriesInput, ITabSearchParams } from '@/types/app.type';
 import { goToNotFound } from './app.action';
 
 // ----------------------------------------------------- //
@@ -475,5 +475,5 @@ export const onUserEnter = (route?: any): AppThunkAction => {
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //
-export const goToUsers = () => ({ to: PATH_NAMES.users });
+export const goToUsers = (search?: ITabSearchParams) => ({ to: PATH_NAMES.users, search });
 export const goToUser = (id: string) => ({ to: PATH_NAMES.users + '/$id', params: { id }});
