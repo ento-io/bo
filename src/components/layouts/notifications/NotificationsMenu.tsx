@@ -10,11 +10,13 @@ import {
   CircularProgress,
   Stack,
   Badge,
-  styled,
+  Theme,
+  useTheme,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { useTranslation } from 'react-i18next';
 
+import { css } from '@emotion/css';
 import Avatar from '@/components/Avatar';
 
 import { fromNow } from '@/utils/date.utils';
@@ -22,36 +24,48 @@ import { capitalizeFirstLetter, cutText } from '@/utils/utils';
 
 import { INotificationMenu } from '@/types/app.type';
 
-const sx = {
-  menu: {
-    elevation: 0,
-    sx: {
-      overflow: 'visible',
-      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-      mt: 1.5,
-      maxWidth: 500,
-      px: { xs: 0, xl: 2 },
-      pt: { xs: 0, xl: 0.6 },
-      pb: { xs: 0, xl: 1 },
-      '&:before': {
-        content: '""',
-        display: 'block',
-        position: 'absolute',
-        top: 0,
-        right: 14,
-        width: 10,
-        height: 10,
-        bgcolor: 'background.paper',
-        transform: 'translateY(-50%) rotate(45deg)',
-        zIndex: 0,
-      },
+const classes = {
+  menu: (theme: Theme) => css({
+    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+    marginTop: 1.58,
+    minWidth: '400px !important',
+    paddingLeft: 4,
+    paddingRight: 4,
+    paddingBottom: 2,
+    paddingTop: 2,
+    '&:before': {
+      content: '""',
+      display: 'block',
+      position: 'absolute',
+      top: 0,
+      right: 14,
+      width: 10,
+      height: 10,
+      bgcolor: 'background.paper',
+      transform: 'translateY(-50%) rotate(45deg)',
+      zIndex: 0,
+    },
+    [theme.breakpoints.down('xl')]: {
+      padding: 0,
+    },
+  }),
+  menuTitle: {
+    justifyContent: 'space-between !important',
+  },
+  menuItem: {
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.03) !important',
     },
   },
-};
-
-const StyledMenuItemTitle = styled(MenuItem)({
-  justifyContent: 'space-between !important',
-});
+  noBackground: {
+    '&:hover': {
+      backgroundColor: 'transparent !important',
+    },
+  },
+  menuItemFooter: {
+    justifyContent: 'flex-end',
+  }
+}
 
 type Props = {
   items: INotificationMenu[];
@@ -79,6 +93,7 @@ const NotificationsMenu = ({
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const theme = useTheme();
 
   const handleOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -104,7 +119,12 @@ const NotificationsMenu = ({
         onClose={handleClose}
         onClick={handleClose}
         disableScrollLock
-        PaperProps={sx.menu}
+        slotProps={{
+          paper: {
+            elevation: 0,
+            className: classes.menu(theme),
+          }
+        }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
         {loading ? (
@@ -117,33 +137,35 @@ const NotificationsMenu = ({
           // use an array instead of Fragment because the children of Menu should be an array or list of MenuItem
           [
             title && (
-              <StyledMenuItemTitle disableRipple key={'notification-menu-' + title} className="flexRow center">
-                <Typography variant="h6">{title}</Typography>
+              <MenuItem disableRipple key={'notification-menu-' + title} className="flexRow center" css={[classes.menuTitle, classes.noBackground]}>
+                <Typography variant="h5" css={{ fontSize: 20 }}>{title}</Typography>
                 <Box sx={{ bgcolor: 'warning.light', ml: 2, pr: 2, pl: 1, borderRadius: 1.8 }} className="flexCenter">
                   <Typography sx={{ color: '#fff', fontSize: 14 }}>{t('common:newCount', { count })}</Typography>
                 </Box>
-              </StyledMenuItemTitle>
+              </MenuItem>
             ),
             // data from db
             title && <Divider key={'title-divider' + title} />,
             ...items.map((item: INotificationMenu, index: number) => [
-              <MenuItem disableRipple key={item.objectId} onClick={item.onClick}>
-                <Stack direction="row" spacing={2}>
+              <MenuItem disableRipple key={item.objectId} onClick={item.onClick} css={classes.menuItem} className="yellow">
+                <Stack direction="row" spacing={2} flex={1}>
                   {item.user && (
-                    <Box className="flexCenter">
-                      <Avatar user={item.user} size={70} />
+                    <Box>
+                      <Avatar user={item.user} size={40} />
                     </Box>
                   )}
-                  <Stack direction="column">
-                    <Typography variant="body1" sx={{ fontWeight: 600 }} noWrap>
-                      {item.title}
-                    </Typography>
+                  <Stack direction="column" flex={1}>
+                    <Stack direction="row" justifyContent="space-between" alignSelf="stretch" alignItems="center">
+                      <Typography variant="body1" css={{ fontWeight: 600, fontSize: 16 }} noWrap>
+                        {item.title}
+                      </Typography>
+                        <Typography variant="subtitle1" sx={{ color: grey[500], fontSize: 14 }} noWrap>
+                        {capitalizeFirstLetter(fromNow(item.date))}
+                      </Typography>
+                    </Stack>
+  
                     <Typography variant="body1" sx={{ color: grey[500] }}>
                       {capitalizeFirstLetter(cutText(item.description || 'undefined', 50))}
-                      {/* {capitalizeFirstLetter(cutText(item.description, 50))} */}
-                    </Typography>
-                    <Typography variant="subtitle1" sx={{ color: grey[500], fontSize: 14 }} noWrap>
-                      {capitalizeFirstLetter(fromNow(item.date))}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -160,7 +182,8 @@ const NotificationsMenu = ({
             key={'see-all-' + title}
             onClick={onSeeAll}
             className="flexRow flex1"
-            sx={{ justifyContent: 'flex-end' }}>
+            css={[classes.menuItemFooter, classes.noBackground]}
+          >
             <Button>
               <Typography sx={{ textTransform: 'initial' }}>{seeAllLinkText}</Typography>
             </Button>
