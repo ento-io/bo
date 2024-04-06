@@ -8,7 +8,9 @@ import { privateLayout } from "./private.routes";
 import { IIdParams } from "@/types/app.type";
 import { PATH_NAMES } from "@/utils/pathnames";
 import { onEnter } from "@/redux/actions/app.action";
-import { onArticleEnter, onArticlesEnter } from "@/redux/actions/article.action";
+import { onArticleEnter, onArticlesEnter, onCreateArticleEnter, onEditArticleEnter } from "@/redux/actions/article.action";
+import CreateArticle from "@/pages/articles/CreateArticle";
+import EditArticle from "@/pages/articles/EditArticle";
 
 export const articlesLayout = createRoute({
   getParentRoute: () => privateLayout,
@@ -23,6 +25,12 @@ export const articlesRoute = createRoute({
   path: "/",
 });
 
+export const articlePreviewRoute = createRoute({
+  id: "article",
+  getParentRoute: () => articlesLayout,
+  component: () => <Outlet />,
+});
+
 export const articleRoute = createRoute({
   parseParams: (params: IIdParams) => ({
     id: z.string().parse(params.id),
@@ -33,6 +41,40 @@ export const articleRoute = createRoute({
   path: "$id",
 });
 
-const articleRoutes = [articlesRoute, articleRoute];
+export const editArticleRoute = createRoute({
+  parseParams: (params: any) => ({
+    id: z.string().parse(params.id),
+  }),
+  path: `$id/${PATH_NAMES.edit}`,
+  beforeLoad: onEnter(onEditArticleEnter),
+  getParentRoute: () => articlePreviewRoute,
+  component: EditArticle,
+});
+
+export const createArticleRoute = createRoute({
+  path: PATH_NAMES.create,
+  beforeLoad: onEnter(onCreateArticleEnter),
+  getParentRoute: () => articlesLayout,
+  component: CreateArticle,
+});
+
+// export const articleRoute = createRoute({
+//   parseParams: (params: IIdParams) => ({
+//     id: z.string().parse(params.id),
+//   }),
+//   beforeLoad: onEnter(onArticleEnter),
+//   getParentRoute: () => articlesLayout,
+//   component: Article,
+//   path: "$id",
+// });
+
+const articleRoutes = [
+  articlesRoute,
+  articleRoute,
+  articlePreviewRoute.addChildren([
+    createArticleRoute,
+    editArticleRoute,
+  ])
+];
 
 export default articleRoutes;

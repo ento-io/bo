@@ -1,12 +1,18 @@
 import { Attributes } from "parse";
+import { z } from "zod";
 import { IUser } from "./user.type";
+import { articleSchema } from "@/validations/article.validations";
 
 export interface IArticle extends Attributes {
   objectId: string;
   title: string;
   updatedAt?: string;
   createdAt?: string;
-  author: IUser;
+  user: IUser;
+  updatedBy?: IUser;
+  deletedBy?: IUser;
+  deletedAt?: string;
+  deleted: boolean;
 }
 
 export interface IArticleState {
@@ -15,3 +21,5 @@ export interface IArticleState {
   articles: IArticle[];
   count: number;
 }
+
+export type IArticleInput = z.infer<typeof articleSchema>;

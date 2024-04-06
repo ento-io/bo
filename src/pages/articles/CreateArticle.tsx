@@ -1,43 +1,31 @@
-import { useState } from "react";
-
-import { LinearProgress } from "@mui/material";
-
 import { useNavigate } from "@tanstack/react-router";
-import ArticleForm from "./ArticleForm";
-import { createArticle } from "@/actions/articles.action";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import ArticleForm from "../../containers/articles/ArticleForm";
+import { createArticle, goToArticle } from "@/redux/actions/article.action";
+import { getArticleArticleSelector } from "@/redux/reducers/article.reducer";
 import { IArticleInput } from "@/types/article.types";
-// import Notification from "@/components/Notification";
 
 const CreateArticle = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const newArticle = useSelector(getArticleArticleSelector);
 
-  const handleSubmitArticle = async (values: IArticleInput) => {
-    setLoading(true);
-    try {
-      // -------- creation -------- //
-      await createArticle(values);
-      navigate({ to: '/articles' });
-      setLoading(false);
-    } catch (error) {
-      setError(error as string);
-      setLoading(false);
-    }
+  useEffect(() => {
+    if (!newArticle) return;
+    navigate(goToArticle(newArticle.objectId));
+  }, [newArticle, navigate]);
+
+  const handleSubmitArticle = (values: IArticleInput) => {
+    dispatch(createArticle(values));
   }
 
-
   return (
-    <div css={{ minHeight: "100vh", position: "relative" }} className="flexColumn">
-      {loading && <LinearProgress css={{ height: 4, position: "absolute", top: 0, left: 0, right: 0 }} className="stretchSelf" />}
+    <div className="flexColumn">
       <h1>CreateArticle</h1>
       <ArticleForm
         onSubmit={handleSubmitArticle}
-        loading={loading}
       />
-      {/* <Notification message={error} show={!!error} severity="error" /> */}
     </div>
   )
 }

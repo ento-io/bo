@@ -1,66 +1,30 @@
-import { useEffect, useState } from "react";
-
-import { LinearProgress } from "@mui/material";
-
 import { useNavigate } from "@tanstack/react-router";
-import ArticleForm from "./ArticleForm";
-import { editArticle, getArticle } from "@/actions/articles.action";
-import { IArticle, IArticleInput } from "@/types/article.types";
-import { articleRoute } from "@/routes/protected/article.routes";
-// import Notification from "@/components/Notification";
+import { useDispatch, useSelector } from "react-redux";
+import ArticleForm from "@/containers/articles/ArticleForm";
+import { editArticle, goToArticle } from "@/redux/actions/article.action";
+import { getArticleArticleSelector } from "@/redux/reducers/article.reducer";
+import { editArticleRoute } from "@/routes/protected/article.routes";
+import { IArticleInput } from "@/types/article.types";
 
 const EditArticle = () => {
-  const [article, setArticle] = useState<IArticle | null>(null)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const { id } = articleRoute.useParams();
+  const params = editArticleRoute.useParams();
   const navigate = useNavigate();
-
-  // load initial article list
-  useEffect(() => {
-    if (!id) return;
-    const init = async () => {
-      try {
-        setLoading(true);
-        const article = await getArticle(id);
-        setArticle(article as IArticle);
-        setLoading(false);
-      } catch (error) {
-        setError(error as string);
-      }
-    }
-    
-    init();
-  }, [id])
+  const dispatch = useDispatch();
+  const article = useSelector(getArticleArticleSelector);
 
   const handleSubmitArticle = async (values: IArticleInput) => {
-    if (!id) return;
-    setLoading(true);
-    try {
-      // -------- creation -------- //
-      const updatedArticle = await editArticle(id, values);
-      navigate({ to: '/articles/$id', params: { id: updatedArticle?.id }});
-      // navigate("/articles/" + updatedArticle.id);
-      setLoading(false);
-    } catch (error) {
-      setError(error as string);
-      setLoading(false);
-    }
+    if (!article) return;
+    await dispatch(editArticle(article.objectId, values));
+    navigate(goToArticle(article.objectId));
   }
 
-
   return (
-    <div css={{ minHeight: "100vh", position: "relative" }} className="flexColumn">
-      {loading && <LinearProgress css={{ height: 4, position: "absolute", top: 0, left: 0, right: 0 }} className="stretchSelf" />}
-      <h1>EditArticle</h1>
+    <div className="flexColumn">
+      <h1>EditArticle: {params?.id}</h1>
       <ArticleForm
         onSubmit={handleSubmitArticle}
-        loading={loading}
         article={article}
       />
-      {/* <Notification message={error} show={!!error} severity="error" /> */}
     </div>
   )
 }

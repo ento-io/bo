@@ -9,7 +9,6 @@ import { articleSchema } from "@/validations/article.validations";
 
 const initialValues = {
   title: '',
-  content: '',
 };
 
 type Props = {
@@ -29,8 +28,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
   useEffect(() => {
     if (!article) return;
     reset({
-      title: article.get("title"),
-      content: article.get("content"),
+      title: article.title,
     })
   }, [article, reset])
 
@@ -44,13 +42,6 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
       <TextField
         label="Title"
         name="title"
-      />
-
-      <TextField
-        label="Content"
-        name="content"
-        multiline
-        maxRows={4}
       />
     </Form>
   )

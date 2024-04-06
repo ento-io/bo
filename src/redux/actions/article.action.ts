@@ -5,8 +5,10 @@ import { actionWithLoader } from '@/utils/app.utils';
 import { AppDispatch, AppThunkAction } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
-import { addArticleToArticlesSlice, deleteArticleFromArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
+import { clearArticleSlice, deleteArticleFromArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
+import i18n from '@/config/i18n';
+import { IArticleInput } from '@/types/article.types';
 
 
 const Article = Parse.Object.extend("Article");
@@ -14,12 +16,11 @@ const Article = Parse.Object.extend("Article");
 export const getArticle = async (id: string): Promise<Parse.Object | undefined> => {
   const article = await new Parse.Query(Article)
     .equalTo('objectId', id)
-    .notEqualTo('deleted', true)
-    .include(["comments"])
+    .equalTo('deleted', false)
     .first();
 
   if (!article) {
-    throw new Error("Article not found");
+    throw new Error(i18n.t('cms:errors.articleNotFound'));
   }
   return article;
 }
@@ -31,7 +32,7 @@ export const getArticle = async (id: string): Promise<Parse.Object | undefined> 
 export const loadArticles = (): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     // user from BO
-    const result = await new Parse.Query(Article)
+    const result: any = await new Parse.Query(Article)
       .withCount()
       .notEqualTo('deleted', true)
       .find();
@@ -70,20 +71,35 @@ export const deleteArticle = (id: string,): any => {
   });
 };
 
-export const createArticle = (values: any): any => {
+export const createArticle = (values: IArticleInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
-    const user = await Parse.User.currentAsync();
     const article = new Article()
 
-    article.set("title", values.title)
-    article.set("author", user)
+    article.set("title", values.title);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
     // so we use the parse cloud function to do that, instead of a REST API
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
     const savedArticle = await article.save();
-    dispatch(addArticleToArticlesSlice((savedArticle as Attributes).toJSON()));
+    dispatch(loadArticleSlice((savedArticle as Attributes).toJSON()));
+  });
+};
+
+export const editArticle = (id: string, values: IArticleInput): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+    const article = await getArticle(id);
+
+    if (!article) return;
+
+    article.set("title", values.title);
+
+    // only the user or the MasterKey can update or deleted its own account
+    // the master key can only accessible in server side
+    // so we use the parse cloud function to do that, instead of a REST API
+    // you can sse the cloud function in server in the /cloud/hooks/users.js file
+    const savedArticle = await article.save();
+    dispatch(loadArticleSlice((savedArticle as Attributes).toJSON()));
   });
 };
 
@@ -110,8 +126,29 @@ export const onArticleEnter = (route?: any): AppThunkAction => {
   });
 };
 
+export const onEditArticleEnter = (route?: any): AppThunkAction => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    if (!route.params?.id) return ;
+
+    const article = await getArticle(route.params?.id);
+
+    if (!article) return;
+
+    dispatch(loadArticleSlice((article as Parse.Attributes).toJSON()));
+  });
+};
+
+export const onCreateArticleEnter = (): AppThunkAction => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+
+    dispatch(clearArticleSlice());
+  });
+};
+
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //
 export const goToArticles = () => ({ to: PATH_NAMES.articles });
 export const goToArticle = (id: string) => ({ to: PATH_NAMES.articles + '/$id', params: { id }});
+export const goToAddArticle = () => ({ to: PATH_NAMES.articles + '/' + PATH_NAMES.create });
+export const goToEditArticle = (id: string) => ({ to: PATH_NAMES.articles + '/$id/' + PATH_NAMES.edit, params: { id } });

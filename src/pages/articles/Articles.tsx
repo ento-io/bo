@@ -5,16 +5,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { FiPlus, FiTrash2 , FiEye } from "react-icons/fi";
+import { FiPlus, FiTrash2 , FiEye, FiEdit2 } from "react-icons/fi";
 
 import { Fab, IconButton } from '@mui/material';
 import { useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IArticle } from '@/types/article.types';
 import { getArticleArticlesSelector } from '@/redux/reducers/article.reducer';
-import { createArticle, deleteArticle, goToArticle } from '@/redux/actions/article.action';
+import { deleteArticle, goToAddArticle, goToArticle, goToEditArticle } from '@/redux/actions/article.action';
 import Head from '@/components/Head';
 
 const Articles = () => {
@@ -22,11 +21,9 @@ const Articles = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const uid = useId();
   
   const handleAdd = () => {
-    const values = { title: `Article ${uid}` };
-    dispatch(createArticle(values));
+    navigate(goToAddArticle())
   }
 
   const handleDelete = (id: string) => {
@@ -35,6 +32,10 @@ const Articles = () => {
 
   const handlePreview = (id: string) => {
     navigate(goToArticle(id));
+  }
+
+  const handleEdit = (id: string) => {
+    navigate(goToEditArticle(id));
   }
 
   return (
@@ -67,9 +68,9 @@ const Articles = () => {
                   <IconButton color="info" onClick={() => handlePreview(article.objectId)}>
                     <FiEye />
                   </IconButton>
-                  {/* <IconButton color="info" onClick={() => handleEdit(article.id)}>
+                  <IconButton color="info" onClick={() => handleEdit(article.objectId)}>
                     <FiEdit2 />
-                  </IconButton> */}
+                  </IconButton>
                   <IconButton color="error" onClick={() => handleDelete(article.objectId)}>
                     <FiTrash2 />
                   </IconButton>
@@ -79,7 +80,6 @@ const Articles = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <Notification message={error} show={!!error} severity="error" /> */}
       <Fab color="primary" aria-label="add" onClick={handleAdd}>
         <FiPlus />
       </Fab>
