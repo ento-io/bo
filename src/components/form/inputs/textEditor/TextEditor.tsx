@@ -21,8 +21,8 @@ import {
 } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
-import MenuBar from './MenuBar';
 import { useEffect } from 'react';
+import MenuBar from './MenuBar';
 
 const classes = {
   editorRoot: (theme: Theme) => ({
@@ -65,21 +65,22 @@ const classes = {
   label: (theme: Theme) => ({
     pointerEvents: 'none' as const,
     color: theme.palette.grey[800],
-    fontFamily: 'Product Sans Regular',
-    fontSize: 10,
+    // fontFamily: 'Product Sans Regular',
+    // fontSize: 10,
     fontStyle: 'normal',
     fontWeight: 400,
     lineHeight: 1,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     zIndex: 100,
     padding: '4px 3px',
-    marginLeft: 12,
-    top: -8,
+    marginBottom: 6,
+    // top: -8,
   }),
   menu: (theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       position: 'absolute' as const,
-      bottom: 0,
+      top: 0,
+      // bottom: 0,
       // left: -LAYOUT_CONTENT_PADDING,
       // right: -LAYOUT_CONTENT_PADDING,
       // maxWidth: `calc(100vw + ${LAYOUT_CONTENT_PADDING / 2}px)`,
@@ -174,7 +175,7 @@ const TextEditor = ({
     <div className={cx('positionRelative flexColumn', className)} css={classes.editorRoot}>
       <div className="positionRelative stretchSelf">
         {label && (
-          <Typography css={classes.label} className="positionAbsolute">
+          <Typography css={classes.label}>
             {label}
           </Typography>
         )}
