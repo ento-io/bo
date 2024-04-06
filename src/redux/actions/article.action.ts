@@ -6,7 +6,7 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
 import { clearArticleSlice, deleteArticleFromArticlesSlice, deleteArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
-import { getAppNotificationsSelector, setMessageSlice } from '../reducers/app.reducer';
+import { setMessageSlice } from '../reducers/app.reducer';
 import i18n from '@/config/i18n';
 import { IArticleInput } from '@/types/article.types';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
@@ -18,14 +18,11 @@ import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import { articlesTabOptions } from '@/utils/cms.utils';
 
-
 const Article = Parse.Object.extend("Article");
 
-export const getArticle = async (id: string): Promise<Parse.Object | undefined> => {
-  const article = await new Parse.Query(Article)
-    .equalTo('objectId', id)
-    .equalTo('deleted', false)
-    .first();
+export const getArticle = async (id: string, include = []): Promise<Parse.Object | undefined> => {
+  const article = await Parse.Cloud.run('getArticle', { id, include });
+
 
   if (!article) {
     throw new Error(i18n.t('cms:errors.articleNotFound'));
@@ -130,7 +127,7 @@ export const deleteArticle = (id: string,): any => {
     const deletedArticle = await article.save();
     dispatch(deleteArticleFromArticlesSlice(deletedArticle.id));
     
-    dispatch(setMessageSlice('Article deleted successfully'));
+    dispatch(setMessageSlice(i18n.t('cms:messages.articleDeletedSuccessfully', { value: deletedArticle.id })));
   });
 };
 
