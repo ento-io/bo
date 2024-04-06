@@ -1,7 +1,7 @@
 import { Attributes } from "parse";
 import { z } from "zod";
 import { IUser } from "./user.type";
-import { articleSchema } from "@/validations/article.validations";
+import { articleFilterSchema, articleSchema } from "@/validations/article.validations";
 
 export interface IArticle extends Attributes {
   objectId: string;
@@ -23,3 +23,5 @@ export interface IArticleState {
 }
 
 export type IArticleInput = z.infer<typeof articleSchema>;
+export type ArticleFiltersInput = z.infer<typeof articleFilterSchema>;
+
