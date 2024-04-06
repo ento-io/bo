@@ -42,26 +42,6 @@ export const dateRangeQuery = (query: Parse.Query, field: string, range: (DateTy
   }
 };
 
-// ----------------------------------------------------- //
-// ------------------- Redux Actions ------------------- //
-// ----------------------------------------------------- //
-/**
- * load data when entering any dashboard page
- * @returns
- */
-export const onDashboardEnter = (): any => {
-  return async (dispatch: AppDispatch): Promise<void> => {
-    const [currentUserRoles, admin] = await Promise.all([
-      getRolesForUser(null, true, true),
-      isAdmin(),
-      dispatch(getNewEstimatesCount())
-    ]);
-
-    dispatch(loadCurrentUserRolesSlice(currentUserRoles));
-    dispatch(loadCurrentUserIsAdminSlice(admin));
-  };
-};
-
 /**
  * mark an entity as seen
  * used mainly when entering a page with the entity id
@@ -107,6 +87,26 @@ export const changeSettings = (values: ISettingsInput): any => {
     dispatch(setMessageSlice(i18n.t('common:infoMessages.successfullySaveSettings')));
     dispatch(changeLang(values.lang as Lang));
   });
+};
+
+// ----------------------------------------------------- //
+// ------------------- Redux Actions ------------------- //
+// ----------------------------------------------------- //
+/**
+ * load data when entering any dashboard page
+ * @returns
+ */
+export const onDashboardEnter = (): any => {
+  return async (dispatch: AppDispatch): Promise<void> => {
+    const [currentUserRoles, admin] = await Promise.all([
+      getRolesForUser(null, true, true),
+      isAdmin(),
+      dispatch(getNewEstimatesCount()),
+    ]);
+
+    dispatch(loadCurrentUserRolesSlice(currentUserRoles));
+    dispatch(loadCurrentUserIsAdminSlice(admin));
+  };
 };
 
 /**
