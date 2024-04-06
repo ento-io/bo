@@ -27,3 +27,7 @@ export const getSelectOptionSchema = (nullable = true): any => {
 
   return option;
 };
+
+export const tabRouteSearchParams = object({
+  tab: string().optional(),
+});

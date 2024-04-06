@@ -1,67 +1,74 @@
-import { useEffect, useState } from "react";
-
-import { LinearProgress } from "@mui/material";
-
 import { useNavigate } from "@tanstack/react-router";
-import ArticleForm from "./ArticleForm";
-import { editArticle, getArticle } from "@/actions/articles.action";
-import { IArticle, IArticleInput } from "@/types/article.types";
-import { articleRoute } from "@/routes/protected/article.routes";
-// import Notification from "@/components/Notification";
+import { useDispatch, useSelector } from "react-redux";
+import { Card, CardContent } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import ArticleForm from "@/containers/articles/ArticleForm";
+import { deleteArticle, editArticle, goToAddArticle, goToArticle, goToArticles } from "@/redux/actions/article.action";
+import { getArticleArticleSelector } from "@/redux/reducers/article.reducer";
+import { IArticleInput } from "@/types/article.types";
+import ActionsMenu from "@/components/ActionsMenu";
+import Head from "@/components/Head";
+import Layout from "@/components/layouts/Layout";
+import { useProtect } from "@/hooks/useProtect";
 
 const EditArticle = () => {
-  const [article, setArticle] = useState<IArticle | null>(null)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const { t } = useTranslation(['common', 'user', 'cms']);
 
-  const { id } = articleRoute.useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const article = useSelector(getArticleArticleSelector);
+  const { canPreview, canDelete, canCreate, canFind } = useProtect('Article');
 
-  // load initial article list
-  useEffect(() => {
-    if (!id) return;
-    const init = async () => {
-      try {
-        setLoading(true);
-        const article = await getArticle(id);
-        setArticle(article as IArticle);
-        setLoading(false);
-      } catch (error) {
-        setError(error as string);
-      }
-    }
-    
-    init();
-  }, [id])
-
-  const handleSubmitArticle = async (values: IArticleInput) => {
-    if (!id) return;
-    setLoading(true);
-    try {
-      // -------- creation -------- //
-      const updatedArticle = await editArticle(id, values);
-      navigate({ to: '/articles/$id', params: { id: updatedArticle?.id }});
-      // navigate("/articles/" + updatedArticle.id);
-      setLoading(false);
-    } catch (error) {
-      setError(error as string);
-      setLoading(false);
-    }
+  const handlePreview = () => {
+    if (!canPreview) return;
+    navigate(goToArticle(article.objectId));
   }
 
+  const handleDelete = () => {
+    if (!canDelete) return;
+    navigate(deleteArticle(article.objectId));
+  }
+
+  const handleGoToList = () => {
+    if (!canFind) return;
+    navigate(goToArticles());
+  };
+
+  const handleCreate = () => {
+    if (!canCreate) return;
+    navigate(goToAddArticle());
+  }
+
+  const handleSubmitArticle = async (values: IArticleInput) => {
+    if (!article) return;
+    await dispatch(editArticle(article.objectId, values));
+    navigate(goToArticle(article.objectId));
+  }
 
   return (
-    <div css={{ minHeight: "100vh", position: "relative" }} className="flexColumn">
-      {loading && <LinearProgress css={{ height: 4, position: "absolute", top: 0, left: 0, right: 0 }} className="stretchSelf" />}
-      <h1>EditArticle</h1>
-      <ArticleForm
-        onSubmit={handleSubmitArticle}
-        loading={loading}
-        article={article}
-      />
-      {/* <Notification message={error} show={!!error} severity="error" /> */}
-    </div>
+    <Layout
+      title={(
+        <span css={{ marginRight: 10 }}>{t('cms:editArticle', { title: article.objectId})}</span>
+      )}
+      isCard={false}
+      actions={
+        <ActionsMenu
+          goToList={handleGoToList}
+          onDelete={handleDelete}
+          onPreview={handlePreview}
+          onCreate={handleCreate}
+        />
+      }>
+      <Head title={t('cms:editArticle', { title: article.objectId})} />
+      <Card>
+        <CardContent>
+          <ArticleForm
+            onSubmit={handleSubmitArticle}
+            article={article}
+          />
+        </CardContent>
+      </Card>
+    </Layout>
   )
 }
 

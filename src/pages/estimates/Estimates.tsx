@@ -171,7 +171,7 @@ const Estimates = () => {
 
   return (
     <>
-      <Head title="Estimates" />
+      <Head title={t('common:estimates.estimates')} />
       <List
         tabs={estimatesTabOptions}
         // @see estimates.routes.tsx for search params definition

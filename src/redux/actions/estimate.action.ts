@@ -67,7 +67,6 @@ export const loadEstimates = ({
   });
 };
 
-
 /**
  * for user security reason, we do not delete the data from db
  * instead we just add a field "deleted" = true

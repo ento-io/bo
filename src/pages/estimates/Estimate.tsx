@@ -94,7 +94,7 @@ const Estimate = () => {
       )}
       isCard={false}
       actions={
-        <ActionsMenu label={estimate.lastName} goToList={handleGoToList} menus={menus} />
+        <ActionsMenu label={estimate.reference} goToList={handleGoToList} menus={menus} />
       }>
       <Head title={t('common:estimates.reference')} />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>

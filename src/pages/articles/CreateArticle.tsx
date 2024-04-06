@@ -1,44 +1,59 @@
-import { useState } from "react";
-
-import { LinearProgress } from "@mui/material";
-
 import { useNavigate } from "@tanstack/react-router";
-import ArticleForm from "./ArticleForm";
-import { createArticle } from "@/actions/articles.action";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { Card, CardContent } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import ArticleForm from "../../containers/articles/ArticleForm";
+import { createArticle, goToArticle, goToArticles } from "@/redux/actions/article.action";
+import { getArticleArticleSelector } from "@/redux/reducers/article.reducer";
 import { IArticleInput } from "@/types/article.types";
-// import Notification from "@/components/Notification";
+import Layout from "@/components/layouts/Layout";
+import ActionsMenu from "@/components/ActionsMenu";
+import Head from "@/components/Head";
+import { useProtect } from "@/hooks/useProtect";
 
 const CreateArticle = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
 
-  const handleSubmitArticle = async (values: IArticleInput) => {
-    setLoading(true);
-    try {
-      // -------- creation -------- //
-      await createArticle(values);
-      navigate({ to: '/articles' });
-      setLoading(false);
-    } catch (error) {
-      setError(error as string);
-      setLoading(false);
-    }
+  const { canFind } = useProtect('Article');
+
+  const newArticle = useSelector(getArticleArticleSelector);
+
+  useEffect(() => {
+    if (!newArticle) return;
+    navigate(goToArticle(newArticle.objectId));
+  }, [newArticle, navigate]);
+
+  const handleGoToList = () => {
+    if (!canFind) return;
+    navigate(goToArticles())
+  };
+  
+  const handleSubmitArticle = (values: IArticleInput) => {
+    dispatch(createArticle(values));
   }
 
-
   return (
-    <div css={{ minHeight: "100vh", position: "relative" }} className="flexColumn">
-      {loading && <LinearProgress css={{ height: 4, position: "absolute", top: 0, left: 0, right: 0 }} className="stretchSelf" />}
-      <h1>CreateArticle</h1>
-      <ArticleForm
-        onSubmit={handleSubmitArticle}
-        loading={loading}
-      />
-      {/* <Notification message={error} show={!!error} severity="error" /> */}
-    </div>
+    <Layout
+      title={(
+        <span css={{ marginRight: 10 }}>{t('cms:newArticle')}</span>
+      )}
+      isCard={false}
+      actions={
+        <ActionsMenu goToList={handleGoToList} />
+      }>
+      <Head title={t('cms:createArticle')} />
+      <Card>
+        <CardContent>
+          <ArticleForm
+            onSubmit={handleSubmitArticle}
+          />          
+        </CardContent>
+
+      </Card>
+    </Layout>
   )
 }
 
