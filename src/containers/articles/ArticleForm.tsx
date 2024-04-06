@@ -11,7 +11,7 @@ import Form from "@/components/form/Form";
 import { articleSchema } from "@/validations/article.validations";
 import TextEditorField from "@/components/form/fields/TextEditorField";
 import { getTranslatedFormTabErrors } from "@/utils/utils";
-import { TRANSLATED_PAGE_FIELDS } from "@/utils/cms.utils";
+import { TRANSLATED_PAGE_FIELDS, getCmsEditionCmsInitialValues } from "@/utils/cms.utils";
 import TranslatedFormTabs from "@/components/form/translated/TranslatedFormTabs";
 import { Lang } from "@/types/setting.type";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
@@ -43,10 +43,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
 
   useEffect(() => {
     if (!article) return;
-    reset({
-      title: article.title,
-      content: article.content,
-    })
+    reset(getCmsEditionCmsInitialValues(article))
   }, [article, reset])
 
   const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
