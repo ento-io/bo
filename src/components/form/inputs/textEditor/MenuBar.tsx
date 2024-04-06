@@ -71,6 +71,16 @@ const MenuBar = ({ editor, className }: Props) => {
   return (
     <div>
       <div className={cx('flexRow', className)} css={classes.menu}>
+        {[1, 2, 3].map((heading) => (
+          <IconButton
+            key={heading}
+            onClick={() => getFocus(editor).toggleHeading({ level: heading }).run()}
+            disabled={!canRunOnFocus(editor).toggleHeading({ level: heading }).run()}
+            css={classes.button(editor.isActive('heading', { level: heading }))}>
+            <span>H{heading}</span>
+          </IconButton>
+        
+        ))}
         <IconButton
           onClick={() => getFocus(editor).toggleBold().run()}
           disabled={!canRunOnFocus(editor).toggleBold().run()}
