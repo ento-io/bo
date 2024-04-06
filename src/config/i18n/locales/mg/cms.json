@@ -1,8 +1,10 @@
 {
-  "pages": "Hafatra",
-  "page": "Hafatra",
+  "title": "Lohateny",
+  "content": "Lohahevitra",
+  "pages": "Pejy",
+  "page": "Pejy",
   "thisPage": "Ity pejy ity",
-  "pageFrom": "Hafatra avy amin'i {{user}}",
+  "pageFrom": "Pejy avy amin'i {{user}}",
   "seeAllMessages": "Hijery ny pejy rehetra",
   "createPage": "Amorona pejy",
   "editPage": "Hanova ny pejy - {{title}}",
