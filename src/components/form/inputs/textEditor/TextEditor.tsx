@@ -23,6 +23,7 @@ import StarterKit from '@tiptap/starter-kit';
 
 import { useEffect } from 'react';
 import Heading from '@tiptap/extension-heading';
+import { useTranslation } from 'react-i18next';
 import MenuBar from './MenuBar';
 
 const classes = {
@@ -87,6 +88,10 @@ const classes = {
       // maxWidth: `calc(100vw + ${LAYOUT_CONTENT_PADDING / 2}px)`,
     },
   }),
+  required: {
+    marginRight: 6,
+    marginLeft: 6,
+  },
 };
 
 const extensions = [
@@ -132,6 +137,7 @@ export type TextEditorProps = {
   className?: string;
   value?: string;
   menuClassName?: string;
+  required?: boolean;
 } & Partial<EditorOptions>;
 
 const TextEditor = ({
@@ -142,10 +148,12 @@ const TextEditor = ({
   className,
   value,
   menuClassName,
+  required,
   editable = true,
   ...editorOptions
 }: TextEditorProps) => {
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const editor = useEditor({
     editable,
@@ -184,6 +192,7 @@ const TextEditor = ({
         {label && (
           <Typography css={classes.label}>
             {label}
+            {required && <span css={classes.required}>{t('required')}</span>}
           </Typography>
         )}
         {editor && (
