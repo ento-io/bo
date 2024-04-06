@@ -43,7 +43,7 @@ export const estimate = createSlice({
       state.count = 0;
     },
     markEstimatesAsSeenSlice: (state: IEstimateState, action: PayloadAction<string[]>) => {
-      const newContacts = state.estimates.map(prevEstimates => {
+      const newEstimates = state.estimates.map(prevEstimates => {
         if (action.payload.includes(prevEstimates.objectId)) {
           return {
             ...prevEstimates,
@@ -53,7 +53,7 @@ export const estimate = createSlice({
 
         return prevEstimates;
       });
-      state.estimates = newContacts;
+      state.estimates = newEstimates;
     },
     updateEstimatesByEstimateSlice: (state: IEstimateState, action: PayloadAction<IEstimate>) => {
       const newEstimates = [];
