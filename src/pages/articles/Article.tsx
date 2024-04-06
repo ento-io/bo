@@ -18,16 +18,18 @@ import { displayDate } from '@/utils/date.utils';
 import { ISelectOption } from '@/types/app.type';
 import UserInfo from '@/containers/users/UserInfos';
 import { getArticleArticleSelector } from '@/redux/reducers/article.reducer';
-import { goToArticles } from '@/redux/actions/article.action';
+import { deleteArticle, goToAddArticle, goToArticles, goToEditArticle } from '@/redux/actions/article.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
 import { IArticle } from '@/types/article.types';
+import { useProtect } from '@/hooks/useProtect';
 
 const Article = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const article = useSelector(getArticleArticleSelector);
+  const { canPreview, canDelete, canCreate, canFind } = useProtect('Article');
 
   if (!article) return null;
 
@@ -52,8 +54,24 @@ const Article = () => {
   ];
 
   const handleGoToList = () => {
-    navigate(goToArticles())
+    if (!canFind) return;
+    navigate(goToArticles());
   };
+
+  const handleEdit = () => {
+    if (!canPreview) return;
+    navigate(goToEditArticle(article.objectId));
+  }
+
+  const handleDelete = () => {
+    if (!canDelete) return;
+    navigate(deleteArticle(article.objectId));
+  }
+
+  const handleCreate = () => {
+    if (!canCreate) return;
+    navigate(goToAddArticle());
+  }
 
   // for notification
   const togglePublish = () => {
@@ -72,11 +90,18 @@ const Article = () => {
   return (
     <Layout
       title={(
-        <span css={{ marginRight: 10 }}>{t('cms.article')}</span>
+        <span css={{ marginRight: 10 }}>{t('cms:article')}</span>
       )}
       isCard={false}
       actions={
-        <ActionsMenu label={article.title} goToList={handleGoToList} menus={menus} />
+        <ActionsMenu
+          label={article.title}
+          onCreate={handleCreate}
+          goToList={handleGoToList}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          menus={menus}
+        />
       }>
       <Head title={t('common:articles.reference')} />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>

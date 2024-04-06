@@ -25,6 +25,7 @@
   "previewImage": "Preview image",
   "article": "Article",
   "articles": "Articles",
+  "newArticle": "New article",
   "createArticle": "Create article",
   "editArticle": "Edit article - {{title}}",
   "hasPreviewImage": "Has preview image?",

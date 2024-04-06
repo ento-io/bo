@@ -4,7 +4,6 @@ import { z } from "zod";
 import Articles from "../../pages/articles/Articles";
 import Article from "../../pages/articles/Article";
 import { privateLayout } from "./private.routes";
-// import { getArticle, getArticles } from "../../actions/article.actions";
 import { IIdParams } from "@/types/app.type";
 import { PATH_NAMES } from "@/utils/pathnames";
 import { onEnter } from "@/redux/actions/app.action";
@@ -12,6 +11,7 @@ import { onArticleEnter, onArticlesEnter, onCreateArticleEnter, onEditArticleEnt
 import CreateArticle from "@/pages/articles/CreateArticle";
 import EditArticle from "@/pages/articles/EditArticle";
 import { tabRouteSearchParams } from "@/validations/app.validations";
+import ArticleFormLayout from "@/containers/articles/ArticleFormLayout";
 
 export const articlesLayout = createRoute({
   getParentRoute: () => privateLayout,
@@ -27,10 +27,10 @@ export const articlesRoute = createRoute({
   path: "/",
 });
 
-export const articlePreviewRoute = createRoute({
+export const articleFormLayout = createRoute({
   id: "article",
   getParentRoute: () => articlesLayout,
-  component: () => <Outlet />,
+  component: ArticleFormLayout,
 });
 
 export const articleRoute = createRoute({
@@ -49,14 +49,14 @@ export const editArticleRoute = createRoute({
   }),
   path: `$id/${PATH_NAMES.edit}`,
   beforeLoad: onEnter(onEditArticleEnter),
-  getParentRoute: () => articlePreviewRoute,
+  getParentRoute: () => articleFormLayout,
   component: EditArticle,
 });
 
 export const createArticleRoute = createRoute({
   path: PATH_NAMES.create,
   beforeLoad: onEnter(onCreateArticleEnter),
-  getParentRoute: () => articlesLayout,
+  getParentRoute: () => articleFormLayout,
   component: CreateArticle,
 });
 
@@ -73,7 +73,7 @@ export const createArticleRoute = createRoute({
 const articleRoutes = [
   articlesRoute,
   articleRoute,
-  articlePreviewRoute.addChildren([
+  articleFormLayout.addChildren([
     createArticleRoute,
     editArticleRoute,
   ])

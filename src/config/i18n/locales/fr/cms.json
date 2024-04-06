@@ -26,6 +26,7 @@
   "article": "Article",
   "articles": "Articles",
   "createArticle": "Créer un article",
+  "newArticle": "Nouvel article",
   "editArticle": "Modifier l'article - {{title}}",
   "hasPreviewImage": "A une aperçu d'image?",
   "hasBannerImage": "A une image de bannière?",

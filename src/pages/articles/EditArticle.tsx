@@ -1,16 +1,43 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
+import { Card, CardContent } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import ArticleForm from "@/containers/articles/ArticleForm";
-import { editArticle, goToArticle } from "@/redux/actions/article.action";
+import { deleteArticle, editArticle, goToAddArticle, goToArticle, goToArticles } from "@/redux/actions/article.action";
 import { getArticleArticleSelector } from "@/redux/reducers/article.reducer";
-import { editArticleRoute } from "@/routes/protected/article.routes";
 import { IArticleInput } from "@/types/article.types";
+import ActionsMenu from "@/components/ActionsMenu";
+import Head from "@/components/Head";
+import Layout from "@/components/layouts/Layout";
+import { useProtect } from "@/hooks/useProtect";
 
 const EditArticle = () => {
-  const params = editArticleRoute.useParams();
+  const { t } = useTranslation(['common', 'user', 'cms']);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const article = useSelector(getArticleArticleSelector);
+  const { canPreview, canDelete, canCreate, canFind } = useProtect('Article');
+
+  const handlePreview = () => {
+    if (!canPreview) return;
+    navigate(goToArticle(article.objectId));
+  }
+
+  const handleDelete = () => {
+    if (!canDelete) return;
+    navigate(deleteArticle(article.objectId));
+  }
+
+  const handleGoToList = () => {
+    if (!canFind) return;
+    navigate(goToArticles());
+  };
+
+  const handleCreate = () => {
+    if (!canCreate) return;
+    navigate(goToAddArticle());
+  }
 
   const handleSubmitArticle = async (values: IArticleInput) => {
     if (!article) return;
@@ -19,13 +46,29 @@ const EditArticle = () => {
   }
 
   return (
-    <div className="flexColumn">
-      <h1>EditArticle: {params?.id}</h1>
-      <ArticleForm
-        onSubmit={handleSubmitArticle}
-        article={article}
-      />
-    </div>
+    <Layout
+      title={(
+        <span css={{ marginRight: 10 }}>{t('cms:editArticle', { title: article.objectId})}</span>
+      )}
+      isCard={false}
+      actions={
+        <ActionsMenu
+          goToList={handleGoToList}
+          onDelete={handleDelete}
+          onPreview={handlePreview}
+          onCreate={handleCreate}
+        />
+      }>
+      <Head title={t('cms:editArticle', { title: article.objectId})} />
+      <Card>
+        <CardContent>
+          <ArticleForm
+            onSubmit={handleSubmitArticle}
+            article={article}
+          />
+        </CardContent>
+      </Card>
+    </Layout>
   )
 }
 
