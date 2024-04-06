@@ -17,8 +17,11 @@ import { escapeText, isBoolean } from '@/utils/utils';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import { articlesTabOptions } from '@/utils/cms.utils';
+import { setValues } from '@/utils/parse.utils';
 
 const Article = Parse.Object.extend("Article");
+
+const ARTICLE_PROPERTIES = new Set(['translated']);
 
 export const getArticle = async (id: string, include = []): Promise<Parse.Object | undefined> => {
   const article = await Parse.Cloud.run('getArticle', { id, include });
@@ -104,6 +107,38 @@ export const loadArticles = ({
   });
 };
 
+export const createArticle = (values: IArticleInput): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+    const article = new Article()
+
+    setValues(article, values, ARTICLE_PROPERTIES);
+
+    // only the user or the MasterKey can update or deleted its own account
+    // the master key can only accessible in server side
+    // so we use the parse cloud function to do that, instead of a REST API
+    // you can sse the cloud function in server in the /cloud/hooks/users.js file
+    const savedArticle = await article.save();
+    dispatch(loadArticleSlice((savedArticle as Attributes).toJSON()));
+  });
+};
+
+export const editArticle = (id: string, values: IArticleInput): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+    const article = await getArticle(id);
+
+    if (!article) return;
+    
+    setValues(article, values, ARTICLE_PROPERTIES);
+
+    // only the user or the MasterKey can update or deleted its own account
+    // the master key can only accessible in server side
+    // so we use the parse cloud function to do that, instead of a REST API
+    // you can sse the cloud function in server in the /cloud/hooks/users.js file
+    const savedArticle = await article.save();
+    dispatch(loadArticleSlice((savedArticle as Attributes).toJSON()));
+  });
+};
+
 /**
  * for user security reason, we do not delete the data from db
  * instead we just add a field "deleted" = true
@@ -128,41 +163,6 @@ export const deleteArticle = (id: string,): any => {
     dispatch(setMessageSlice(i18n.t('cms:messages.articleDeletedSuccessfully', { value: deletedArticle.id })));
   });
 };
-
-export const createArticle = (values: IArticleInput): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
-    const article = new Article()
-
-    article.set("title", values.title);
-    article.set("content", values.content);
-
-    // only the user or the MasterKey can update or deleted its own account
-    // the master key can only accessible in server side
-    // so we use the parse cloud function to do that, instead of a REST API
-    // you can sse the cloud function in server in the /cloud/hooks/users.js file
-    const savedArticle = await article.save();
-    dispatch(loadArticleSlice((savedArticle as Attributes).toJSON()));
-  });
-};
-
-export const editArticle = (id: string, values: IArticleInput): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
-    const article = await getArticle(id);
-
-    if (!article) return;
-
-    article.set("title", values.title);
-    article.set("content", values.content);
-
-    // only the user or the MasterKey can update or deleted its own account
-    // the master key can only accessible in server side
-    // so we use the parse cloud function to do that, instead of a REST API
-    // you can sse the cloud function in server in the /cloud/hooks/users.js file
-    const savedArticle = await article.save();
-    dispatch(loadArticleSlice((savedArticle as Attributes).toJSON()));
-  });
-};
-
 
 // ---------------------------------------- //
 // ------------- on page load ------------- //
