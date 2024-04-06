@@ -23,6 +23,7 @@ import StarterKit from '@tiptap/starter-kit';
 
 import { useEffect } from 'react';
 import MenuBar from './MenuBar';
+import Heading from '@tiptap/extension-heading';
 
 const classes = {
   editorRoot: (theme: Theme) => ({
@@ -115,6 +116,12 @@ const extensions = [
       keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
     },
   }),
+  Heading.configure({
+    HTMLAttributes: {
+      class: 'custom-heading',
+    },
+    levels: [1, 2, 3],
+  })
 ];
 
 export type TextEditorProps = {
