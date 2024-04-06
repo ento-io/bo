@@ -8,7 +8,7 @@ export const articlesTabOptions = defaultTabOptions;
  * in the database, these translated fields is transformed to have this schema
  * { "fr": { "title": "xxx_fr", "description": "yyyy_fr" },  "en": { "title": "xxx_en", "description": "yyyy_en" }, ... }
  */
-export const TRANSLATED_PAGE_FIELDS = [
+export const TRANSLATED_CMS_FIELDS = [
   'name',
   'title',
   'description',
@@ -57,22 +57,25 @@ export const formatTranslatedFormValuesToSave = (values: Record<string, any>): a
  */
 export const parseSavedTranslatedValuesToForm = (
   values: Record<string, any>,
-  translatedFields: string[] = [],
   otherFields: string[] = [],
 ): any => {
   const newValues: Record<string, any> = {};
 
-  Object.keys(values).forEach(locale => {
+  Object.keys(values).forEach(key => {
     // translated fields
-    if (locales.includes(locale)) {
-      Object.keys(values[locale]).forEach(subKey => {
-        if (translatedFields.includes(subKey)) {
-          newValues[locale + ':' + subKey] = values[locale][subKey];
-        }
+    if (key === 'translated') {
+      Object.keys(values[key]).forEach((subKey) => {
+        const translated = key; // translated
+        const locale = subKey; // fr, en, ...
+        // article['translated']['fr']
+        Object.keys(values[translated][locale]).forEach(field => {
+          // article['fr:title'] = 'Bonjour'
+          newValues[locale + ':' + field] = values[translated][locale][field];
+        })
       });
       // other fields
-    } else if (otherFields.includes(locale)) {
-      newValues[locale] = values[locale];
+    } else if (otherFields.includes(key)) {
+      newValues[key] = values[key];
     }
   });
 
@@ -84,7 +87,7 @@ export const getCmsEditionCmsInitialValues = (
 ): IArticleInput | undefined => {
   if (!article) return;
 
-  const valuesToEdit = parseSavedTranslatedValuesToForm(article.translated, TRANSLATED_PAGE_FIELDS);
+  const valuesToEdit = parseSavedTranslatedValuesToForm(article);
 
   const defaultValues = {
     ...valuesToEdit,
