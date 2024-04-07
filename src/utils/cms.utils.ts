@@ -21,31 +21,38 @@ export const TRANSLATED_CMS_FIELDS = [
 
 /**
  * format translated form fields name to data base fields
- * ex: { "title+fr": "my-title-fr" } to { "fr": { "title" : "my-title-fr" }}
+ * ex: { "fr:title": "my-title-fr", active: true } to { active: true, translated: {{ "fr": { "title" : "my-title-fr" }}}}
  * @param values
  * @returns
  */
 export const formatTranslatedFormValuesToSave = (values: Record<string, any>): any => {
   const newValues: Record<string, any> = {};
+  const translated: Record<string, any> = {};
 
   for (const key of Object.keys(values)) {
+    // important: all translated fields must be in this key (ex: { translated: { fr: { title: 'xxx' }, en: { title: 'yyy' } } })
     const separatedKey = key.split(':');
     const keyLang = separatedKey[0]; // ex: fr
     const keyName = separatedKey[separatedKey.length - 1]; // ex: title
 
-    if (locales.includes(keyLang)) {
-      newValues[keyLang] = {
-        ...newValues[keyLang],
-        [keyName]: values[key],
-      };
-    } else {
+    // add translated key to "translated" key
+    if (keyName && TRANSLATED_CMS_FIELDS.includes(keyName)) {
+      if (locales.includes(keyLang)) {
+        translated[keyLang] = {
+          ...translated[keyLang],
+          [keyName]: values[key],
+        };
+      }
+    }
+    // otherwise outside the "translated" field
+    else {
       newValues[key] = values[key];
     }
   }
 
   return {
-    // important: all translated fields must be in this key (ex: { translated: { fr: { title: 'xxx' }, en: { title: 'yyy' } } })
-    translated: newValues,
+    ...newValues,
+    translated
   };
 };
 
