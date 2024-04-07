@@ -68,12 +68,14 @@ const getCustomStyles = (theme: Theme, width: number | string = '100%', stylePro
   }),
 });
 
+type ICustomSelectOption = ISelectOption<string | number>;
+
 type Props = {
   isDisabled?: boolean;
   isLoading?: boolean;
   isClearable?: boolean;
   isSearchable?: boolean;
-  options: ISelectOption[];
+  options: ICustomSelectOption[];
   isMulti?: boolean;
   label?: string;
   width?: number | string;
@@ -82,7 +84,7 @@ type Props = {
   required?: boolean;
   onBlur?: () => void;
   value: any;
-  onChange: (values: Record<string, any> | Record<string, any>[] | string) => void;
+  onChange: (values: Record<string, any> | Record<string, any>[] | string | number) => void;
   direction?: 'row' | 'column';
   styles?: Record<string, any>;
 };
@@ -115,10 +117,10 @@ const SelectInput = ({
    */
   const formatValue = (value: any) => {
     if (isMulti) {
-      const selectedOptions = options.filter((option: ISelectOption) => value?.includes(option.value));
+      const selectedOptions = options.filter((option: ICustomSelectOption) => value?.includes(option.value));
       return selectedOptions;
     }
-    const selectedOption = options.find((option: ISelectOption) => option.value === value);
+    const selectedOption = options.find((option: ICustomSelectOption) => option.value === value);
     return selectedOption;
   };
 
@@ -150,7 +152,7 @@ const SelectInput = ({
 
           // get only the value, not the label
           if (isMulti) {
-            const values = (inputValue as any)?.map((option: ISelectOption) => option.value);
+            const values = (inputValue as any)?.map((option: ICustomSelectOption) => option.value);
             onChange(values);
             return;
           }
