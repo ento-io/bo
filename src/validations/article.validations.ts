@@ -15,10 +15,10 @@ const emptyContent = (value?: string): string => {
 };
 
 export const articleFilterSchema = z.object({
+  title: z.string().optional(),
   createdAt: dateForAdvancedSearchSchema,
   updatedAt: dateForAdvancedSearchSchema,
   user: z.string().optional(),
-  status: z.array(z.string().optional()).optional(),
 });
 
 const getTranslatedSchema = () => {
