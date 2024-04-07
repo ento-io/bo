@@ -12,6 +12,7 @@
   "createPage": "Create page",
   "editPage": "Edit page - {{title}}",
   "searchByAuthor": "Search by author name or email",
+  "author": "Author",
   "searchByPage": "Search title, content",
   "bannerImage": "Banner image",
   "addBannerImage": "Add banner image",

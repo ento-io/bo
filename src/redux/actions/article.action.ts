@@ -7,13 +7,11 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 import { PATH_NAMES } from '@/utils/pathnames';
 import { clearArticleSlice, deleteArticleFromArticlesSlice, deleteArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
-import i18n from '@/config/i18n';
+import i18n, { locales } from '@/config/i18n';
 import { IArticleInput } from '@/types/article.types';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { IQueriesInput } from '@/types/app.type';
-import { searchUserPointerQuery } from './user.action';
-import { filtersDatesQuery, goToNotFound } from './app.action';
-import { escapeText, isBoolean } from '@/utils/utils';
+import { goToNotFound } from './app.action';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import { articlesTabOptions } from '@/utils/cms.utils';
@@ -48,56 +46,16 @@ export const loadArticles = ({
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     // result with count
     // we make it server side because we need to get user infos
-    let query = new Parse.Query(Article);
+    const result: Record<string, any> = await Parse.Cloud.run('getArticles', {
+      limit,
+      skip,
+      orderBy,
+      order,
+      filters,
+      search,
+      locales,
+    });
 
-    if (search) {
-      // full text search
-      // should be before all other queries
-      if (search.user) {
-        // search invoice by user name or email
-        await searchUserPointerQuery(query, search.user);
-      }
-
-      if (search.text) {
-        const text = escapeText(search.text);
-
-        query = Parse.Query.or(
-          new Parse.Query(Article).matches('reference', text),
-          new Parse.Query(Article).matches('url', text),
-        );
-      }
-
-      // query dates
-      filtersDatesQuery(query, search);
-
-      if (search.status) {
-        if (Array.isArray(search.status)) {
-          query.containedIn('status', search.status);
-        } else {
-          query.equalTo('status', search.status);
-        }
-      }
-    }
-
-    query.limit(+limit)
-      .skip(+skip)
-      .equalTo('deleted', false)
-      .exists('user')
-      .include(['user', 'updatedBy']);
-
-    if (filters) {
-      if (isBoolean(filters?.deleted)) {
-        query.equalTo('deleted', filters.deleted);
-      }
-    }
-
-    if (order === 'desc') {
-      query.descending(orderBy);
-    } else {
-      query.ascending(orderBy);
-    }
-
-    const result: Record<string, any> = await query.withCount().find();
 
     // save estimates to store (in json)
     const estimatesJson = result.results.map((estimate: any) => estimate.toJSON());

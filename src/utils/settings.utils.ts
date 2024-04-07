@@ -93,3 +93,18 @@ export const getDefaultTranslatedField = (
 
   return defaultFieldValue;
 };
+
+export const getTranslatedField = <T extends Record<string, any>>(
+  translated: T,
+  language: string,
+  field: string,
+): string => {
+  const value = translated[language]?.[field];
+
+  if (!value) {
+    const defaultFieldValue = translated[DEFAULT_LANGUAGE][field];
+    return `${defaultFieldValue} (${i18n.t('common:errors.notTranslated')})`;
+  }
+
+  return translated[language]?.[field];
+};

@@ -4,14 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { t } from "i18next";
 import { useSelector } from "react-redux";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { IArticle, IArticleInput } from "@/types/article.types"
 import TextField from "@/components/form/fields/TextField";
 import Form from "@/components/form/Form";
 import { articleSchema } from "@/validations/article.validations";
 import TextEditorField from "@/components/form/fields/TextEditorField";
 import { getTranslatedFormTabErrors } from "@/utils/utils";
-import { TRANSLATED_PAGE_FIELDS } from "@/utils/cms.utils";
+import { TRANSLATED_CMS_FIELDS, getCmsEditionCmsInitialValues } from "@/utils/cms.utils";
 import TranslatedFormTabs from "@/components/form/translated/TranslatedFormTabs";
 import { Lang } from "@/types/setting.type";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
@@ -43,10 +43,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
 
   useEffect(() => {
     if (!article) return;
-    reset({
-      title: article.title,
-      content: article.content,
-    })
+    reset(getCmsEditionCmsInitialValues(article))
   }, [article, reset])
 
   const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
@@ -61,27 +58,29 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
       <TranslatedFormTabs
         onTabChange={onTabChange}
         tab={tab}
-        errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_PAGE_FIELDS)}
+        errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_CMS_FIELDS)}
       />
 
       <Box>
         {locales.map((locale: string, index: number) => (
           <div key={index} css={{ display: locale === tab ? 'block' : 'none' }}>
-            <TextField
-              name={locale + ':title'}
-              label={t('cms:title')}
-              fixedLabel
-              type="text"
-              variant="outlined"
-              required={locale === DEFAULT_LANGUAGE}
-              // onFieldChange={onTitleChange}
-            />
-            <TextEditorField
-              name={locale + ':content'}
-              label={t('cms:content')}
-              // sx={sx.formControl}
-              required={locale === DEFAULT_LANGUAGE}
-            />
+            <Stack spacing={2}>
+              <TextField
+                name={locale + ':title'}
+                label={t('cms:title')}
+                fixedLabel
+                type="text"
+                variant="outlined"
+                required={locale === DEFAULT_LANGUAGE}
+                // onFieldChange={onTitleChange}
+              />
+              <TextEditorField
+                name={locale + ':content'}
+                label={t('cms:content')}
+                // sx={sx.formControl}
+                required={locale === DEFAULT_LANGUAGE}
+              />
+            </Stack>
           </div>
         ))}
       </Box>

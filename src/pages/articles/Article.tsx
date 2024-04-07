@@ -21,28 +21,29 @@ import { getArticleArticleSelector } from '@/redux/reducers/article.reducer';
 import { deleteArticle, goToAddArticle, goToArticles, goToEditArticle } from '@/redux/actions/article.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { IArticle } from '@/types/article.types';
+import { IArticle, ITranslatedFields } from '@/types/article.types';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
-import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
-import { getDefaultTranslatedField } from '@/utils/settings.utils';
+import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
+import { useTranslatedValues } from '@/hooks/useTranslatedValues';
 
 const Article = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const article = useSelector(getArticleArticleSelector);
-  const language = useSelector(getSettingsLangSelector);
-  const title = getDefaultTranslatedField(article, language, 'title', false);
 
   const { canPreview, canDelete, canCreate, canFind } = useProtect('Article');
+
+  // get translated fields depending on the selected language (tabs)
+  const { translatedFields, onTabChange, tab } = useTranslatedValues<ITranslatedFields>(article?.translated, ['title', 'content']);
 
   if (!article) return null;
 
   const infosItems: ISelectOption[] = [
     {
       label: t('cms:title'),
-      value: title,
+      value: translatedFields.title,
     },
     {
       label: t('common:createdAt'),
@@ -97,14 +98,15 @@ const Article = () => {
     <Layout
       title={(
         <>
-          <span css={{ marginRight: 10 }}>{t('cms:article')}</span>
-          <span>{title}</span>
+          <span>{t('cms:article')}</span>
+          <span css={{ marginRight: 10, marginLeft: 10 }}>-</span>
+          <span>{translatedFields.title}</span>
         </>
       )}
       isCard={false}
       actions={
         <ActionsMenu
-          label={article.title}
+          label={translatedFields.title}
           onCreate={handleCreate}
           goToList={handleGoToList}
           onDelete={handleDelete}
@@ -112,7 +114,12 @@ const Article = () => {
           menus={menus}
         />
       }>
-      <Head title={title} />
+      <Head title={translatedFields.title} />
+      <TranslatedFormTabs
+        onTabChange={onTabChange}
+        tab={tab}
+        // errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_PAGE_FIELDS)}
+      />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
         {/* left */}
         <Grid item {...PREVIEW_PAGE_GRID.left}>
@@ -121,7 +128,7 @@ const Article = () => {
               <Items items={infosItems} />
             </Layout>
             <Layout>
-              <TextEditor value={getDefaultTranslatedField(article, language, 'content', false)} editable={false} />
+              <TextEditor value={translatedFields.content} editable={false} />
             </Layout>
           </Stack>
         </Grid>

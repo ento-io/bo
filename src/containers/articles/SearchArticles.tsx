@@ -13,8 +13,13 @@ const SearchArticles = ({ onSearch, onAdvancedSearch }: IRenderSearchProps) => {
       <Stack direction="row" spacing={2}>
         <SearchInput
           onChange={onSearch}
+          name="text"
+          placeholder={t('cms:searchByPage')}
+        />
+        <SearchInput
+          onChange={onSearch}
           name="user"
-          placeholder={t('user:searchByNameOrEmail')}
+          placeholder={t('cms:searchByAuthor')}
         />
       </Stack>
       <ArticleAdvancedFilterForm onSubmit={onAdvancedSearch} />

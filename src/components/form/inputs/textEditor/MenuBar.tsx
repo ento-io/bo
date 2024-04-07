@@ -3,7 +3,10 @@ import { Theme } from '@emotion/react';
 import { IconButton } from '@mui/material';
 import { Editor } from '@tiptap/react';
 
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
 import LinkButton from './LinkButton';
+import SelectInput from '../SelectInput';
 
 const classes = {
   menu: (theme: Theme) => ({
@@ -17,7 +20,7 @@ const classes = {
     height: 24,
     width: 24,
     padding: 18,
-    backgroundColor: isActive ? theme.palette.primary.light : '#fff',
+    backgroundColor: isActive ? theme.palette.grey[200] : '#fff',
   }),
   bordered: (theme: Theme) => {
     const borderColor = theme.palette.grey[100];
@@ -67,20 +70,36 @@ type Props = {
   className?: string;
 };
 
+const selectStyles = {
+  control: {
+    padding: 0,
+    border: 'none'
+  },
+};
+
 const MenuBar = ({ editor, className }: Props) => {
+  const [selectedHeading, setSelectedHeading] = useState<number>(0);
+
+  const handleSelectHeading = (heading: number) => {
+    setSelectedHeading(heading);
+    getFocus(editor).toggleHeading({ level: heading }).run();
+  }
+  const { t } = useTranslation();
   return (
     <div>
       <div className={cx('flexRow', className)} css={classes.menu}>
-        {[1, 2, 3].map((heading) => (
-          <IconButton
-            key={heading}
-            onClick={() => getFocus(editor).toggleHeading({ level: heading }).run()}
-            disabled={!canRunOnFocus(editor).toggleHeading({ level: heading }).run()}
-            css={classes.button(editor.isActive('heading', { level: heading }))}>
-            <span>H{heading}</span>
-          </IconButton>
-        
-        ))}
+        <SelectInput
+          value={selectedHeading}
+          options={[{ value: 1, label: 'H1' }, { value: 2, label: 'H2' }, { value: 3, label: 'H3' }]}
+          onChange={handleSelectHeading as any}
+          isMulti={false}
+          width={100}
+          // disabled={!canRunOnFocus(editor).toggleHeading({ level: heading }).run()}
+          direction="row"
+          placeholder={t('title')}
+          isSearchable={false}
+          styles={selectStyles}
+        />
         <IconButton
           onClick={() => getFocus(editor).toggleBold().run()}
           disabled={!canRunOnFocus(editor).toggleBold().run()}

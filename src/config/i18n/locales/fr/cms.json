@@ -12,6 +12,7 @@
   "createPage": "Créer une page",
   "editPage": "Modifier la page - {{title}}",
   "searchByAuthor": "Rechercher par auteur",
+  "author": "Auteur",
   "searchByPage": "Rechercher titre, contenu",
   "bannerImage": "Image de bannière",
   "addBannerImage": "Ajouter une image de bannière",
