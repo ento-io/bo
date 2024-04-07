@@ -12,11 +12,13 @@ import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.ty
 import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
 import { articlesRoute } from '@/routes/protected/article.routes';
-import { IArticle } from '@/types/article.types';
+import { IArticle, ITranslatedFields } from '@/types/article.types';
 import AddFab from '@/components/AddFab';
 import SearchArticles from '@/containers/articles/SearchArticles';
 import { articlesTabOptions } from '@/utils/cms.utils';
 import { isRecycleBinTab } from '@/utils/app.utils';
+import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
+import { getTranslatedField } from '@/utils/settings.utils';
 
 interface Data {
   title: string;
@@ -46,6 +48,8 @@ const Articles = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const articles = useSelector(getArticleArticlesSelector);
+  const language = useSelector(getSettingsLangSelector);
+
   const count = useSelector(getArticleCountSelector);
   const searchParams = articlesRoute.useSearch();
 
@@ -98,10 +102,11 @@ const Articles = () => {
     const canEdit = canAccessTo(roles, 'Article', 'update');
 
     const articlesData = articles.map((article: IArticle) => {
+      const title = getTranslatedField<ITranslatedFields>(article.translated, language, 'title')
       // default data
       const data: Record<string, any> = {
         id: article.objectId, // required even if not displayed
-        title: article.title,
+        title,
         createdAt: displayDate(article.createdAt, false, true),
         actions: canDestroy
           ? null
@@ -119,7 +124,7 @@ const Articles = () => {
     });
 
     return articlesData;
-  }, [articles, onDelete, onPreview, roles, onEdit, canDestroy]);
+  }, [articles, onDelete, onPreview, roles, onEdit, canDestroy, language]);
 
   return (
     <>
