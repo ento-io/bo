@@ -7,7 +7,7 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 import { PATH_NAMES } from '@/utils/pathnames';
 import { clearArticleSlice, deleteArticleFromArticlesSlice, deleteArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
-import i18n from '@/config/i18n';
+import i18n, { locales } from '@/config/i18n';
 import { IArticleInput } from '@/types/article.types';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { IQueriesInput } from '@/types/app.type';
@@ -58,14 +58,22 @@ export const loadArticles = ({
         await searchUserPointerQuery(query, search.user);
       }
 
-      if (search.text) {
-        const text = escapeText(search.text);
+    // search by translated texts
+    if (search?.text) {
+      const text = escapeText(search.text);
+      const or: any[] = [];
 
-        query = Parse.Query.or(
-          new Parse.Query(Article).matches('reference', text),
-          new Parse.Query(Article).matches('url', text),
+      locales.forEach((locale: string) => {
+        or.push(
+          new Parse.Query(Article).matches('translated.' + locale + '.title', text),
+          new Parse.Query(Article).matches('translated.' + locale + '.description', text),
+          new Parse.Query(Article).matches('translated.' + locale + '.content', text),
         );
-      }
+      });
+
+      query = Parse.Query.or(...or);
+    }
+
 
       // query dates
       filtersDatesQuery(query, search);

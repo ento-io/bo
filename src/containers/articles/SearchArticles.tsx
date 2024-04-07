@@ -13,7 +13,7 @@ const SearchArticles = ({ onSearch, onAdvancedSearch }: IRenderSearchProps) => {
       <Stack direction="row" spacing={2}>
         <SearchInput
           onChange={onSearch}
-          name="user"
+          name="text"
           placeholder={t('user:searchByNameOrEmail')}
         />
       </Stack>
