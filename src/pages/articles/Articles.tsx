@@ -19,11 +19,13 @@ import { articlesTabOptions } from '@/utils/cms.utils';
 import { isRecycleBinTab } from '@/utils/app.utils';
 import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
 import { getTranslatedField } from '@/utils/settings.utils';
+import UserCell from '@/components/UserCell';
 
 interface Data {
   title: string;
   user: string;
-  createdAt: ReactNode;
+  createdAt: string;
+  updatedAt: string;
   actions: ReactNode;
 }
 
@@ -33,8 +35,18 @@ const headCells: TableHeadCell<keyof Data>[] = [
     label: i18n.t('cms:title'),
   },
   {
+    id: 'user',
+    label: i18n.t('cms:author'),
+    align: 'left',
+  },
+  {
     id: 'createdAt',
     label: i18n.t('common:createdAt'),
+    align: 'right',
+  },
+  {
+    id: 'updatedAt',
+    label: i18n.t('common:updatedAt'),
     align: 'right',
   },
   {
@@ -107,7 +119,9 @@ const Articles = () => {
       const data: Record<string, any> = {
         id: article.objectId, // required even if not displayed
         title,
+        user: <UserCell user={article.user} />,
         createdAt: displayDate(article.createdAt, false, true),
+        updatedAt: displayDate(article.updatedAt, false, true),
         actions: canDestroy
           ? null
           : (
