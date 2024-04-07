@@ -1,6 +1,6 @@
 import { css, cx } from '@emotion/css';
 import { Theme } from '@emotion/react';
-import { FormHelperText, Typography, useTheme } from '@mui/material';
+import { FormHelperText, Tab, Tabs, Typography, useTheme } from '@mui/material';
 import { Color } from '@tiptap/extension-color';
 import Document from '@tiptap/extension-document';
 import Link from '@tiptap/extension-link';
@@ -21,7 +21,7 @@ import {
 } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
-import { useEffect } from 'react';
+import { useEffect, useState, SyntheticEvent } from 'react';
 import Heading from '@tiptap/extension-heading';
 import { useTranslation } from 'react-i18next';
 import MenuBar from './MenuBar';
@@ -76,7 +76,6 @@ const classes = {
     zIndex: 100,
     padding: '4px 3px',
     marginBottom: 6,
-    // top: -8,
   }),
   menu: (theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
@@ -92,6 +91,33 @@ const classes = {
     marginRight: 6,
     marginLeft: 6,
   },
+  tabs: {
+    '& .MuiTabs-indicator': {
+      display: 'flex',
+      justifyContent: 'center',
+      backgroundColor: 'transparent',
+    },
+    '& .MuiTabs-indicatorSpan': {
+      maxWidth: 40,
+      width: '100%',
+      backgroundColor: 'transparent',
+    },
+  },
+  tab: (theme: Theme) => ({
+    textTransform: 'none' as const,
+    fontWeight: theme.typography.fontWeightRegular,
+    fontSize: theme.typography.pxToRem(15),
+    marginRight: theme.spacing(1),
+    '&.Mui-selected': {
+      color: '#000',
+      backgroundColor: '#ededed',
+      borderTopLeftRadius: 2,
+      borderTopRightRadius: 2,
+    },
+    '&.Mui-focusVisible': {
+      backgroundColor: 'rgba(100, 95, 228, 0.32)',
+    },
+  })
 };
 
 const extensions = [
@@ -138,6 +164,7 @@ export type TextEditorProps = {
   value?: string;
   menuClassName?: string;
   required?: boolean;
+  withFloatingButtons?: boolean;
 } & Partial<EditorOptions>;
 
 const TextEditor = ({
@@ -150,19 +177,24 @@ const TextEditor = ({
   menuClassName,
   required,
   editable = true,
+  withFloatingButtons = false,
   ...editorOptions
 }: TextEditorProps) => {
+  const [tab, setTab] = useState<'editor' | 'preview'>('editor');
+
   const theme = useTheme();
   const { t } = useTranslation();
 
+  const handleTabChange = (_: SyntheticEvent, value: 'editor' | 'preview') => setTab(value);
+
   const editor = useEditor({
-    editable,
+    // editable,
     // content: value,
-    editorProps: {
-      attributes: {
-        class: classes.input(theme, editable),
-      },
-    },
+    // editorProps: {
+    //   attributes: {
+    //     class: classes.input(theme, editable),
+    //   },
+    // },
     extensions: [
       // StarterKit,
       Placeholder.configure({
@@ -177,54 +209,107 @@ const TextEditor = ({
     ...editorOptions,
   });
 
+  // use in useEffect because the editor is not available at the time of initialization in edition
   useEffect(() => {
     if (!(editor && value)) return;
     editor.commands.setContent(value);
-  }, [value, editor]);
+    // !important: to avoid update for each taping, the value should be excluded from the dependencies
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
 
+  /**
+   * change the editable state of the editor on the fly
+   * for every tab change
+   */
+  useEffect(() => {
+    // preview tab or not editable
+    if (!editable) {
+      editor?.setOptions({
+        editable: false,
+        editorProps: {
+          attributes: {
+            class: classes.input(theme, false),
+          },
+        },
+      });
+      return;
+    };
+
+    // editor tab
+    editor?.setOptions({
+      editable: tab === 'editor',
+      editorProps: {
+        attributes: {
+          class: classes.input(theme, tab === 'editor'),
+        },
+      },
+    });
+  }, [editor, tab, editable, theme]);
+
+  // preview
   if (!editable) {
     return <EditorContent editor={editor} className={className} />;
   }
 
   return (
-    <div className={cx('positionRelative flexColumn', className)} css={classes.editorRoot}>
-      <div className="positionRelative stretchSelf">
-        {label && (
-          <Typography css={classes.label}>
-            {label}
-            {required && <span css={classes.required}>{t('required')}</span>}
-          </Typography>
-        )}
-        {editor && (
-          <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
-            <MenuBar
-              editor={editor}
-            />
-          </FloatingMenu>
-        )}
-        {editor && (
-          <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
-            <MenuBar
-              editor={editor}
-            />
-          </BubbleMenu>
-        )}
-        {/* editor */}
-        <EditorContent editor={editor} css={classes.editor} />
-        {error && (
-          <FormHelperText error css={{ paddingTop: 4, paddingBottom: 4 }}>
-            {error}
-          </FormHelperText>
-        )}
-      </div>
-      {editor && (
-        <div css={classes.menu} className={menuClassName}>
-          <MenuBar
-            editor={editor}
-            className="stretchSelf"
-          />
-        </div>
+    <div>
+      {/* ----------- tabs ----------- */}
+      {label && (
+        <Typography css={classes.label}>
+          {label}
+          {required && <span css={classes.required}>{t('required')}</span>}
+        </Typography>
       )}
+      <Tabs
+        value={tab}
+        onChange={handleTabChange}
+        aria-label="basic tabs example"
+        TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
+        css={classes.tabs}
+      >
+        <Tab css={classes.tab} label="Editor" value="editor" />
+        <Tab css={classes.tab} label="Preview" value="preview" />
+      </Tabs>
+      {tab === 'editor'
+        ? (
+          <div className={cx('positionRelative flexColumn', className)} css={classes.editorRoot}>
+            <div className="positionRelative stretchSelf">
+              {editor && withFloatingButtons && (
+                <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
+                  <MenuBar
+                    editor={editor}
+                  />
+                </FloatingMenu>
+              )}
+              {editor && (
+                <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
+                  <MenuBar
+                    editor={editor}
+                  />
+                </BubbleMenu>
+              )}
+              {/* editor */}
+              <EditorContent editor={editor} css={classes.editor} />
+              {error && (
+                <FormHelperText error css={{ paddingTop: 4, paddingBottom: 4 }}>
+                  {error}
+                </FormHelperText>
+              )}
+            </div>
+            {editor && (
+              <div css={classes.menu} className={menuClassName}>
+                <MenuBar
+                  editor={editor}
+                  className="stretchSelf"
+                />
+              </div>
+            )}
+          </div>
+        ) : (
+          <EditorContent editor={editor} className={className} />
+        )
+      }
+  
     </div>
   );
 };

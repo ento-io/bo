@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { t } from "i18next";
 import { useSelector } from "react-redux";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { IArticle, IArticleInput } from "@/types/article.types"
 import TextField from "@/components/form/fields/TextField";
 import Form from "@/components/form/Form";
@@ -64,21 +64,23 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
       <Box>
         {locales.map((locale: string, index: number) => (
           <div key={index} css={{ display: locale === tab ? 'block' : 'none' }}>
-            <TextField
-              name={locale + ':title'}
-              label={t('cms:title')}
-              fixedLabel
-              type="text"
-              variant="outlined"
-              required={locale === DEFAULT_LANGUAGE}
-              // onFieldChange={onTitleChange}
-            />
-            <TextEditorField
-              name={locale + ':content'}
-              label={t('cms:content')}
-              // sx={sx.formControl}
-              required={locale === DEFAULT_LANGUAGE}
-            />
+            <Stack spacing={2}>
+              <TextField
+                name={locale + ':title'}
+                label={t('cms:title')}
+                fixedLabel
+                type="text"
+                variant="outlined"
+                required={locale === DEFAULT_LANGUAGE}
+                // onFieldChange={onTitleChange}
+              />
+              <TextEditorField
+                name={locale + ':content'}
+                label={t('cms:content')}
+                // sx={sx.formControl}
+                required={locale === DEFAULT_LANGUAGE}
+              />
+            </Stack>
           </div>
         ))}
       </Box>
