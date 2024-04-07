@@ -17,7 +17,7 @@ const classes = {
     height: 24,
     width: 24,
     padding: 18,
-    backgroundColor: isActive ? theme.palette.primary.light : '#fff',
+    backgroundColor: isActive ? theme.palette.grey[200] : '#fff',
   }),
   bordered: (theme: Theme) => {
     const borderColor = theme.palette.grey[100];
