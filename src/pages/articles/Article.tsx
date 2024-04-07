@@ -98,7 +98,8 @@ const Article = () => {
     <Layout
       title={(
         <>
-          <span css={{ marginRight: 10 }}>{t('cms:article')}</span>
+          <span>{t('cms:article')}</span>
+          <span css={{ marginRight: 10, marginLeft: 10 }}>-</span>
           <span>{translatedFields.title}</span>
         </>
       )}
