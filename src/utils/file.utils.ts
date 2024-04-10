@@ -1,6 +1,7 @@
 import { http, protectRequest } from '@/config/http';
 
 import { IFileCloud, IMultipleUploadResponse, IUploadFile, IUploadFileAPI, IUploadFilesAPI } from '@/types/file.type';
+import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from '@/validations/file.validation';
 
 /**
  * get the original filename from the url
@@ -46,7 +47,7 @@ export const getFileFromUrl = async (url: string): Promise<File> => {
 };
 
 /**
- * conver bytes to file sizes
+ * convert bytes to file sizes
  */
 export const convertBytesToFileSize = (
   bytes: number,
@@ -147,7 +148,10 @@ export const uploadFileAPI = async ({
   const formData = new FormData();
   formData.append('file', file);
   formData.append('folder', folder);
-  formData.append('userId', userId);
+
+  if (userId) {
+    formData.append('userId', userId);
+  }
 
   const response = await http.post<FormData, IFileCloud>(endpoint, formData, protectRequest(sessionToken, true));
 
@@ -177,7 +181,10 @@ export const uploadFilesAPI = async ({
   });
 
   formData.append('folder', folder);
-  formData.append('userId', userId);
+
+  if (userId) {
+    formData.append('userId', userId);
+  }
 
   const response = await http.post<FormData, IMultipleUploadResponse>(
     endpoint,
@@ -273,3 +280,45 @@ export const updateUploadedSingleFileToSave = async ({
 
   return newValues;
 };
+
+
+type UploadInput<T> = {
+  folder: string;
+  userId?: string;
+  sessionToken: string;
+  values: T;
+};
+
+export const uploadFormFiles = async <T extends Record<string, any>>({
+  folder,
+  sessionToken,
+  userId,
+  values
+}: UploadInput<T>): Promise<any> => {
+  const uploadInput = {
+    folder,
+    userId,
+    sessionToken,
+  };
+
+  const newValues: Record<string, any> = {};
+
+  for (const field of PAGE_SINGLE_IMAGE_FIELDS) {
+    if (values[field]) {
+      const fileUploadInput = { ...uploadInput, file: values[field] };
+      const uploadedFileUrl = await uploadFileAPI(fileUploadInput);
+
+      newValues[field] = uploadedFileUrl;
+    }
+  }
+
+  for (const field of PAGE_IMAGES_FIELDS) {
+    if (values[field] && Array.isArray(values[field])) {
+      const fileUploadInput = { ...uploadInput, files: values[field] };
+      const uploadedFilesUrls = await uploadFilesAPI(fileUploadInput);
+      newValues[field] = uploadedFilesUrls;
+    }
+  }
+
+  return newValues;
+}
