@@ -137,6 +137,26 @@ export const deleteArticle = (id: string,): any => {
   });
 };
 
+/**
+ * mark seen field as true
+ * so that its not more treated as notification
+ * ex: (['xxx', 'xxxy'], seen, false)
+ * @param ids
+ * @returns
+ */
+export const toggleArticlesByIds = (ids: string[], field: string, value = true): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    // update the database
+    await new Parse.Query(Article).containedIn('objectId', ids).each(async estimate => {
+      estimate.set(field, value);
+
+      await estimate.save();
+    });
+    // delete
+    dispatch(deleteArticlesSlice(ids));
+  });
+};
+
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
@@ -173,34 +193,18 @@ export const onArticlesEnter = (route: any): any => {
     const newFilters = convertTabToFilters(articlesTabOptions, route.search.tab, filters);
     values.filters = newFilters;
 
+    // clear the prev state first
+    dispatch(clearArticleSlice());
     dispatch(loadArticles(values));
-  });
-};
-
-
-/**
- * mark seen field as true
- * so that its not more treated as notification
- * ex: (['xxx', 'xxxy'], seen, false)
- * @param ids
- * @returns
- */
-export const toggleArticlesByIds = (ids: string[], field: string, value = true): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    // update the database
-    await new Parse.Query(Article).containedIn('objectId', ids).each(async estimate => {
-      estimate.set(field, value);
-
-      await estimate.save();
-    });
-    // delete
-    dispatch(deleteArticlesSlice(ids));
   });
 };
 
 export const onArticleEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     if (!route.params?.id) return ;
+
+    // clear the prev state first
+    dispatch(clearArticleSlice());
 
     const article = await getArticle(route.params?.id);
 
@@ -213,6 +217,8 @@ export const onArticleEnter = (route?: any): AppThunkAction => {
 export const onEditArticleEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     if (!route.params?.id) return ;
+    // clear the prev state first
+    dispatch(clearArticleSlice());
 
     const article = await getArticle(route.params?.id);
 
