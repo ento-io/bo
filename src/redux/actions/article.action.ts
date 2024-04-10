@@ -14,12 +14,13 @@ import { IQueriesInput } from '@/types/app.type';
 import { goToNotFound } from './app.action';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
-import { articlesTabOptions } from '@/utils/cms.utils';
+import { ALL_PAGE_FIELDS, articlesTabOptions } from '@/utils/cms.utils';
 import { setValues } from '@/utils/parse.utils';
+import { uploadFormFiles } from '@/utils/file.utils';
 
 const Article = Parse.Object.extend("Article");
 
-const ARTICLE_PROPERTIES = new Set(['translated']);
+const ARTICLE_PROPERTIES = new Set(['translated', ...ALL_PAGE_FIELDS]);
 
 export const getArticle = async (id: string, include = []): Promise<Parse.Object | undefined> => {
   const article = await Parse.Cloud.run('getArticle', { id, include });
@@ -67,9 +68,23 @@ export const loadArticles = ({
 
 export const createArticle = (values: IArticleInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+    const currentUser = await Parse.User.currentAsync();
+
+    if (!currentUser) {
+      throw Error(i18n.t('user:errors.userNotExist'));
+    }
+
     const article = new Article()
 
-    setValues(article, values, ARTICLE_PROPERTIES);
+    const uploadValues = await uploadFormFiles({
+      folder: 'articles',
+      sessionToken: currentUser.getSessionToken(),
+      values
+    });
+
+    const newValues = { ...values, ...uploadValues };
+    
+    setValues(article, newValues, ARTICLE_PROPERTIES);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
