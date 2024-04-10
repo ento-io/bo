@@ -44,8 +44,13 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
 
   useEffect(() => {
     if (!article) return;
-    reset(getCmsEditionCmsInitialValues(article))
-  }, [article, reset])
+    const init = async () => {
+      const editionInitialValues = await getCmsEditionCmsInitialValues(article);
+      reset(editionInitialValues)
+    };
+
+    init();
+  }, [article, reset]);
 
   const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
     onSubmit(values);
