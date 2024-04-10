@@ -2,6 +2,7 @@ import { locales } from "@/config/i18n";
 import { defaultTabOptions } from "./app.utils";
 import { IArticle, IArticleInput } from "@/types/article.types";
 import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from "@/validations/file.validation";
+import { getFileFromUrl } from "./file.utils";
 
 export const articlesTabOptions = defaultTabOptions;
 
@@ -99,15 +100,22 @@ export const parseSavedTranslatedValuesToForm = (
   return newValues;
 };
 
-export const getCmsEditionCmsInitialValues = (
-  article: IArticle | null | undefined,
-): IArticleInput | undefined => {
-  if (!article) return;
+export const getCmsEditionCmsInitialValues = async (
+  page: IArticle | null | undefined,
+): Promise<IArticleInput | undefined> => {
+  if (!page) return;
+  const valuesToEdit = parseSavedTranslatedValuesToForm(page);
 
-  const valuesToEdit = parseSavedTranslatedValuesToForm(article);
+  const [bannerImage, previewImage] = await Promise.all([
+    page.bannerImage ? getFileFromUrl(page.bannerImage.url) : [],
+    page.previewImage ? getFileFromUrl(page.previewImage.url) : [],
+  ]);
+
 
   const defaultValues = {
     ...valuesToEdit,
+    bannerImage: Array.isArray(bannerImage) ? bannerImage : [bannerImage], // should be an array
+    previewImage: Array.isArray(previewImage) ? previewImage : [previewImage], // should be an array
   };
 
   return defaultValues;
