@@ -1,6 +1,7 @@
 import { locales } from "@/config/i18n";
 import { defaultTabOptions } from "./app.utils";
 import { IArticle, IArticleInput } from "@/types/article.types";
+import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from "@/validations/file.validation";
 
 export const articlesTabOptions = defaultTabOptions;
 
@@ -17,6 +18,15 @@ export const TRANSLATED_CMS_FIELDS = [
   'metaTitle',
   'metaDescription',
   'tags',
+];
+
+export const ALL_PAGE_FIELDS = [
+  'active',
+  'linkLocations',
+  'pages',
+  'category',
+  ...PAGE_SINGLE_IMAGE_FIELDS,
+  ...PAGE_IMAGES_FIELDS,
 ];
 
 /**
