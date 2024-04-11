@@ -1,6 +1,8 @@
 import { locales } from "@/config/i18n";
 import { defaultTabOptions } from "./app.utils";
 import { IArticle, IArticleInput } from "@/types/article.types";
+import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from "@/validations/file.validation";
+import { getFileFromUrl } from "./file.utils";
 
 export const articlesTabOptions = defaultTabOptions;
 
@@ -19,33 +21,49 @@ export const TRANSLATED_CMS_FIELDS = [
   'tags',
 ];
 
+export const ALL_PAGE_FIELDS = [
+  'active',
+  'linkLocations',
+  'pages',
+  'category',
+  ...PAGE_SINGLE_IMAGE_FIELDS,
+  ...PAGE_IMAGES_FIELDS,
+];
+
 /**
  * format translated form fields name to data base fields
- * ex: { "title+fr": "my-title-fr" } to { "fr": { "title" : "my-title-fr" }}
+ * ex: { "fr:title": "my-title-fr", active: true } to { active: true, translated: {{ "fr": { "title" : "my-title-fr" }}}}
  * @param values
  * @returns
  */
 export const formatTranslatedFormValuesToSave = (values: Record<string, any>): any => {
   const newValues: Record<string, any> = {};
+  const translated: Record<string, any> = {};
 
   for (const key of Object.keys(values)) {
+    // important: all translated fields must be in this key (ex: { translated: { fr: { title: 'xxx' }, en: { title: 'yyy' } } })
     const separatedKey = key.split(':');
     const keyLang = separatedKey[0]; // ex: fr
     const keyName = separatedKey[separatedKey.length - 1]; // ex: title
 
-    if (locales.includes(keyLang)) {
-      newValues[keyLang] = {
-        ...newValues[keyLang],
-        [keyName]: values[key],
-      };
-    } else {
+    // add translated key to "translated" key
+    if (keyName && TRANSLATED_CMS_FIELDS.includes(keyName)) {
+      if (locales.includes(keyLang)) {
+        translated[keyLang] = {
+          ...translated[keyLang],
+          [keyName]: values[key],
+        };
+      }
+    }
+    // otherwise outside the "translated" field
+    else {
       newValues[key] = values[key];
     }
   }
 
   return {
-    // important: all translated fields must be in this key (ex: { translated: { fr: { title: 'xxx' }, en: { title: 'yyy' } } })
-    translated: newValues,
+    ...newValues,
+    translated
   };
 };
 
@@ -82,15 +100,22 @@ export const parseSavedTranslatedValuesToForm = (
   return newValues;
 };
 
-export const getCmsEditionCmsInitialValues = (
-  article: IArticle | null | undefined,
-): IArticleInput | undefined => {
-  if (!article) return;
+export const getCmsEditionCmsInitialValues = async (
+  page: IArticle | null | undefined,
+): Promise<IArticleInput | undefined> => {
+  if (!page) return;
+  const valuesToEdit = parseSavedTranslatedValuesToForm(page);
 
-  const valuesToEdit = parseSavedTranslatedValuesToForm(article);
+  const [bannerImage, previewImage] = await Promise.all([
+    page.bannerImage ? getFileFromUrl(page.bannerImage.url) : [],
+    page.previewImage ? getFileFromUrl(page.previewImage.url) : [],
+  ]);
+
 
   const defaultValues = {
     ...valuesToEdit,
+    bannerImage: Array.isArray(bannerImage) ? bannerImage : [bannerImage], // should be an array
+    previewImage: Array.isArray(previewImage) ? previewImage : [previewImage], // should be an array
   };
 
   return defaultValues;

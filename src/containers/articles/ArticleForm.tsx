@@ -17,6 +17,7 @@ import { Lang } from "@/types/setting.type";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 import { locales } from "@/config/i18n";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
+import DropzoneField from "@/components/form/dropzone/DropzoneField";
 
 const initialValues = {
   title: '',
@@ -43,8 +44,13 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
 
   useEffect(() => {
     if (!article) return;
-    reset(getCmsEditionCmsInitialValues(article))
-  }, [article, reset])
+    const init = async () => {
+      const editionInitialValues = await getCmsEditionCmsInitialValues(article);
+      reset(editionInitialValues)
+    };
+
+    init();
+  }, [article, reset]);
 
   const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
     onSubmit(values);
@@ -61,6 +67,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
         errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_CMS_FIELDS)}
       />
 
+      {/* translated fields */}
       <Box>
         {locales.map((locale: string, index: number) => (
           <div key={index} css={{ display: locale === tab ? 'block' : 'none' }}>
@@ -84,6 +91,16 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
           </div>
         ))}
       </Box>
+
+      {/* non translated fields */}
+      <DropzoneField
+        name="bannerImage"
+        label={t('cms:bannerImage')}
+        inputLabel={t('cms:addBannerImage')}
+        maxFiles={1}
+        shouldReset={!!article} // can reset input in edition
+        helperText={t('common:infoMessages.bannerImageHelper')}
+      />
     </Form>
   )
 }

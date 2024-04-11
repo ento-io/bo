@@ -14,12 +14,13 @@ import { IQueriesInput } from '@/types/app.type';
 import { goToNotFound } from './app.action';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
-import { articlesTabOptions } from '@/utils/cms.utils';
+import { ALL_PAGE_FIELDS, articlesTabOptions } from '@/utils/cms.utils';
 import { setValues } from '@/utils/parse.utils';
+import { uploadFormFiles } from '@/utils/file.utils';
 
 const Article = Parse.Object.extend("Article");
 
-const ARTICLE_PROPERTIES = new Set(['translated']);
+const ARTICLE_PROPERTIES = new Set(['translated', ...ALL_PAGE_FIELDS]);
 
 export const getArticle = async (id: string, include = []): Promise<Parse.Object | undefined> => {
   const article = await Parse.Cloud.run('getArticle', { id, include });
@@ -67,9 +68,23 @@ export const loadArticles = ({
 
 export const createArticle = (values: IArticleInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+    const currentUser = await Parse.User.currentAsync();
+
+    if (!currentUser) {
+      throw Error(i18n.t('user:errors.userNotExist'));
+    }
+
     const article = new Article()
 
-    setValues(article, values, ARTICLE_PROPERTIES);
+    const uploadValues = await uploadFormFiles({
+      folder: 'articles',
+      sessionToken: currentUser.getSessionToken(),
+      values
+    });
+
+    const newValues = { ...values, ...uploadValues };
+    
+    setValues(article, newValues, ARTICLE_PROPERTIES);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
@@ -122,6 +137,26 @@ export const deleteArticle = (id: string,): any => {
   });
 };
 
+/**
+ * mark seen field as true
+ * so that its not more treated as notification
+ * ex: (['xxx', 'xxxy'], seen, false)
+ * @param ids
+ * @returns
+ */
+export const toggleArticlesByIds = (ids: string[], field: string, value = true): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    // update the database
+    await new Parse.Query(Article).containedIn('objectId', ids).each(async estimate => {
+      estimate.set(field, value);
+
+      await estimate.save();
+    });
+    // delete
+    dispatch(deleteArticlesSlice(ids));
+  });
+};
+
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
@@ -158,34 +193,18 @@ export const onArticlesEnter = (route: any): any => {
     const newFilters = convertTabToFilters(articlesTabOptions, route.search.tab, filters);
     values.filters = newFilters;
 
+    // clear the prev state first
+    dispatch(clearArticleSlice());
     dispatch(loadArticles(values));
-  });
-};
-
-
-/**
- * mark seen field as true
- * so that its not more treated as notification
- * ex: (['xxx', 'xxxy'], seen, false)
- * @param ids
- * @returns
- */
-export const toggleArticlesByIds = (ids: string[], field: string, value = true): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    // update the database
-    await new Parse.Query(Article).containedIn('objectId', ids).each(async estimate => {
-      estimate.set(field, value);
-
-      await estimate.save();
-    });
-    // delete
-    dispatch(deleteArticlesSlice(ids));
   });
 };
 
 export const onArticleEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     if (!route.params?.id) return ;
+
+    // clear the prev state first
+    dispatch(clearArticleSlice());
 
     const article = await getArticle(route.params?.id);
 
@@ -198,6 +217,8 @@ export const onArticleEnter = (route?: any): AppThunkAction => {
 export const onEditArticleEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     if (!route.params?.id) return ;
+    // clear the prev state first
+    dispatch(clearArticleSlice());
 
     const article = await getArticle(route.params?.id);
 

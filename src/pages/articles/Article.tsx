@@ -1,10 +1,11 @@
-import { Stack } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useNavigate } from '@tanstack/react-router';
 import { FaCheck, FaCheckDouble } from 'react-icons/fa';
+import { PAGE_SINGLE_IMAGE_FIELDS } from '@/validations/file.validation';
 import ActionsMenu from '@/components/ActionsMenu';
 import Head from '@/components/Head';
 import Items from '@/components/Items';
@@ -130,6 +131,25 @@ const Article = () => {
             <Layout>
               <TextEditor value={translatedFields.content} editable={false} />
             </Layout>
+
+            <Layout cardTitle={t('common:images')}>
+              <Stack spacing={2}>
+                {PAGE_SINGLE_IMAGE_FIELDS.map((field: string, index: number) => (
+                  <div key={field + index}>
+                    <Box>
+                      <Typography sx={{ fontWeight: 600, mb: 1 }}>{t('cms:' + field)}</Typography>
+                      {article[field] ? (
+                        <Box sx={{ width: 300 }}>
+                          <Box component="img" alt={translatedFields.title} src={article[field].url} sx={{ width: '100%' }} />
+                        </Box>
+                      ) : (
+                        <Typography>{t('common:errors.noField', { field: t('common:' + field) })}</Typography>
+                      )}
+                    </Box>
+                  </div>
+                ))}
+            </Stack>
+          </Layout>
           </Stack>
         </Grid>
         {/* right */}
