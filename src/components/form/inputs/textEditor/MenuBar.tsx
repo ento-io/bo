@@ -1,137 +1,278 @@
-import { css, cx } from '@emotion/css';
-import { Theme } from '@emotion/react';
-import { IconButton } from '@mui/material';
-import { Editor } from '@tiptap/react';
+import { Theme } from "@emotion/react";
+import { css, cx } from "@emotion/css";
+import { IconButton } from "@mui/material";
+import { Editor } from "@tiptap/react";
+import { useState, MouseEvent } from "react";
 
-import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import LinkButton from './LinkButton';
-import SelectInput from '../SelectInput';
+import { useToggle } from "../../../../hooks/useToggle";
+import TableMenuDialog from "./TableMenuDialog";
+import LinkDialog from "./LinkDialog";
+import HeadingMenu from "./HeadingMenu";
+import ColorPicker from "./ColorPicker";
+import YoutubeDialog from "./YoutubeDialog";
 
 const classes = {
   menu: (theme: Theme) => ({
-    border: '1px solid ' + theme.palette.grey[100],
-    borderLeft: 'none', // because of sparkles button background
+    border: "1px solid " + theme.palette.grey[100]
   }),
-  button: (isActive: boolean) => (theme: Theme) => ({
+  button: (isActive: boolean, split: boolean) => (theme: Theme) => ({
     borderRadius: 0,
-    border: 'none',
-    cursor: 'pointer',
+    border: "none",
+    borderRight: split ? `1px solid ${theme.palette.grey[100]}` : "none",
+    cursor: "pointer",
     height: 24,
     width: 24,
     padding: 18,
-    backgroundColor: isActive ? theme.palette.grey[200] : '#fff',
+    backgroundColor: isActive ? theme.palette.primary.light : "#fff",
+    "&.Mui-disabled": {
+      opacity: 0.4
+    }
   }),
-  bordered: (theme: Theme) => {
+  splittedBorder: (theme: Theme) => {
     const borderColor = theme.palette.grey[100];
     return {
-      borderRight: '1px solid ' + borderColor,
-      borderLeft: '1px solid ' + borderColor,
+      borderRight: "1px solid " + borderColor
     };
   },
   tabsContainer: {
-    height: 'auto',
-    borderBottom: 'none',
+    height: "auto",
+    borderBottom: "none"
   },
   tabs: (theme: Theme) =>
     css({
-      '& .MuiTabs-flexContainer': {
+      "& .MuiTabs-flexContainer": {
         gap: 8,
         paddingLeft: 16,
-        paddingRight: 16,
+        paddingRight: 16
       },
       backgroundColor: theme.palette.primary.light,
       borderRadius: 0,
       paddingLeft: 0,
       paddingRight: 0,
-      height: 48,
+      height: 48
     }),
   tab: (theme: Theme) =>
     css({
       color: theme.palette.grey[800],
-      backgroundColor: '#fff',
+      backgroundColor: "#fff",
       fontSize: 14,
       lineHeight: 1,
-      minHeight: 'initial',
-      flex: 'none !important',
-      padding: '9px 12px',
-    }),
-  tabsContent: css({
-    maxWidth: '100vw',
-  }),
+      minHeight: "initial",
+      flex: "none !important",
+      padding: "9px 12px"
+    })
 };
-
-// to avoid type error
-const getFocus = (editor: Editor) => editor.chain().focus() as any;
-const canRunOnFocus = (editor: Editor) => editor.can().chain().focus() as any;
 
 type Props = {
   editor: Editor;
   className?: string;
 };
 
-const selectStyles = {
-  control: {
-    padding: 0,
-    border: 'none'
-  },
-};
+const MenuBar = ({
+  editor,
+  className
+}: Props) => {
+  const { open: openLinkDialog, toggle: toggleLinkDialog } = useToggle();
+  const { open: openYoutubeDialog, toggle: toggleYoutubeDialog } = useToggle();
+  const [tableAnchorEl, setTableAnchorEl] = useState<null | HTMLElement>(null);
+  const [headingAnchorEl, setHeadingAnchorEl] = useState<null | HTMLElement>(
+    null
+  );
 
-const MenuBar = ({ editor, className }: Props) => {
-  const [selectedHeading, setSelectedHeading] = useState<number>(0);
+  const handleOpenTableMenu = (event: MouseEvent<HTMLElement>) => {
+    setTableAnchorEl(event.currentTarget);
+  };
+  const handleCloseTableMenu = () => {
+    setTableAnchorEl(null);
+  };
 
-  const handleSelectHeading = (heading: number) => {
-    setSelectedHeading(heading);
-    getFocus(editor).toggleHeading({ level: heading }).run();
-  }
-  const { t } = useTranslation();
+  const handleOpenHeadingMenu = (event: MouseEvent<HTMLElement>) => {
+    setHeadingAnchorEl(event.currentTarget);
+  };
+  const handleCloseHeadingMenu = () => {
+    setHeadingAnchorEl(null);
+  };
+
+  const menus = [
+    {
+      name: "heading",
+      icon: "title",
+      onClick: handleOpenHeadingMenu,
+      isActive:
+        editor.isActive("heading", { level: 1 }) ||
+        editor.isActive("heading", { level: 2 }) ||
+        editor.isActive("heading", { level: 3 }) ||
+        editor.isActive("heading", { level: 4 }) ||
+        editor.isActive("heading", { level: 5 }) ||
+        editor.isActive("heading", { level: 6 }),
+      disabled: false,
+      split: true
+    },
+    {
+      name: "bold",
+      onClick: () => editor.chain().focus().toggleBold().run(),
+      disabled: !editor.can().chain().focus().toggleBold().run()
+    },
+    {
+      name: "italic",
+      onClick: () => editor.chain().focus().toggleItalic().run(),
+      disabled: !editor.can().chain().focus().toggleItalic().run()
+    },
+    {
+      name: "strike",
+      onClick: () => editor.chain().focus().toggleStrike().run(),
+      disabled: !editor.can().chain().focus().toggleStrike().run()
+    },
+    {
+      name: "underline",
+      onClick: () => editor.chain().focus().toggleUnderline().run(),
+      disabled: !editor.can().chain().focus().toggleUnderline().run()
+    },
+    {
+      name: "link",
+      onClick: toggleLinkDialog,
+      disabled: false,
+      split: true
+    },
+    // order
+    {
+      name: "bulletList",
+      icon: "bullet-list",
+      onClick: () => editor.chain().focus().toggleBulletList().run(),
+      disabled: !editor.can().chain().focus().toggleBulletList().run()
+    },
+    {
+      name: "orderedList",
+      icon: "ordered-list",
+      onClick: () => editor.chain().focus().toggleOrderedList().run(),
+      disabled: !editor.can().chain().focus().toggleOrderedList().run(),
+      split: true
+    },
+    // alignment
+    {
+      name: "align-left",
+      icon: "align-left",
+      onClick: () => editor.chain().focus().setTextAlign("left").run(),
+      disabled: false,
+      active: { textAlign: "left" }
+    },
+    {
+      name: "align-center",
+      icon: "align-center",
+      onClick: () => editor.chain().focus().setTextAlign("center").run(),
+      disabled: false,
+      active: { textAlign: "center" }
+    },
+    {
+      name: "align-right",
+      icon: "align-right",
+      onClick: () => editor.chain().focus().setTextAlign("right").run(),
+      disabled: false,
+      active: { textAlign: "right" }
+    },
+    {
+      name: "align-justify",
+      icon: "align-justify",
+      onClick: () => editor.chain().focus().setTextAlign("justify").run(),
+      disabled: false,
+      active: { textAlign: "justify" },
+      split: true
+    },
+    {
+      name: "blockquote",
+      icon: "quote",
+      onClick: () => editor.chain().focus().toggleBlockquote().run(),
+      disabled: false
+    },
+    {
+      name: "codeBlock",
+      icon: "code",
+      onClick: () => editor.chain().focus().toggleCodeBlock().run(),
+      disabled: false,
+      split: true
+    },
+    {
+      name: "table",
+      onClick: () => {
+        editor
+          .chain()
+          .focus()
+          .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+          .run();
+      },
+      onMouseEnter: (event: MouseEvent<HTMLElement>) => {
+        handleOpenTableMenu(event);
+      },
+      disabled: false,
+      split: true
+    },
+    {
+      name: "youtube",
+      onClick: toggleYoutubeDialog,
+      disabled: false,
+      split: true
+    },
+    {
+      name: "undo",
+      onClick: () => editor.chain().focus().undo().run(),
+      disabled: !editor.can().undo()
+    },
+    {
+      name: "redo",
+      onClick: () => editor.chain().focus().redo().run(),
+      disabled: !editor.can().redo(),
+      split: true
+    }
+  ];
+
   return (
-    <div>
-      <div className={cx('flexRow', className)} css={classes.menu}>
-        <SelectInput
-          value={selectedHeading}
-          options={[{ value: 1, label: 'H1' }, { value: 2, label: 'H2' }, { value: 3, label: 'H3' }]}
-          onChange={handleSelectHeading as any}
-          isMulti={false}
-          width={100}
-          // disabled={!canRunOnFocus(editor).toggleHeading({ level: heading }).run()}
-          direction="row"
-          placeholder={t('title')}
-          isSearchable={false}
-          styles={selectStyles}
-        />
+    <div className={cx(className, 'flexRow')} css={classes.menu}>
+      {/* other options */}
+      {menus.map((menu, index) => (
         <IconButton
-          onClick={() => getFocus(editor).toggleBold().run()}
-          disabled={!canRunOnFocus(editor).toggleBold().run()}
-          css={classes.button(editor.isActive('bold'))}>
-          <img alt="bold" src="/icons/bold.svg" />
+          key={menu.name + index}
+          onClick={menu.onClick}
+          onMouseEnter={menu.onMouseEnter}
+          disabled={menu.disabled}
+          css={classes.button(
+            // the oreder is important
+            editor.isActive(menu.isActive || menu.active || menu.name),
+            !!menu.split
+          )}
+        >
+          <img alt={menu.name} src={`/icons/${menu.icon || menu.name}.svg`} />
         </IconButton>
-        <IconButton
-          onClick={() => getFocus(editor).toggleItalic().run()}
-          disabled={!canRunOnFocus(editor).toggleItalic().run()}
-          css={classes.button(editor.isActive('italic'))}>
-          <img alt="italic" src="/icons/italic.svg" />
-        </IconButton>
-        <IconButton
-          onClick={() => getFocus(editor).toggleStrike().run()}
-          disabled={!canRunOnFocus(editor).toggleStrike().run()}
-          css={classes.button(editor.isActive('strike'))}>
-          <img alt="strike" src="/icons/strike.svg" />
-        </IconButton>
-        <IconButton
-          onClick={() => getFocus(editor).toggleUnderline().run()}
-          disabled={!canRunOnFocus(editor).toggleUnderline().run()}
-          css={classes.button(editor.isActive('underline'))}>
-          <img alt="underline" src="/icons/underline.svg" />
-        </IconButton>
-        <IconButton
-          onClick={() => getFocus(editor).toggleBulletList().run()}
-          disabled={!canRunOnFocus(editor).toggleBulletList().run()}
-          css={[classes.button(editor.isActive('bulletList')), classes.bordered]}>
-          <img alt="bullet-list" src="/icons/bullet-list.svg" />
-        </IconButton>
-        <LinkButton editor={editor} css={[classes.button(editor.isActive('link')), classes.bordered]} />
-      </div>
+      ))}
+
+      {/* youtube dialog */}
+      <LinkDialog
+        editor={editor}
+        open={openLinkDialog}
+        onClose={toggleLinkDialog}
+      />
+
+      {/* youtube dialog */}
+      <YoutubeDialog
+        editor={editor}
+        open={openYoutubeDialog}
+        onClose={toggleYoutubeDialog}
+      />
+      {/* color picker */}
+      <ColorPicker editor={editor} />
+
+      {/* table menu to be opened */}
+      <TableMenuDialog
+        editor={editor}
+        anchorEl={tableAnchorEl}
+        onClose={handleCloseTableMenu}
+      />
+
+      {/* table menu to be opened */}
+      <HeadingMenu
+        editor={editor}
+        anchorEl={headingAnchorEl}
+        onClose={handleCloseHeadingMenu}
+      />
     </div>
   );
 };
