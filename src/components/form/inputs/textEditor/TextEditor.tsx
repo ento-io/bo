@@ -1,3 +1,5 @@
+import "./textEditorStyles.css";
+
 import { css, cx } from '@emotion/css';
 import { Theme } from '@emotion/react';
 import { FormHelperText, Tab, Tabs, Typography, useTheme } from '@mui/material';
@@ -11,6 +13,15 @@ import Text from '@tiptap/extension-text';
 import TextStyle from '@tiptap/extension-text-style';
 import TipTapTypography from '@tiptap/extension-typography';
 import Underline from '@tiptap/extension-underline';
+import Gapcursor from "@tiptap/extension-gapcursor";
+import TextAlign from "@tiptap/extension-text-align";
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import Youtube from "@tiptap/extension-youtube";
+import { createLowlight, common } from "lowlight";
 import {
   useEditor,
   EditorContent,
@@ -30,18 +41,6 @@ const classes = {
   editorRoot: (theme: Theme) => ({
     [theme.breakpoints.down('md')]: {
       paddingBottom: 40,
-    },
-  }),
-  editor: (theme: Theme) => ({
-    '& .mention': {
-      backgroundColor: theme.palette.grey[200],
-      paddingLeft: 6,
-      paddingRight: 6,
-      paddingBottom: 3,
-      borderRadius: 12,
-      fontWeight: 300,
-      color: '#000',
-      textDecoration: 'none',
     },
   }),
   input: (theme: Theme, editable = true) =>
@@ -76,16 +75,6 @@ const classes = {
     zIndex: 100,
     padding: '4px 3px',
     marginBottom: 6,
-  }),
-  menu: (theme: Theme) => ({
-    [theme.breakpoints.down('md')]: {
-      position: 'absolute' as const,
-      top: 0,
-      // bottom: 0,
-      // left: -LAYOUT_CONTENT_PADDING,
-      // right: -LAYOUT_CONTENT_PADDING,
-      // maxWidth: `calc(100vw + ${LAYOUT_CONTENT_PADDING / 2}px)`,
-    },
   }),
   required: {
     marginRight: 6,
@@ -129,6 +118,14 @@ const extensions = [
   TipTapTypography,
   Underline,
   Link.configure({
+    protocols: [
+      "https",
+      "mailto",
+      {
+        scheme: "tel",
+        optionalSlashes: true
+      }
+    ],
     HTMLAttributes: {
       // Change rel to different value
       // Allow search engines to follow links(remove nofollow)
@@ -146,12 +143,29 @@ const extensions = [
       keepMarks: true,
       keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
     },
+    // history: false, // important because history will now be handled by Y.js
+    codeBlock: false
   }),
   Heading.configure({
     HTMLAttributes: {
       class: 'custom-heading',
     },
-    levels: [1, 2, 3],
+    levels: [1, 2, 3, 3, 4, 5, 6],
+  }),
+  Table.configure({
+    resizable: true
+  }),
+  TableRow,
+  TableHeader,
+  TableCell,
+  Gapcursor,
+  Youtube,
+  TextAlign.configure({
+    types: ["heading", "paragraph"]
+  }),
+  CodeBlockLowlight.configure({
+    lowlight: createLowlight(common),
+    defaultLanguage: "javascript"
   })
 ];
 
@@ -215,7 +229,7 @@ const TextEditor = ({
     editor.commands.setContent(value);
     // !important: to avoid update for each taping, the value should be excluded from the dependencies
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor, value]);
+  }, [editor]);
 
   /**
    * change the editable state of the editor on the fly
@@ -272,7 +286,7 @@ const TextEditor = ({
       </Tabs>
       {tab === 'editor'
         ? (
-          <div className={cx('positionRelative flexColumn', className)} css={classes.editorRoot}>
+          <div className={cx('positionRelative flexColumn tiptap', className)} css={classes.editorRoot}>
             <div className="positionRelative stretchSelf">
               {editor && withFloatingButtons && (
                 <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
@@ -289,7 +303,7 @@ const TextEditor = ({
                 </BubbleMenu>
               )}
               {/* editor */}
-              <EditorContent editor={editor} css={classes.editor} />
+              <EditorContent editor={editor} />
               {error && (
                 <FormHelperText error css={{ paddingTop: 4, paddingBottom: 4 }}>
                   {error}
@@ -297,12 +311,10 @@ const TextEditor = ({
               )}
             </div>
             {editor && (
-              <div css={classes.menu} className={menuClassName}>
-                <MenuBar
-                  editor={editor}
-                  className="stretchSelf"
-                />
-              </div>
+              <MenuBar
+                editor={editor}
+                className="stretchSelf"
+              />
             )}
           </div>
         ) : (
