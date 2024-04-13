@@ -160,11 +160,21 @@ export const createEstimate = (values: EstimateInput): any => {
 };
 
 export const editEstimate = (id: string, values: EstimateInput): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
-    const estimate = await getEstimate(id);
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    // --------- access --------- //
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const canUpdate = canAccessTo(roles, 'Article', 'update');
 
+    if (!canUpdate) {
+      throw new Error(i18n.t('cms:errors:hasNoRightToUpdate'));
+    }
+
+    // --------- request --------- //
+    const estimate = await getEstimate(id);
     if (!estimate) return;
 
+    // ------- save to db ------ //
     setValues(estimate, values, ESTIMATE_PROPERTIES);
 
 
@@ -173,6 +183,8 @@ export const editEstimate = (id: string, values: EstimateInput): any => {
     // so we use the parse cloud function to do that, instead of a REST API
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
     const updatedEstimate = await estimate.save();
+
+    // ------- update store ------ //
     dispatch(updateEstimatesByEstimateSlice(updatedEstimate.toJSON() as IEstimate));
     dispatch(setMessageSlice(i18n.t('common:estimates.estimateEditedSuccessfully', { value: updatedEstimate.get('reference') })));
   });
