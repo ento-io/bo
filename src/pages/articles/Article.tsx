@@ -27,6 +27,7 @@ import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
 import { useTranslatedValues } from '@/hooks/useTranslatedValues';
 import PreviewImages from '@/containers/cms/PreviewImages';
+import BooleanIcons from '@/components/BooleanIcons';
 
 const Article = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
@@ -58,6 +59,13 @@ const Article = () => {
       label: t('common:deletedAt'),
       value: displayDate(article.deletedAt),
       hide: !article.deletedAt
+    },
+  ];
+
+  const statusItems: ISelectOption[] = [
+    {
+      label: t('common:active'),
+      value: <BooleanIcons value={article.active} />,
     },
   ];
 
@@ -144,7 +152,7 @@ const Article = () => {
               <UserInfo user={article.user} />
             </Layout>
             <Layout cardTitle="Status">
-              <ItemsStatus entity={article} />
+              <ItemsStatus entity={article} items={statusItems} />
             </Layout>
           </Stack>
         </Grid>
