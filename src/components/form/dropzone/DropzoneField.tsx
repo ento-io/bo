@@ -1,4 +1,4 @@
-import { Box, FormHelperText, SxProps, Theme } from '@mui/material';
+import { Box, FormHelperText, Stack, SxProps, Theme } from '@mui/material';
 import { DropzoneOptions } from 'react-dropzone';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -32,6 +32,7 @@ const DropzoneField = ({
   // hooks
   const {
     control,
+    trigger,
     setError,
     clearErrors,
     formState: { errors },
@@ -46,9 +47,14 @@ const DropzoneField = ({
         control={control}
         name={name}
         render={({ field: { onChange, value, onBlur } }) => (
-          <Box>
+          <Stack>
             <DropzoneInput
-              onChange={onChange}
+              onChange={(...e) => {
+                onChange(...e);
+
+                // should trigger manually
+                trigger(name);
+              }}
               onBlur={onBlur}
               value={value}
               onError={(error: any) => {
@@ -74,7 +80,7 @@ const DropzoneField = ({
 
             {/* ----------- helper text ----------- */}
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
-          </Box>
+          </Stack>
         )}
       />
     </Box>
