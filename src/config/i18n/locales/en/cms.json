@@ -87,6 +87,10 @@
       "toggleHeaderCell": "Toggle header cell",
       "mergeOrSplit": "Merge or Split",
       "setCellAttribute": "Set cell attribute"
+    },
+    "tabs": {
+      "preview": "Preview",
+      "editor": "Editor"
     }
   }
 }
