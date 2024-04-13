@@ -87,6 +87,10 @@
       "toggleHeaderCell": "Hanova ny sela lohapejy",
       "mergeOrSplit": "Manambatra / Mizara",
       "setCellAttribute": "Mametraka toetran'ny sela"
+    },
+    "tabs": {
+      "preview": "Fanehoana",
+      "editor": "Editeur"
     }
   }
 }
