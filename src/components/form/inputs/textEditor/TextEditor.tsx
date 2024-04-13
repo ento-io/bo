@@ -46,7 +46,8 @@ const classes = {
   input: (theme: Theme, editable = true) =>
     css({
       borderRadius: 6,
-      border: editable ? '1px solid ' + theme.palette.grey[800] : 'none',
+      borderTopLeftRadius: 0,
+      border: editable ? '1px solid ' + theme.palette.grey[400] : 'none',
       paddingLeft: editable ? 16 : 0,
       paddingRight: editable ? 16 : 0,
       minHeight: editable ? 150 : 'initial',
@@ -281,8 +282,8 @@ const TextEditor = ({
         TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
         css={classes.tabs}
       >
-        <Tab css={classes.tab} label="Editor" value="editor" />
-        <Tab css={classes.tab} label="Preview" value="preview" />
+        <Tab css={classes.tab} label={t('cms:editor.tabs.editor')} value="editor" />
+        <Tab css={classes.tab} label={t('cms:editor.tabs.preview')} value="preview" />
       </Tabs>
       {tab === 'editor'
         ? (
