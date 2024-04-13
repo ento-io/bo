@@ -55,6 +55,7 @@ const getTranslatedSchema = () => {
 export const cmsSchema = z.object({
   active: z.boolean({ errorMap }).optional(),
   bannerImage: getSingleImageSchema(),
+  previewImage: getSingleImageSchema(),
   images: getMultipleImagesSchema()
 });
 
