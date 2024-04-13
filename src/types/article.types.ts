@@ -2,6 +2,7 @@ import { Attributes } from "parse";
 import { z } from "zod";
 import { IUser } from "./user.type";
 import { articleFilterSchema, articleSchema } from "@/validations/article.validations";
+import { IFileCloud } from "./file.type";
 
 export interface ITranslatedFields {
   title: string;
@@ -19,6 +20,8 @@ export interface IArticle extends Attributes {
   deletedAt?: string;
   deleted: boolean;
   translated: ITranslatedFields;
+  bannerImage?: IFileCloud;
+  images?: IFileCloud[];
 }
 
 export interface IArticleState {
