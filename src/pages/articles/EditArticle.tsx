@@ -1,6 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, CardContent } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ArticleForm from "@/containers/articles/ArticleForm";
 import { deleteArticle, editArticle, goToAddArticle, goToArticle, goToArticles } from "@/redux/actions/article.action";
@@ -62,14 +61,11 @@ const EditArticle = () => {
         />
       }>
       <Head title={t('cms:editArticle', { title: article.objectId})} />
-      <Card>
-        <CardContent>
-          <ArticleForm
-            onSubmit={handleSubmitArticle}
-            article={article}
-          />
-        </CardContent>
-      </Card>
+
+      <ArticleForm
+        onSubmit={handleSubmitArticle}
+        article={article}
+      />
     </Layout>
   )
 }
