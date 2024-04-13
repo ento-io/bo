@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
 import appReducer from './reducers/app.reducer';
+import categoryReducer from './reducers/category.reducer';
 import roleReducer from './reducers/role.reducer';
 import settingsReducer from './reducers/settings.reducer';
 import userReducer from './reducers/user.reducer';
@@ -13,6 +14,7 @@ import invoiceReducer from './reducers/invoice.reducer';
 
 const reducers = {
   app: appReducer,
+  category: categoryReducer,
   user: userReducer,
   article: articleReducer,
   settings: settingsReducer,
