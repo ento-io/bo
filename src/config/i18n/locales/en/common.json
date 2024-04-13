@@ -250,7 +250,8 @@
     "new": "new",
     "all": "all",
     "recycleBin": "recycle-bin",
-    "administrators": "administrators"
+    "administrators": "administrators",
+    "categories": "categories"
   },
   "advancedSearch": "Advanced search",
   "start": "Start",
