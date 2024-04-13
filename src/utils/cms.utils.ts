@@ -4,8 +4,10 @@ import { IArticle, IArticleInput } from "@/types/article.types";
 import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from "@/validations/file.validation";
 import { getFileFromUrl } from "./file.utils";
 import { IFileCloud } from "@/types/file.type";
+import { ICategory, ICategoryInput } from "@/types/category.types";
 
 export const articlesTabOptions = defaultTabOptions;
+export const categoriesTabOptions = defaultTabOptions;
 
 /**
  * in the database, these translated fields is transformed to have this schema
@@ -122,4 +124,22 @@ export const getCmsEditionCmsInitialValues = async (
   };
 
   return defaultValues;
+};
+
+/**
+ * initial form values for creation or edition
+ * @param category
+ * @returns
+ */
+export const getCategoryFormInitialValues = (category: ICategory | null | undefined): ICategoryInput => {
+  // ----------- creation ----------- //
+  if (!category) {
+    return {
+      active: true,
+    };
+  }
+
+  // ----------- update ----------- //
+  const valuesToEdit = parseSavedTranslatedValuesToForm(category);
+  return valuesToEdit;
 };
