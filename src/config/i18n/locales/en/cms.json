@@ -36,6 +36,7 @@
   "youtubeLink": "Youtube link",
   "width": "Width",
   "height": "Height",
+  "translatedFields": "Translated fields",
   "category": {
     "add": "Add category",
     "addNew": "Add new category",
