@@ -42,14 +42,16 @@ export const getSingleImageSchema = (imageSize = MAX_IMAGE_SIZE): ZodType<any, a
   );
 };
 
-export const imagesFieldSchema = z
-  .any()
-  .refine((files: File[]) => {
-    if (!files?.length) return true;
-    return !hasFilesMaxSize(files, MAX_IMAGE_SIZE);
-  }, fileSizeMaxErrorMessage)
-  // file types validation
-  .refine((files: File[]): boolean => {
-    if (!files?.length) return true;
-    return hasAcceptedFileTypes(files, ACCEPTED_IMAGE_TYPES);
-  }, acceptedFileTypeErrorMessage);
+export const getMultipleImagesSchema = (imageSize = MAX_IMAGE_SIZE): ZodType<any, any, any> => {
+  return z
+    .any()
+    .refine((files: File[]) => {
+      if (!files?.length) return true;
+      return !hasFilesMaxSize(files, imageSize);
+    }, fileSizeMaxErrorMessage)
+    // file types validation
+    .refine((files: File[]): boolean => {
+      if (!files?.length) return true;
+      return hasAcceptedFileTypes(files, ACCEPTED_IMAGE_TYPES);
+    }, acceptedFileTypeErrorMessage);
+};
