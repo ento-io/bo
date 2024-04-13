@@ -298,7 +298,7 @@ export const uploadFormFiles = async <T extends Record<string, any>>({
   sessionToken,
   userId,
   values
-}: UploadInput<T>): Promise<any> => {
+}: UploadInput<T>): Promise<Record<string, IFileCloud | IFileCloud[]>> => {
   const uploadInput = {
     folder,
     userId,
