@@ -8,7 +8,7 @@ export const PAGE_SINGLE_IMAGE_FIELDS = ['bannerImage', 'previewImage'];
 export const PAGE_IMAGES_FIELDS = ['images'];
 
 const ACCEPTED_IMAGE_TYPES = ['jpg', 'jpeg', 'png', 'svg'];
-const MAX_IMAGE_SIZE = 5;
+const MAX_IMAGE_SIZE = 5; // in MB
 const fileSizeMaxErrorMessage = i18n.t('common:form.error.fileSizeMax', { size: MAX_IMAGE_SIZE + 'MB' });
 const acceptedFileTypeErrorMessage = i18n.t('common:form.error.acceptedFileType', {
   fileTypes: ACCEPTED_IMAGE_TYPES.map((type: string) => '.' + type),
@@ -42,6 +42,12 @@ export const getSingleImageSchema = (imageSize = MAX_IMAGE_SIZE): ZodType<any, a
   );
 };
 
+/**
+ * multiple files upload schema
+ * and the file size is limited to 5Mo
+ * @param imageSize default 5Mo
+ * @returns 
+ */
 export const getMultipleImagesSchema = (imageSize = MAX_IMAGE_SIZE): ZodType<any, any, any> => {
   return z
     .any()
