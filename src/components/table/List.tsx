@@ -34,7 +34,7 @@ type Props<IQuery> = {
   onRowClick?: (id: string) => void;
   canDelete?: boolean;
   canUpdate?: boolean;
-  renderFilter: (values: IRenderSearchProps) => ReactNode;
+  renderFilter?: (values: IRenderSearchProps) => ReactNode;
   border?: boolean;
   onUpdateData: any;
   defaultFilters?: IQuery;
@@ -315,11 +315,13 @@ const List = <IQuery extends IQueriesInput['filters'],>({
         />
       )}
 
-      <SearchContainer>
-        {renderFilter({ onSearch, onAdvancedSearch })}
-        {/* <SearchInput onChange={onSearch} placeholder={t('user:searchByNameOrEmail')} />
-        <UserAdvancedFilter onSubmit={onAdvancedSearch} /> */}
-      </SearchContainer>
+      {renderFilter && (
+        <SearchContainer>
+          {renderFilter({ onSearch, onAdvancedSearch })}
+          {/* <SearchInput onChange={onSearch} placeholder={t('user:searchByNameOrEmail')} />
+          <UserAdvancedFilter onSubmit={onAdvancedSearch} /> */}
+        </SearchContainer>
+      )}
       {/* ------- search and filter ------- */}
       <TableToolbar
         selectedIds={selectedIds}
