@@ -193,14 +193,7 @@ const MenuBar = ({
     },
     {
       name: "table",
-      onClick: () => {
-        editor
-          .chain()
-          .focus()
-          .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-          .run();
-      },
-      onMouseEnter: (event: MouseEvent<HTMLElement>) => {
+      onClick: (event: MouseEvent<HTMLElement>) => {
         handleOpenTableMenu(event);
       },
       disabled: false,
@@ -232,7 +225,7 @@ const MenuBar = ({
         <IconButton
           key={menu.name + index}
           onClick={menu.onClick}
-          onMouseEnter={menu.onMouseEnter}
+          // onMouseEnter={menu.onMouseEnter}
           disabled={menu.disabled}
           css={classes.button(
             // the oreder is important
