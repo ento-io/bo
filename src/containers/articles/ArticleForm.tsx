@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { t } from "i18next";
 import { useSelector } from "react-redux";
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { IArticle, IArticleInput } from "@/types/article.types"
 import TextField from "@/components/form/fields/TextField";
 import Form from "@/components/form/Form";
@@ -18,6 +18,7 @@ import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 import { locales } from "@/config/i18n";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import DropzoneField from "@/components/form/dropzone/DropzoneField";
+import CardFormBlock from "@/components/form/CardFormBlock";
 
 const initialValues = {
   title: '',
@@ -61,16 +62,17 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
 
   return (
     <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading}>
-      <TranslatedFormTabs
-        onTabChange={onTabChange}
-        tab={tab}
-        errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_CMS_FIELDS)}
-      />
-
       {/* translated fields */}
-      <Box>
+      <CardFormBlock title={t('details')} description={t('cms:translatedFields')}>
+        {/* translated tabs */}
+        <TranslatedFormTabs
+          onTabChange={onTabChange}
+          tab={tab}
+          errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_CMS_FIELDS)}
+        />
+        {/* all translated fields */}
         {locales.map((locale: string, index: number) => (
-          <div key={index} css={{ display: locale === tab ? 'block' : 'none' }}>
+          <div key={index} css={{ display: locale === tab ? 'block' : 'none', marginTop: 12 }}>
             <Stack spacing={2}>
               <TextField
                 name={locale + ':title'}
@@ -90,26 +92,29 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             </Stack>
           </div>
         ))}
-      </Box>
+      </CardFormBlock>
+      <CardFormBlock title={t('images')}>
+        <Stack spacing={2}>
+          {/* non translated fields */}
+          <DropzoneField
+            name="bannerImage"
+            label={t('cms:bannerImage')}
+            inputLabel={t('cms:addBannerImage')}
+            maxFiles={1}
+            shouldReset={!!article} // can reset input in edition
+            helperText={t('common:infoMessages.bannerImageHelper')}
+          />
 
-      {/* non translated fields */}
-      <DropzoneField
-        name="bannerImage"
-        label={t('cms:bannerImage')}
-        inputLabel={t('cms:addBannerImage')}
-        maxFiles={1}
-        shouldReset={!!article} // can reset input in edition
-        helperText={t('common:infoMessages.bannerImageHelper')}
-      />
-
-      {/* multiple image upload */}
-      <DropzoneField
-        name="images"
-        label={t('common:images')}
-        inputLabel={t('images')}
-        maxFiles={5}
-        shouldReset={!!article} // can reset input in edition
-      />
+          {/* multiple image upload */}
+          <DropzoneField
+            name="images"
+            label={t('common:images')}
+            inputLabel={t('images')}
+            maxFiles={5}
+            shouldReset={!!article} // can reset input in edition
+          />
+        </Stack>
+      </CardFormBlock>
     </Form>
   )
 }
