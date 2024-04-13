@@ -90,7 +90,6 @@ export const createArticle = (values: IArticleInput): any => {
       sessionToken: currentUser.getSessionToken(),
       values
     });
-    console.log('uploadedValues: ', uploadedValues);
 
     const newValues = { ...values, ...uploadedValues };
     
