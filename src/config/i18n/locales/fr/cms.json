@@ -32,7 +32,10 @@
   "hasPreviewImage": "A une aperçu d'image?",
   "hasBannerImage": "A une image de bannière?",
   "link": "Lien",
+  "youtubeLink": "Lien Youtube",
   "enterTheLink": "Entrez le lien",
+  "width": "Largeur",
+  "height": "Hauteur",
   "category": {
     "add": "Ajouter une catégorie",
     "addNew": "Ajouter une nouvelle catégorie",
