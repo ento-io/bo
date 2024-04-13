@@ -33,6 +33,9 @@
   "hasBannerImage": "Has banner image?",
   "enterTheLink": "Enter the link",
   "link": "Link",
+  "youtubeLink": "Youtube link",
+  "width": "Width",
+  "height": "Height",
   "category": {
     "add": "Add category",
     "addNew": "Add new category",
