@@ -19,10 +19,12 @@ import { locales } from "@/config/i18n";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import DropzoneField from "@/components/form/dropzone/DropzoneField";
 import CardFormBlock from "@/components/form/CardFormBlock";
+import CheckboxField from "@/components/form/fields/CheckboxField";
 
 const initialValues = {
   title: '',
   content: '',
+  active: true
 };
 
 type Props = {
@@ -93,6 +95,15 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
           </div>
         ))}
       </CardFormBlock>
+
+      {/* active card */}
+      <CardFormBlock
+        title={t('common:active')}
+        description={t('cms:activePageVisible')}
+        rightHeader={<CheckboxField name="active" isSwitch />}
+      />
+
+      {/* images card */}
       <CardFormBlock title={t('images')}>
         <Stack spacing={2}>
           {/* non translated fields */}
