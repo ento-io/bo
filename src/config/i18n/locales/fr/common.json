@@ -270,7 +270,8 @@
     "new": "nouveaux",
     "all": "tout",
     "recycleBin": "corbeille",
-    "administrators": "administrateurs"
+    "administrators": "administrateurs",
+    "categories": "categories"
   },
   "advancedSearch": "Recherche avancée",
   "start": "Début",
