@@ -87,6 +87,10 @@
       "toggleHeaderCell": "Basculer la cellule d'en-tête",
       "mergeOrSplit": "Fusionner / Diviser",
       "setCellAttribute": "Définir l'attribut de cellule"
+    },
+    "tabs": {
+      "preview": "Aperçu",
+      "editor": "Éditeur"
     }
   }
 }
