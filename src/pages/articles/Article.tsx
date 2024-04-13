@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { useNavigate } from '@tanstack/react-router';
 import { FaCheck, FaCheckDouble } from 'react-icons/fa';
+import { ReactNode } from 'react';
 import ActionsMenu from '@/components/ActionsMenu';
 import Head from '@/components/Head';
 import Items from '@/components/Items';
@@ -62,7 +63,7 @@ const Article = () => {
     },
   ];
 
-  const statusItems: ISelectOption[] = [
+  const statusItems: ISelectOption<ReactNode>[] = [
     {
       label: t('common:active'),
       value: <BooleanIcons value={article.active} />,
