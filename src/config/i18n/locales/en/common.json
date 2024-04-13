@@ -214,14 +214,14 @@
     "noField": "No {{field}}",
     "cooperativeAlreadyExists": "This cooperative's name already exists. Please enter another one.",
     "badSession": "Invalid session. Please login again",
-    "accessDenied": "Access denied",
-    "missingFiles": "Missing files",
-    "missingFile": "Missing file",
-    "missingFolderParameter": "Missing folder parameter"
+    "accessDenied": "Access denied"
   },
   "errorsFromServer": {
     "invalidFileType": "Invalid file type",
-    "fileSizeTooLarge": "File size too large"
+    "fileSizeTooLarge": "File size too large",
+    "missingFiles": "Missing files",
+    "missingFile": "Missing file",
+    "missingFolderParameter": "Missing folder parameter"
   },
   "totalPrice": "Total price",
   "place": "Seat",
