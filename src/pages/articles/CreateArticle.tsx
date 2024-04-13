@@ -1,7 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Card, CardContent } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import ArticleForm from "../../containers/articles/ArticleForm";
 import { createArticle, goToArticle, goToArticles } from "@/redux/actions/article.action";
@@ -45,14 +44,9 @@ const CreateArticle = () => {
         <ActionsMenu goToList={handleGoToList} />
       }>
       <Head title={t('cms:createArticle')} />
-      <Card>
-        <CardContent>
-          <ArticleForm
-            onSubmit={handleSubmitArticle}
-          />          
-        </CardContent>
-
-      </Card>
+      <ArticleForm
+        onSubmit={handleSubmitArticle}
+      />          
     </Layout>
   )
 }
