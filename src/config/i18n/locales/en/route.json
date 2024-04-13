@@ -24,5 +24,6 @@
   "notFound": "not-found",
   "administration": "administration",
   "estimates": "estimates",
-  "invoices": "invoices"
+  "invoices": "invoices",
+  "categories": "categories"
 }
