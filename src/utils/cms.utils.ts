@@ -3,6 +3,7 @@ import { defaultTabOptions } from "./app.utils";
 import { IArticle, IArticleInput } from "@/types/article.types";
 import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from "@/validations/file.validation";
 import { getFileFromUrl } from "./file.utils";
+import { IFileCloud } from "@/types/file.type";
 
 export const articlesTabOptions = defaultTabOptions;
 
@@ -111,11 +112,13 @@ export const getCmsEditionCmsInitialValues = async (
     page.previewImage ? getFileFromUrl(page.previewImage.url) : [],
   ]);
 
+  const images = await Promise.all(page.images?.map((image: IFileCloud) => getFileFromUrl(image.url)) ?? []);
 
   const defaultValues = {
     ...valuesToEdit,
     bannerImage: Array.isArray(bannerImage) ? bannerImage : [bannerImage], // should be an array
     previewImage: Array.isArray(previewImage) ? previewImage : [previewImage], // should be an array
+    images,
   };
 
   return defaultValues;

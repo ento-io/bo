@@ -1,7 +1,9 @@
 {
   "article": {
     "article": "Article",
-    "articles": "Articles"
+    "articles": "Articles",
+    "thisArticle": "This article",
+    "theseArticles": "These articles"
   },
   "download": "Download",
   "regeneratePdf": "Regenerate PDF",
@@ -215,13 +217,17 @@
     "cooperativeAlreadyExists": "This cooperative's name already exists. Please enter another one.",
     "badSession": "Invalid session. Please login again",
     "accessDenied": "Access denied",
-    "missingFiles": "Missing files",
-    "missingFile": "Missing file",
-    "missingFolderParameter": "Missing folder parameter"
+    "hasNoRightToDelete": "You can not delete {{value}}",
+    "hasNoRightToUpdate": "You can not update {{value}}",
+    "hasNoRightToCreate": "You can not create {{value}}",
+    "hasNoRightToFind": "You can not find {{value}}"
   },
   "errorsFromServer": {
     "invalidFileType": "Invalid file type",
-    "fileSizeTooLarge": "File size too large"
+    "fileSizeTooLarge": "File size too large",
+    "missingFiles": "Missing files",
+    "missingFile": "Missing file",
+    "missingFolderParameter": "Missing folder parameter"
   },
   "totalPrice": "Total price",
   "place": "Seat",

@@ -282,6 +282,10 @@ export const updateUploadedSingleFileToSave = async ({
 };
 
 
+/**
+ * upload all single file and multiple files fields files
+ * ex: bannerImage, previewImage, images, ...
+ */
 type UploadInput<T> = {
   folder: string;
   userId?: string;
@@ -294,7 +298,7 @@ export const uploadFormFiles = async <T extends Record<string, any>>({
   sessionToken,
   userId,
   values
-}: UploadInput<T>): Promise<any> => {
+}: UploadInput<T>): Promise<Record<string, IFileCloud | IFileCloud[]>> => {
   const uploadInput = {
     folder,
     userId,
@@ -303,6 +307,7 @@ export const uploadFormFiles = async <T extends Record<string, any>>({
 
   const newValues: Record<string, any> = {};
 
+  // --------- single file fields --------- //
   for (const field of PAGE_SINGLE_IMAGE_FIELDS) {
     if (values[field]) {
       const fileUploadInput = { ...uploadInput, file: values[field] };
@@ -312,6 +317,7 @@ export const uploadFormFiles = async <T extends Record<string, any>>({
     }
   }
 
+  // --------- multiple files fields --------- //
   for (const field of PAGE_IMAGES_FIELDS) {
     if (values[field] && Array.isArray(values[field])) {
       const fileUploadInput = { ...uploadInput, files: values[field] };
@@ -322,3 +328,81 @@ export const uploadFormFiles = async <T extends Record<string, any>>({
 
   return newValues;
 }
+
+/**
+ * upload all single file and multiple files fields files
+ * ex: bannerImage, previewImage, images, ...
+ */
+type UpdatedUploadInput<T> = {
+  page: Parse.Object;
+} & UploadInput<T>;
+
+export const uploadUpdatedFormFiles = async <T extends Record<string, any>>({
+  page,
+  folder,
+  sessionToken,
+  userId,
+  values
+}: UpdatedUploadInput<T>): Promise<any> => {
+  const uploadInput = {
+    folder,
+    userId,
+    sessionToken,
+  };
+
+  const newValues: Record<string, any> = {};
+
+  // --------- single file fields --------- //
+  for (const field of PAGE_SINGLE_IMAGE_FIELDS) {
+    const oldFieldValue = page.get(field);
+    if (values[field]) {
+      const fileName = values[field].name.split('.')[0];
+
+      // new uploaded file
+      if (!oldFieldValue?.publicId.includes(fileName)) {
+        // if (!oldFieldValue || (oldFieldValue && !oldFieldValue.publicId.includes(fileName))) {
+
+        const fileUploadInput = { ...uploadInput, file: values[field] };
+        const uploadedFilesUrl = await uploadFileAPI(fileUploadInput);
+
+        newValues[field] = uploadedFilesUrl;
+      } else {
+        newValues[field] = oldFieldValue;
+      }
+    }
+  }
+
+  for (const field of PAGE_IMAGES_FIELDS) {
+    const oldSavedFiles = page.get(field);
+    // input values
+    if (values[field] && Array.isArray(values[field])) {
+      const inputFiles = values[field];
+      const newInputFilesToUpload = [];
+      const oldSavedFilesToKeep = [];
+
+      for (const inputFile of inputFiles) {
+        // get the input file name
+        const inputFileName = inputFile.name.split('.')[0];
+        // check if the file name exist in database file list
+        const oldSavedFileToKeep = oldSavedFiles?.find((oldFile: IFileCloud) =>
+          oldFile.publicId.includes(inputFileName),
+        );
+
+        if (oldSavedFileToKeep) {
+          oldSavedFilesToKeep.push(oldSavedFileToKeep);
+        } else {
+          newInputFilesToUpload.push(inputFile);
+        }
+      }
+
+      // upload the new files
+      const fileUploadInput = { ...uploadInput, files: newInputFilesToUpload };
+      const uploadedFilesUrls = await uploadFilesAPI(fileUploadInput);
+      // will save the new files and the remove old ones
+      newValues[field] = [...uploadedFilesUrls, ...oldSavedFilesToKeep];
+    }
+  }
+
+  return newValues;
+}
+

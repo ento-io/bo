@@ -229,7 +229,14 @@ const TextEditor = ({
     editor.commands.setContent(value);
     // !important: to avoid update for each taping, the value should be excluded from the dependencies
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor]);
+  }, []);
+
+  useEffect(() => {
+    if (!(editor && value)) return;
+    editor.commands.setContent(value);
+    // !important: to avoid update for each taping, the value should be excluded from the dependencies
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor, value]);
 
   /**
    * change the editable state of the editor on the fly

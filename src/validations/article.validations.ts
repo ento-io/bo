@@ -5,7 +5,7 @@ import { formatTranslatedFormValuesToSave } from "@/utils/cms.utils";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import { errorMap } from '@/config/zod';
 import i18n, { locales } from "@/config/i18n";
-import { getSingleImageSchema } from "./file.validation";
+import { getMultipleImagesSchema, getSingleImageSchema } from "./file.validation";
 
 const emptyContent = (value?: string): string => {
   if (!value || value === '<p><br></p>') {
@@ -55,6 +55,7 @@ const getTranslatedSchema = () => {
 export const cmsSchema = z.object({
   active: z.boolean({ errorMap }).optional(),
   bannerImage: getSingleImageSchema(),
+  images: getMultipleImagesSchema()
 });
 
 export const articleSchema = cmsSchema
