@@ -46,7 +46,8 @@ const classes = {
   input: (theme: Theme, editable = true) =>
     css({
       borderRadius: 6,
-      border: editable ? '1px solid ' + theme.palette.grey[800] : 'none',
+      borderTopLeftRadius: 0,
+      border: editable ? '1px solid ' + theme.palette.grey[400] : 'none',
       paddingLeft: editable ? 16 : 0,
       paddingRight: editable ? 16 : 0,
       minHeight: editable ? 150 : 'initial',
@@ -203,7 +204,7 @@ const TextEditor = ({
 
   const editor = useEditor({
     // editable,
-    // content: value,
+    content: value,
     // editorProps: {
     //   attributes: {
     //     class: classes.input(theme, editable),
@@ -223,20 +224,13 @@ const TextEditor = ({
     ...editorOptions,
   });
 
-  // use in useEffect because the editor is not available at the time of initialization in edition
+  // set initial value for edition even if it's already set (below)
   useEffect(() => {
     if (!(editor && value)) return;
     editor.commands.setContent(value);
     // !important: to avoid update for each taping, the value should be excluded from the dependencies
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (!(editor && value)) return;
-    editor.commands.setContent(value);
-    // !important: to avoid update for each taping, the value should be excluded from the dependencies
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor, value]);
+  }, [editor]);
 
   /**
    * change the editable state of the editor on the fly
@@ -288,8 +282,8 @@ const TextEditor = ({
         TabIndicatorProps={{ children: <span className="MuiTabs-indicatorSpan" /> }}
         css={classes.tabs}
       >
-        <Tab css={classes.tab} label="Editor" value="editor" />
-        <Tab css={classes.tab} label="Preview" value="preview" />
+        <Tab css={classes.tab} label={t('cms:editor.tabs.editor')} value="editor" />
+        <Tab css={classes.tab} label={t('cms:editor.tabs.preview')} value="preview" />
       </Tabs>
       {tab === 'editor'
         ? (

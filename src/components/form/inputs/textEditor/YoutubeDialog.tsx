@@ -1,14 +1,12 @@
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  TextField,
-  Stack
+  Stack,
 } from "@mui/material";
 import { Editor } from "@tiptap/react";
 import { ChangeEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { z } from "zod";
+import Dialog from "@/components/Dialog";
+import TextFieldInput from "../TextFieldInput";
 
 const youtubeSchema = z.object({
   url: z.string().url(),
@@ -32,6 +30,8 @@ type Props = {
 const YoutubeDialog = ({ editor, open, onClose }: Props) => {
   const [values, setValues] = useState<YoutubeInput>(initialValues);
   const [errors, setErrors] = useState<Record<string, string> | null>(null);
+
+  const { t } = useTranslation('cms');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues(
@@ -76,54 +76,49 @@ const YoutubeDialog = ({ editor, open, onClose }: Props) => {
 
   return (
     <Dialog
+      title={t('youtubeLink')}
       open={open}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
+      toggle={handleClose}
+      onPrimaryButtonAction={handleConfirm}
+      fullWidth
     >
-      <DialogContent>
-        <Stack spacing={2}>
-          <TextField
-            name="url"
-            label="Lien"
-            variant="standard"
-            type="url"
-            fullWidth
-            onChange={handleChange}
-            value={values.url}
-            error={!!errors?.url}
-            helperText={errors?.url}
-          />
-          <TextField
-            name="width"
-            label="Width"
-            variant="standard"
-            type="number"
-            fullWidth
-            onChange={handleChange}
-            value={values.width}
-            error={!!errors?.width}
-            helperText={errors?.width}
-          />
-          <TextField
-            name="height"
-            label="Height"
-            variant="standard"
-            type="number"
-            fullWidth
-            onChange={handleChange}
-            value={values.height}
-            error={!!errors?.height}
-            helperText={errors?.height}
-          />
-        </Stack>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Annuler</Button>
-        <Button onClick={handleConfirm} variant="contained" autoFocus>
-          Ok
-        </Button>
-      </DialogActions>
+      <Stack spacing={3}>
+        <TextFieldInput
+          name="url"
+          fixedLabel
+          label={t('link')}
+          placeholder={t('enterTheLink')}
+          variant="outlined"
+          type="url"
+          fullWidth
+          onChange={handleChange}
+          value={values.url}
+          error={!!errors?.url}
+          helperText={errors?.url}
+        />
+        <TextFieldInput
+          name="width"
+          label={t('width')}
+          variant="outlined"
+          type="number"
+          fullWidth
+          onChange={handleChange}
+          value={values.width}
+          error={!!errors?.width}
+          helperText={errors?.width}
+        />
+        <TextFieldInput
+          name="height"
+          label={t('height')}
+          variant="outlined"
+          type="number"
+          fullWidth
+          onChange={handleChange}
+          value={values.height}
+          error={!!errors?.height}
+          helperText={errors?.height}
+        />
+      </Stack>
     </Dialog>
   );
 };

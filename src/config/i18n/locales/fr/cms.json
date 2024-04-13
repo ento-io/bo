@@ -31,6 +31,11 @@
   "editArticle": "Modifier l'article - {{title}}",
   "hasPreviewImage": "A une aperçu d'image?",
   "hasBannerImage": "A une image de bannière?",
+  "link": "Lien",
+  "youtubeLink": "Lien Youtube",
+  "enterTheLink": "Entrez le lien",
+  "width": "Largeur",
+  "height": "Hauteur",
   "category": {
     "add": "Ajouter une catégorie",
     "addNew": "Ajouter une nouvelle catégorie",
@@ -63,6 +68,29 @@
     "hasNoRightToDeleteCategory": "Vous ne pouvez pas supprimer cette catégorie",
     "hasNoRightToUpdateCategory": "Vous ne pouvez pas modifier cette catégorie",
     "hasNoRightToCreateCategory": "Vous ne pouvez pas créer une catégorie",
-    "articleNotFound": "L'article que vous tentez de mettre à jour n'existe pas, il a peut-être été supprimé."
+    "articleNotFound": "L'article que vous tentez de mettre à jour n'existe pas, il a peut-être été supprimé.",
+    "mustProvideSecureUrl": "Veuiilez fournir une URL sécurisée"
+  },
+  "editor": {
+    "table": {
+      "insertTable": "Inserer table",
+      "addColumnBefore": "Ajouter une colonne avant",
+      "addColumnAfter": "Ajouter une colonne après",
+      "addRowBefore": "Ajouter une ligne avant",
+      "addRowAfter": "Ajouter une ligne après",
+      "deleteRow": "Supprimer la ligne",
+      "deleteColumn": "Supprimer la colonne",
+      "deleteTable": "Supprimer la table",
+      "mergeCells": "Fusionner les cellules",
+      "toggleHeaderColumn": "Basculer la colonne d'en-tête",
+      "toggleHeaderRow": "Basculer la ligne d'en-tête",
+      "toggleHeaderCell": "Basculer la cellule d'en-tête",
+      "mergeOrSplit": "Fusionner / Diviser",
+      "setCellAttribute": "Définir l'attribut de cellule"
+    },
+    "tabs": {
+      "preview": "Aperçu",
+      "editor": "Éditeur"
+    }
   }
 }

@@ -31,6 +31,11 @@
   "editArticle": "Edit article - {{title}}",
   "hasPreviewImage": "Has preview image?",
   "hasBannerImage": "Has banner image?",
+  "enterTheLink": "Enter the link",
+  "link": "Link",
+  "youtubeLink": "Youtube link",
+  "width": "Width",
+  "height": "Height",
   "category": {
     "add": "Add category",
     "addNew": "Add new category",
@@ -63,6 +68,29 @@
     "hasNoRightToDeleteCategory": "You can not delete this category",
     "hasNoRightToUpdateCategory": "You can not update this category",
     "hasNoRightToCreateCategory": "You can not create a category",
-    "articleNotFound": "Article not found"
+    "articleNotFound": "Article not found",
+    "mustProvideSecureUrl": "You must provide a secure url"
+  },
+  "editor": {
+    "table": {
+      "insertTable": "Insert table",
+      "addColumnBefore": "Add column before",
+      "addColumnAfter": "Add column after",
+      "addRowBefore": "Add row before",
+      "addRowAfter": "Add row after",
+      "deleteRow": "Delete row",
+      "deleteColumn": "Delete column",
+      "deleteTable": "Delete table",
+      "mergeCells": "Merge cells",
+      "toggleHeaderColumn": "Toggle header column",
+      "toggleHeaderRow": "Toggle header row",
+      "toggleHeaderCell": "Toggle header cell",
+      "mergeOrSplit": "Merge or Split",
+      "setCellAttribute": "Set cell attribute"
+    },
+    "tabs": {
+      "preview": "Preview",
+      "editor": "Editor"
+    }
   }
 }
