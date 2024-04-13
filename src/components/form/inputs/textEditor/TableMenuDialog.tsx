@@ -1,5 +1,6 @@
 import { Editor } from "@tiptap/react";
 import { Menu, MenuItem, Fade } from "@mui/material";
+import i18n from "@/config/i18n";
 
 type IOption = {
   label: string;
@@ -7,7 +8,7 @@ type IOption = {
 };
 const getTableMenus = (editor: Editor): IOption[] => [
   {
-    label: "Insert Table",
+    label: i18n.t("cms:table.insertTable"),
     action: () =>
       editor
         .chain()
@@ -16,55 +17,55 @@ const getTableMenus = (editor: Editor): IOption[] => [
         .run()
   },
   {
-    label: "Add Column Before",
+    label: i18n.t("cms:table.addColumnBefore"),
     action: () => editor.chain().focus().addColumnBefore().run()
   },
   {
-    label: "Add Column After",
+    label: i18n.t("cms:table.addColumnAfter"),
     action: () => editor.chain().focus().addColumnAfter().run()
   },
   {
-    label: "Delete Column",
+    label: i18n.t("cms:table.deleteColumn"),
     action: () => editor.chain().focus().deleteColumn().run()
   },
   {
-    label: "Add Row Before",
+    label: i18n.t("cms:table.addRowBefore"),
     action: () => editor.chain().focus().addRowBefore().run()
   },
   {
-    label: "Add Row After",
+    label: i18n.t("cms:table.addRowAfter"),
     action: () => editor.chain().focus().addRowAfter().run()
   },
   {
-    label: "Delete Row",
+    label: i18n.t("cms:table.deleteRow"),
     action: () => editor.chain().focus().deleteRow().run()
   },
   {
-    label: "Delete Table",
+    label: i18n.t("cms:table.deleteTable"),
     action: () => editor.chain().focus().deleteTable().run()
   },
   {
-    label: "Merge Cells",
+    label: i18n.t("cms:table.mergeCells"),
     action: () => editor.chain().focus().mergeCells().run()
   },
   {
-    label: "Toggle Header Column",
+    label: i18n.t("cms:table.toggleHeaderColumn"),
     action: () => editor.chain().focus().toggleHeaderColumn().run()
   },
   {
-    label: "Toggle Header Row",
+    label: i18n.t("cms:table.toggleHeaderRow"),
     action: () => editor.chain().focus().toggleHeaderRow().run()
   },
   {
-    label: "Toggle Header Cell",
+    label: i18n.t("cms:table.toggleHeaderCell"),
     action: () => editor.chain().focus().toggleHeaderCell().run()
   },
   {
-    label: "Merge Or Split",
+    label: i18n.t("cms:table.mergeOrSplit"),
     action: () => editor.chain().focus().mergeOrSplit().run()
   },
   {
-    label: "Set Cell Attribute",
+    label: i18n.t("cms:table.setCellAttribute"),
     action: () => editor.chain().focus().setCellAttribute("colspan", 2).run()
   }
 ];
