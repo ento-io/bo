@@ -225,10 +225,9 @@ const MenuBar = ({
         <IconButton
           key={menu.name + index}
           onClick={menu.onClick}
-          // onMouseEnter={menu.onMouseEnter}
           disabled={menu.disabled}
           css={classes.button(
-            // the oreder is important
+            // the order is important
             editor.isActive(menu.isActive || menu.active || menu.name),
             !!menu.split
           )}
