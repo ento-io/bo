@@ -221,14 +221,14 @@
     "noField": "Tsy misy {{field}}",
     "cooperativeAlreadyExists": "Efa misy coopérative manana an'io anarana io. Mampidira hafa azafady.",
     "badSession": "Session tsy mety. Miverena miditra indray.",
-    "accessDenied": "Tsy afaka miditra",
-    "missingFiles": "Fichiers tsy ampy",
-    "missingFile": "Fichier tsy ampy",
-    "missingFolderParameter": "Tsy ampy ny dossier"
+    "accessDenied": "Tsy afaka miditra"
   },
   "errorsFromServer": {
     "invalidFileType": "Karazana fichier tsy mety",
-    "fileSizeTooLarge": "Lehibe loatra ny angezan'ilay fichier"
+    "fileSizeTooLarge": "Lehibe loatra ny angezan'ilay fichier",
+    "missingFiles": "Fichiers tsy ampy",
+    "missingFile": "Fichier tsy ampy",
+    "missingFolderParameter": "Tsy ampy ny dossier"
   },
   "totalPrice": "Vola azo rehetra",
   "place": "Seza",
