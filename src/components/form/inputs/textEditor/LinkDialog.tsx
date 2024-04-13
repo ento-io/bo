@@ -1,12 +1,11 @@
 import { Editor } from '@tiptap/react';
 import { useState, ChangeEvent } from 'react';
 import { z } from 'zod';
+import { useTranslation } from 'react-i18next';
 import i18n from '@/config/i18n';
 
 import Dialog from '../../../Dialog';
 import TextFieldInput from '../TextFieldInput';
-import { use } from 'i18next';
-import { useTranslation } from 'react-i18next';
 
 const linkSchemaField = z.union([
   z
