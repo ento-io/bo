@@ -24,5 +24,6 @@
   "notFound": "introuvable",
   "administration": "administration",
   "estimates": "devis",
-  "factures": "factures"
+  "factures": "factures",
+  "categories": "categories"
 }
