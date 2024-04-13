@@ -104,7 +104,14 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             shouldReset={!!article} // can reset input in edition
             helperText={t('common:infoMessages.bannerImageHelper')}
           />
-
+          <DropzoneField
+            name="previewImage"
+            label={t('common:previewImage')}
+            inputLabel={`${t('common:add')} ${t('common:previewImage')}`}
+            maxFiles={1}
+            shouldReset={!!article} // can reset input in edition
+            tooltip={t('common:infoMessages.previewImageHelper')}
+          />
           {/* multiple image upload */}
           <DropzoneField
             name="images"
