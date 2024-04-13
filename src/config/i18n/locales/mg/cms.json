@@ -12,7 +12,6 @@
   "createPage": "Amorona pejy",
   "editPage": "Hanova ny pejy - {{title}}",
   "searchByAuthor": "Hitady mpanoratra",
-  "searchByAuthor": "Hitady mpanoratra",
   "author": "Mpanoratra",
   "searchByPage": "Hitady lohateny, votoaty",
   "bannerImage": "Sary fampisehoana",
@@ -32,6 +31,8 @@
   "editArticle": "Hanova ny article - {{title}}",
   "hasPreviewImage": "Misy sary fanehoana?",
   "hasBannerImage": "Misy sary fampisehoana?",
+  "link": "Rohy",
+  "enterTheLink": "Ampidiro ny rohy",
   "category": {
     "add": "Hanampy sokajy",
     "addNew": "Hanampy sokajy vaovao",
@@ -64,6 +65,25 @@
     "hasNoRightToDeleteCategory": "Tsy afaka mamàfa an'io sokajy io ianao",
     "hasNoRightToUpdateCategory": "Tsy afaka manova an'io sokajy io ianao",
     "hasNoRightToCreateCategory": "Tsy afaka mamorona sokajy ianao",
-    "articleNotFound": "Ny article tsy misy"
+    "articleNotFound": "Ny article tsy misy",
+    "mustProvideSecureUrl": "Tsy maintsy manome url manan-kery"
+  },
+  "editor": {
+    "table": {
+      "insertTable": "Ampidiro latabatra",
+      "addColumnBefore": "Ampio tsanganana eo aloha",
+      "addColumnAfter": "Ampio tsanganana aorian'ny",
+      "addRowBefore": "Ampiana laharana eo aloha",
+      "addRowAfter": "Ampio laharana aorian'ny",
+      "deleteRow": "Fafao ny laharana",
+      "deleteColumn": "Fafao ny tsanganana",
+      "deleteTable": "Esory ny latabatra",
+      "mergeCells": "Manambatra ny sela",
+      "toggleHeaderColumn": "Hanova tsanganana lohapejy",
+      "toggleHeaderRow": "Hanova ny laharan-dohateny",
+      "toggleHeaderCell": "Hanova ny sela lohapejy",
+      "mergeOrSplit": "Manambatra / Mizara",
+      "setCellAttribute": "Mametraka toetran'ny sela"
+    }
   }
 }
