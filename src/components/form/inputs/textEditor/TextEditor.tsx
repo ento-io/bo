@@ -203,7 +203,7 @@ const TextEditor = ({
 
   const editor = useEditor({
     // editable,
-    // content: value,
+    content: value,
     // editorProps: {
     //   attributes: {
     //     class: classes.input(theme, editable),
@@ -223,20 +223,13 @@ const TextEditor = ({
     ...editorOptions,
   });
 
-  // use in useEffect because the editor is not available at the time of initialization in edition
+  // set initial value for edition even if it's already set (below)
   useEffect(() => {
     if (!(editor && value)) return;
     editor.commands.setContent(value);
     // !important: to avoid update for each taping, the value should be excluded from the dependencies
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    if (!(editor && value)) return;
-    editor.commands.setContent(value);
-    // !important: to avoid update for each taping, the value should be excluded from the dependencies
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor, value]);
+  }, [editor]);
 
   /**
    * change the editable state of the editor on the fly
