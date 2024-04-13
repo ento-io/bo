@@ -14,6 +14,7 @@ import { onDashboardEnter } from "@/redux/actions/app.action";
 import { getRoleCurrentUserRolesSelector } from "@/redux/reducers/role.reducer";
 import rolesRoute from "./role.routes";
 import estimateRoutes, { estimatesLayout } from "./estimate.routes";
+import categoryRoutes, { categoriesLayout } from "./category.routes";
 import invoiceRoutes, { invoicesLayout } from "./invoice.routes";
 
 /**
@@ -89,6 +90,7 @@ const privateRoutes = privateLayout.addChildren([
   settingsRoute,
   rolesRoute,
   estimatesLayout.addChildren(estimateRoutes),
+  categoriesLayout.addChildren(categoryRoutes),
   invoicesLayout.addChildren(invoiceRoutes),
 ]);
 
