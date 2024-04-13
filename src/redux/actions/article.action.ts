@@ -8,7 +8,7 @@ import { PATH_NAMES } from '@/utils/pathnames';
 import { clearArticleSlice, deleteArticleFromArticlesSlice, deleteArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
 import i18n, { locales } from '@/config/i18n';
-import { IArticleInput } from '@/types/article.types';
+import { IArticle, IArticleInput } from '@/types/article.types';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { IQueriesInput } from '@/types/app.type';
 import { goToNotFound } from './app.action';
@@ -16,7 +16,7 @@ import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import { ALL_PAGE_FIELDS, articlesTabOptions } from '@/utils/cms.utils';
 import { setValues } from '@/utils/parse.utils';
-import { uploadFormFiles } from '@/utils/file.utils';
+import { uploadFormFiles, uploadUpdatedFormFiles } from '@/utils/file.utils';
 
 const Article = Parse.Object.extend("Article");
 
@@ -67,7 +67,16 @@ export const loadArticles = ({
 };
 
 export const createArticle = (values: IArticleInput): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    // --------- access --------- //
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const hasRight = canAccessTo(roles, 'Article', 'create');
+
+    if (!hasRight) {
+      throw Error(i18n.t('common:errors.hasNoRightToCreate', { value: i18n.t('common:article.thisArticle') }));
+    }
+
     const currentUser = await Parse.User.currentAsync();
 
     if (!currentUser) {
@@ -76,13 +85,14 @@ export const createArticle = (values: IArticleInput): any => {
 
     const article = new Article()
 
-    const uploadValues = await uploadFormFiles({
+    const uploadedValues = await uploadFormFiles<IArticle>({
       folder: 'articles',
       sessionToken: currentUser.getSessionToken(),
       values
     });
+    console.log('uploadedValues: ', uploadedValues);
 
-    const newValues = { ...values, ...uploadValues };
+    const newValues = { ...values, ...uploadedValues };
     
     setValues(article, newValues, ARTICLE_PROPERTIES);
 
@@ -96,12 +106,36 @@ export const createArticle = (values: IArticleInput): any => {
 };
 
 export const editArticle = (id: string, values: IArticleInput): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    // --------- access --------- //
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const hasRight = canAccessTo(roles, 'Article', 'update');
+
+    if (!hasRight) {
+      throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('common:article.thisArticle') }));
+    }
+
+    const currentUser = await Parse.User.currentAsync();
+
+    if (!currentUser) {
+      throw Error(i18n.t('user:errors.userNotExist'));
+    }
+
     const article = await getArticle(id);
 
     if (!article) return;
     
-    setValues(article, values, ARTICLE_PROPERTIES);
+    const uploadedValues = await uploadUpdatedFormFiles<IArticle>({
+      page: article,
+      folder: 'articles',
+      sessionToken: currentUser.getSessionToken(),
+      values
+    });
+
+    const newValues = { ...values, ...uploadedValues };
+
+    setValues(article, newValues, ARTICLE_PROPERTIES);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
@@ -120,19 +154,30 @@ export const editArticle = (id: string, values: IArticleInput): any => {
  * @returns
  */
 export const deleteArticle = (id: string,): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
-    const article = await getArticle(id);
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    // --------- access --------- //
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const hasRight = canAccessTo(roles, 'Article', 'delete');
 
+    if (!hasRight) {
+      throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('common:article.thisArticle') }));
+    }
+
+    // --------- request --------- //
+    const article = await getArticle(id);
     if (!article) return;
 
+    // --------- update database --------- //
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
     // so we use the parse cloud function to do that, instead of a REST API
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
     article.set('deleted', true);
     const deletedArticle = await article.save();
+
+    // --------- update store --------- //
     dispatch(deleteArticleFromArticlesSlice(deletedArticle.id));
-    
     dispatch(setMessageSlice(i18n.t('cms:messages.articleDeletedSuccessfully', { value: deletedArticle.id })));
   });
 };
@@ -145,7 +190,21 @@ export const deleteArticle = (id: string,): any => {
  * @returns
  */
 export const toggleArticlesByIds = (ids: string[], field: string, value = true): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    // --------- access --------- //
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const isDelete = field === 'deleted';
+    const hasRight = canAccessTo(roles, 'Article', isDelete ? 'delete' : 'update');
+
+    if (!hasRight) {
+      if (isDelete) {
+        throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('common:article.theseArticles') }));
+      } else {
+        throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('common:article.theseArticles') }));
+      }
+    }
+
     // update the database
     await new Parse.Query(Article).containedIn('objectId', ids).each(async estimate => {
       estimate.set(field, value);
@@ -170,10 +229,10 @@ export const onArticlesEnter = (route: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const canFind = canAccessTo(roles, 'Article', 'find');
+    const hasRight = canAccessTo(roles, 'Article', 'find');
 
     // redirect to not found page
-    if (!canFind) {
+    if (!hasRight) {
       route.navigate(goToNotFound());
       return;
     }
@@ -215,7 +274,18 @@ export const onArticleEnter = (route?: any): AppThunkAction => {
 };
 
 export const onEditArticleEnter = (route?: any): AppThunkAction => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+  return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const canGet = canAccessTo(roles, 'Article', 'get');
+    const canUpdate = canAccessTo(roles, 'Article', 'update');
+
+    // redirect to not found page
+    if (!canGet || !canUpdate) {
+      route.navigate(goToNotFound());
+      return;
+    }
+
     if (!route.params?.id) return ;
     // clear the prev state first
     dispatch(clearArticleSlice());
@@ -228,8 +298,17 @@ export const onEditArticleEnter = (route?: any): AppThunkAction => {
   });
 };
 
-export const onCreateArticleEnter = (): AppThunkAction => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+export const onCreateArticleEnter = (route?: any): AppThunkAction => {
+  return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const hasRight = canAccessTo(roles, 'Article', 'create');
+
+    // redirect to not found page
+    if (!hasRight) {
+      route.navigate(goToNotFound());
+      return;
+    }
 
     dispatch(clearArticleSlice());
   });
