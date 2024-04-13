@@ -1,7 +1,9 @@
 {
   "article": {
     "article": "Lahatsoratra",
-    "articles": "Lahatsoratra"
+    "articles": "Lahatsoratra",
+    "thisArticle": "an'io lahatsoratra io",
+    "theseArticles": "an'ireo lahatsoratra ireo"
   },
   "download": "Télécharger",
   "regeneratePdf": "Averina amboarina PDF",
@@ -221,7 +223,11 @@
     "noField": "Tsy misy {{field}}",
     "cooperativeAlreadyExists": "Efa misy coopérative manana an'io anarana io. Mampidira hafa azafady.",
     "badSession": "Session tsy mety. Miverena miditra indray.",
-    "accessDenied": "Tsy afaka miditra"
+    "accessDenied": "Tsy afaka miditra",
+    "hasNoRightToDelete": "Tsy afaka mamàfa {{value}} ianao",
+    "hasNoRightToUpdate": "Tsy afaka manova {{value}} ianao",
+    "hasNoRightToCreate": "Tsy afaka mamorona {{value}} ianao",
+    "hasNoRightToFind": "Tsy afaka mijery {{value}} ianao"
   },
   "errorsFromServer": {
     "invalidFileType": "Karazana fichier tsy mety",
