@@ -2,27 +2,29 @@ import { Card, CardContent, CardHeader } from "@mui/material"
 import { ReactNode } from "react";
 
 type Props = {
-  children: ReactNode;
+  children?: ReactNode;
   title?: string;
   description?: string;
   className?: string;
-
+  rightHeader?: ReactNode;
 }
-const CardFormBlock = ({ title, description, children, className }: Props) => {
+const CardFormBlock = ({ title, description, children, className, rightHeader }: Props) => {
   return (
     <Card>
       <CardHeader
-        // action={
-        //   <IconButton aria-label="settings">
-        //     <MoreVertIcon />
-        //   </IconButton>
-        // }
+        action={rightHeader}
         title={title}
         subheader={description}
         css={{
           paddingTop: description ? 8 : 18,
           paddingBottom: description ? 8 : 18,
           borderBottom: title || description ? '1px solid #e0e0e0' : 'none',
+          '& .MuiCardHeader-action': {
+            alignSelf: 'stretch',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
           '& .MuiCardHeader-title': {
             fontSize: 16,
             fontWeight: 500,
@@ -32,9 +34,11 @@ const CardFormBlock = ({ title, description, children, className }: Props) => {
           }
         }}
       />
-      <CardContent className={className}>
-        {children}
-      </CardContent>
+      {children && (
+        <CardContent className={className}>
+          {children}
+        </CardContent>
+      )}
     </Card>
   )
 }
