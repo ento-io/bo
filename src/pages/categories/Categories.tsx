@@ -119,7 +119,7 @@ const Categories = () => {
     dispatch(loadCategories(queries));
   }
 
-  const handleFormSubmit = (values: ICategoryInput) => {
+  const handleCreateCategory = (values: ICategoryInput) => {
     if (selectedCategory) {
       dispatch(editCategory(selectedCategory.objectId, values));
       handleCloseDialog();
@@ -201,7 +201,7 @@ const Categories = () => {
       >
         <CategoryForm
           formId={CATEGORY_FORM_ID}
-          onSubmit={handleFormSubmit}
+          onSubmit={handleCreateCategory}
           category={selectedCategory}
         />
       </Dialog>
