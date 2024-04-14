@@ -111,24 +111,23 @@ export const getCmsEditionCmsInitialValues = async (
   language: Lang,
 ): Promise<IArticleInput | undefined> => {
   if (!page) return;
-  const valuesToEdit = parseSavedTranslatedValuesToForm(page);
+  const formattedTranslatedValues = parseSavedTranslatedValuesToForm(page);
 
   const [bannerImage, previewImage] = await Promise.all([
     page.bannerImage ? getFileFromUrl(page.bannerImage.url) : [],
     page.previewImage ? getFileFromUrl(page.previewImage.url) : [],
   ]);
 
-
-
   const images = await Promise.all(page.images?.map((image: IFileCloud) => getFileFromUrl(image.url)) ?? []);
 
   const defaultValues = {
-    ...valuesToEdit,
+    ...formattedTranslatedValues,
     bannerImage: Array.isArray(bannerImage) ? bannerImage : [bannerImage], // should be an array
     previewImage: Array.isArray(previewImage) ? previewImage : [previewImage], // should be an array
     images,
   };
 
+  // array of pointer json to form select option
   if (page.categories) {
     defaultValues.categories = page.categories.map((category: ICategory) => ({
       label: getTranslatedField(category.translated, language, 'name'),
