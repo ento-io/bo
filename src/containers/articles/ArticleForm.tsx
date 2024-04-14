@@ -29,7 +29,8 @@ import { ISelectOption } from "@/types/app.type";
 const initialValues = {
   title: '',
   content: '',
-  active: true
+  active: true,
+  categories: []
 };
 
 type ICategoryOptionValue = {
@@ -61,16 +62,15 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
   useEffect(() => {
     if (!article) return;
     const init = async () => {
-      const editionInitialValues = await getCmsEditionCmsInitialValues(article);
+
+      const editionInitialValues = await getCmsEditionCmsInitialValues(article, language);
       reset(editionInitialValues)
     };
 
     init();
-  }, [article, reset]);
+  }, [article, reset, language]);
 
   const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
-    console.log('values: ', values);
-    return;
     onSubmit(values);
     reset(initialValues);
   }
@@ -132,13 +132,32 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
       />
       <CardFormBlock title={t('common:seo')}>
         <AutocompleteField<ICategoryOptionValue>
-          name="category"
-          label="Category"
+          name="categories"
+          label="Categories"
           disableNoOptions
           loading={categoryOptionsLoading}
           options={categoryOptions}
           fullWidth
           onSearch={handleSearchCategory}
+          multiple
+          // withPreview
+          // renderPreviews={(previews: ISelectOption<ICategoryOptionValue>[], onDelete?: (id: string) => void) =>
+          //   previews.map((preview: any, index: number) => {
+          //     console.log('preview: ', preview);
+          //     return (
+          //       // <Stack key={(preview.label as string) + index} spacing={2} className="flex1">
+          //       //   <Card>
+          //       //     <button
+          //       //         className="flexCenter stretchSelf transparentButton"
+          //       //         onClick={() => onDelete?.(preview.value.objectId)}>
+          //       //         Delete
+          //       //       </button>
+          //       //     <span>{preview.label}x</span>
+          //       //   </Card>
+          //       // </Stack>
+          //     )
+          //   })
+          // }
         />
         </CardFormBlock>
 
