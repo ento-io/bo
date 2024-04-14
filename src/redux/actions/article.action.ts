@@ -14,15 +14,15 @@ import { IQueriesInput } from '@/types/app.type';
 import { goToNotFound } from './app.action';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
-import { ALL_PAGE_FIELDS, articlesTabOptions } from '@/utils/cms.utils';
+import { ALL_PAGE_FIELDS, articlesTabOptions, getCategoryPointersFromIds } from '@/utils/cms.utils';
 import { setValues } from '@/utils/parse.utils';
 import { uploadFormFiles, uploadUpdatedFormFiles } from '@/utils/file.utils';
 
 const Article = Parse.Object.extend("Article");
 
-const ARTICLE_PROPERTIES = new Set(['translated', ...ALL_PAGE_FIELDS]);
+const ARTICLE_PROPERTIES = new Set(['translated', 'categories', ...ALL_PAGE_FIELDS]);
 
-export const getArticle = async (id: string, include = []): Promise<Parse.Object | undefined> => {
+export const getArticle = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
   const article = await Parse.Cloud.run('getArticle', { id, include });
 
 
@@ -91,6 +91,10 @@ export const createArticle = (values: IArticleInput): any => {
       values
     });
 
+    if (values.categories) {
+      values.categories = getCategoryPointersFromIds(values.categories);
+    }
+
     const newValues = { ...values, ...uploadedValues };
     
     setValues(article, newValues, ARTICLE_PROPERTIES);
@@ -131,6 +135,10 @@ export const editArticle = (id: string, values: IArticleInput): any => {
       sessionToken: currentUser.getSessionToken(),
       values
     });
+
+    if (values.categories) {
+      values.categories = getCategoryPointersFromIds(values.categories);
+    }
 
     const newValues = { ...values, ...uploadedValues };
 
@@ -264,7 +272,7 @@ export const onArticleEnter = (route?: any): AppThunkAction => {
     // clear the prev state first
     dispatch(clearArticleSlice());
 
-    const article = await getArticle(route.params?.id);
+    const article = await getArticle(route.params?.id, ['categories']);
 
     if (!article) return;
 
@@ -289,7 +297,7 @@ export const onEditArticleEnter = (route?: any): AppThunkAction => {
     // clear the prev state first
     dispatch(clearArticleSlice());
 
-    const article = await getArticle(route.params?.id);
+    const article = await getArticle(route.params?.id, ['categories']);
 
     if (!article) return;
 
