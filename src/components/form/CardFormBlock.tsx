@@ -10,7 +10,7 @@ type Props = {
 }
 const CardFormBlock = ({ title, description, children, className, rightHeader }: Props) => {
   return (
-    <Card>
+    <Card css={{ overflow: 'initial' }}>
       <CardHeader
         action={rightHeader}
         title={title}
