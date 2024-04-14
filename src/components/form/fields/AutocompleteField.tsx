@@ -7,13 +7,21 @@ import { ISelectOption } from '@/types/app.type';
 type Props<T extends Record<string, any>> = {
   name: string;
   label?: string;
-  previewName: string;
+  previewName?: string;
   fullWidth?: boolean;
   helperText?: string;
-  withPreviewCard?: boolean;
+  onSearch?: (value: any) => void;
 } & Omit<AutocompleteInputProps<T>, 'name' | 'onChange' | 'value'>;
 
-const AutocompleteField = <T extends Record<string, any>>({ name, label, fullWidth, helperText, previewName, ...otherProps }: Props<T>) => {
+const AutocompleteField = <T extends Record<string, any>>({
+  name,
+  label,
+  fullWidth,
+  helperText,
+  previewName,
+  onSearch,
+  ...otherProps
+}: Props<T>) => {
   const {
     control,
     formState: { errors },
@@ -31,9 +39,11 @@ const AutocompleteField = <T extends Record<string, any>>({ name, label, fullWid
             {...otherProps}
             value={value}
             onChange={onChange}
+            onInputChange={onSearch}
             label={label}
             // onChange function only is validated by default
             onChangeList={(values: ISelectOption<T>[]) => {
+              if (!previewName) return;
               setValue(previewName, values, { shouldValidate: true });
             }}
           />
