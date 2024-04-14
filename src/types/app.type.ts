@@ -16,6 +16,8 @@ export interface ISelectOption<T = string> {
   hide?: boolean;
 }
 
+// export interface IAutocompleteOption<T extends object> extends Omit<ISelectOption<T>, 'hide'> {}
+
 type AppSnackBar = {
   open: boolean;
   type: string;
