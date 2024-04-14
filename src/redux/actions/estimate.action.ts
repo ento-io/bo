@@ -75,7 +75,16 @@ export const loadEstimates = ({
  * @returns
  */
 export const deleteEstimate = (id: string): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    // --------- access --------- //
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const hasRight = canAccessTo(roles, 'Estimate', 'delete');
+
+    if (!hasRight) {
+      throw Error(i18n.t('common:errors.hasNoRightToDoAction'));
+    }
+  
     const estimate = await getEstimate(id);
 
     if (!estimate) return;
@@ -107,6 +116,14 @@ export const toggleEstimatesByIds = (ids: string[], field: string, value = true)
 
     const estimates = (state as any)?.estimate.estimates ?? [];
 
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const canDelete = canAccessTo(roles, 'Estimate', 'delete');
+    const canUpdate = canAccessTo(roles, 'Estimate', 'updated');
+    const hasRight = field === 'deleted' ? canDelete : canUpdate;
+
+    if (!hasRight) {
+      throw Error(i18n.t('common:errors.hasNoRightToDoAction'));
+    }
     // get only estimate as seen = false for the notifications update
     const estimateSeenIds: string[] = [];
     for (const id of ids) {
@@ -147,7 +164,6 @@ export const createEstimate = (values: EstimateInput): any => {
 
     setValues(estimate, values, ESTIMATE_PROPERTIES);
 
-
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
     // so we use the parse cloud function to do that, instead of a REST API
@@ -164,10 +180,10 @@ export const editEstimate = (id: string, values: EstimateInput): any => {
     const state = getState?.();
     // --------- access --------- //
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const canUpdate = canAccessTo(roles, 'Article', 'update');
+    const canUpdate = canAccessTo(roles, 'Estimate', 'update');
 
     if (!canUpdate) {
-      throw new Error(i18n.t('cms:errors:hasNoRightToUpdate'));
+      throw new Error(i18n.t('common:errors:hasNoRightToUpdate'));
     }
 
     // --------- request --------- //
@@ -222,10 +238,10 @@ export const onEstimatesEnter = (route: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const canFind = canAccessTo(roles, 'Estimate', 'find');
+    const hasRight = canAccessTo(roles, 'Estimate', 'find');
 
     // redirect to not found page
-    if (!canFind) {
+    if (!hasRight) {
       route.navigate(goToNotFound());
       return;
     }
