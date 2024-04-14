@@ -24,7 +24,6 @@ import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
 import { ICategory, ITranslatedFields } from '@/types/category.types';
 import { useProtect } from '@/hooks/useProtect';
-import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
 import { useTranslatedValues } from '@/hooks/useTranslatedValues';
 import BooleanIcons from '@/components/BooleanIcons';
@@ -99,9 +98,9 @@ const Category = () => {
     <Layout
       title={(
         <>
-          <span>{t('cms:category')}</span>
+          <span>{t('cms:category.category')}</span>
           <span css={{ marginRight: 10, marginLeft: 10 }}>-</span>
-          <span>{translatedFields.title}</span>
+          <span>{translatedFields.name}</span>
         </>
       )}
       isCard={false}
@@ -126,9 +125,6 @@ const Category = () => {
           <Stack spacing={3}>
             <Layout cardTitle={t('common:details')}>
               <Items items={infosItems} />
-            </Layout>
-            <Layout>
-              <TextEditor value={translatedFields.content} editable={false} />
             </Layout>
           </Stack>
         </Grid>
