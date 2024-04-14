@@ -29,6 +29,22 @@ export const category = createSlice({
     setCategoriesCountSlice: (state: ICategoryState, action: PayloadAction<number>) => {
       state.count = action.payload;
     },
+    updateCategoriesByCategorySlice: (state: ICategoryState, action: PayloadAction<ICategory>) => {
+      const newCategories = [];
+
+      for (const category of state.categories) {
+        if (category.objectId === action.payload.objectId) {
+          newCategories.unshift({
+            ...category,
+            ...action.payload,
+          });
+        } else {
+          newCategories.push(category);
+        }
+      }
+
+      state.categories = newCategories;
+    },
     clearCategorySlice: (state: ICategoryState) => {
       state.category = null;
     },
@@ -59,6 +75,7 @@ export const {
   addCategoryTCategoriesSlice,
   deleteCategoryFromCategoriesSlice,
   deleteCategoriesSlice,
+  updateCategoriesByCategorySlice
 } = category.actions;
 
 // ---------------------------------------------- //
