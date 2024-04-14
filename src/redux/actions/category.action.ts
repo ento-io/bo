@@ -5,7 +5,7 @@ import { actionWithLoader, convertTabToFilters } from '@/utils/app.utils';
 import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
-import { clearCategorySlice, deleteCategoryFromCategoriesSlice, deleteCategoriesSlice, loadCategorySlice, loadCategoriesSlice, setCategoriesCountSlice } from '../reducers/category.reducer';
+import { clearCategorySlice, deleteCategoryFromCategoriesSlice, deleteCategoriesSlice, loadCategorySlice, loadCategoriesSlice, setCategoriesCountSlice, addCategoryTCategoriesSlice, updateCategoriesByCategorySlice } from '../reducers/category.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
 import i18n, { locales } from '@/config/i18n';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
@@ -13,7 +13,7 @@ import { IQueriesInput, ITabSearchParams } from '@/types/app.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import { setValues } from '@/utils/parse.utils';
-import { ICategoryInput } from '@/types/category.types';
+import { ICategory, ICategoryInput } from '@/types/category.types';
 import { categoriesTabOptions } from '@/utils/cms.utils';
 import { goToNotFound } from './app.action';
 
@@ -90,7 +90,8 @@ export const createCategory = (values: ICategoryInput): any => {
     // so we use the parse cloud function to do that, instead of a REST API
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
     const savedCategory = await category.save();
-    dispatch(loadCategorySlice((savedCategory as Attributes).toJSON()));
+    dispatch(addCategoryTCategoriesSlice((savedCategory as Attributes).toJSON()));
+    dispatch(setMessageSlice(i18n.t('cms:category.categoryAddedSuccessfully')));
   });
 };
 
@@ -121,8 +122,10 @@ export const editCategory = (id: string, values: ICategoryInput): any => {
     // the master key can only accessible in server side
     // so we use the parse cloud function to do that, instead of a REST API
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
-    const savedCategory = await category.save();
-    dispatch(loadCategorySlice((savedCategory as Attributes).toJSON()));
+    const updatedCategory = await category.save();
+    // ------- update store ------ //
+    dispatch(updateCategoriesByCategorySlice(updatedCategory.toJSON() as ICategory));
+    dispatch(setMessageSlice(i18n.t('common:estimates.categoryEditedSuccessfully')));
   });
 };
 
@@ -141,7 +144,7 @@ export const deleteCategory = (id: string,): any => {
     const hasRight = canAccessTo(roles, 'Category', 'delete');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('cms:category.thisCategory') }));
+      throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('cms:category.categoryDeletedSuccessfully') }));
     }
 
     // --------- request --------- //
