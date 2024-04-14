@@ -145,8 +145,7 @@
     "linkLocationHelper": "Où sur le site mettre le lien de page",
     "sureToDeleteThing": "Etes-vous sûr de vouloir supprimer",
     "enterConfirmAndDelete": "Entrer {{type}} à confirmer et supprimer",
-    "pleaserEnterValue": "Veuillez entre \"{{value}}\" pour confirmer la suppression",
-    "cooperativeAlreadyExist": "Vous avez déjà une coopérative"
+    "pleaserEnterValue": "Veuillez entre \"{{value}}\" pour confirmer la suppression"
   },
   "at": "à",
   "fullDateFormat": "DD/MM/YYYY à HH:mm",
@@ -240,7 +239,8 @@
     "hasNoRightToDelete": "Vous ne pouvez pas supprimer {{value}}",
     "hasNoRightToUpdate": "Vous ne pouvez pas modifier {{value}}",
     "hasNoRightToCreate": "Vous ne pouvez pas créer  {{value}}",
-    "hasNoRightToFind": "Vous ne pouvez pas voir {{value}}"
+    "hasNoRightToFind": "Vous ne pouvez pas voir {{value}}",
+    "hasNoRightToDoAction": "Vous n'avez pas le droit de faire cette action"
   },
   "errorsFromServer": {
     "invalidFileType": "Type de fichier invalide",
@@ -270,7 +270,8 @@
     "new": "nouveaux",
     "all": "tout",
     "recycleBin": "corbeille",
-    "administrators": "administrateurs"
+    "administrators": "administrateurs",
+    "categories": "categories"
   },
   "advancedSearch": "Recherche avancée",
   "start": "Début",

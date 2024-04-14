@@ -18,90 +18,79 @@ import { displayDate } from '@/utils/date.utils';
 
 import { ISelectOption } from '@/types/app.type';
 import UserInfo from '@/containers/users/UserInfos';
-import { getArticleArticleSelector } from '@/redux/reducers/article.reducer';
-import { deleteArticle, goToAddArticle, goToArticles, goToEditArticle } from '@/redux/actions/article.action';
+import { getCategoryCategorySelector } from '@/redux/reducers/category.reducer';
+import { deleteCategory, goToCategories } from '@/redux/actions/category.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { IArticle, ITranslatedFields } from '@/types/article.types';
+import { ICategory, ITranslatedFields } from '@/types/category.types';
 import { useProtect } from '@/hooks/useProtect';
-import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
 import { useTranslatedValues } from '@/hooks/useTranslatedValues';
-import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
 
-const Article = () => {
+const Category = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const article = useSelector(getArticleArticleSelector);
+  const category = useSelector(getCategoryCategorySelector);
 
-  const { canPreview, canDelete, canCreate, canFind } = useProtect('Article');
+  const { canDelete, canFind } = useProtect('Category');
 
   // get translated fields depending on the selected language (tabs)
-  const { translatedFields, onTabChange, tab } = useTranslatedValues<ITranslatedFields>(article?.translated, ['title', 'content']);
+  const { translatedFields, onTabChange, tab } = useTranslatedValues<ITranslatedFields>(category?.translated, ['name']);
 
-  if (!article) return null;
+  if (!category) return null;
 
   const infosItems: ISelectOption[] = [
     {
-      label: t('cms:title'),
-      value: translatedFields.title,
+      label: t('cms:name'),
+      value: translatedFields.name,
     },
     {
       label: t('common:createdAt'),
-      value: displayDate(article.createdAt),
+      value: displayDate(category.createdAt),
     },
     {
       label: t('common:updatedAt'),
-      value: displayDate(article.updatedAt),
+      value: displayDate(category.updatedAt),
     },
     {
       label: t('common:deletedAt'),
-      value: displayDate(article.deletedAt),
-      hide: !article.deletedAt
+      value: displayDate(category.deletedAt),
+      hide: !category.deletedAt
     },
   ];
 
   const statusItems: ISelectOption<ReactNode>[] = [
     {
       label: t('common:active'),
-      value: <BooleanIcons value={article.active} />,
+      value: <BooleanIcons value={category.active} />,
     },
   ];
 
   const handleGoToList = () => {
     if (!canFind) return;
-    navigate(goToArticles());
+    navigate(goToCategories());
   };
-
-  const handleEdit = () => {
-    if (!canPreview) return;
-    navigate(goToEditArticle(article.objectId));
-  }
 
   const handleDelete = async () => {
     if (!canDelete) return;
-    await dispatch(deleteArticle(article.objectId));
-    navigate(goToArticles());
+    await dispatch(deleteCategory(category.objectId));
+    navigate(goToCategories());
   }
 
-  const handleCreate = () => {
-    if (!canCreate) return;
-    navigate(goToAddArticle());
-  }
 
   // for notification
   const togglePublish = () => {
-    dispatch(toggleUserNotification(article.objectId));
+    dispatch(toggleUserNotification(category.objectId));
   };
 
   const menus = [
     {
       onClick: togglePublish,
       display: true,
-      label: article.active ? t('cms:noToPublish') : t('cms:publish'),
-      icon: article.active ? <FaCheck /> : <FaCheckDouble />
+      label: category.active ? t('cms:noToPublish') : t('cms:publish'),
+      icon: category.active ? <FaCheck /> : <FaCheckDouble />
     },
   ];
 
@@ -109,27 +98,26 @@ const Article = () => {
     <Layout
       title={(
         <>
-          <span>{t('cms:article')}</span>
+          <span>{t('cms:category.category')}</span>
           <span css={{ marginRight: 10, marginLeft: 10 }}>-</span>
-          <span>{translatedFields.title}</span>
+          <span>{translatedFields.name}</span>
         </>
       )}
       isCard={false}
       actions={
         <ActionsMenu
-          label={translatedFields.title}
-          onCreate={handleCreate}
+          label={translatedFields.name}
+          // onCreate={handleCreate}
           goToList={handleGoToList}
           onDelete={handleDelete}
-          onEdit={handleEdit}
+          // onEdit={handleEdit}
           menus={menus}
         />
       }>
-      <Head title={translatedFields.title} />
+      <Head title={translatedFields.name} />
       <TranslatedFormTabs
         onTabChange={onTabChange}
         tab={tab}
-        // errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_PAGE_FIELDS)}
       />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
         {/* left */}
@@ -138,28 +126,22 @@ const Article = () => {
             <Layout cardTitle={t('common:details')}>
               <Items items={infosItems} />
             </Layout>
-            <Layout>
-              <TextEditor value={translatedFields.content} editable={false} />
-            </Layout>
-
-            {/* images */}
-            <PreviewImages<IArticle> page={article} />
           </Stack>
         </Grid>
         {/* right */}
         <Grid item {...PREVIEW_PAGE_GRID.right}>
           <Stack spacing={3}>
             <Layout  cardTitle={t('user:createdBy')}>
-              <UserInfo user={article.user} />
+              <UserInfo user={category.user} />
             </Layout>
             <Layout cardTitle="Status">
-              <ItemsStatus entity={article} items={statusItems} />
+              <ItemsStatus entity={category} items={statusItems} />
             </Layout>
           </Stack>
         </Grid>
         {/* bottom */}
-        <UsersForEntity<IArticle, ISelectOption<('updatedBy' | 'deletedBy')>[]>
-          object={article}
+        <UsersForEntity<ICategory, ISelectOption<('updatedBy' | 'deletedBy')>[]>
+          object={category}
           keys={[{
             label: t('user:updatedBy'),
             value: 'updatedBy',
@@ -173,4 +155,4 @@ const Article = () => {
   );
 };
 
-export default Article;
+export default Category;

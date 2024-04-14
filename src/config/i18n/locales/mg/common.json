@@ -227,7 +227,8 @@
     "hasNoRightToDelete": "Tsy afaka mamàfa {{value}} ianao",
     "hasNoRightToUpdate": "Tsy afaka manova {{value}} ianao",
     "hasNoRightToCreate": "Tsy afaka mamorona {{value}} ianao",
-    "hasNoRightToFind": "Tsy afaka mijery {{value}} ianao"
+    "hasNoRightToFind": "Tsy afaka mijery {{value}} ianao",
+    "hasNoRightToDoAction": "Tsy manan-jo io hetsika io ianao"
   },
   "errorsFromServer": {
     "invalidFileType": "Karazana fichier tsy mety",
@@ -258,7 +259,8 @@
     "new": "vaovao",
     "all": "rehetra",
     "recycleBin": "dabam-pako",
-    "administrators": "mpandrindra"
+    "administrators": "mpandrindra",
+    "categories": "sokajy"
   },
   "advancedSearch": "Fitadiavana lalina",
   "start": "Fiandohana",

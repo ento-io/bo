@@ -1,5 +1,6 @@
 {
   "title": "Lohateny",
+  "name": "Anarana",
   "content": "Lohahevitra",
   "pages": "Pejy",
   "page": "Pejy",
@@ -38,6 +39,8 @@
   "height": "hahavony",
   "translatedFields": "Saha voadika",
   "category": {
+    "category": "Sokajy",
+    "categories": "Sokajy",
     "add": "Hanampy sokajy",
     "addNew": "Hanampy sokajy vaovao",
     "editThis": "Hovaina ny {{name}}",
@@ -48,7 +51,14 @@
     "articleCount": "Isan'ny article",
     "noCategory": "Tsisy sokajy",
     "thisCategory": "ito sokajy ito",
-    "theCategoryName": "Ny anaran'ilay sokajy"
+    "theCategoryName": "Ny anaran'ilay sokajy",
+    "theseCategories": "Ireo sokajy",
+    "createCategory": "Hanampy sokajy",
+    "editCategory": "Hanova sokajy",
+    "searchCategory": "Hitady sokajy",
+    "categoryAddedSuccessfully": "Sokajy voaforona soamantsara",
+    "categoryEditedSuccessfully": "Sokajy voaova soamantsara",
+    "categoryDeletedSuccessfully": "Sokajy voafafa soamantsara"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article voaforona soamantsara",
@@ -70,7 +80,8 @@
     "hasNoRightToUpdateCategory": "Tsy afaka manova an'io sokajy io ianao",
     "hasNoRightToCreateCategory": "Tsy afaka mamorona sokajy ianao",
     "articleNotFound": "Ny article tsy misy",
-    "mustProvideSecureUrl": "Tsy maintsy manome url manan-kery"
+    "mustProvideSecureUrl": "Tsy maintsy manome url manan-kery",
+    "categoryNotFound": "Sokajy tsy misy na mety voafafa."
   },
   "editor": {
     "table": {

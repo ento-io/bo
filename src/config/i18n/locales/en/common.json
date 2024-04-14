@@ -220,7 +220,8 @@
     "hasNoRightToDelete": "You can not delete {{value}}",
     "hasNoRightToUpdate": "You can not update {{value}}",
     "hasNoRightToCreate": "You can not create {{value}}",
-    "hasNoRightToFind": "You can not find {{value}}"
+    "hasNoRightToFind": "You can not find {{value}}",
+    "hasNoRightToDoAction": "You have no right to do this action"
   },
   "errorsFromServer": {
     "invalidFileType": "Invalid file type",
@@ -250,7 +251,8 @@
     "new": "new",
     "all": "all",
     "recycleBin": "recycle-bin",
-    "administrators": "administrators"
+    "administrators": "administrators",
+    "categories": "categories"
   },
   "advancedSearch": "Advanced search",
   "start": "Start",

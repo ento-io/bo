@@ -1,5 +1,6 @@
 {
   "title": "Titre",
+  "name": "Nom",
   "content": "Contenu",
   "pages": "Pages",
   "page": "Page",
@@ -38,6 +39,8 @@
   "height": "Hauteur",
   "translatedFields": "Champs traduits",
   "category": {
+    "category": "Categorie",
+    "categories": "Categories",
     "add": "Ajouter une catégorie",
     "addNew": "Ajouter une nouvelle catégorie",
     "editThis": "Modifier {{name}}",
@@ -48,7 +51,14 @@
     "articleCount": "Nombre d'article",
     "noCategory": "Pas de catégorie",
     "thisCategory": "Cette catégorie",
-    "theCategoryName": "Le nom de la catégorie"
+    "theCategoryName": "Le nom de la catégorie",
+    "theseCategories": "Ces catégories",
+    "createCategory": "Créer une catégorie",
+    "editCategory": "Modifier une catégorie",
+    "searchCategory": "Rechercher une catégorie",
+    "categoryAddedSuccessfully": "Catégorie ajoutée avec succès",
+    "categoryEditedSuccessfully": "Catégorie modifiée avec succès",
+    "categoryDeletedSuccessfully": "Catégorie supprimée avec succès"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article créé avec succès",
@@ -70,7 +80,8 @@
     "hasNoRightToUpdateCategory": "Vous ne pouvez pas modifier cette catégorie",
     "hasNoRightToCreateCategory": "Vous ne pouvez pas créer une catégorie",
     "articleNotFound": "L'article que vous tentez de mettre à jour n'existe pas, il a peut-être été supprimé.",
-    "mustProvideSecureUrl": "Veuiilez fournir une URL sécurisée"
+    "mustProvideSecureUrl": "Veuiilez fournir une URL sécurisée",
+    "categoryNotFound": "La catégorie que vous tentez de mettre à jour n'existe pas, elle a peut-être été supprimée."
   },
   "editor": {
     "table": {

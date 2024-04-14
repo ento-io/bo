@@ -273,6 +273,26 @@ const defaultTheme = {
           }
         })
       }
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        popper: ({ theme }: { theme: Theme }) => ({
+          '& .MuiAutocomplete-listbox': {
+            '& li': {
+              fontSize: '16px !important',
+              paddingTop: 14 + ' !important',
+              paddingBottom: 14 + ' !important',
+              fontFamily: theme.typography.fontFamily + ' !important',
+              '&:hover': {
+                fontWeight: 500,
+              },
+              '&:not(:last-child)': {
+                borderBottom: '1px solid ' + theme.palette.grey[100] + ' !important',
+              }
+            },
+          }
+        }),
+      }
     }
   },
 };

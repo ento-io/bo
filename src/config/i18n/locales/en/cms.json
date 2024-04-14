@@ -1,5 +1,6 @@
 {
   "title": "Title",
+  "name": "Name",
   "content": "Content",
   "pages": "Pages",
   "page": "Page",
@@ -38,6 +39,8 @@
   "height": "Height",
   "translatedFields": "Translated fields",
   "category": {
+    "category": "Category",
+    "categories": "Categories",
     "add": "Add category",
     "addNew": "Add new category",
     "editThis": "Edit {{name}}",
@@ -48,7 +51,14 @@
     "articleCount": "Article count",
     "noCategory": "No category",
     "thisCategory": "This category",
-    "theCategoryName": "The cateogry name"
+    "theCategoryName": "The category name",
+    "theseCategories": "These categories",
+    "createCategory": "Create category",
+    "editCategory": "Edit category",
+    "searchCategory": "Search category",
+    "categoryAddedSuccessfully": "Category added successfully",
+    "categoryEditedSuccessfully": "Category edited successfully",
+    "categoryDeletedSuccessfully": "Category deleted successfully"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article created successfully",
@@ -70,7 +80,8 @@
     "hasNoRightToUpdateCategory": "You can not update this category",
     "hasNoRightToCreateCategory": "You can not create a category",
     "articleNotFound": "Article not found",
-    "mustProvideSecureUrl": "You must provide a secure url"
+    "mustProvideSecureUrl": "You must provide a secure url",
+    "categoryNotFound": "Category not found"
   },
   "editor": {
     "table": {

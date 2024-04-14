@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "i18next";
 import { useSelector } from "react-redux";
 import { Stack } from "@mui/material";
+import { debounce } from "lodash";
 import { IArticle, IArticleInput } from "@/types/article.types"
 import TextField from "@/components/form/fields/TextField";
 import Form from "@/components/form/Form";
@@ -20,12 +21,22 @@ import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import DropzoneField from "@/components/form/dropzone/DropzoneField";
 import CardFormBlock from "@/components/form/CardFormBlock";
 import CheckboxField from "@/components/form/fields/CheckboxField";
+import AutocompleteField from "@/components/form/fields/AutocompleteField";
+import { searchCategoriesForAutocomplete } from "@/redux/actions/category.action";
+import { getTranslatedField } from "@/utils/settings.utils";
+import { ISelectOption } from "@/types/app.type";
 
 const initialValues = {
   title: '',
   content: '',
-  active: true
+  active: true,
+  categories: []
 };
+
+type ICategoryOptionValue = {
+  objectId: string;
+}
+type ICategoryOption = ISelectOption<ICategoryOptionValue>;
 
 type Props = {
   onSubmit: (values: IArticleInput) => void;
@@ -34,6 +45,9 @@ type Props = {
 }
 
 const ArticleForm = ({ onSubmit, article, loading }: Props) => {
+  const [categoryOptions, setCategoryOptions] = useState<ICategoryOption[]>([]);
+  const [categoryOptionsLoading, setCategoryOptionsLoading] = useState<boolean>(false);
+
   const language = useSelector(getSettingsLangSelector);
 
   const [tab, setTab] = useState<Lang>(language);
@@ -48,17 +62,31 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
   useEffect(() => {
     if (!article) return;
     const init = async () => {
-      const editionInitialValues = await getCmsEditionCmsInitialValues(article);
+
+      const editionInitialValues = await getCmsEditionCmsInitialValues(article, language);
       reset(editionInitialValues)
     };
 
     init();
-  }, [article, reset]);
+  }, [article, reset, language]);
 
   const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
     onSubmit(values);
     reset(initialValues);
   }
+
+  const handleSearchCategory = debounce(async (search: string) => {
+    setCategoryOptionsLoading(true);
+    const categories = await searchCategoriesForAutocomplete(search) || [];
+    const newOptions = categories.map((category: any) => ({
+      value: {
+        objectId: category.objectId,
+      },
+      label: getTranslatedField(category.translated, language, 'name')
+    }));
+    setCategoryOptions(newOptions);
+    setCategoryOptionsLoading(false);
+  }, 500)
 
   const onTabChange = (value: Lang) => setTab(value);
 
@@ -102,6 +130,36 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
         description={t('cms:activePageVisible')}
         rightHeader={<CheckboxField name="active" isSwitch />}
       />
+      <CardFormBlock title={t('common:seo')}>
+        <AutocompleteField<ICategoryOptionValue>
+          name="categories"
+          label="Categories"
+          disableNoOptions
+          loading={categoryOptionsLoading}
+          options={categoryOptions}
+          fullWidth
+          onSearch={handleSearchCategory}
+          multiple
+          // withPreview
+          // renderPreviews={(previews: ISelectOption<ICategoryOptionValue>[], onDelete?: (id: string) => void) =>
+          //   previews.map((preview: any, index: number) => {
+          //     console.log('preview: ', preview);
+          //     return (
+          //       // <Stack key={(preview.label as string) + index} spacing={2} className="flex1">
+          //       //   <Card>
+          //       //     <button
+          //       //         className="flexCenter stretchSelf transparentButton"
+          //       //         onClick={() => onDelete?.(preview.value.objectId)}>
+          //       //         Delete
+          //       //       </button>
+          //       //     <span>{preview.label}x</span>
+          //       //   </Card>
+          //       // </Stack>
+          //     )
+          //   })
+          // }
+        />
+        </CardFormBlock>
 
       {/* images card */}
       <CardFormBlock title={t('images')}>

@@ -1,11 +1,12 @@
 import { z } from "zod";
 import { capitalize } from "string-ts";
-import { dateForAdvancedSearchSchema } from "./app.validations";
+import { autoCompleteOptionSchema, dateForAdvancedSearchSchema } from "./app.validations";
 import { formatTranslatedFormValuesToSave } from "@/utils/cms.utils";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import { errorMap } from '@/config/zod';
 import i18n, { locales } from "@/config/i18n";
 import { getMultipleImagesSchema, getSingleImageSchema } from "./file.validation";
+import { categoryOptionSchema } from "./category.validation";
 
 const emptyContent = (value?: string): string => {
   if (!value || value === '<p><br></p>') {
@@ -20,6 +21,7 @@ export const articleFilterSchema = z.object({
   createdAt: dateForAdvancedSearchSchema,
   updatedAt: dateForAdvancedSearchSchema,
   user: z.string().optional(),
+  category: autoCompleteOptionSchema,
 });
 
 const getTranslatedSchema = () => {
@@ -62,5 +64,6 @@ export const cmsSchema = z.object({
 export const articleSchema = cmsSchema
   .extend({
     ...getTranslatedSchema(), // translated fields
+    categories: z.array(categoryOptionSchema).optional(),
   })
   .transform(formatTranslatedFormValuesToSave);
