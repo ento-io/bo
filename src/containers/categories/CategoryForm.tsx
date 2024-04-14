@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Box } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -54,22 +53,22 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
         tab={tab}
         errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_CMS_FIELDS)}
       />
-      <Box>
+      <div>
         {locales.map((locale: string, index: number) => (
-          <Box key={index} css={{ display: locale === tab ? 'block' : 'none' }}>
+          <div key={index} css={{ display: locale === tab ? 'block' : 'none' }}>
             <TextField
-              name={'name+' + locale}
+              name={locale + ':name'}
               label={t('common:name')}
               fixedLabel
               type="text"
               variant="outlined"
               required={locale === DEFAULT_LANGUAGE}
             />
-          </Box>
+          </div>
         ))}
-      </Box>
+      </div>
 
-      <CheckboxField name="active" label={t('common:active')} tooltip={t('page:category.activeCategoryVisible')} />
+      <CheckboxField name="active" label={t('common:active')} tooltip={t('cms:category.activeCategoryVisible')} />
     </Form>
   );
 };
