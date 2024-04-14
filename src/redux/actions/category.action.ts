@@ -16,6 +16,7 @@ import { setValues } from '@/utils/parse.utils';
 import { ICategory, ICategoryInput } from '@/types/category.types';
 import { categoriesTabOptions } from '@/utils/cms.utils';
 import { goToNotFound } from './app.action';
+import { escapeText } from '@/utils/utils';
 
 const Category = Parse.Object.extend("Category");
 
@@ -29,6 +30,34 @@ export const getCategory = async (id: string, include: string[] = []): Promise<P
     throw new Error(i18n.t('cms:errors.categoryNotFound'));
   }
   return article;
+}
+
+export const searchCategoriesForAutocomplete = async (search: string): Promise<ICategory[]> => {
+  let query = new Parse.Query(Category);
+
+  // search by translated texts
+  if (search) {
+    const text = escapeText(search);
+    const or: any[] = [];
+
+    locales.forEach((locale: string) => {
+      or.push(
+        // ex: translated.fr.name = "Littérature"
+        new Parse.Query(Category).matches('translated.' + locale + '.name', text),
+      );
+    });
+
+    query = Parse.Query.or(...or);
+  }
+
+  const categories =  await query
+    .equalTo('deleted', false)
+    .equalTo('active', true)
+    .limit(100)
+    .select('translated')
+    .find();
+
+  return categories.map((category: any) => category.toJSON() as ICategory);
 }
 
 // ----------------------------------------------------- //
