@@ -56,3 +56,10 @@ export const categoryFilterSchema = z.object({
   updatedAt: dateForAdvancedSearchSchema,
   user: z.string().optional(),
 });
+
+export const categoryOptionSchema = z.object({
+  label: z.string(),
+  value: z.object({
+    objectId: z.string(),
+  }),
+});
