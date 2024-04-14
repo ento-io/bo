@@ -5,6 +5,9 @@ import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from "@/validations/file
 import { getFileFromUrl } from "./file.utils";
 import { IFileCloud } from "@/types/file.type";
 import { ICategory, ICategoryInput } from "@/types/category.types";
+import { getTranslatedField } from "./settings.utils";
+import { Lang } from "@/types/setting.type";
+import { Category } from "@/redux/actions/category.action";
 
 export const articlesTabOptions = defaultTabOptions;
 export const categoriesTabOptions = defaultTabOptions;
@@ -105,6 +108,7 @@ export const parseSavedTranslatedValuesToForm = (
 
 export const getCmsEditionCmsInitialValues = async (
   page: IArticle | null | undefined,
+  language: Lang,
 ): Promise<IArticleInput | undefined> => {
   if (!page) return;
   const valuesToEdit = parseSavedTranslatedValuesToForm(page);
@@ -114,6 +118,8 @@ export const getCmsEditionCmsInitialValues = async (
     page.previewImage ? getFileFromUrl(page.previewImage.url) : [],
   ]);
 
+
+
   const images = await Promise.all(page.images?.map((image: IFileCloud) => getFileFromUrl(image.url)) ?? []);
 
   const defaultValues = {
@@ -122,6 +128,15 @@ export const getCmsEditionCmsInitialValues = async (
     previewImage: Array.isArray(previewImage) ? previewImage : [previewImage], // should be an array
     images,
   };
+
+  if (page.categories) {
+    defaultValues.categories = page.categories.map((category: ICategory) => ({
+      label: getTranslatedField(category.translated, language, 'name'),
+      value: {
+        objectId: category.objectId,
+      }
+    }));
+  }
 
   return defaultValues;
 };
@@ -143,3 +158,16 @@ export const getCategoryFormInitialValues = (category: ICategory | null | undefi
   const valuesToEdit = parseSavedTranslatedValuesToForm(category);
   return valuesToEdit;
 };
+
+export const getCategoryPointersFromIds = (categoryId: string[]): Parse.Object[] | void => {
+  if (!categoryId) return;
+
+  // array of pointers
+  const categories = categoryId.map((categoryId: string): Parse.Object => {
+    const category = new Category();
+    category.id = categoryId;
+    return category;
+  });
+
+  return categories;
+}
