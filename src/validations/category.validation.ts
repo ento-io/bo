@@ -32,13 +32,13 @@ const getTranslatedSchema = () => {
     // - required only for default locale - //
     // ------------------------------------ //
     if (locale !== DEFAULT_LANGUAGE) {
-      translatedSchema['name+' + locale] = z.string({ errorMap }).transform((value: string): string =>
+      translatedSchema[locale + ':name'] = z.string({ errorMap }).transform((value: string): string =>
         value ? capitalize(value) : '',
       );
       // default locale should be required
     } else {
-      translatedSchema['name+' + DEFAULT_LANGUAGE] = z.string({ errorMap })
-        .min(1, i18n.t('form.error.required', { field: i18n.t('page:page') }))
+      translatedSchema[DEFAULT_LANGUAGE + ':name'] = z.string({ errorMap })
+        .min(1, i18n.t('form.error.required', { field: i18n.t('cms:page') }))
         .transform(capitalize);
     }
   });
