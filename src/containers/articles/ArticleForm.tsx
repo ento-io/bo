@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "i18next";
 import { useSelector } from "react-redux";
 import { Stack } from "@mui/material";
+import { debounce } from "lodash";
 import { IArticle, IArticleInput } from "@/types/article.types"
 import TextField from "@/components/form/fields/TextField";
 import Form from "@/components/form/Form";
@@ -20,12 +21,21 @@ import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import DropzoneField from "@/components/form/dropzone/DropzoneField";
 import CardFormBlock from "@/components/form/CardFormBlock";
 import CheckboxField from "@/components/form/fields/CheckboxField";
+import AutocompleteField from "@/components/form/fields/AutocompleteField";
+import { searchCategoriesForAutocomplete } from "@/redux/actions/category.action";
+import { getTranslatedField } from "@/utils/settings.utils";
+import { ISelectOption } from "@/types/app.type";
 
 const initialValues = {
   title: '',
   content: '',
   active: true
 };
+
+type ICategoryOptionValue = {
+  objectId: string;
+}
+type ICategoryOption = ISelectOption<ICategoryOptionValue>;
 
 type Props = {
   onSubmit: (values: IArticleInput) => void;
@@ -34,6 +44,9 @@ type Props = {
 }
 
 const ArticleForm = ({ onSubmit, article, loading }: Props) => {
+  const [categoryOptions, setCategoryOptions] = useState<ICategoryOption[]>([]);
+  const [categoryOptionsLoading, setCategoryOptionsLoading] = useState<boolean>(false);
+
   const language = useSelector(getSettingsLangSelector);
 
   const [tab, setTab] = useState<Lang>(language);
@@ -56,9 +69,24 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
   }, [article, reset]);
 
   const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
+    console.log('values: ', values);
+    return;
     onSubmit(values);
     reset(initialValues);
   }
+
+  const handleSearchCategory = debounce(async (search: string) => {
+    setCategoryOptionsLoading(true);
+    const categories = await searchCategoriesForAutocomplete(search) || [];
+    const newOptions = categories.map((category: any) => ({
+      value: {
+        objectId: category.objectId,
+      },
+      label: getTranslatedField(category.translated, language, 'name')
+    }));
+    setCategoryOptions(newOptions);
+    setCategoryOptionsLoading(false);
+  }, 500)
 
   const onTabChange = (value: Lang) => setTab(value);
 
@@ -102,6 +130,17 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
         description={t('cms:activePageVisible')}
         rightHeader={<CheckboxField name="active" isSwitch />}
       />
+      <CardFormBlock title={t('common:seo')}>
+        <AutocompleteField<ICategoryOptionValue>
+          name="category"
+          label="Category"
+          disableNoOptions
+          loading={categoryOptionsLoading}
+          options={categoryOptions}
+          fullWidth
+          onSearch={handleSearchCategory}
+        />
+        </CardFormBlock>
 
       {/* images card */}
       <CardFormBlock title={t('images')}>
