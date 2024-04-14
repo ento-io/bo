@@ -2,15 +2,19 @@ import { css } from '@emotion/css';
 import { Theme } from '@emotion/react';
 import {
   Autocomplete,
+  Card,
+  IconButton,
   AutocompleteProps as MUIAutocompleteProps,
   Paper,
   PaperProps,
   Popper,
   PopperProps,
   Stack,
+  Typography,
 } from '@mui/material';
 import { ReactNode, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 
+import { FiX } from 'react-icons/fi';
 import TextFieldInput from './TextFieldInput';
 import { ISelectOption } from '@/types/app.type';
 
@@ -68,11 +72,6 @@ const classes = {
       },
     },
   }),
-  popper: {
-    // '& .MuiAutocomplete-noOptions': {
-    //   display: 'none',
-    // },
-  },
   input: css({
     '& .MuiInputBase-root': {
       padding: 8,
@@ -118,6 +117,7 @@ export type AutocompleteInputProps<T extends Record<string, any>> = {
   inputClassName?: string;
   className?: string;
   disableNoOptions?: boolean;
+  multiple?: boolean;
 } & Omit<MUIAutocompleteProps<any, any, any, any>, 'renderInput' | 'onChange' | 'onInputChange'>;
 
 const AutocompleteInput = <T extends Record<string, any>>({
@@ -136,10 +136,12 @@ const AutocompleteInput = <T extends Record<string, any>>({
   fullWidth,
   inputClassName,
   className,
+  multiple = false,
   disableNoOptions = true,
   ...props
 }: AutocompleteInputProps<T>) => {
-  const [values, setValues] = useState<ISelectOption<T>[]>([]);
+
+  const [singleSelectionSelectedValues, setSingleSelectionSelectedValues] = useState<ISelectOption<T>[]>([]);
   const [inputValue, setInputValue] = useState<string>(value);
   const [dynamicOptions, setDynamicOptions] = useState<ISelectOption<T>[]>([]);
 
@@ -152,8 +154,8 @@ const AutocompleteInput = <T extends Record<string, any>>({
   // when selecting an option
   const handleChange = (_: SyntheticEvent, value: ISelectOption<T>) => {
     if (withPreview) {
-      const newValues = [value, ...values];
-      setValues(newValues);
+      const newValues = [value, ...singleSelectionSelectedValues];
+      setSingleSelectionSelectedValues(newValues);
       onChangeList?.(newValues);
       onChange(value);
 
@@ -168,22 +170,28 @@ const AutocompleteInput = <T extends Record<string, any>>({
   };
 
   const handleDelete = (id: string) => {
-    const newValues = values.filter((value: ISelectOption<T>) => value.value.objectId !== id);
-    setValues(newValues);
+    const newValues = singleSelectionSelectedValues.filter((value: ISelectOption<T>) => value.value.objectId !== id);
+    setSingleSelectionSelectedValues(newValues);
     onChangeList?.(newValues);
 
     // --------- update options --------- //
-    const removedValue = values.find((value: ISelectOption<T>) => value.value.objectId === id);
+    const removedValue = singleSelectionSelectedValues.find((value: ISelectOption<T>) => value.value.objectId === id);
     if (!removedValue) return;
 
     // add the removed value to options
     setDynamicOptions((prev: ISelectOption<T>[]): ISelectOption<T>[] => [removedValue, ...prev]);
   };
 
+  const handleMultipleDelete = (id: string) => {
+    const newValues = value.filter((value: ISelectOption<T>) => value.value.objectId !== id);
+    onChange(newValues);
+  };
+
   // when taping
   const handleInputChange = (_: SyntheticEvent, value: string, reason?: string) => {
     if (reason === 'reset') {
       setInputValue('');
+      return;
     }
     setInputValue(value);
     onInputChange?.(value);
@@ -193,6 +201,7 @@ const AutocompleteInput = <T extends Record<string, any>>({
     <Stack spacing={1.6} className={fullWidth ? 'stretchSelf flex1' : ''}>
       <Stack direction="row">
         <Autocomplete
+          multiple={multiple}
           loading={loading}
           sx={{ flex: 1 }}
           css={classes.autocomplete}
@@ -238,7 +247,23 @@ const AutocompleteInput = <T extends Record<string, any>>({
         />
       </Stack>
 
-      {withPreview && values.length > 0 && renderPreviews?.(values, handleDelete)}
+      {/* preview selected values in single select */}
+      {withPreview && singleSelectionSelectedValues.length > 0 && renderPreviews?.(singleSelectionSelectedValues, handleDelete)}
+
+      {/* preview selected when multi select */}
+      {multiple && value.length > 0 && (
+        <Stack spacing={1} direction="row">
+          {value.map((value: ISelectOption<T>) => (
+            <Card key={value.value.objectId} className="flexRow center" css={{ padding: 4, paddingLeft: 12 }}>
+              <Typography>{value.label}</Typography>
+              <IconButton onClick={() => handleMultipleDelete(value.value.objectId)}>
+                <FiX size={16} />
+              </IconButton>
+            </Card>
+          ))}
+          </Stack>
+      )}
+
     </Stack>
   );
 };
