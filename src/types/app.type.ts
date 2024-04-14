@@ -2,13 +2,13 @@ import { z } from "zod";
 import { MouseEvent, ReactNode } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { IUser } from "./user.type";
-import { confirmDeletionSchema, settingsSchema } from "@/validations/app.validations";
+import { autoCompleteOptionSchema, confirmDeletionSchema, settingsSchema } from "@/validations/app.validations";
 import { Store } from "@/redux/store";
 import { DateType } from "./util.type";
 
 export type ISettingsInput = z.infer<typeof settingsSchema>;
 export type ConfirmDeletionInput = z.infer<typeof confirmDeletionSchema>;
-
+export type IAutocompleteOption = z.infer<typeof autoCompleteOptionSchema>;
 export interface ISelectOption<T = string> {
   label: string;
   value: T,
