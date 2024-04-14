@@ -55,7 +55,10 @@
     "theseCategories": "These categories",
     "createCategory": "Create category",
     "editCategory": "Edit category",
-    "searchCategory": "Search category"
+    "searchCategory": "Search category",
+    "categoryAddedSuccessfully": "Category added successfully",
+    "categoryEditedSuccessfully": "Category edited successfully",
+    "categoryDeletedSuccessfully": "Category deleted successfully"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article created successfully",
