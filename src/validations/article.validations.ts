@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { capitalize } from "string-ts";
-import { dateForAdvancedSearchSchema } from "./app.validations";
+import { autoCompleteOptionSchema, dateForAdvancedSearchSchema } from "./app.validations";
 import { formatTranslatedFormValuesToSave } from "@/utils/cms.utils";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import { errorMap } from '@/config/zod';
@@ -20,6 +20,7 @@ export const articleFilterSchema = z.object({
   createdAt: dateForAdvancedSearchSchema,
   updatedAt: dateForAdvancedSearchSchema,
   user: z.string().optional(),
+  category: autoCompleteOptionSchema,
 });
 
 const getTranslatedSchema = () => {
