@@ -57,9 +57,19 @@ export const categoryFilterSchema = z.object({
   user: z.string().optional(),
 });
 
+// [
+//   {
+//       "label": "Science",
+//       "value": {
+//           "objectId": "JAUDgRjRyZ"
+//       }
+//   }
+// ]
 export const categoryOptionSchema = z.object({
   label: z.string(),
   value: z.object({
     objectId: z.string(),
   }),
+}).transform((value) => {
+  return value.value.objectId;
 });
