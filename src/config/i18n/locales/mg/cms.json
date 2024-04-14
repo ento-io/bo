@@ -55,7 +55,10 @@
     "theseCategories": "Ireo sokajy",
     "createCategory": "Hanampy sokajy",
     "editCategory": "Hanova sokajy",
-    "searchCategory": "Hitady sokajy"
+    "searchCategory": "Hitady sokajy",
+    "categoryAddedSuccessfully": "Sokajy voaforona soamantsara",
+    "categoryEditedSuccessfully": "Sokajy voaova soamantsara",
+    "categoryDeletedSuccessfully": "Sokajy voafafa soamantsara"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article voaforona soamantsara",
