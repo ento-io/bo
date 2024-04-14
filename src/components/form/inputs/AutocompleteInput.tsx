@@ -49,6 +49,13 @@ const classes = {
         border: `1px solid ${theme.palette.grey[300]}`,
       },
     },
+    '& .MuiAutocomplete-option': {
+      backgroundColor: '#000 !important',
+      color: 'blue'
+    },
+    '& .Mui-focused': {
+      backgroundColor: theme.palette.grey[50],
+    },
   }),
   paper: (theme: Theme) => ({
     '& .MuiAutocomplete-listbox': {
@@ -75,7 +82,7 @@ const classes = {
 
 const AutocompletePaper = (props: PaperProps) => {
   return (
-    <Paper elevation={0} css={classes.paper} variant="outlined" {...props} />
+    <Paper elevation={0} variant="outlined" {...props} />
   );
 };
 
@@ -83,7 +90,11 @@ const AutocompletePopper = (disableNoOptions: boolean) => (props: PopperProps) =
   return (
     <Popper
       {...props}
-      css={disableNoOptions && classes.popper}
+      css={{
+        '& .MuiAutocomplete-noOptions': {
+          display: disableNoOptions ? 'none' : 'block',
+        },
+      }}
       placement="bottom"
       disablePortal={disableNoOptions}
     />
@@ -138,6 +149,7 @@ const AutocompleteInput = <T extends Record<string, any>>({
     setDynamicOptions(options);
   }, [options]);
 
+  // when selecting an option
   const handleChange = (_: SyntheticEvent, value: ISelectOption<T>) => {
     if (withPreview) {
       const newValues = [value, ...values];
@@ -168,10 +180,12 @@ const AutocompleteInput = <T extends Record<string, any>>({
     setDynamicOptions((prev: ISelectOption<T>[]): ISelectOption<T>[] => [removedValue, ...prev]);
   };
 
+  // when taping
   const handleInputChange = (_: SyntheticEvent, value: string, reason?: string) => {
     if (reason === 'reset') {
       setInputValue('');
     }
+    setInputValue(value);
     onInputChange?.(value);
   };
 
@@ -200,6 +214,7 @@ const AutocompleteInput = <T extends Record<string, any>>({
           clearOnBlur
           handleHomeEndKeys
           disableClearable
+          disablePortal
           PaperComponent={AutocompletePaper}
           renderInput={params => (
             <TextFieldInput
@@ -212,6 +227,13 @@ const AutocompleteInput = <T extends Record<string, any>>({
             />
           )}
           PopperComponent={AutocompletePopper(disableNoOptions)}
+          slotProps={{
+            popper: {
+              sx: {
+                zIndex: 1000,
+              }
+            }
+          }}
           {...props}
         />
       </Stack>
