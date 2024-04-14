@@ -55,7 +55,10 @@
     "theseCategories": "Ces catégories",
     "createCategory": "Créer une catégorie",
     "editCategory": "Modifier une catégorie",
-    "searchCategory": "Rechercher une catégorie"
+    "searchCategory": "Rechercher une catégorie",
+    "categoryAddedSuccessfully": "Catégorie ajoutée avec succès",
+    "categoryEditedSuccessfully": "Catégorie modifiée avec succès",
+    "categoryDeletedSuccessfully": "Catégorie supprimée avec succès"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article créé avec succès",
