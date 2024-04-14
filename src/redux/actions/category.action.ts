@@ -18,7 +18,7 @@ import { categoriesTabOptions } from '@/utils/cms.utils';
 import { goToNotFound } from './app.action';
 import { escapeText } from '@/utils/utils';
 
-const Category = Parse.Object.extend("Category");
+export const Category = Parse.Object.extend("Category");
 
 const CATEGORY_PROPERTIES = new Set(['translated', 'active']);
 
