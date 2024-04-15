@@ -27,23 +27,26 @@ const AdvancedSearchFields = ({ fields = [] }: Props) => {
   };
 
   return (
-    <Stack spacing={0}>
-      {options.map((option, index) => (
-        <div key={option.name + index}>
-          <FormControlLabel
-            control={<Switch checked={option.checked}
-            onChange={handleChangeOptions(option.name)} />}
-            label={option.label}
-          />
-          {option.checked && (
-            <div css={{ marginBottom: 8 }}>
-              {/* display the input when the checkbox is checked */}
-              {option.component}
-             </div>
-          )}
-        </div>
-      ))}
-  </Stack>
+    <div css={{ paddingLeft: 6, paddingRight: 6 }}>
+      <Stack spacing={1}>
+        {options.map((option, index) => (
+          <div key={option.name + index}>
+            <FormControlLabel
+              control={<Switch checked={option.checked}
+              onChange={handleChangeOptions(option.name)} />}
+              label={option.label}
+              css={{ '& .MuiFormControlLabel-label': { fontSize: 14, marginLeft: 8 } }}
+            />
+            {option.checked && (
+              <div css={{ marginBottom: 8 }}>
+                {/* display the input when the checkbox is checked */}
+                {option.component}
+              </div>
+            )}
+          </div>
+        ))}
+      </Stack>
+    </div>
   )
 };
 
