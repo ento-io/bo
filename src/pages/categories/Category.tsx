@@ -25,7 +25,7 @@ import UsersForEntity from '@/containers/users/UsersForEntity';
 import { ICategory, ICategoryInput, ITranslatedFields } from '@/types/category.types';
 import { useProtect } from '@/hooks/useProtect';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
-import { useTranslatedValues } from '@/hooks/useTranslatedValues';
+import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValues';
 import BooleanIcons from '@/components/BooleanIcons';
 import { getCategoryEntityLabel } from '@/utils/cms.utils';
 import { useToggle } from '@/hooks/useToggle';
@@ -44,7 +44,7 @@ const Category = () => {
   const { canDelete, canFind } = useProtect('Category');
 
   // get translated fields depending on the selected language (tabs)
-  const { translatedFields, onTabChange, tab } = useTranslatedValues<ITranslatedFields>(category?.translated, ['name']);
+  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<ITranslatedFields>(category?.translated, ['name']);
 
   if (!category) return null;
 
