@@ -217,7 +217,7 @@ const Categories = () => {
         title={selectedCategory ? t('cms:category.editCategory') : t('cms:category.createCategory')}
         open={!!selectedCategory || isOpenCreation}
         toggle={handleCloseDialog}
-        maxWidth="sm"
+        maxWidth="md"
         fullWidth
         formId={CATEGORY_FORM_ID}
       >
