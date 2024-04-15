@@ -68,6 +68,16 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
             />
             {/* slug field */}
             <TranslatedSlugField tab={tab} locale={locale} />
+
+            <TextField
+              name={locale + ':tags'}
+              label="Tags"
+              fixedLabel
+              type="text"
+              variant="outlined"
+              placeholder={t('common:infoMessages.separateTagsWithComma')}
+              tooltip={t('common:infoMessages.tagsHelper')}
+            />
           </div>
         ))}
       </div>
