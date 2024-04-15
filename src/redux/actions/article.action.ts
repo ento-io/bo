@@ -10,7 +10,7 @@ import { setMessageSlice } from '../reducers/app.reducer';
 import i18n, { locales } from '@/config/i18n';
 import { IArticle, IArticleInput } from '@/types/article.types';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
-import { IQueriesInput } from '@/types/app.type';
+import { IQueriesInput, ITabAndCategorySearchParams } from '@/types/app.type';
 import { goToNotFound } from './app.action';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
@@ -57,11 +57,10 @@ export const loadArticles = ({
       locales,
     });
 
+    // save articles to store (in json)
+    const articlesJson = result.results.map((article: any) => article.toJSON());
 
-    // save estimates to store (in json)
-    const estimatesJson = result.results.map((estimate: any) => estimate.toJSON());
-
-    dispatch(loadArticlesSlice(estimatesJson));
+    dispatch(loadArticlesSlice(articlesJson));
     dispatch(setArticlesCountSlice(result.count));
   });
 };
@@ -213,10 +212,10 @@ export const toggleArticlesByIds = (ids: string[], field: string, value = true):
     }
 
     // update the database
-    await new Parse.Query(Article).containedIn('objectId', ids).each(async estimate => {
-      estimate.set(field, value);
+    await new Parse.Query(Article).containedIn('objectId', ids).each(async article => {
+      article.set(field, value);
 
-      await estimate.save();
+      await article.save();
     });
     // delete
     dispatch(deleteArticlesSlice(ids));
@@ -227,7 +226,7 @@ export const toggleArticlesByIds = (ids: string[], field: string, value = true):
 // ------------- on page load ------------- //
 // ---------------------------------------- //
 /**
- * load estimates data from database before the page is loaded (in route)
+ * load articles data from database before the page is loaded (in route)
  * then load it to the store
  * @param route 
  * @returns 
@@ -254,6 +253,10 @@ export const onArticlesEnter = (route: any): any => {
     const filters: Record<string, boolean | string> = {
       deleted: false
     };
+
+    if (route.search.category) {
+      filters.category = route.search.category;
+    }
 
     // convert the url search params tab to (db) filters
     const newFilters = convertTabToFilters(articlesTabOptions, route.search.tab, filters);
@@ -324,7 +327,7 @@ export const onCreateArticleEnter = (route?: any): AppThunkAction => {
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //
-export const goToArticles = () => ({ to: PATH_NAMES.articles });
+export const goToArticles = (searchParams?: ITabAndCategorySearchParams) => ({ to: PATH_NAMES.articles, search: searchParams });
 export const goToArticle = (id: string) => ({ to: PATH_NAMES.articles + '/$id', params: { id }});
 export const goToAddArticle = () => ({ to: PATH_NAMES.articles + '/' + PATH_NAMES.create });
 export const goToEditArticle = (id: string) => ({ to: PATH_NAMES.articles + '/$id/' + PATH_NAMES.edit, params: { id } });
