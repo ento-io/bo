@@ -26,7 +26,7 @@ import { IArticle, ITranslatedFields } from '@/types/article.types';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
-import { useTranslatedValues } from '@/hooks/useTranslatedValues';
+import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValues';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
 
@@ -39,7 +39,7 @@ const Article = () => {
   const { canPreview, canDelete, canCreate, canFind } = useProtect('Article');
 
   // get translated fields depending on the selected language (tabs)
-  const { translatedFields, onTabChange, tab } = useTranslatedValues<ITranslatedFields>(article?.translated, ['title', 'content']);
+  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<ITranslatedFields>(article?.translated, ['title', 'content']);
 
   if (!article) return null;
 
