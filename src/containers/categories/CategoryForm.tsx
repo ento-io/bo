@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -12,13 +10,14 @@ import { locales } from '@/config/i18n';
 
 import { DEFAULT_LANGUAGE } from '@/utils/constants';
 import { categoryEntityOptions, getCategoryFormInitialValues, TRANSLATED_CMS_FIELDS } from '@/utils/cms.utils';
-import { getServerUrl, getTranslatedFormTabErrors, slugify } from '@/utils/utils';
+import { getTranslatedFormTabErrors } from '@/utils/utils';
 
 import { ICategory, ICategoryInput } from '@/types/category.types';
 import { categorySchema } from '@/validations/category.validation';
 import Form from '@/components/form/Form';
 import SelectField from '@/components/form/fields/SelectField';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
+import TranslatedSlugField from '../cms/TranslatedSlugField';
 
 type Props = {
   formId: string;
@@ -36,7 +35,7 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
     defaultValues: getCategoryFormInitialValues(category),
   });
 
-  const { handleSubmit, watch, setValue } = form;
+  const { handleSubmit, setValue } = form;
 
   const handleFormSubmit: SubmitHandler<ICategoryInput> = async values => {
     onSubmit(values);
@@ -46,23 +45,6 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
   const handleNameChange = (value: string | number) => {
     setValue(tab + ':slug', value, { shouldValidate: true });
   };
-  
-  // helper text below slug input
-  const transformSlugPreview = useCallback(
-    (value: string): string => {
-      let text = '../../'; // default value
-      const translatedFieldValue = watch(tab + ':name'); // field to watch and get the change
-
-      if (value) {
-        text = slugify(value);
-      } else if (translatedFieldValue) {
-        text = slugify(translatedFieldValue);
-      }
-
-      return text;
-    },
-    [watch, tab],
-  );
 
   return (
     <Form formId={formId} form={form} onSubmit={handleSubmit(handleFormSubmit)}>
@@ -84,16 +66,8 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
               required={locale === DEFAULT_LANGUAGE}
               onFieldChange={handleNameChange}
             />
-            <TextField
-              name={locale + ':slug'}
-              label="Slug"
-              fixedLabel
-              type="text"
-              variant="outlined"
-              transformValuePreview={transformSlugPreview}
-              preview={getServerUrl() + '/'}
-              tooltip={t('common:uniqueUrl', { theEntity: t('cms:category.theCategory') })}
-            />
+            {/* slug field */}
+            <TranslatedSlugField tab={tab} locale={locale} />
           </div>
         ))}
       </div>
