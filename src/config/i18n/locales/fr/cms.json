@@ -39,6 +39,8 @@
   "height": "Hauteur",
   "translatedFields": "Champs traduits",
   "entity": "Entité",
+  "seo": "SEO",
+  "seoDescription": "Le SEO (Search Engine Optimization) est le processus consistant à affecter la visibilité d'un site Web ou d'une page Web dans les résultats non rémunérés d'un moteur de recherche (ex: Google, Bing, ...)",
   "category": {
     "category": "Categorie",
     "categories": "Categories",
