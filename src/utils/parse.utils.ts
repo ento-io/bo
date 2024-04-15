@@ -53,3 +53,8 @@ export const setValues = (parseObject: Attributes, values: Record<string, any>, 
     setValue(parseObject, key, value);
   }
 };
+
+export const convertIdToPointer = (className: string, id: string): Parse.Object => new Parse.Object(className, { objectId: id });
+export const convertIdsToPointer = (className: string,ids: string[]): Parse.Object[] => {
+  return ids.map((id: string) => convertIdToPointer(className, id));
+};
