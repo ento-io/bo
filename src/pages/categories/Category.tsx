@@ -19,20 +19,27 @@ import { displayDate } from '@/utils/date.utils';
 import { ISelectOption } from '@/types/app.type';
 import UserInfo from '@/containers/users/UserInfos';
 import { getCategoryCategorySelector } from '@/redux/reducers/category.reducer';
-import { deleteCategory, goToCategories } from '@/redux/actions/category.action';
+import { deleteCategory, editCategory, goToCategories } from '@/redux/actions/category.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { ICategory, ITranslatedFields } from '@/types/category.types';
+import { ICategory, ICategoryInput, ITranslatedFields } from '@/types/category.types';
 import { useProtect } from '@/hooks/useProtect';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
 import { useTranslatedValues } from '@/hooks/useTranslatedValues';
 import BooleanIcons from '@/components/BooleanIcons';
+import { getCategoryEntityLabel } from '@/utils/cms.utils';
+import { useToggle } from '@/hooks/useToggle';
+import CategoryForm from '@/containers/categories/CategoryForm';
+import Dialog from '@/components/Dialog';
+
+const CATEGORY_FORM_ID = 'category-form-id';
 
 const Category = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const category = useSelector(getCategoryCategorySelector);
+  const { open: openEditionDialog, toggle: toggleEditionDialog } = useToggle();
 
   const { canDelete, canFind } = useProtect('Category');
 
@@ -45,6 +52,10 @@ const Category = () => {
     {
       label: t('cms:name'),
       value: translatedFields.name,
+    },
+    {
+      label: t('cms:category.categoryFor'),
+      value: getCategoryEntityLabel(category.entity)
     },
     {
       label: t('common:createdAt'),
@@ -67,6 +78,13 @@ const Category = () => {
       value: <BooleanIcons value={category.active} />,
     },
   ];
+
+  
+  const handleSubmitCategory = (values: ICategoryInput) => {
+    dispatch(editCategory(category.objectId, values));
+    toggleEditionDialog();
+  };
+
 
   const handleGoToList = () => {
     if (!canFind) return;
@@ -100,7 +118,7 @@ const Category = () => {
         <>
           <span>{t('cms:category.category')}</span>
           <span css={{ marginRight: 10, marginLeft: 10 }}>-</span>
-          <span>{translatedFields.name}</span>
+          <span>{translatedFields.name} ({getCategoryEntityLabel(category.entity)})</span>
         </>
       )}
       isCard={false}
@@ -110,7 +128,7 @@ const Category = () => {
           // onCreate={handleCreate}
           goToList={handleGoToList}
           onDelete={handleDelete}
-          // onEdit={handleEdit}
+          onEdit={toggleEditionDialog}
           menus={menus}
         />
       }>
@@ -151,6 +169,21 @@ const Category = () => {
           }]}
         />
       </Grid>
+
+      <Dialog
+        title={t('cms:category.editCategory')}
+        open={openEditionDialog}
+        toggle={toggleEditionDialog}
+        maxWidth="md"
+        fullWidth
+        formId={CATEGORY_FORM_ID}
+      >
+        <CategoryForm
+          formId={CATEGORY_FORM_ID}
+          onSubmit={handleSubmitCategory}
+          category={category}
+        />
+      </Dialog>
     </Layout>
   );
 };
