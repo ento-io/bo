@@ -65,6 +65,7 @@
   "save": "Save",
   "edit": "Edit",
   "delete": "Delete",
+  "viewDetails": "View details",
   "deleteThis": "Delete {{value}}",
   "details": "Details",
   "seePreview": "See preview",
