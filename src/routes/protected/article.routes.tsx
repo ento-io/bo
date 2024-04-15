@@ -10,7 +10,7 @@ import { onEnter } from "@/redux/actions/app.action";
 import { onArticleEnter, onArticlesEnter, onCreateArticleEnter, onEditArticleEnter } from "@/redux/actions/article.action";
 import CreateArticle from "@/pages/articles/CreateArticle";
 import EditArticle from "@/pages/articles/EditArticle";
-import { tabRouteSearchParams } from "@/validations/app.validations";
+import { tabAndCategoryRouteSearchParams } from "@/validations/app.validations";
 import ArticleFormLayout from "@/containers/articles/ArticleFormLayout";
 
 export const articlesLayout = createRoute({
@@ -20,7 +20,7 @@ export const articlesLayout = createRoute({
 });
 
 export const articlesRoute = createRoute({
-  validateSearch: (search) => tabRouteSearchParams.parse(search),
+  validateSearch: (search) => tabAndCategoryRouteSearchParams.parse(search),
   getParentRoute: () => articlesLayout,
   beforeLoad: onEnter(onArticlesEnter),
   component: Articles,

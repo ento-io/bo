@@ -51,6 +51,7 @@
       "passwordMin": "Ny {{field}} dia tokony ho 8 isa raha kely indrindra"
     }
   },
+  "translatedDetails": "Tsipiriany nadika",
   "notification": "Notification",
   "notifications": "Fampafahantarana",
   "home": "Fandraisana",
@@ -70,6 +71,7 @@
   "delete": "Fafàna",
   "deleteThis": "Fafàna ny {{value}}",
   "seePreview": "Hijery ny topi-maso",
+  "viewDetails": "Hijery misimisy",
   "details": "Momba azy",
   "owner": "Tompony",
   "price": "Sarany",

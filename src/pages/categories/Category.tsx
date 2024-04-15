@@ -22,7 +22,7 @@ import { getCategoryCategorySelector } from '@/redux/reducers/category.reducer';
 import { deleteCategory, editCategory, goToCategories } from '@/redux/actions/category.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { ICategory, ICategoryInput, ITranslatedFields } from '@/types/category.types';
+import { ICategory, ICategoryInput, ICategoryTranslatedFields } from '@/types/category.types';
 import { useProtect } from '@/hooks/useProtect';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
@@ -44,7 +44,7 @@ const Category = () => {
   const { canDelete, canFind } = useProtect('Category');
 
   // get translated fields depending on the selected language (tabs)
-  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<ITranslatedFields>(category?.translated, ['name']);
+  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<ICategoryTranslatedFields>(category?.translated, ['name']);
 
   if (!category) return null;
 

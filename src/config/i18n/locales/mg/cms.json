@@ -60,8 +60,8 @@
     "categoryEditedSuccessfully": "Sokajy voaova soamantsara",
     "categoryDeletedSuccessfully": "Sokajy voafafa soamantsara",
     "categoryFor": "Sokajy ho an'ny",
-    "categoryForHelper": "Sokajina inona ito sokajy ito (ex: sokajina article, ...)"
-
+    "categoryForHelper": "Sokajina inona ito sokajy ito (ex: sokajina article, ...)",
+    "seeArticles": "Hijery ireo articles"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article voaforona soamantsara",

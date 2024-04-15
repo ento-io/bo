@@ -2,6 +2,8 @@ import { ReactNode, useNavigate } from '@tanstack/react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IconButton, Tooltip } from '@mui/material';
+import { FiClipboard } from 'react-icons/fi';
 import { getCategoryCountSelector, getCategoryCategoriesSelector } from '@/redux/reducers/category.reducer';
 import { createCategory, deleteCategory, editCategory, goToCategory, loadCategories, toggleCategoriesByIds } from '@/redux/actions/category.action';
 import List from '@/components/table/List';
@@ -12,7 +14,7 @@ import i18n from '@/config/i18n';
 import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.type';
 import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
-import { ICategory, ICategoryInput, ITranslatedFields } from '@/types/category.types';
+import { ICategory, ICategoryInput, ICategoryTranslatedFields } from '@/types/category.types';
 import AddFab from '@/components/AddFab';
 import { articlesTabOptions, getCategoryEntityLabel } from '@/utils/cms.utils';
 import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
@@ -23,6 +25,7 @@ import CategoryForm from '@/containers/categories/CategoryForm';
 import { categoriesRoute } from '@/routes/protected/category.routes';
 import { isRecycleBinTab } from '@/utils/app.utils';
 import SearchCategories from '@/containers/categories/SearchCategories';
+import { goToArticles } from '@/redux/actions/article.action';
 
 const CATEGORY_FORM_ID = 'send-email-form-id'
 
@@ -118,6 +121,10 @@ const Categories = () => {
     dispatch(loadCategories(queries));
   }
 
+  const handleGoToArticlesForCategory = useCallback((id: string) => {
+    navigate(goToArticles({ category: id }));
+  }, [navigate])
+
   const handleSubmitCategory = (values: ICategoryInput) => {
     if (selectedCategory) {
       dispatch(editCategory(selectedCategory.objectId, values));
@@ -136,7 +143,7 @@ const Categories = () => {
     const canEdit = canAccessTo(roles, 'Category', 'update');
 
     const categoriesData = categories.map((category: ICategory) => {
-      const name = getTranslatedField<ITranslatedFields>(category.translated, language, 'name')
+      const name = getTranslatedField<ICategoryTranslatedFields>(category.translated, language, 'name')
       // default data
       const data: Record<string, any> = {
         id: category.objectId, // required even if not displayed
@@ -152,7 +159,13 @@ const Categories = () => {
                 onPreview={canPreview ? () => onPreview(category.objectId) : undefined}
                 onEdit={canEdit ? () => onEdit(category) : undefined}
                 value={category.reference}
-              />
+              >
+                <Tooltip title={t('cms:category.seeArticles')}>
+                  <IconButton onClick={() => handleGoToArticlesForCategory(category.objectId)} color="info" css={{ order: -1 }}>
+                    <FiClipboard size={20} />
+                  </IconButton>
+                </Tooltip>
+              </ButtonActions>
             )
         };
 
@@ -160,7 +173,17 @@ const Categories = () => {
     });
 
     return categoriesData;
-  }, [categories, onDelete, onPreview, roles, onEdit, language, canDestroy]);
+  }, [
+    categories,
+    onDelete,
+    onPreview,
+    roles,
+    onEdit,
+    language,
+    canDestroy,
+    t,
+    handleGoToArticlesForCategory
+  ]);
 
   return (
     <>

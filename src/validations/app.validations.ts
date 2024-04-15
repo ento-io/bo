@@ -31,6 +31,10 @@ export const tabRouteSearchParams = z.object({
   tab: z.string().optional(),
 });
 
+export const tabAndCategoryRouteSearchParams = tabRouteSearchParams.extend({
+  category: z.string().optional(),
+});
+
 export const autoCompleteOptionSchema = z.object({
   label: z.string(),
   value: z.record(z.string(), z.string()),

@@ -61,7 +61,8 @@
     "categoryEditedSuccessfully": "Catégorie modifiée avec succès",
     "categoryDeletedSuccessfully": "Catégorie supprimée avec succès",
     "categoryFor": "Catégorie pour",
-    "categoryForHelper": "Cette catégorie est lié à quelle entité (ex: catégorie d'un article, ...)"
+    "categoryForHelper": "Cette catégorie est lié à quelle entité (ex: catégorie d'un article, ...)",
+    "seeArticles": "Voir les articles"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article créé avec succès",

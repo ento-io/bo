@@ -61,7 +61,8 @@
     "categoryEditedSuccessfully": "Category edited successfully",
     "categoryDeletedSuccessfully": "Category deleted successfully",
     "categoryFor": "Category for",
-    "categoryForHelper": "Category for which entity is this for (ex: category of an article, ...)"
+    "categoryForHelper": "Category for which entity is this for (ex: category of an article, ...)",
+    "seeArticles": "See articles"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article created successfully",

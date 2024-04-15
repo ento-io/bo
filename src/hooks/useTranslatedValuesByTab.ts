@@ -20,8 +20,9 @@ type Output = {
 const getFields = <T extends object>(translated: T, keys: string[], tab: Output['tab']) => {
   if (!translated) return {};
 
+  const lang = tab;
   const translatedFields = keys.reduce((acc, key) => {
-    const value = getTranslatedField<T>(translated, tab, key);
+    const value = getTranslatedField<T>(translated, lang, key);
     return { ...acc, [key]: value };
   }, {});
 

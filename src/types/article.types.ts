@@ -4,7 +4,7 @@ import { IUser } from "./user.type";
 import { articleFilterSchema, articleSchema } from "@/validations/article.validations";
 import { IFileCloud } from "./file.type";
 
-export interface ITranslatedFields {
+export interface IArticleTranslatedFields {
   title: string;
   content: string;
 }
@@ -19,7 +19,7 @@ export interface IArticle extends Attributes {
   deletedBy?: IUser;
   deletedAt?: string;
   deleted: boolean;
-  translated: ITranslatedFields;
+  translated: IArticleTranslatedFields;
   bannerImage?: IFileCloud;
   images?: IFileCloud[];
 }

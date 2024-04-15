@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { t } from "i18next";
 import { useSelector } from "react-redux";
 import { Stack } from "@mui/material";
-import { debounce } from "lodash";
 import { IArticle, IArticleInput } from "@/types/article.types"
 import TextField from "@/components/form/fields/TextField";
 import Form from "@/components/form/Form";
@@ -20,12 +19,9 @@ import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import DropzoneField from "@/components/form/dropzone/DropzoneField";
 import CardFormBlock from "@/components/form/CardFormBlock";
 import CheckboxField from "@/components/form/fields/CheckboxField";
-import AutocompleteField from "@/components/form/fields/AutocompleteField";
-import { searchCategoriesForAutocomplete } from "@/redux/actions/category.action";
-import { getTranslatedField } from "@/utils/settings.utils";
-import { ISelectOption } from "@/types/app.type";
-import { ICategory } from "@/types/category.types";
+import { CategoryEntityEnum } from "@/types/category.types";
 import { useTranslatedValuesByTab } from "@/hooks/useTranslatedValuesByTab";
+import CategoriesSearchByEntityField from "../categories/CategoriesSearchByEntityField";
 
 const initialValues = {
   title: '',
@@ -34,11 +30,6 @@ const initialValues = {
   categories: []
 };
 
-type ICategoryOptionValue = {
-  objectId: string;
-}
-type ICategoryOption = ISelectOption<ICategoryOptionValue>;
-
 type Props = {
   onSubmit: (values: IArticleInput) => void;
   article?: IArticle | null;
@@ -46,9 +37,6 @@ type Props = {
 }
 
 const ArticleForm = ({ onSubmit, article, loading }: Props) => {
-  const [categoryOptions, setCategoryOptions] = useState<ICategoryOption[]>([]);
-  const [categoryOptionsLoading, setCategoryOptionsLoading] = useState<boolean>(false);
-
   const language = useSelector(getSettingsLangSelector);
 
   // get translated fields depending on the selected language (tabs)
@@ -75,21 +63,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
   const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
     onSubmit(values);
     reset(initialValues);
-  }
-
-  /** autocomplete search */
-  const handleSearchCategory = debounce(async (search: string) => {
-    setCategoryOptionsLoading(true);
-    const categories = await searchCategoriesForAutocomplete(search) || [];
-    const newOptions = categories.map((category: ICategory) => ({
-      value: {
-        objectId: category.objectId,
-      },
-      label: getTranslatedField(category.translated, language, 'name')
-    }));
-    setCategoryOptions(newOptions);
-    setCategoryOptionsLoading(false);
-  }, 500)
+  };
 
   return (
     <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading}>
@@ -132,35 +106,14 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
         rightHeader={<CheckboxField name="active" isSwitch />}
       />
       <CardFormBlock title={t('common:seo')}>
-        <AutocompleteField<ICategoryOptionValue>
-          name="categories"
-          label="Categories"
-          disableNoOptions
-          loading={categoryOptionsLoading}
-          options={categoryOptions}
-          fullWidth
-          onSearch={handleSearchCategory}
+        <CategoriesSearchByEntityField
+          entity={CategoryEntityEnum.Article}
           multiple
-          // withPreview
-          // renderPreviews={(previews: ISelectOption<ICategoryOptionValue>[], onDelete?: (id: string) => void) =>
-          //   previews.map((preview: any, index: number) => {
-          //     console.log('preview: ', preview);
-          //     return (
-          //       // <Stack key={(preview.label as string) + index} spacing={2} className="flex1">
-          //       //   <Card>
-          //       //     <button
-          //       //         className="flexCenter stretchSelf transparentButton"
-          //       //         onClick={() => onDelete?.(preview.value.objectId)}>
-          //       //         Delete
-          //       //       </button>
-          //       //     <span>{preview.label}x</span>
-          //       //   </Card>
-          //       // </Stack>
-          //     )
-          //   })
-          // }
+          name="categories"
+          label={t('cms:category.category')}
+          fullWidth
         />
-        </CardFormBlock>
+      </CardFormBlock>
 
       {/* images card */}
       <CardFormBlock title={t('images')}>

@@ -13,6 +13,8 @@ import { articleFilterSchema } from '@/validations/article.validations';
 import DateRangePickerField from '@/components/form/fields/DateRangePickerField';
 import TextField from '@/components/form/fields/TextField';
 import AdvancedSearchFields from '@/components/AdvancedSearchFields';
+import CategoriesSearchByEntityField from '../categories/CategoriesSearchByEntityField';
+import { CategoryEntityEnum } from '@/types/category.types';
 
 const ESTIMATE_FILTER_FORM_ID = 'article-filter';
 
@@ -57,6 +59,19 @@ const ArticleAdvancedFilterForm = ({ onSubmit }: Props) => {
                 component: <TextField name="title" placeholder={t('cms:title')} fullWidth />,
               },
               {
+                label: t('cms:category.category'),
+                name: 'category',
+                checked: false,
+                component: (
+                  <CategoriesSearchByEntityField
+                    entity={CategoryEntityEnum.Article}
+                    multiple={false}
+                    name="category"
+                    placeholder={t('cms:category.category')}
+                  />
+                ),
+              },
+              {
                 label: t('common:createdAt'),
                 name: 'createdAt',
                 checked: false,
@@ -69,7 +84,7 @@ const ArticleAdvancedFilterForm = ({ onSubmit }: Props) => {
                 component: <DateRangePickerField name="updatedAt" fullWidth />,
               },
               {
-                label: t('common:user'),
+                label: t('user:user'),
                 name: 'user',
                 checked: false,
                 component: <TextField name="user" placeholder={t('user:nameOrEmail')} fullWidth />,

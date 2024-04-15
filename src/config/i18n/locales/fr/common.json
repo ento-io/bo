@@ -49,6 +49,7 @@
       "passwordMin": "Le mot de passe devrait avoir plus de 8 caractères"
     }
   },
+  "translatedDetails": "Détails traduits",
   "notification": "Notification",
   "notifications": "Notifications",
   "home": "Accueil",
@@ -68,6 +69,7 @@
   "delete": "Supprimer",
   "deleteThis": "Supprimer {{value}}",
   "seePreview": "Voir l'aperçu",
+  "viewDetails": "Voir les détails",
   "details": "Details",
   "owner": "Proprietaire",
   "price": "Prix",

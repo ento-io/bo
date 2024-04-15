@@ -1,6 +1,6 @@
 import { MouseEvent, ReactNode, useState } from 'react';
 
-import { Box, IconButton, Stack } from '@mui/material';
+import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { FiEdit3, FiEye, FiTrash } from 'react-icons/fi';
 
@@ -59,19 +59,25 @@ const ButtonActions = ({
     <Box display="flex" justifyContent="flex-end">
       <Stack direction="row" spacing={1}>
         {onPreview && (
-          <IconButton aria-label="preview" onClick={handlePreview}>
-            <FiEye size={20} />
-          </IconButton>
+          <Tooltip title={t('viewDetails')}>
+            <IconButton aria-label="preview" onClick={handlePreview}>
+              <FiEye size={20} />
+            </IconButton>
+          </Tooltip>
         )}
         {onEdit && (
-          <IconButton aria-label="edit" onClick={handleEdit}>
-            <FiEdit3 size={20} />
-          </IconButton>
+          <Tooltip title={t('edit')}>
+            <IconButton aria-label="edit" onClick={handleEdit}>
+              <FiEdit3 size={20} />
+            </IconButton>
+          </Tooltip>
         )}
         {onDelete && (
-          <IconButton aria-label="delete" onClick={handleDelete} color="error">
-            <FiTrash size={20} />
-          </IconButton>
+          <Tooltip title={t('delete')}>
+            <IconButton aria-label="delete" onClick={handleDelete} color="error">
+              <FiTrash size={20} />
+            </IconButton>
+          </Tooltip>
         )}
         {children}
       </Stack>
