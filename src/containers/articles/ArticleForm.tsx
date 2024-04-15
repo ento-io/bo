@@ -25,6 +25,7 @@ import AutocompleteField from "@/components/form/fields/AutocompleteField";
 import { searchCategoriesForAutocomplete } from "@/redux/actions/category.action";
 import { getTranslatedField } from "@/utils/settings.utils";
 import { ISelectOption } from "@/types/app.type";
+import { ICategory } from "@/types/category.types";
 
 const initialValues = {
   title: '',
@@ -75,10 +76,11 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
     reset(initialValues);
   }
 
+  /** autocomplete search */
   const handleSearchCategory = debounce(async (search: string) => {
     setCategoryOptionsLoading(true);
     const categories = await searchCategoriesForAutocomplete(search) || [];
-    const newOptions = categories.map((category: any) => ({
+    const newOptions = categories.map((category: ICategory) => ({
       value: {
         objectId: category.objectId,
       },
