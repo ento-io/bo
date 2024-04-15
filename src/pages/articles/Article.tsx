@@ -29,6 +29,7 @@ import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs'
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
+import { getTranslatedCategoriesName } from '@/utils/cms.utils';
 
 const Article = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
@@ -47,6 +48,10 @@ const Article = () => {
     {
       label: t('cms:title'),
       value: translatedFields.title,
+    },
+    {
+      label: t('cms:category.categories'),
+      value: getTranslatedCategoriesName(article.categories, tab),
     },
     {
       label: t('common:createdAt'),
