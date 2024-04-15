@@ -12,10 +12,10 @@ import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.ty
 import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
 import { articlesRoute } from '@/routes/protected/article.routes';
-import { IArticle, ITranslatedFields } from '@/types/article.types';
+import { IArticle, IArticleTranslatedFields } from '@/types/article.types';
 import AddFab from '@/components/AddFab';
 import SearchArticles from '@/containers/articles/SearchArticles';
-import { articlesTabOptions } from '@/utils/cms.utils';
+import { articlesTabOptions, getTranslatedCategoriesName } from '@/utils/cms.utils';
 import { isRecycleBinTab } from '@/utils/app.utils';
 import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
 import { getTranslatedField } from '@/utils/settings.utils';
@@ -23,6 +23,7 @@ import UserCell from '@/components/UserCell';
 
 interface Data {
   title: string;
+  categories: string;
   user: string;
   createdAt: string;
   updatedAt: string;
@@ -33,6 +34,10 @@ const headCells: TableHeadCell<keyof Data>[] = [
   {
     id: 'title',
     label: i18n.t('cms:title'),
+  },
+  {
+    id: 'categories',
+    label: i18n.t('cms:category.categories'),
   },
   {
     id: 'user',
@@ -114,11 +119,12 @@ const Articles = () => {
     const canEdit = canAccessTo(roles, 'Article', 'update');
 
     const articlesData = articles.map((article: IArticle) => {
-      const title = getTranslatedField<ITranslatedFields>(article.translated, language, 'title')
+      const title = getTranslatedField<IArticleTranslatedFields>(article.translated, language, 'title')
       // default data
       const data: Record<string, any> = {
         id: article.objectId, // required even if not displayed
         title,
+        categories: getTranslatedCategoriesName(article.categories, language),
         user: <UserCell user={article.user} />,
         createdAt: displayDate(article.createdAt, false, true),
         updatedAt: displayDate(article.updatedAt, false, true),
