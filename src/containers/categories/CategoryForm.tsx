@@ -12,7 +12,7 @@ import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs'
 import { locales } from '@/config/i18n';
 
 import { DEFAULT_LANGUAGE } from '@/utils/constants';
-import { getCategoryFormInitialValues, TRANSLATED_CMS_FIELDS } from '@/utils/cms.utils';
+import { categoryEntityOptions, getCategoryFormInitialValues, TRANSLATED_CMS_FIELDS } from '@/utils/cms.utils';
 import { getTranslatedFormTabErrors } from '@/utils/utils';
 
 import { Lang } from '@/types/setting.type';
@@ -20,6 +20,7 @@ import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
 import { ICategory, ICategoryInput } from '@/types/category.types';
 import { categorySchema } from '@/validations/category.validation';
 import Form from '@/components/form/Form';
+import SelectField from '@/components/form/fields/SelectField';
 
 type Props = {
   formId: string;
@@ -67,6 +68,14 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
           </div>
         ))}
       </div>
+
+      <SelectField
+        name="entity"
+        options={categoryEntityOptions}
+        label={t('cms:category.categoryFor')}
+        helperText={t('cms:category.categoryForHelper')}
+        isClearable
+      />
 
       <CheckboxField name="active" label={t('common:active')} tooltip={t('cms:category.activeCategoryVisible')} />
     </Form>
