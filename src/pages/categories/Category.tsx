@@ -31,6 +31,7 @@ import { getCategoryEntityLabel } from '@/utils/cms.utils';
 import { useToggle } from '@/hooks/useToggle';
 import CategoryForm from '@/containers/categories/CategoryForm';
 import Dialog from '@/components/Dialog';
+import { getServerUrl } from '@/utils/utils';
 
 const CATEGORY_FORM_ID = 'category-form-id';
 
@@ -44,7 +45,7 @@ const Category = () => {
   const { canDelete, canFind } = useProtect('Category');
 
   // get translated fields depending on the selected language (tabs)
-  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<ICategoryTranslatedFields>(category?.translated, ['name']);
+  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<ICategoryTranslatedFields>(category?.translated, ['name', 'slug']);
 
   if (!category) return null;
 
@@ -69,6 +70,13 @@ const Category = () => {
       label: t('common:deletedAt'),
       value: displayDate(category.deletedAt),
       hide: !category.deletedAt
+    },
+  ];
+
+  const seoItems: ISelectOption[] = [
+    {
+      label: `Slug (${t('common:uniqueUrl', { theEntity: t('cms:category.theCategory') })})`,
+      value: getServerUrl() + '/../../' + translatedFields.slug,
     },
   ];
 
@@ -143,6 +151,9 @@ const Category = () => {
           <Stack spacing={3}>
             <Layout cardTitle={t('common:details')}>
               <Items items={infosItems} />
+            </Layout>
+            <Layout cardTitle={t('cms:seo')} cardDescription={t('cms:seoDescription')}>
+              <Items items={seoItems} />
             </Layout>
           </Stack>
         </Grid>
