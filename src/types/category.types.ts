@@ -4,7 +4,7 @@ import { IUser } from "./user.type";
 import { categoryFilterSchema, categorySchema } from "@/validations/category.validation";
 import { ISelectOption } from "./app.type";
 
-export interface ITranslatedFields {
+export interface ICategoryTranslatedFields {
   name: string;
 }
 
@@ -24,7 +24,7 @@ export interface ICategory extends Attributes {
   deletedBy?: IUser;
   deletedAt?: string;
   deleted: boolean;
-  translated: ITranslatedFields;
+  translated: ICategoryTranslatedFields;
   // each category can be linked to an article, a page, product, ...
   entity: CategoryEntityEnum;
 }
