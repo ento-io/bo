@@ -14,7 +14,6 @@ import TextEditorField from "@/components/form/fields/TextEditorField";
 import { getTranslatedFormTabErrors } from "@/utils/utils";
 import { TRANSLATED_CMS_FIELDS, getCmsEditionCmsInitialValues } from "@/utils/cms.utils";
 import TranslatedFormTabs from "@/components/form/translated/TranslatedFormTabs";
-import { Lang } from "@/types/setting.type";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 import { locales } from "@/config/i18n";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
@@ -26,6 +25,7 @@ import { searchCategoriesForAutocomplete } from "@/redux/actions/category.action
 import { getTranslatedField } from "@/utils/settings.utils";
 import { ISelectOption } from "@/types/app.type";
 import { ICategory } from "@/types/category.types";
+import { useTranslatedValuesByTab } from "@/hooks/useTranslatedValues";
 
 const initialValues = {
   title: '',
@@ -51,7 +51,8 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
 
   const language = useSelector(getSettingsLangSelector);
 
-  const [tab, setTab] = useState<Lang>(language);
+  // get translated fields depending on the selected language (tabs)
+  const { onTabChange, tab } = useTranslatedValuesByTab();
 
   const form = useForm<IArticleInput>({
     defaultValues: initialValues,
@@ -89,8 +90,6 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
     setCategoryOptions(newOptions);
     setCategoryOptionsLoading(false);
   }, 500)
-
-  const onTabChange = (value: Lang) => setTab(value);
 
   return (
     <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading}>
