@@ -39,6 +39,8 @@
   "height": "Height",
   "translatedFields": "Translated fields",
   "entity": "Entity",
+  "seo": "SEO",
+  "seoDescription": "SEO (Search Engine Optimization) is the process of affecting the visibility of a website or a web page in a search engine's unpaid results (ex: Google, Bing, ...)",
   "category": {
     "category": "Category",
     "categories": "Categories",
