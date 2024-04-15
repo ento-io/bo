@@ -14,10 +14,9 @@ import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
 import { ICategory, ICategoryInput, ITranslatedFields } from '@/types/category.types';
 import AddFab from '@/components/AddFab';
-import { articlesTabOptions } from '@/utils/cms.utils';
+import { articlesTabOptions, getCategoryEntityLabel } from '@/utils/cms.utils';
 import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
 import { getTranslatedField } from '@/utils/settings.utils';
-import UserCell from '@/components/UserCell';
 import { useToggle } from '@/hooks/useToggle';
 import Dialog from '@/components/Dialog';
 import CategoryForm from '@/containers/categories/CategoryForm';
@@ -29,7 +28,7 @@ const CATEGORY_FORM_ID = 'send-email-form-id'
 
 interface Data {
   name: string;
-  user: string;
+  entity: string;
   createdAt: string;
   updatedAt: string;
   actions: ReactNode;
@@ -41,8 +40,8 @@ const headCells: TableHeadCell<keyof Data>[] = [
     label: i18n.t('cms:name'),
   },
   {
-    id: 'user',
-    label: i18n.t('cms:author'),
+    id: 'entity',
+    label: i18n.t('cms:category.categoryFor'),
     align: 'left',
   },
   {
@@ -119,7 +118,7 @@ const Categories = () => {
     dispatch(loadCategories(queries));
   }
 
-  const handleCreateCategory = (values: ICategoryInput) => {
+  const handleSubmitCategory = (values: ICategoryInput) => {
     if (selectedCategory) {
       dispatch(editCategory(selectedCategory.objectId, values));
       handleCloseDialog();
@@ -142,7 +141,7 @@ const Categories = () => {
       const data: Record<string, any> = {
         id: category.objectId, // required even if not displayed
         name,
-        user: <UserCell user={category.user} />,
+        entity: getCategoryEntityLabel(category.entity),
         createdAt: displayDate(category.createdAt, false, true),
         updatedAt: displayDate(category.updatedAt, false, true),
         actions: canDestroy
@@ -201,7 +200,7 @@ const Categories = () => {
       >
         <CategoryForm
           formId={CATEGORY_FORM_ID}
-          onSubmit={handleCreateCategory}
+          onSubmit={handleSubmitCategory}
           category={selectedCategory}
         />
       </Dialog>
