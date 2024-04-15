@@ -141,24 +141,6 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
           fullWidth
           onSearch={handleSearchCategory}
           multiple
-          // withPreview
-          // renderPreviews={(previews: ISelectOption<ICategoryOptionValue>[], onDelete?: (id: string) => void) =>
-          //   previews.map((preview: any, index: number) => {
-          //     console.log('preview: ', preview);
-          //     return (
-          //       // <Stack key={(preview.label as string) + index} spacing={2} className="flex1">
-          //       //   <Card>
-          //       //     <button
-          //       //         className="flexCenter stretchSelf transparentButton"
-          //       //         onClick={() => onDelete?.(preview.value.objectId)}>
-          //       //         Delete
-          //       //       </button>
-          //       //     <span>{preview.label}x</span>
-          //       //   </Card>
-          //       // </Stack>
-          //     )
-          //   })
-          // }
         />
         </CardFormBlock>
 
