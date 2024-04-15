@@ -38,6 +38,7 @@
   "width": "Width",
   "height": "Height",
   "translatedFields": "Translated fields",
+  "entity": "Entity",
   "category": {
     "category": "Category",
     "categories": "Categories",
@@ -58,7 +59,9 @@
     "searchCategory": "Search category",
     "categoryAddedSuccessfully": "Category added successfully",
     "categoryEditedSuccessfully": "Category edited successfully",
-    "categoryDeletedSuccessfully": "Category deleted successfully"
+    "categoryDeletedSuccessfully": "Category deleted successfully",
+    "categoryFor": "Category for",
+    "categoryForHelper": "Category for which entity is this for (ex: category of an article, ...)"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article created successfully",
