@@ -22,7 +22,7 @@ import { getArticleArticleSelector } from '@/redux/reducers/article.reducer';
 import { deleteArticle, goToAddArticle, goToArticles, goToEditArticle } from '@/redux/actions/article.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { IArticle, ITranslatedFields } from '@/types/article.types';
+import { IArticle, IArticleTranslatedFields } from '@/types/article.types';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
@@ -40,7 +40,7 @@ const Article = () => {
   const { canPreview, canDelete, canCreate, canFind } = useProtect('Article');
 
   // get translated fields depending on the selected language (tabs)
-  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<ITranslatedFields>(article?.translated, ['title', 'content']);
+  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<IArticleTranslatedFields>(article?.translated, ['title', 'content']);
 
   if (!article) return null;
 
