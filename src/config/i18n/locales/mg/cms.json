@@ -58,7 +58,10 @@
     "searchCategory": "Hitady sokajy",
     "categoryAddedSuccessfully": "Sokajy voaforona soamantsara",
     "categoryEditedSuccessfully": "Sokajy voaova soamantsara",
-    "categoryDeletedSuccessfully": "Sokajy voafafa soamantsara"
+    "categoryDeletedSuccessfully": "Sokajy voafafa soamantsara",
+    "categoryFor": "Sokajy ho an'ny",
+    "categoryForHelper": "Sokajina inona ito sokajy ito (ex: sokajina article, ...)"
+
   },
   "messages": {
     "articleCreatedSuccessfully": "Article voaforona soamantsara",
