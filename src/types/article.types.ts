@@ -3,10 +3,15 @@ import { z } from "zod";
 import { IUser } from "./user.type";
 import { articleFilterSchema, articleSchema } from "@/validations/article.validations";
 import { IFileCloud } from "./file.type";
+import { ICategory } from "./category.types";
 
 export interface IArticleTranslatedFields {
   title: string;
   content: string;
+  slug?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  tags?: string;
 }
 
 export interface IArticle extends Attributes {
@@ -21,7 +26,9 @@ export interface IArticle extends Attributes {
   deleted: boolean;
   translated: IArticleTranslatedFields;
   bannerImage?: IFileCloud;
+  previewImage?: IFileCloud;
   images?: IFileCloud[];
+  categories: ICategory[];
 }
 
 export interface IArticleState {
