@@ -50,7 +50,7 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
   // helper text below slug input
   const transformSlugPreview = useCallback(
     (value: string): string => {
-      let text = '../'; // default value
+      let text = '../../'; // default value
       const translatedFieldValue = watch(tab + ':name'); // field to watch and get the change
 
       if (value) {
@@ -92,7 +92,7 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
               variant="outlined"
               transformValuePreview={transformSlugPreview}
               preview={getServerUrl() + '/'}
-              tooltip={t('common:uniqueUrl', { theEntity: t('page:category.theCategory') })}
+              tooltip={t('common:uniqueUrl', { theEntity: t('cms:category.theCategory') })}
             />
           </div>
         ))}
