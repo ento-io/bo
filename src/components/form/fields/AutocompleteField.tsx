@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import AutocompleteInput, { AutocompleteInputProps } from '../inputs/AutocompleteInput';
 import { ISelectOption } from '@/types/app.type';
 
-type Props<T extends Record<string, any>> = {
+export type AutocompleteProps<T extends Record<string, any>> = {
   name: string;
   label?: string;
   previewName?: string;
@@ -21,7 +21,7 @@ const AutocompleteField = <T extends Record<string, any>>({
   previewName,
   onSearch,
   ...otherProps
-}: Props<T>) => {
+}: AutocompleteProps<T>) => {
   const {
     control,
     formState: { errors },
