@@ -22,10 +22,9 @@ import CheckboxField from "@/components/form/fields/CheckboxField";
 import { CategoryEntityEnum } from "@/types/category.types";
 import { useTranslatedValuesByTab } from "@/hooks/useTranslatedValuesByTab";
 import CategoriesSearchByEntityField from "../categories/CategoriesSearchByEntityField";
+import TranslatedSlugField from "../cms/TranslatedSlugField";
 
 const initialValues = {
-  title: '',
-  content: '',
   active: true,
   categories: []
 };
@@ -47,18 +46,22 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
     resolver: zodResolver(articleSchema),
   });
 
-  const { handleSubmit, reset } = form;
+  const { handleSubmit, reset, setValue } = form;
 
   useEffect(() => {
     if (!article) return;
     const init = async () => {
-
       const editionInitialValues = await getCmsEditionCmsInitialValues(article, language);
       reset(editionInitialValues)
     };
 
     init();
   }, [article, reset, language]);
+
+  // change translated slug field value when title is changed
+  const handleTitleChange = (value: string | number) => {
+    setValue(tab + ':slug', value, { shouldValidate: true });
+  };
 
   const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
     onSubmit(values);
@@ -86,13 +89,43 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
                 type="text"
                 variant="outlined"
                 required={locale === DEFAULT_LANGUAGE}
-                // onFieldChange={onTitleChange}
+                onFieldChange={handleTitleChange}
               />
               <TextEditorField
                 name={locale + ':content'}
                 label={t('cms:content')}
-                // sx={sx.formControl}
                 required={locale === DEFAULT_LANGUAGE}
+              />
+
+            {/* slug field */}
+            <TranslatedSlugField tab={tab} locale={locale} />
+
+            <TextField
+              name={locale + ':tags'}
+              label="Tags"
+              fixedLabel
+              type="text"
+              variant="outlined"
+              placeholder={t('common:infoMessages.separateTagsWithComma')}
+              tooltip={t('common:infoMessages.tagsHelper')}
+            /> 
+              <TextField
+                name={locale + ':metaTitle'}
+                label={t('common:metaTitle')}
+                fixedLabel
+                type="text"
+                variant="outlined"
+                tooltip={t('common:infoMessages.metaTitleHelper')}
+              />
+              <TextField
+                name={locale + ':metaDescription'}
+                label={t('common:metaDescription')}
+                fixedLabel
+                type="text"
+                variant="outlined"
+                multiline
+                rows={3}
+                tooltip={t('common:infoMessages.metaDescriptionHelper')}
               />
             </Stack>
           </div>
