@@ -4,7 +4,7 @@ import { IArticle, IArticleInput } from "@/types/article.types";
 import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from "@/validations/file.validation";
 import { getFileFromUrl } from "./file.utils";
 import { IFileCloud } from "@/types/file.type";
-import { CategoryEntityEnum, ICategory, ICategoryEntityOption, ICategoryInput } from "@/types/category.types";
+import { CategoryEntityEnum, ICategory, ICategoryEntityOption, ICategoryInput, ICategoryTranslatedFields } from "@/types/category.types";
 import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";
@@ -198,5 +198,5 @@ export const getCategoryPointersFromIds = (categoryId: string[]): Parse.Object[]
  * @returns 
  */
 export const getTranslatedCategoriesName = (categories: ICategory[], lang: Lang) => {
-  return categories.map((category: ICategory) => getTranslatedField(category.translated, lang, 'name')).join(', ');
+  return categories.map((category: ICategory) => getTranslatedField<ICategoryTranslatedFields>(category.translated, lang, 'name')).join(', ');
 }
