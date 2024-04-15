@@ -84,7 +84,7 @@ const ArticleAdvancedFilterForm = ({ onSubmit }: Props) => {
                 component: <DateRangePickerField name="updatedAt" fullWidth />,
               },
               {
-                label: t('common:user'),
+                label: t('user:user'),
                 name: 'user',
                 checked: false,
                 component: <TextField name="user" placeholder={t('user:nameOrEmail')} fullWidth />,
