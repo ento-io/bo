@@ -48,6 +48,7 @@ const getTranslatedSchema = () => {
 
 export const categorySchema = z.object({
   active: z.boolean(),
+  entity: z.union([z.literal('article'), z.literal('page')]),
   ...getTranslatedSchema(),
 }).transform(formatTranslatedFormValuesToSave);
 
