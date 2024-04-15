@@ -25,7 +25,7 @@ import { searchCategoriesForAutocomplete } from "@/redux/actions/category.action
 import { getTranslatedField } from "@/utils/settings.utils";
 import { ISelectOption } from "@/types/app.type";
 import { ICategory } from "@/types/category.types";
-import { useTranslatedValuesByTab } from "@/hooks/useTranslatedValues";
+import { useTranslatedValuesByTab } from "@/hooks/useTranslatedValuesByTab";
 
 const initialValues = {
   title: '',
