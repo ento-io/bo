@@ -25,7 +25,7 @@ import UsersForEntity from '@/containers/users/UsersForEntity';
 import { ICategory, ICategoryInput, ITranslatedFields } from '@/types/category.types';
 import { useProtect } from '@/hooks/useProtect';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
-import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValues';
+import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import BooleanIcons from '@/components/BooleanIcons';
 import { getCategoryEntityLabel } from '@/utils/cms.utils';
 import { useToggle } from '@/hooks/useToggle';
