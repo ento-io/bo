@@ -26,7 +26,7 @@ import { IArticle, ITranslatedFields } from '@/types/article.types';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
-import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValues';
+import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
 
