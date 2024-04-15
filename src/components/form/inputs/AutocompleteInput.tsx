@@ -256,7 +256,7 @@ const AutocompleteInput = <T extends Record<string, any>>({
           {value.map((value: ISelectOption<T>) => (
             <Card key={value.value.objectId} className="flexRow center" css={{ padding: 4, paddingLeft: 12 }}>
               <Typography>{value.label}</Typography>
-              <IconButton onClick={() => handleMultipleDelete(value.value.objectId)}>
+              <IconButton onClick={() => handleMultipleDelete(value.value.objectId)} css={{ marginLeft: 4 }}>
                 <FiX size={16} />
               </IconButton>
             </Card>
