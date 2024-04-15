@@ -190,3 +190,13 @@ export const getCategoryPointersFromIds = (categoryId: string[]): Parse.Object[]
 
   return categories;
 }
+
+/**
+ * get categories name separated by comma
+ * @param categories 
+ * @param lang 
+ * @returns 
+ */
+export const getTranslatedCategoriesName = (categories: ICategory[], lang: Lang) => {
+  return categories.map((category: ICategory) => getTranslatedField(category.translated, lang, 'name')).join(', ');
+}
