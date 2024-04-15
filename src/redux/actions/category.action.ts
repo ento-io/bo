@@ -5,7 +5,7 @@ import { actionWithLoader, convertTabToFilters } from '@/utils/app.utils';
 import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
-import { clearCategorySlice, deleteCategoryFromCategoriesSlice, deleteCategoriesSlice, loadCategorySlice, loadCategoriesSlice, setCategoriesCountSlice, addCategoryTCategoriesSlice, updateCategoriesByCategorySlice } from '../reducers/category.reducer';
+import { clearCategorySlice, deleteCategoryFromCategoriesSlice, deleteCategoriesSlice, loadCategorySlice, loadCategoriesSlice, setCategoriesCountSlice, addCategoryTCategoriesSlice } from '../reducers/category.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
 import i18n, { locales } from '@/config/i18n';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
@@ -13,14 +13,14 @@ import { IQueriesInput, ITabSearchParams } from '@/types/app.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import { setValues } from '@/utils/parse.utils';
-import { ICategory, ICategoryInput } from '@/types/category.types';
+import { CategoryEntityEnum, ICategory, ICategoryInput } from '@/types/category.types';
 import { categoriesTabOptions } from '@/utils/cms.utils';
 import { goToNotFound } from './app.action';
 import { escapeText } from '@/utils/utils';
 
 export const Category = Parse.Object.extend("Category");
 
-const CATEGORY_PROPERTIES = new Set(['translated', 'active']);
+const CATEGORY_PROPERTIES = new Set(['translated', 'active', 'entity']);
 
 export const getCategory = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
   const article = await Parse.Cloud.run('getCategory', { id, include });
@@ -32,7 +32,14 @@ export const getCategory = async (id: string, include: string[] = []): Promise<P
   return article;
 }
 
-export const searchCategoriesForAutocomplete = async (search: string): Promise<ICategory[]> => {
+/**
+ * search a category for an entity
+ * ex: article, page, product
+ * @param search 
+ * @param entity 
+ * @returns 
+ */
+export const searchCategoriesForAutocomplete = async (search: string, entity = CategoryEntityEnum.Article): Promise<ICategory[]> => {
   let query = new Parse.Query(Category);
 
   // search by translated texts
@@ -53,6 +60,7 @@ export const searchCategoriesForAutocomplete = async (search: string): Promise<I
   const categories =  await query
     .equalTo('deleted', false)
     .equalTo('active', true)
+    .equalTo('entity', entity)
     .limit(100)
     .select('translated')
     .find();
@@ -153,8 +161,8 @@ export const editCategory = (id: string, values: ICategoryInput): any => {
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
     const updatedCategory = await category.save();
     // ------- update store ------ //
-    dispatch(updateCategoriesByCategorySlice(updatedCategory.toJSON() as ICategory));
-    dispatch(setMessageSlice(i18n.t('common:estimates.categoryEditedSuccessfully')));
+    dispatch(loadCategorySlice(updatedCategory.toJSON() as ICategory));
+    dispatch(setMessageSlice(i18n.t('cms:category.categoryEditedSuccessfully')));
   });
 };
 
