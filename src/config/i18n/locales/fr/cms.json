@@ -38,6 +38,7 @@
   "width": "Largeur",
   "height": "Hauteur",
   "translatedFields": "Champs traduits",
+  "entity": "Entité",
   "category": {
     "category": "Categorie",
     "categories": "Categories",
@@ -58,7 +59,9 @@
     "searchCategory": "Rechercher une catégorie",
     "categoryAddedSuccessfully": "Catégorie ajoutée avec succès",
     "categoryEditedSuccessfully": "Catégorie modifiée avec succès",
-    "categoryDeletedSuccessfully": "Catégorie supprimée avec succès"
+    "categoryDeletedSuccessfully": "Catégorie supprimée avec succès",
+    "categoryFor": "Catégorie pour",
+    "categoryForHelper": "Cette catégorie est lié à quelle entité (ex: catégorie d'un article, ...)"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article créé avec succès",
