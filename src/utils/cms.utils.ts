@@ -1,10 +1,10 @@
-import { locales } from "@/config/i18n";
+import i18n, { locales } from "@/config/i18n";
 import { defaultTabOptions } from "./app.utils";
 import { IArticle, IArticleInput } from "@/types/article.types";
 import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from "@/validations/file.validation";
 import { getFileFromUrl } from "./file.utils";
 import { IFileCloud } from "@/types/file.type";
-import { ICategory, ICategoryInput } from "@/types/category.types";
+import { CategoryEntityEnum, ICategory, ICategoryEntityOption, ICategoryInput } from "@/types/category.types";
 import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";
@@ -35,6 +35,22 @@ export const ALL_PAGE_FIELDS = [
   ...PAGE_SINGLE_IMAGE_FIELDS,
   ...PAGE_IMAGES_FIELDS,
 ];
+
+export const categoryEntityOptions: ICategoryEntityOption[] = [
+  {
+    label: i18n.t('cms:article'),
+    value: 'article',
+  },
+  {
+    label: i18n.t('cms:page'),
+    value: 'page',
+  },
+];
+
+export const getCategoryEntityLabel = (entity: CategoryEntityEnum): string => {
+  const entityOption = categoryEntityOptions.find((option) => option.value === entity);
+  return entityOption ? entityOption.label : '';
+}
 
 /**
  * format translated form fields name to data base fields
@@ -154,8 +170,12 @@ export const getCategoryFormInitialValues = (category: ICategory | null | undefi
   }
 
   // ----------- update ----------- //
-  const valuesToEdit = parseSavedTranslatedValuesToForm(category);
-  return valuesToEdit;
+  const translatedValues = parseSavedTranslatedValuesToForm(category);
+  return {
+    ...translatedValues,
+    active: category.active,
+    entity: category.entity
+  };
 };
 
 export const getCategoryPointersFromIds = (categoryId: string[]): Parse.Object[] | void => {
