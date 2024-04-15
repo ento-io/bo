@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 import { Lang } from "@/types/setting.type";
 import { getTranslatedField } from "@/utils/settings.utils";
+import { DEFAULT_LANGUAGE } from "@/utils/constants";
 
 type Output = {
   translatedFields: Record<string, any>,
@@ -39,9 +38,9 @@ const getFields = <T extends object>(translated: T, keys: string[], tab: Output[
  * @returns 
  */
 export const useTranslatedValues = <T extends object>(translated: T, keys: string[] = []): Output => {
-  const language = useSelector(getSettingsLangSelector);
+  // const language = useSelector(getSettingsLangSelector);
 
-  const [tab, setTab] = useState<Lang>(language);
+  const [tab, setTab] = useState<Lang>(DEFAULT_LANGUAGE);
 
   const onTabChange = (value: Lang) => setTab(value);
 
