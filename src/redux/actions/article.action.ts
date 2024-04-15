@@ -57,6 +57,7 @@ export const loadArticles = ({
       locales,
       include: ['categories'],
     });
+    console.log('search: ', search);
 
     // save articles to store (in json)
     const articlesJson = result.results.map((article: any) => article.toJSON());
