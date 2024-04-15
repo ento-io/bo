@@ -16,10 +16,10 @@ const getTranslatedSchema = () => {
     // ------------------------------------ //
 
     // // slug
-    // translatedSchema['slug+' + locale] = z.string({ errorMap }).max(
-    //   100,
-    //   i18n.t('form.error.max', { field: 'Slug', number: 100 }),
-    // );
+    translatedSchema[locale + ':slug'] = z.string({ errorMap }).max(
+      100,
+      i18n.t('form.error.max', { field: 'Slug', number: 100 }),
+    );
     // // tags
     // translatedSchema['tags+' + locale] = z.string({ errorMap }).max(
     //   200,
