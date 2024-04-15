@@ -37,7 +37,7 @@ const getFields = <T extends object>(translated: T, keys: string[], tab: Output[
  * @param keys 
  * @returns 
  */
-export const useTranslatedValues = <T extends object>(translated: T, keys: string[] = []): Output => {
+export const useTranslatedValuesByTab = <T extends object>(translated?: T, keys: string[] = []): Output => {
   // const language = useSelector(getSettingsLangSelector);
 
   const [tab, setTab] = useState<Lang>(DEFAULT_LANGUAGE);
@@ -45,7 +45,7 @@ export const useTranslatedValues = <T extends object>(translated: T, keys: strin
   const onTabChange = (value: Lang) => setTab(value);
 
   return {
-    translatedFields: getFields(translated, keys, tab),
+    translatedFields: translated ? getFields(translated, keys, tab) : {},
     onTabChange,
     tab,
   }
