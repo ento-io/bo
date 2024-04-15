@@ -14,7 +14,7 @@ import i18n from '@/config/i18n';
 import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.type';
 import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
-import { ICategory, ICategoryInput, ITranslatedFields } from '@/types/category.types';
+import { ICategory, ICategoryInput, ICategoryTranslatedFields } from '@/types/category.types';
 import AddFab from '@/components/AddFab';
 import { articlesTabOptions, getCategoryEntityLabel } from '@/utils/cms.utils';
 import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
@@ -143,7 +143,7 @@ const Categories = () => {
     const canEdit = canAccessTo(roles, 'Category', 'update');
 
     const categoriesData = categories.map((category: ICategory) => {
-      const name = getTranslatedField<ITranslatedFields>(category.translated, language, 'name')
+      const name = getTranslatedField<ICategoryTranslatedFields>(category.translated, language, 'name')
       // default data
       const data: Record<string, any> = {
         id: category.objectId, // required even if not displayed
