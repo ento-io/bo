@@ -55,6 +55,7 @@ export const loadArticles = ({
       filters,
       search,
       locales,
+      include: ['categories'],
     });
 
     // save articles to store (in json)
