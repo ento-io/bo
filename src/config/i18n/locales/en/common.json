@@ -48,6 +48,7 @@
       "passwordMin": "Password must be greater than 8 characters"
     }
   },
+  "translatedDetails": "Translated details",
   "notification": "Notification",
   "notifications": "Notifications",
   "home": "Home",

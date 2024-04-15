@@ -49,6 +49,7 @@
       "passwordMin": "Le mot de passe devrait avoir plus de 8 caractères"
     }
   },
+  "translatedDetails": "Détails traduits",
   "notification": "Notification",
   "notifications": "Notifications",
   "home": "Accueil",
