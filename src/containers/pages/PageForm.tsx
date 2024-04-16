@@ -83,6 +83,15 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
           <div key={index} css={{ display: locale === tab ? 'block' : 'none', marginTop: 12 }}>
             <Stack spacing={2}>
               <TextField
+                name={locale + ':name'}
+                label={t('cms:pageName')}
+                fixedLabel
+                type="text"
+                variant="outlined"
+                required={locale === DEFAULT_LANGUAGE}
+                helperText={t('cms:pageNameHelper')}
+              />
+              <TextField
                 name={locale + ':title'}
                 label={t('cms:title')}
                 fixedLabel
@@ -107,7 +116,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
                 type="text"
                 variant="outlined"
                 placeholder={t('common:infoMessages.separateTagsWithComma')}
-                tooltip={t('common:infoMessages.tagsHelper')}
+                helperText={t('common:infoMessages.tagsHelper')}
               /> 
               <TextField
                 name={locale + ':metaTitle'}
@@ -115,7 +124,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
                 fixedLabel
                 type="text"
                 variant="outlined"
-                tooltip={t('common:infoMessages.metaTitleHelper')}
+                helperText={t('common:infoMessages.metaTitleHelper')}
               />
               <TextField
                 name={locale + ':metaDescription'}
@@ -125,7 +134,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
                 variant="outlined"
                 multiline
                 rows={3}
-                tooltip={t('common:infoMessages.metaDescriptionHelper')}
+                helperText={t('common:infoMessages.metaDescriptionHelper')}
               />
             </Stack>
           </div>
@@ -167,7 +176,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
             inputLabel={`${t('common:add')} ${t('common:previewImage')}`}
             maxFiles={1}
             shouldReset={!!page} // can reset input in edition
-            tooltip={t('common:infoMessages.previewImageHelper')}
+            helperText={t('common:infoMessages.previewImageHelper')}
           />
           {/* multiple image upload */}
           <DropzoneField
