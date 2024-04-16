@@ -25,7 +25,7 @@ export const articleFilterSchema = z.object({
   active: z.array(z.boolean().optional()).optional(),
 });
 
-const getTranslatedSchema = () => {
+export const getCMSTranslatedSchema = () => {
   const translatedSchema: Record<string, any> = {};
 
   locales.forEach((locale: string) => {
@@ -80,7 +80,7 @@ export const cmsSchema = z.object({
 
 export const articleSchema = cmsSchema
   .extend({
-    ...getTranslatedSchema(), // translated fields
+    ...getCMSTranslatedSchema(), // translated fields
     categories: z.array(categoryOptionSchema).optional(),
   })
   .transform(formatTranslatedFormValuesToSave);
