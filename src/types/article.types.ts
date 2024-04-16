@@ -4,14 +4,11 @@ import { IUser } from "./user.type";
 import { articleFilterSchema, articleSchema } from "@/validations/article.validations";
 import { IFileCloud } from "./file.type";
 import { ICategory } from "./category.types";
+import { ISEOFields } from "./app.type";
 
-export interface IArticleTranslatedFields {
+export interface IArticleTranslatedFields extends ISEOFields {
   title: string;
   content: string;
-  slug?: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  tags?: string;
 }
 
 export interface IArticle extends Attributes {
