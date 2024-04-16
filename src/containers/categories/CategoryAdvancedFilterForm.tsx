@@ -14,7 +14,8 @@ import AdvancedSearchFields from '@/components/AdvancedSearchFields';
 import { categoryFilterSchema } from '@/validations/category.validation';
 import { CategoryFiltersInput } from '@/types/category.types';
 import SelectField from '@/components/form/fields/SelectField';
-import { categoryEntityOptions } from '@/utils/cms.utils';
+import { activeOptions, categoryEntityOptions } from '@/utils/cms.utils';
+import ToggleButtonsField from '@/components/form/inputs/ToggleButtonsField';
 
 const FILTER_FORM_ID = 'category-filter';
 
@@ -63,6 +64,14 @@ const CategoryAdvancedFilterForm = ({ onSubmit }: Props) => {
                     variant="standard"
                     isClearable
                   />
+                ),
+              },
+              {
+                label: t('common:active'),
+                name: 'active',
+                checked: false,
+                component: (
+                  <ToggleButtonsField name="active" options={activeOptions} isMulti />
                 ),
               },
               {
