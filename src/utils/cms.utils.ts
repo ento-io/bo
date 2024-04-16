@@ -156,6 +156,7 @@ export const getCmsEditionCmsInitialValues = async (
     images,
   };
 
+  // for article
   // array of pointer json to form select option
   if (page.categories) {
     defaultValues.categories = page.categories.map((category: ICategory) => ({
@@ -164,6 +165,11 @@ export const getCmsEditionCmsInitialValues = async (
         objectId: category.objectId,
       }
     }));
+  }
+
+  // for page
+  if (page.category) {
+    defaultValues.category = page.category.objectId;
   }
 
   return defaultValues;
@@ -191,15 +197,30 @@ export const getCategoryFormInitialValues = (category: ICategory | null | undefi
   };
 };
 
-export const getCategoryPointersFromIds = (categoryId: string[]): Parse.Object[] | void => {
-  if (!categoryId) return;
+/**
+ * create a pointer by category id
+ * ex: 'myId' => pointer
+ * @param categoryId 
+ * @returns 
+ */
+export const getCategoryPointer= (categoryId: string): Parse.Object => {
+  // array of pointers
+  const category = new Category();
+  category.id = categoryId;
+  return category;
+}
+
+/**
+ * create a list of pointer by a list of category id
+ * ex: ['myId'] => [pointer]
+ * @param categoryIds 
+ * @returns 
+ */
+export const getCategoryPointersFromIds = (categoryIds: string[]): Parse.Object[] | void => {
+  if (!categoryIds) return;
 
   // array of pointers
-  const categories = categoryId.map((categoryId: string): Parse.Object => {
-    const category = new Category();
-    category.id = categoryId;
-    return category;
-  });
+  const categories = categoryIds.map(getCategoryPointer);
 
   return categories;
 }
