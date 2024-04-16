@@ -97,18 +97,18 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
                 required={locale === DEFAULT_LANGUAGE}
               />
 
-            {/* slug field */}
-            <TranslatedSlugField tab={tab} locale={locale} />
+              {/* slug field */}
+              <TranslatedSlugField tab={tab} locale={locale} />
 
-            <TextField
-              name={locale + ':tags'}
-              label="Tags"
-              fixedLabel
-              type="text"
-              variant="outlined"
-              placeholder={t('common:infoMessages.separateTagsWithComma')}
-              tooltip={t('common:infoMessages.tagsHelper')}
-            /> 
+              <TextField
+                name={locale + ':tags'}
+                label="Tags"
+                fixedLabel
+                type="text"
+                variant="outlined"
+                placeholder={t('common:infoMessages.separateTagsWithComma')}
+                tooltip={t('common:infoMessages.tagsHelper')}
+              /> 
               <TextField
                 name={locale + ':metaTitle'}
                 label={t('common:metaTitle')}
