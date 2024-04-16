@@ -14,13 +14,13 @@ import { IQueriesInput, ITabAndCategorySearchParams } from '@/types/app.type';
 import { goToNotFound } from './app.action';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
-import { ALL_PAGE_FIELDS, pagesTabOptions, getCategoryPointersFromIds } from '@/utils/cms.utils';
+import { ALL_PAGE_FIELDS, pagesTabOptions, getCategoryPointer } from '@/utils/cms.utils';
 import { setValues } from '@/utils/parse.utils';
 import { uploadFormFiles, uploadUpdatedFormFiles } from '@/utils/file.utils';
 
 const Page = Parse.Object.extend("Page");
 
-const ARTICLE_PROPERTIES = new Set(['translated', 'categories', ...ALL_PAGE_FIELDS]);
+const PAGE_PROPERTIES = new Set(['translated', 'category', ...ALL_PAGE_FIELDS]);
 
 export const getPage = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
   const page = await Parse.Cloud.run('getPage', { id, include });
@@ -55,7 +55,7 @@ export const loadPages = ({
       filters,
       search,
       locales,
-      include: ['categories'],
+      include: ['category'],
     });
 
     // save pages to store (in json)
@@ -91,13 +91,13 @@ export const createPage = (values: IPageInput): any => {
       values
     });
 
-    if (values.categories) {
-      values.categories = getCategoryPointersFromIds(values.categories);
+    if (values.category) {
+      values.category = getCategoryPointer(values.category);
     }
 
     const newValues = { ...values, ...uploadedValues };
     
-    setValues(page, newValues, ARTICLE_PROPERTIES);
+    setValues(page, newValues, PAGE_PROPERTIES);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
@@ -136,13 +136,13 @@ export const editPage = (id: string, values: IPageInput): any => {
       values
     });
 
-    if (values.categories) {
-      values.categories = getCategoryPointersFromIds(values.categories);
+    if (values.category) {
+      values.category = getCategoryPointer(values.category);
     }
 
     const newValues = { ...values, ...uploadedValues };
 
-    setValues(page, newValues, ARTICLE_PROPERTIES);
+    setValues(page, newValues, PAGE_PROPERTIES);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
@@ -276,7 +276,7 @@ export const onPageEnter = (route?: any): AppThunkAction => {
     // clear the prev state first
     dispatch(clearPageSlice());
 
-    const page = await getPage(route.params?.id, ['categories']);
+    const page = await getPage(route.params?.id, ['category']);
 
     if (!page) return;
 
@@ -301,7 +301,7 @@ export const onEditPageEnter = (route?: any): AppThunkAction => {
     // clear the prev state first
     dispatch(clearPageSlice());
 
-    const page = await getPage(route.params?.id, ['categories']);
+    const page = await getPage(route.params?.id, ['category']);
 
     if (!page) return;
 
