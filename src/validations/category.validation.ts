@@ -55,6 +55,7 @@ export const categoryFilterSchema = z.object({
   updatedAt: dateForAdvancedSearchSchema,
   user: z.string().optional(),
   entity: z.string().optional(),
+  active: z.array(z.boolean().optional()).optional()
 });
 
 // [
