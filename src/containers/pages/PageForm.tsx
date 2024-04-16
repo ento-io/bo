@@ -141,8 +141,8 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
       <CardFormBlock title={t('common:seo')}>
         <CategoriesSearchByEntityField
           entity={CategoryEntityEnum.Page}
-          multiple
-          name="categories"
+          multiple={false}
+          name="category"
           label={t('cms:category.category')}
           fullWidth
         />
