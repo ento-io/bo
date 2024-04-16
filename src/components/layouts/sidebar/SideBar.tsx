@@ -152,14 +152,14 @@ const SideBar = ({ open, roles, onClose }: Props) => {
           id: PATH_NAMES.articles,
           label: t('cms:articles'),
           onClick: () => navigate(goToArticles()),
-          icon: <FiLayout size={ICON_SIZE} />,
+          icon: <FiFileText size={ICON_SIZE} />,
           className: 'Article',
         },
         {
           id: PATH_NAMES.pages,
           label: t('cms:pages'),
           onClick: () => navigate(goToPages()),
-          icon: <FiFileText size={ICON_SIZE} />,
+          icon: <FiLayout size={ICON_SIZE} />,
           className: 'Page',
         },
         {
