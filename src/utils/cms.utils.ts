@@ -8,6 +8,7 @@ import { CategoryEntityEnum, ICategory, ICategoryEntityOption, ICategoryInput, I
 import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";
+import { ISelectOption } from "@/types/app.type";
 
 export const articlesTabOptions = defaultTabOptions;
 export const categoriesTabOptions = defaultTabOptions;
@@ -34,6 +35,17 @@ export const ALL_PAGE_FIELDS = [
   'category',
   ...PAGE_SINGLE_IMAGE_FIELDS,
   ...PAGE_IMAGES_FIELDS,
+];
+
+export const activeOptions: ISelectOption<boolean>[] = [
+  {
+    label: i18n.t('cms:published'),
+    value: true,
+  },
+  {
+    label: i18n.t('cms:notPublished'),
+    value: false,
+  },
 ];
 
 export const categoryEntityOptions: ICategoryEntityOption[] = [
