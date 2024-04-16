@@ -101,6 +101,15 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
                 required={locale === DEFAULT_LANGUAGE}
                 helperText={t('cms:pageTitleHelper')}
               />
+              <TextField
+                name={locale + ':description'}
+                label={t('common:description')}
+                fixedLabel
+                type="text"
+                variant="outlined"
+                multiline
+                rows={3}
+              />
               <TextEditorField
                 name={locale + ':content'}
                 label={t('cms:content')}
