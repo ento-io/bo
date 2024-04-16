@@ -15,6 +15,8 @@ import TextField from '@/components/form/fields/TextField';
 import AdvancedSearchFields from '@/components/AdvancedSearchFields';
 import CategoriesSearchByEntityField from '../categories/CategoriesSearchByEntityField';
 import { CategoryEntityEnum } from '@/types/category.types';
+import ToggleButtonsField from '@/components/form/inputs/ToggleButtonsField';
+import { activeOptions } from '@/utils/cms.utils';
 
 const ESTIMATE_FILTER_FORM_ID = 'article-filter';
 
@@ -69,6 +71,14 @@ const ArticleAdvancedFilterForm = ({ onSubmit }: Props) => {
                     name="category"
                     placeholder={t('cms:category.category')}
                   />
+                ),
+              },
+              {
+                label: t('common:active'),
+                name: 'active',
+                checked: false,
+                component: (
+                  <ToggleButtonsField name="active" options={activeOptions} isMulti />
                 ),
               },
               {
