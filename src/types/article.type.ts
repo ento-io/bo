@@ -13,7 +13,6 @@ export interface IArticleTranslatedFields extends ISEOFields {
 
 export interface IArticle extends Attributes {
   objectId: string;
-  title: string;
   updatedAt?: string;
   createdAt?: string;
   user: IUser;
