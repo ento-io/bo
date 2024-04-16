@@ -1,3 +1,4 @@
+import { MUITextField } from '@mui/material/TextField';
 import { BadgeProps, PaletteColorOptions, PaletteMode, PaletteOptions, Theme, createTheme } from '@mui/material';
 import { grey, teal } from '@mui/material/colors';
 import { IThemeColors } from '@/types/setting.type';
@@ -272,6 +273,15 @@ const defaultTheme = {
             boxShadow: 'none'
           }
         })
+      }
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiFormHelperText-root': {
+            marginLeft: 0,
+          },
+        }
       }
     },
     MuiAutocomplete: {
