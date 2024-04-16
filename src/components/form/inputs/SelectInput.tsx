@@ -14,13 +14,35 @@ type CustomStyleProps = {
   singleValue?: Record<string, any>;
   multiValue?: Record<string, any>;
 };
-const getCustomStyles = (theme: Theme, width: number | string = '100%', styleProps?: CustomStyleProps) => ({
+const getCustomStyles = (
+  theme: Theme,
+  width: number | string = '100%',
+  variant: 'standard' | 'outlined' = 'outlined',
+  styleProps?: CustomStyleProps
+) => ({
   menu: (styles: any) => ({
     ...styles,
     backgroundColor: theme.palette.mode === 'light' ? '#fff' : theme.palette.background.default,
     color: theme.palette.mode === 'light' ? 'none' : '#fff',
     zIndex: 9999,
     ...styleProps?.menu,
+  }),
+  control: (styles: any) => ({
+    ...styles,
+    // eslint-disable-next-line no-nested-ternary
+    border: variant === 'outlined'
+      ? theme.palette.mode === 'light' ? '1px solid ' + grey[400] : '1px solid #fff'
+      : 'none',
+    // eslint-disable-next-line no-nested-ternary
+    borderBottom: variant === 'outlined'
+      ? 'none'
+      : theme.palette.mode === 'light' ? '1px solid ' + grey[400] : '1px solid #fff',
+    borderRadius: 4,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor: theme.palette.mode === 'light' ? 'none' : theme.palette.background.default,
+    width,
+    ...styleProps?.control,
   }),
   option: (styles: any, state: any) => ({
     ...styles,
@@ -30,17 +52,6 @@ const getCustomStyles = (theme: Theme, width: number | string = '100%', stylePro
     ...styleProps?.option,
   }),
   menuPortal: (styles: any) => ({ ...styles, zIndex: 5 }),
-  control: (styles: any) => ({
-    ...styles,
-    borderBottom: theme.palette.mode === 'light' ? '1px solid grey' : 'none',
-    border: theme.palette.mode === 'light' ? '1px solid ' + grey[400] : '1px solid #fff',
-    borderRadius: 4,
-    paddingTop: 9,
-    paddingBottom: 9,
-    backgroundColor: theme.palette.mode === 'light' ? 'none' : theme.palette.background.default,
-    width,
-    ...styleProps?.control,
-  }),
   singleValue: (styles: any, state: any) => {
     const opacity = state.isDisabled ? 0.5 : 1;
     const transition = 'opacity 300ms';
@@ -68,12 +79,14 @@ const getCustomStyles = (theme: Theme, width: number | string = '100%', stylePro
   }),
 });
 
-type Props = {
+type ICustomSelectOption = ISelectOption<string | number>;
+
+export type ReactSelectProps = {
   isDisabled?: boolean;
   isLoading?: boolean;
   isClearable?: boolean;
   isSearchable?: boolean;
-  options: ISelectOption[];
+  options: ICustomSelectOption[];
   isMulti?: boolean;
   label?: string;
   width?: number | string;
@@ -81,8 +94,9 @@ type Props = {
   placeholder?: string;
   required?: boolean;
   onBlur?: () => void;
+  variant?: 'standard' | 'outlined';
   value: any;
-  onChange: (values: Record<string, any> | Record<string, any>[] | string) => void;
+  onChange: (values: Record<string, any> | Record<string, any>[] | string | number) => void;
   direction?: 'row' | 'column';
   styles?: Record<string, any>;
 };
@@ -101,10 +115,11 @@ const SelectInput = ({
   onChange,
   placeholder,
   styles,
+  variant = 'outlined',
   direction = 'column',
   width = '100%',
   isMulti = false,
-}: Props) => {
+}: ReactSelectProps) => {
   const muiTheme = useTheme();
   const { t } = useTranslation();
 
@@ -115,10 +130,10 @@ const SelectInput = ({
    */
   const formatValue = (value: any) => {
     if (isMulti) {
-      const selectedOptions = options.filter((option: ISelectOption) => value?.includes(option.value));
+      const selectedOptions = options.filter((option: ICustomSelectOption) => value?.includes(option.value));
       return selectedOptions;
     }
-    const selectedOption = options.find((option: ISelectOption) => option.value === value);
+    const selectedOption = options.find((option: ICustomSelectOption) => option.value === value);
     return selectedOption;
   };
 
@@ -126,7 +141,7 @@ const SelectInput = ({
     <Stack direction={direction}>
       {label && <InputLabel label={label} tooltip={tooltip} required={required} sx={{ color: '#000' }} />}
       <Select
-        styles={getCustomStyles(muiTheme, width, styles)}
+        styles={getCustomStyles(muiTheme, width, variant, styles)}
         menuPosition="fixed"
         value={formatValue(value)}
         classNamePrefix="select"
@@ -150,7 +165,7 @@ const SelectInput = ({
 
           // get only the value, not the label
           if (isMulti) {
-            const values = (inputValue as any)?.map((option: ISelectOption) => option.value);
+            const values = (inputValue as any)?.map((option: ICustomSelectOption) => option.value);
             onChange(values);
             return;
           }

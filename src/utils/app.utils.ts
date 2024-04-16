@@ -104,3 +104,23 @@ export const convertTabToFilters = (tabs: IListTabValue[], tabValue: IListTabVal
 
   return newFilters;
 }
+
+/**
+ * tab to always show
+ */
+export const defaultTabOptions = [
+  {
+    label: i18n.t('common:recycleBin'),
+    tab: i18n.t('common:route.recycleBin'),
+    key: 'deleted',
+    value: true,
+    forAdmin: true,
+  },
+];
+
+/**
+ * check if the url has search params ?tab=recycleBin
+ * @param searchParamsTab 
+ * @returns 
+ */
+export const isRecycleBinTab = (searchParamsTab: string): boolean => searchParamsTab === i18n.t('common:route.recycleBin');

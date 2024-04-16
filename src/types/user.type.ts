@@ -33,11 +33,16 @@ export interface IUser extends Attributes {
   objectId: string;
   email: string;
   username?: string;
-  updatedAt?: string;
-  createdAt?: string;
+  updatedAt: string;
+  createdAt: string;
+  deletedAt?: string;
   firstName?: string;
   lastName: string;
   banned?: boolean;
+  deleted: boolean;
+  verified?: boolean;
+  isOnline?: boolean;
+  platform: PlatformEnum;
 }
 
 export interface IUserState {

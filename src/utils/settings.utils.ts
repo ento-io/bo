@@ -64,21 +64,47 @@ export const languagesOptions = locales.map(
   }),
 );
 
+/**
+ * get translated field value from database
+ * ex: { translated: { fr: { title: 'xxx' }, en: { title: '' } } }
+ * => { fr: { title: 'xxx' }}
+ * @param entity 
+ * @param language 
+ * @param field 
+ * @param withInfo 
+ * @returns 
+ */
 export const getDefaultTranslatedField = (
-  entity: Record<string, any>,
+  object: Record<string, any>,
   language: string,
   field: string,
   withInfo = true,
 ): string => {
-  if (entity[language]?.[field]) {
-    return entity[language][field];
+  const { translated } = object;
+  if (translated[language]?.[field]) {
+    return translated[language][field];
   }
 
-  const defaultFieldValue = entity[DEFAULT_LANGUAGE][field];
+  const defaultFieldValue = translated[DEFAULT_LANGUAGE][field];
 
   if (withInfo) {
     return `${defaultFieldValue} (${i18n.t('common:errors.notTranslated')})`;
   }
 
   return defaultFieldValue;
+};
+
+export const getTranslatedField = <T extends Record<string, any>>(
+  translated: T,
+  language: string,
+  field: string,
+): string => {
+  const value = translated[language]?.[field];
+
+  if (!value) {
+    const defaultFieldValue = translated[DEFAULT_LANGUAGE][field];
+    return `${defaultFieldValue} (${i18n.t('common:errors.notTranslated')})`;
+  }
+
+  return translated[language]?.[field];
 };

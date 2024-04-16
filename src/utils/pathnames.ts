@@ -4,6 +4,7 @@ export const PATH_NAMES = {
   home: '/',
   users: '/' + i18n.t('route:users'),
   articles: '/' + i18n.t('route:articles'),
+  categories: '/' + i18n.t('route:categories'),
   admins: '/' + i18n.t('route:admins'),
   login: '/' + i18n.t('route:login'),
   signUp: '/' + i18n.t('route:signup'),
@@ -12,6 +13,7 @@ export const PATH_NAMES = {
   roles: '/' + i18n.t('route:roles'),
   settings: '/' + i18n.t('route:settings'),
   logout: '/' + i18n.t('route:logout'),
+  notFound: '/' + i18n.t('route:notFound'),
   account: {
     root: '/' + i18n.t('route:account'),
     confirmResetPasswordCode: '/' + i18n.t('route:confirmCode'),

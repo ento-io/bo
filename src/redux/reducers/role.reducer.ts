@@ -8,6 +8,7 @@ const initialState: IRoleState = {
   roles: [],
   userRoles: [],
   currentUserRoles: [],
+  isAdmin: false,
 };
 
 export const role = createSlice({
@@ -25,6 +26,9 @@ export const role = createSlice({
     },
     loadCurrentUserRolesSlice: (state: IRoleState, action: PayloadAction<IRole[]>) => {
       state.currentUserRoles = action.payload;
+    },
+    loadCurrentUserIsAdminSlice: (state: IRoleState, action: PayloadAction<boolean>) => {
+      state.isAdmin = action.payload;
     },
     loadRoleSlice: (state: IRoleState, action: PayloadAction<IRole>) => {
       state.role = action.payload;
@@ -78,6 +82,7 @@ export const {
   updateRolesByRoleSlice,
   addRoleSlice,
   loadUserRolesSlice,
+  loadCurrentUserIsAdminSlice,
   clearUserRolesSlice,
   loadCurrentUserRolesSlice,
   clearCurrentUserRolesSlice,
@@ -94,5 +99,6 @@ export const getRoleLoadingSelector = (state: Record<string, any>): boolean => s
 export const getRoleRolesSelector = (state: Record<string, any>): IRole[] => state.role.roles;
 export const getRoleUserRolesSelector = (state: Record<string, any>): IRole[] => state.role.userRoles;
 export const getRoleCurrentUserRolesSelector = (state: Record<string, any>): IRole[] => state.role.currentUserRoles;
+export const getRoleCurrentUserIsAdminSelector = (state: Record<string, any>): boolean => state.role.isAdmin;
 
 export default role.reducer;

@@ -53,6 +53,7 @@ type Props = {
   actions?: ReactNode;
   actionsEmplacement?: 'head' | 'content';
   description?: string | ReactNode;
+  cardDescription?: string;
 };
 
 const Layout = ({
@@ -62,6 +63,7 @@ const Layout = ({
   sx,
   actions,
   description,
+  cardDescription,
   isCard = true,
   actionsEmplacement = 'head',
 }: Props) => {
@@ -84,11 +86,21 @@ const Layout = ({
       )}
       <StyledLayout isCard={isCard}>
         <Box display="flex" justifyContent="space-between">
-          {cardTitle && (
-            <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-              {cardTitle}
-            </Typography>
+          {(cardTitle || cardDescription) && (
+            <Stack>
+              {cardTitle && (
+                <Typography variant="h5" sx={{ fontWeight: 600 }}>
+                  {cardTitle}
+                </Typography>
+              )}
+              {cardDescription && (
+                <Typography css={{ fontSize: 12 }}>
+                  {cardDescription}
+                </Typography>
+              )}
+            </Stack>
           )}
+
           {isCard && actionsEmplacement === 'content' && actions && <Box className="flexRow">{actions}</Box>}
         </Box>
         {children}

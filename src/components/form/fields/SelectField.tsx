@@ -5,34 +5,19 @@ import { isString } from '@/utils/utils';
 
 import { ISelectOption } from '@/types/app.type';
 
-import SelectInput from '../inputs/SelectInput';
+import SelectInput, { ReactSelectProps } from '../inputs/SelectInput';
 
 type Props = {
   name: string;
-  isDisabled?: boolean;
-  isLoading?: boolean;
-  isClearable?: boolean;
-  isSearchable?: boolean;
   options: ISelectOption[];
-  isMulti?: boolean;
-  label?: string;
   helperText?: string;
-  tooltip?: string;
-  required?: boolean;
-};
+} & Omit<ReactSelectProps, 'value' | 'onChange'>;
 
 const SelectField = ({
   name,
-  isDisabled,
-  isLoading,
-  isClearable,
   options,
-  isSearchable,
-  label,
   helperText,
-  tooltip,
-  required,
-  isMulti = false,
+  ...selectProps
 }: Props) => {
   // hooks
   const {
@@ -48,17 +33,10 @@ const SelectField = ({
         <Box>
           <SelectInput
             value={value}
-            isDisabled={isDisabled}
-            isLoading={isLoading}
-            isClearable={isClearable}
-            isSearchable={isSearchable}
             options={options}
             onBlur={onBlur}
             onChange={onChange}
-            isMulti={isMulti}
-            label={label}
-            tooltip={tooltip}
-            required={required}
+            {...selectProps}
           />
           {errors[name] && (
             <FormHelperText error>

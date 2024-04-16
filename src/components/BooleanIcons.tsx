@@ -1,5 +1,5 @@
 import { useTheme } from '@mui/material';
-import { FiCheck, FiX } from 'react-icons/fi';
+import { FaCircleCheck, FaCircleXmark } from 'react-icons/fa6';
 
 type Props = {
   value: boolean;
@@ -7,10 +7,10 @@ type Props = {
 const BooleanIcons = ({ value }: Props) => {
   const theme = useTheme();
   if (value) {
-    return <FiCheck color={theme.palette.success.main} />;
+    return <FaCircleCheck color={theme.palette.success.main} size={22} />;
   }
 
-  return <FiX color={theme.palette.error.main} />;
+  return <FaCircleXmark color={theme.palette.error.main} size={22} />;
 };
 
 export default BooleanIcons;

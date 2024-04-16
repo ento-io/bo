@@ -1,12 +1,13 @@
-import { Box, Button, Chip, Stack, Typography } from '@mui/material';
+import { Box, Button, Chip, Stack, Theme, Tooltip, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { FiCheck, FiPlus } from 'react-icons/fi';
 import { IoWarning } from 'react-icons/io5';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { FaCertificate } from "react-icons/fa6";
 import { ReactNode } from 'react';
 import { useNavigate } from '@tanstack/react-router';
+import { FaCheck, FaCheckDouble } from 'react-icons/fa';
 import ActionsMenu from '@/components/ActionsMenu';
 import BooleanIcons from '@/components/BooleanIcons';
 import Dialog from '@/components/Dialog';
@@ -70,6 +71,11 @@ const User = () => {
       value: displayDate(user.updatedAt),
     },
     {
+      label: t('common:deletedAt'),
+      value: displayDate(user.deletedAt),
+      hide: !user.deletedAt
+    },
+    {
       label: t('user:sex'),
       value: user.sex ? getSexLabelByValue(user.sex) : user.sex,
     },
@@ -109,6 +115,10 @@ const User = () => {
       label: t('user:banned'),
       value: <BooleanIcons value={!!user.banned} />,
     },
+    {
+      label: t('user:accountVerified'),
+      value: <BooleanIcons value={!!user.verified} />,
+    },
   ];
 
   const handleGoToList = () => {
@@ -143,19 +153,35 @@ const User = () => {
       onClick: toggleBanUser,
       display: true,
       label: user.banned ? t('common:activate') : t('user:ban'),
-      icon: user.banned ? <FiCheck /> : <IoWarning />
+      icon: user.banned
+        ? <FiCheck css={(theme: Theme) => ({ color: theme.palette.success.main })} />
+        : <IoWarning css={(theme: Theme) => ({ color: theme.palette.error.main })} />
     },
-  ]
+    {
+      onClick: handleMarkAsSeen,
+      display: true,
+      label: user.seen ? t('markAsUnseen') : t('markAsSeen'),
+      icon: user.seen ? <FaCheck /> : <FaCheckDouble />
+    },
+  ];
 
   return (
     <Layout
-      title={t('user:user')}
+      title={(
+        <>
+          <span css={{ marginRight: 10 }}>{t('user:user')}</span>
+          <span> - </span>
+          <span>{user.lastName}</span>
+          <Tooltip title={t('user:accountVerified')}>
+            <FaCertificate size={16} css={(theme: Theme) => ({ color: theme.palette.info.main, marginLeft: 10 })} />
+          </Tooltip>
+        </>
+      )}
       isCard={false}
       actions={
         <ActionsMenu
           label={user.lastName}
           goToList={handleGoToList}
-          onMarkAsSeen={handleMarkAsSeen}
           menus={menus}
         />
       }>

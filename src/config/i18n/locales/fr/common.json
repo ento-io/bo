@@ -1,7 +1,9 @@
 {
   "article": {
     "article": "Article",
-    "articles": "Articles"
+    "articles": "Articles",
+    "thisArticle": "cet article",
+    "theseArticles": "ces articles"
   },
   "greeting": "Bonjour, {{name}}!",
   "download": "télécharger",
@@ -47,6 +49,7 @@
       "passwordMin": "Le mot de passe devrait avoir plus de 8 caractères"
     }
   },
+  "translatedDetails": "Détails traduits",
   "notification": "Notification",
   "notifications": "Notifications",
   "home": "Accueil",
@@ -66,6 +69,7 @@
   "delete": "Supprimer",
   "deleteThis": "Supprimer {{value}}",
   "seePreview": "Voir l'aperçu",
+  "viewDetails": "Voir les détails",
   "details": "Details",
   "owner": "Proprietaire",
   "price": "Prix",
@@ -143,8 +147,7 @@
     "linkLocationHelper": "Où sur le site mettre le lien de page",
     "sureToDeleteThing": "Etes-vous sûr de vouloir supprimer",
     "enterConfirmAndDelete": "Entrer {{type}} à confirmer et supprimer",
-    "pleaserEnterValue": "Veuillez entre \"{{value}}\" pour confirmer la suppression",
-    "cooperativeAlreadyExist": "Vous avez déjà une coopérative"
+    "pleaserEnterValue": "Veuillez entre \"{{value}}\" pour confirmer la suppression"
   },
   "at": "à",
   "fullDateFormat": "DD/MM/YYYY à HH:mm",
@@ -234,7 +237,19 @@
     "noField": "Pas de {{field}}",
     "cooperativeAlreadyExists": "Une coopérative avec le même nom existe déjà. Veuillez entrez une autre.",
     "badSession": "Session invalide. Veuillez vous reconnecter",
-    "accessDenied": "Accès refusé"
+    "accessDenied": "Accès refusé",
+    "hasNoRightToDelete": "Vous ne pouvez pas supprimer {{value}}",
+    "hasNoRightToUpdate": "Vous ne pouvez pas modifier {{value}}",
+    "hasNoRightToCreate": "Vous ne pouvez pas créer  {{value}}",
+    "hasNoRightToFind": "Vous ne pouvez pas voir {{value}}",
+    "hasNoRightToDoAction": "Vous n'avez pas le droit de faire cette action"
+  },
+  "errorsFromServer": {
+    "invalidFileType": "Type de fichier invalide",
+    "fileSizeTooLarge": "La taille du fichier est trop grande",
+    "missingFiles": "Fichiers manquants",
+    "missingFile": "Fichier manquant",
+    "missingFolderParameter": "Paramètre dossier manquant"
   },
   "totalPrice": "Prix total",
   "place": "Place",
@@ -255,7 +270,10 @@
   "all": "Tout",
   "route": {
     "new": "nouveaux",
-    "all": "tout"
+    "all": "tout",
+    "recycleBin": "corbeille",
+    "administrators": "administrateurs",
+    "categories": "categories"
   },
   "advancedSearch": "Recherche avancée",
   "start": "Début",

@@ -5,7 +5,7 @@ export interface IFileCloud {
 
 export interface IUploadFile {
   folder: string;
-  userId: string;
+  userId?: string;
   sessionToken: string;
   endpoint?: string;
 }

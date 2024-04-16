@@ -41,6 +41,10 @@ export const article = createSlice({
     clearArticleCountSlice: (state: IArticleState) => {
       state.count = 0;
     },
+    deleteArticlesSlice: (state: IArticleState, action: PayloadAction<string[]>) => {
+      const newArticles = state.articles.filter(prevArticle => !action.payload.includes(prevArticle.objectId));
+      state.articles = newArticles;
+    },
   },
 });
 
@@ -53,7 +57,8 @@ export const {
   clearArticlesSlice,
   clearArticleCountSlice,
   addArticleToArticlesSlice,
-  deleteArticleFromArticlesSlice
+  deleteArticleFromArticlesSlice,
+  deleteArticlesSlice,
 } = article.actions;
 
 // ---------------------------------------------- //

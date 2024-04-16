@@ -1,7 +1,9 @@
 {
   "article": {
     "article": "Article",
-    "articles": "Articles"
+    "articles": "Articles",
+    "thisArticle": "This article",
+    "theseArticles": "These articles"
   },
   "download": "Download",
   "regeneratePdf": "Regenerate PDF",
@@ -46,6 +48,7 @@
       "passwordMin": "Password must be greater than 8 characters"
     }
   },
+  "translatedDetails": "Translated details",
   "notification": "Notification",
   "notifications": "Notifications",
   "home": "Home",
@@ -63,6 +66,7 @@
   "save": "Save",
   "edit": "Edit",
   "delete": "Delete",
+  "viewDetails": "View details",
   "deleteThis": "Delete {{value}}",
   "details": "Details",
   "seePreview": "See preview",
@@ -214,7 +218,19 @@
     "noField": "No {{field}}",
     "cooperativeAlreadyExists": "This cooperative's name already exists. Please enter another one.",
     "badSession": "Invalid session. Please login again",
-    "accessDenied": "Access denied"
+    "accessDenied": "Access denied",
+    "hasNoRightToDelete": "You can not delete {{value}}",
+    "hasNoRightToUpdate": "You can not update {{value}}",
+    "hasNoRightToCreate": "You can not create {{value}}",
+    "hasNoRightToFind": "You can not find {{value}}",
+    "hasNoRightToDoAction": "You have no right to do this action"
+  },
+  "errorsFromServer": {
+    "invalidFileType": "Invalid file type",
+    "fileSizeTooLarge": "File size too large",
+    "missingFiles": "Missing files",
+    "missingFile": "Missing file",
+    "missingFolderParameter": "Missing folder parameter"
   },
   "totalPrice": "Total price",
   "place": "Seat",
@@ -235,7 +251,10 @@
   "all": "All",
   "route": {
     "new": "new",
-    "all": "all"
+    "all": "all",
+    "recycleBin": "recycle-bin",
+    "administrators": "administrators",
+    "categories": "categories"
   },
   "advancedSearch": "Advanced search",
   "start": "Start",

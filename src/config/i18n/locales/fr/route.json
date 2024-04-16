@@ -21,7 +21,9 @@
   "emailResetPassword": "mot-de-passe/reinitialiser",
   "edit": "modifier",
   "add": "ajouter",
+  "notFound": "introuvable",
   "administration": "administration",
   "estimates": "devis",
-  "factures": "factures"
+  "factures": "factures",
+  "categories": "categories"
 }

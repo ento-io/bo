@@ -1,11 +1,11 @@
 import Parse, { Attributes } from 'parse';
 
-import { actionWithLoader } from '@/utils/app.utils';
+import { actionWithLoader, convertTabToFilters } from '@/utils/app.utils';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { uploadFileAPI } from '@/utils/file.utils';
 import { canAccessTo, getRolesForUser } from '@/utils/role.utils';
-import { getUserFullName, isUserFromBO } from '@/utils/user.utils';
-import { escapeText, isBoolean } from '@/utils/utils';
+import { getUserFullName, isUserFromBO, usersTabOptions } from '@/utils/user.utils';
+import { escapeText } from '@/utils/utils';
 import { setValues } from '@/utils/parse.utils';
 
 import { ISignUpInput } from '@/types/auth.types';
@@ -19,7 +19,6 @@ import {
   deleteUsersSlice,
   loadUserSlice,
   loadUsersSlice,
-  setUserFiltersSlice,
   setUserLoadingSlice,
   setUsersCountSlice,
   updateUsersByUserSlice,
@@ -44,7 +43,8 @@ import { RootState } from '../store';
 import { SIGNUP_PROPERTIES } from './auth.action';
 import { loadRoles } from './role.action';
 import { PATH_NAMES } from '@/utils/pathnames';
-import { IQueriesInput } from '@/types/app.type';
+import { IQueriesInput, ITabSearchParams } from '@/types/app.type';
+import { goToNotFound } from './app.action';
 
 // ----------------------------------------------------- //
 // ------------------- Parse queries ------------------- //
@@ -99,9 +99,6 @@ export const loadUsers = ({
   search,
 }: IQueriesInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    // user from BO
-    const fromBO = isBoolean(filters?.fromBO);
-
     const params: IUserCloudInput = {
       limit,
       skip,
@@ -109,7 +106,6 @@ export const loadUsers = ({
       order,
       filters,
       search,
-      fromBO
     };
 
     if (filters?.roles && filters.roles.length > 0) {
@@ -121,7 +117,7 @@ export const loadUsers = ({
 
     // get and display user roles depending on the role of the current user
     const users = [];
-    if (fromBO) {
+    if (filters?.fromBO) {
       for (const user of result.results) {
         const rolesForUser = await getRolesForUser(user, false);
         // add roles to user if admin (created from bo)
@@ -272,6 +268,22 @@ export const toggleBanUserById = (id: string, value: boolean): any => {
 };
 
 /**
+ * count all users with seen = false
+ * it's used for notification count
+ * @returns 
+ */
+export const getNewUsersCount = (): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+    const count = await Parse.Cloud.run('getNewUsersCount');
+
+    if (!count) return;
+
+    dispatch(setNotificationsSlice({ user: count }));
+  });
+};
+
+
+/**
  * mark user notification as seen or not seen
  * @param id
  * @returns
@@ -283,19 +295,12 @@ export const toggleUserNotification = (id: string): any => {
     let count = notification?.user ?? 0;
     const storedUser = (state as any)?.user.user;
 
-    const user = await new Parse.Query(Parse.User).equalTo('objectId', id).first();
-
-    if (!user) {
-      throw new Error(i18n.t('user:errors:notFound'));
-    }
-
-    user.set('seen', !user.get('seen'));
-    await user.save();
+    const user = await Parse.Cloud.run('toggleUserSeen', { id });
 
     // increment or decrement notification count
     if (user.get('seen')) {
       count += 1;
-    } else {
+    } else if (count > 0) {
       count -= 1;
     }
 
@@ -363,7 +368,6 @@ export const inviteUser: any = (values: ISignUpInput): any => {
 
 export const sendEmailToUser = (user: IUser, values: SendEmailInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    console.log('user: ', user, 'values: ', values);
     const isSend = await Parse.Cloud.run('sendEmailToUser', values)
 
     if (!isSend) {
@@ -397,7 +401,7 @@ export const onUserLeave = (): any => {
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
-export const onUsersEnter = (): any => {
+export const onUsersEnter = (route: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
@@ -405,8 +409,7 @@ export const onUsersEnter = (): any => {
 
     // redirect to not found page
     if (!canFind) {
-      // dispatch(goToNotFound());
-      dispatch(setErrorSlice(i18n.t('common:errors.accessDenied')))
+      route.navigate(goToNotFound());
       return;
     }
 
@@ -423,12 +426,20 @@ export const onUsersEnter = (): any => {
 
     // TODO: should have admin-only list page
     // if (params.location.search?.from === PlatformEnum.BO) {
-      filters.fromBO = true;
+      // filters.fromBO = true;
     //   filters.roles = [capitalizeFirstLetter(params.location.search.role)];
     // }
 
-    values.filters = filters;
-    dispatch(setUserFiltersSlice(filters))
+    // in "All" tab, we fetch all users other than users from BO (admins)
+    if (route.search.tab === undefined) {
+      values.filters = {
+        ...filters,
+        fromBO: false,
+      }
+    } else {
+      const newFilters = convertTabToFilters(usersTabOptions, route.search.tab, filters);
+      values.filters = newFilters;
+    }
 
     dispatch(loadUsers(values));
   });
@@ -444,7 +455,7 @@ export const onUserEnter = (route?: any): AppThunkAction => {
 
     // redirect to not found page
     if (!canPreview) {
-      // dispatch(goToNotFound());
+      route.navigate(goToNotFound());
       return;
     }
 
@@ -454,7 +465,9 @@ export const onUserEnter = (route?: any): AppThunkAction => {
 
     if (!user) return;
 
-    dispatch(setNotificationsSlice({ user: count - 1 })); // from sidebar
+    if (count > 0) {
+      dispatch(setNotificationsSlice({ user: count - 1 })); // from sidebar
+    }
 
     // save user to store (in json)
     const userJSON = user.toJSON() as IUser;
@@ -473,5 +486,5 @@ export const onUserEnter = (route?: any): AppThunkAction => {
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //
-export const goToUsers = () => ({ to: PATH_NAMES.users });
+export const goToUsers = (search?: ITabSearchParams) => ({ to: PATH_NAMES.users, search });
 export const goToUser = (id: string) => ({ to: PATH_NAMES.users + '/$id', params: { id }});

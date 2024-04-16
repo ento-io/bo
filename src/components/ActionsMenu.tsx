@@ -6,7 +6,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useTranslation } from 'react-i18next';
-import { FaCheckDouble } from 'react-icons/fa';
 import { FiChevronDown, FiEdit3, FiEye, FiList, FiPlus, FiTrash } from 'react-icons/fi';
 
 import { useToggle } from '@/hooks/useToggle';
@@ -56,7 +55,6 @@ export type ActionsMenuProps = {
   onEdit?: () => void;
   onDelete?: () => void;
   goToList?: () => void;
-  onMarkAsSeen?: () => void;
   onCreate?: () => void;
   onPreview?: () => void;
   label?: string;
@@ -68,7 +66,6 @@ const ActionsMenu = ({
   onEdit,
   onDelete,
   goToList,
-  onMarkAsSeen,
   onPreview,
   onCreate,
   label,
@@ -137,12 +134,6 @@ const ActionsMenu = ({
       display: !!onCreate,
       label: t('add'),
       icon: <FiPlus size={20} />
-    },
-    {
-      onClick: onMarkAsSeen,
-      display: !!onMarkAsSeen,
-      label: t('markAsSeen'),
-      icon: <FaCheckDouble size={20} />
     },
     ...menus, // before delete
     {

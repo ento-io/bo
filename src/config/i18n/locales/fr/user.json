@@ -1,4 +1,7 @@
 {
+  "accountVerified": "Compte vérifié",
+  "verified": "Verifié",
+  "unverified": "Non vérifié",
   "fullName": "Nom",
   "birthday": "Date de naissance",
   "firstName": "Prénom",
@@ -126,6 +129,7 @@
   },
   "seeAllNewUsers": "Voir les {{count}} nouvels utilisateurs",
   "searchByNameOrEmail": "Rechercher par nom ou email",
+  "nameOrEmail": "Nom ou email",
   "online": "En ligne",
   "offline": "Hors ligne",
   "createdBy": "Crée par",

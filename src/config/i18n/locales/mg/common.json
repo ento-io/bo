@@ -1,7 +1,9 @@
 {
   "article": {
     "article": "Lahatsoratra",
-    "articles": "Lahatsoratra"
+    "articles": "Lahatsoratra",
+    "thisArticle": "an'io lahatsoratra io",
+    "theseArticles": "an'ireo lahatsoratra ireo"
   },
   "download": "Télécharger",
   "regeneratePdf": "Averina amboarina PDF",
@@ -49,6 +51,7 @@
       "passwordMin": "Ny {{field}} dia tokony ho 8 isa raha kely indrindra"
     }
   },
+  "translatedDetails": "Tsipiriany nadika",
   "notification": "Notification",
   "notifications": "Fampafahantarana",
   "home": "Fandraisana",
@@ -68,6 +71,7 @@
   "delete": "Fafàna",
   "deleteThis": "Fafàna ny {{value}}",
   "seePreview": "Hijery ny topi-maso",
+  "viewDetails": "Hijery misimisy",
   "details": "Momba azy",
   "owner": "Tompony",
   "price": "Sarany",
@@ -221,7 +225,19 @@
     "noField": "Tsy misy {{field}}",
     "cooperativeAlreadyExists": "Efa misy coopérative manana an'io anarana io. Mampidira hafa azafady.",
     "badSession": "Session tsy mety. Miverena miditra indray.",
-    "accessDenied": "Tsy afaka miditra"
+    "accessDenied": "Tsy afaka miditra",
+    "hasNoRightToDelete": "Tsy afaka mamàfa {{value}} ianao",
+    "hasNoRightToUpdate": "Tsy afaka manova {{value}} ianao",
+    "hasNoRightToCreate": "Tsy afaka mamorona {{value}} ianao",
+    "hasNoRightToFind": "Tsy afaka mijery {{value}} ianao",
+    "hasNoRightToDoAction": "Tsy manan-jo io hetsika io ianao"
+  },
+  "errorsFromServer": {
+    "invalidFileType": "Karazana fichier tsy mety",
+    "fileSizeTooLarge": "Lehibe loatra ny angezan'ilay fichier",
+    "missingFiles": "Fichiers tsy ampy",
+    "missingFile": "Fichier tsy ampy",
+    "missingFolderParameter": "Tsy ampy ny dossier"
   },
   "totalPrice": "Vola azo rehetra",
   "place": "Seza",
@@ -243,7 +259,10 @@
   "all": "Rehetra",
   "route": {
     "new": "vaovao",
-    "all": "rehetra"
+    "all": "rehetra",
+    "recycleBin": "dabam-pako",
+    "administrators": "mpandrindra",
+    "categories": "sokajy"
   },
   "advancedSearch": "Fitadiavana lalina",
   "start": "Fiandohana",

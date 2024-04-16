@@ -1,12 +1,34 @@
 import { Attributes } from "parse";
+import { z } from "zod";
 import { IUser } from "./user.type";
+import { articleFilterSchema, articleSchema } from "@/validations/article.validations";
+import { IFileCloud } from "./file.type";
+import { ICategory } from "./category.types";
+
+export interface IArticleTranslatedFields {
+  title: string;
+  content: string;
+  slug?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  tags?: string;
+}
 
 export interface IArticle extends Attributes {
   objectId: string;
   title: string;
   updatedAt?: string;
   createdAt?: string;
-  author: IUser;
+  user: IUser;
+  updatedBy?: IUser;
+  deletedBy?: IUser;
+  deletedAt?: string;
+  deleted: boolean;
+  translated: IArticleTranslatedFields;
+  bannerImage?: IFileCloud;
+  previewImage?: IFileCloud;
+  images?: IFileCloud[];
+  categories: ICategory[];
 }
 
 export interface IArticleState {
@@ -15,3 +37,7 @@ export interface IArticleState {
   articles: IArticle[];
   count: number;
 }
+
+export type IArticleInput = z.infer<typeof articleSchema>;
+export type ArticleFiltersInput = z.infer<typeof articleFilterSchema>;
+

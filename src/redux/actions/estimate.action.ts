@@ -6,15 +6,16 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
 import { addEstimateToEstimatesSlice, deleteEstimateFromEstimatesSlice, deleteEstimatesSlice, loadEstimateSlice, loadEstimatesSlice, markEstimatesAsSeenSlice, setEstimatesCountSlice, updateEstimatesByEstimateSlice } from '../reducers/estimate.reducer';
-import { getAppNotificationsSelector, setErrorSlice, setMessageSlice, setNotificationsSlice } from '../reducers/app.reducer';
+import { getAppNotificationsSelector, setMessageSlice, setNotificationsSlice } from '../reducers/app.reducer';
 import { setValues } from '@/utils/parse.utils';
 import { EstimateInput, IEstimate } from '@/types/estimate.types';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
-import { IQueriesInput } from '@/types/app.type';
+import { IQueriesInput, ITabSearchParams } from '@/types/app.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
 import { estimatesTabOptions } from '@/utils/estimate.utils';
+import { goToNotFound, markAsSeen } from './app.action';
 
 export const Estimate = Parse.Object.extend("Estimate");
 
@@ -66,7 +67,6 @@ export const loadEstimates = ({
   });
 };
 
-
 /**
  * for user security reason, we do not delete the data from db
  * instead we just add a field "deleted" = true
@@ -75,7 +75,16 @@ export const loadEstimates = ({
  * @returns
  */
 export const deleteEstimate = (id: string): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    // --------- access --------- //
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const hasRight = canAccessTo(roles, 'Estimate', 'delete');
+
+    if (!hasRight) {
+      throw Error(i18n.t('common:errors.hasNoRightToDoAction'));
+    }
+  
     const estimate = await getEstimate(id);
 
     if (!estimate) return;
@@ -107,6 +116,14 @@ export const toggleEstimatesByIds = (ids: string[], field: string, value = true)
 
     const estimates = (state as any)?.estimate.estimates ?? [];
 
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const canDelete = canAccessTo(roles, 'Estimate', 'delete');
+    const canUpdate = canAccessTo(roles, 'Estimate', 'updated');
+    const hasRight = field === 'deleted' ? canDelete : canUpdate;
+
+    if (!hasRight) {
+      throw Error(i18n.t('common:errors.hasNoRightToDoAction'));
+    }
     // get only estimate as seen = false for the notifications update
     const estimateSeenIds: string[] = [];
     for (const id of ids) {
@@ -147,7 +164,6 @@ export const createEstimate = (values: EstimateInput): any => {
 
     setValues(estimate, values, ESTIMATE_PROPERTIES);
 
-
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
     // so we use the parse cloud function to do that, instead of a REST API
@@ -160,11 +176,21 @@ export const createEstimate = (values: EstimateInput): any => {
 };
 
 export const editEstimate = (id: string, values: EstimateInput): any => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
-    const estimate = await getEstimate(id);
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    // --------- access --------- //
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const canUpdate = canAccessTo(roles, 'Estimate', 'update');
 
+    if (!canUpdate) {
+      throw new Error(i18n.t('common:errors:hasNoRightToUpdate'));
+    }
+
+    // --------- request --------- //
+    const estimate = await getEstimate(id);
     if (!estimate) return;
 
+    // ------- save to db ------ //
     setValues(estimate, values, ESTIMATE_PROPERTIES);
 
 
@@ -173,23 +199,50 @@ export const editEstimate = (id: string, values: EstimateInput): any => {
     // so we use the parse cloud function to do that, instead of a REST API
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
     const updatedEstimate = await estimate.save();
+
+    // ------- update store ------ //
     dispatch(updateEstimatesByEstimateSlice(updatedEstimate.toJSON() as IEstimate));
     dispatch(setMessageSlice(i18n.t('common:estimates.estimateEditedSuccessfully', { value: updatedEstimate.get('reference') })));
+  });
+};
+
+/**
+ * count all estimates with seen = false
+ * it's used for notification count
+ * @returns 
+ */
+export const getNewEstimatesCount = (): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void | undefined> => {
+    const count = await new Parse.Query(Estimate)
+      .equalTo('seen', false)
+      .equalTo('deleted', false)
+      .limit(100)
+      .count();
+
+    if (!count) return;
+
+    dispatch(setNotificationsSlice({ estimate: count }));
   });
 };
 
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
+/**
+ * load estimates data from database before the page is loaded (in route)
+ * then load it to the store
+ * @param route 
+ * @returns 
+ */
 export const onEstimatesEnter = (route: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const canFind = canAccessTo(roles, 'Estimate', 'find');
+    const hasRight = canAccessTo(roles, 'Estimate', 'find');
 
     // redirect to not found page
-    if (!canFind) {
-      dispatch(setErrorSlice(i18n.t('common:errors.accessDenied')));
+    if (!hasRight) {
+      route.navigate(goToNotFound());
       return;
     }
 
@@ -212,20 +265,42 @@ export const onEstimatesEnter = (route: any): any => {
   });
 };
 
+/**
+ * load estimate data by its id from database before the page is loaded (in route)
+ * then load it to the store
+ * @param route 
+ * @returns 
+ */
 export const onEstimateEnter = (route?: any): AppThunkAction => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    if (!route.params?.id) return ;
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const canPreview = canAccessTo(roles, 'Estimate', 'get');
+    const { id } = route.params;
 
-    const estimate = await getEstimate(route.params?.id, ['updatedBy', 'user']);
+    // redirect to not found page
+    if (!canPreview || !id) {
+      route.navigate(goToNotFound());
+      return;
+    }
 
-    if (!estimate) return;
+    const estimate = await getEstimate(id, ['updatedBy', 'user']);
+    if (!estimate) {
+      route.navigate(goToNotFound());
+      return;
+    };
 
     dispatch(loadEstimateSlice((estimate as Parse.Attributes).toJSON()));
+
+    // set seen as true
+    if (estimate.get('seen') === false) {
+      dispatch(markAsSeen(estimate, 'estimate'));
+    }
   });
 };
 
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //
-export const goToEstimates = () => ({ to: PATH_NAMES.estimates });
+export const goToEstimates = (search?: ITabSearchParams) => ({ to: PATH_NAMES.estimates, search });
 export const goToEstimate = (id: string) => ({ to: PATH_NAMES.estimates + '/$id', params: { id }});

@@ -23,6 +23,7 @@ import { useToggle } from '@/hooks/useToggle';
 import SearchEstimates from '@/containers/estimates/SearchEstimates';
 import EstimateStatus from '@/containers/estimates/EstimateStatus';
 import { estimatesTabOptions } from '@/utils/estimate.utils';
+import { isRecycleBinTab } from '@/utils/app.utils';
 
 const ESTIMATE_FORM_ID = 'send-email-form-id'
 
@@ -31,7 +32,6 @@ interface Data {
   url: string;
   user: string;
   status: string;
-  updatedBy: string;
   createdAt: ReactNode;
   actions: ReactNode;
 }
@@ -52,11 +52,8 @@ const headCells: TableHeadCell<keyof Data>[] = [
   },
   {
     id: 'status',
-    label: 'Status'
-  },
-  {
-    id: 'updatedBy',
-    label: i18n.t('user:updatedBy'),
+    label: 'Status',
+    align: 'center'
   },
   {
     id: 'createdAt',
@@ -76,13 +73,15 @@ const Estimates = () => {
   const estimates = useSelector(getEstimateEstimatesSelector);
   const count = useSelector(getEstimateCountSelector);
   const filters = useSelector(getEstimateFiltersSelector);
-  const searchParams = estimatesRoute.useSearch()
+  const searchParams = estimatesRoute.useSearch();
 
   const roles = useSelector(getRoleCurrentUserRolesSelector);
   const canCreate = canAccessTo(roles, 'Estimate', 'create');
 
   const [selectedEstimate, setSelectedEstimate] = useState<IEstimate | null>(null);
   const { open: isOpenCreation, toggle: toggleOpenCreation } = useToggle();
+
+  const canDestroy = searchParams.tab && isRecycleBinTab(searchParams.tab);
 
   const { t } = useTranslation();
 
@@ -134,7 +133,7 @@ const Estimates = () => {
   const onUpdateData = (queries: IQueriesInput) => {
     // the on tab change is not used here, we use it in on page enter with search params
     const newQueries = { ...queries, filters: { ...filters, ...queries.filters } };
-    dispatch(loadEstimates(newQueries))
+    dispatch(loadEstimates(newQueries));
   }
 
   // table data
@@ -151,31 +150,33 @@ const Estimates = () => {
         url: <a href={estimate.url}>{truncate(estimate.url, { length: 30 })}</a>,
         user: <UserCell user={estimate.user} />,
         status: <EstimateStatus status={estimate.status} />,
-        updatedBy: estimate.updatedBy ? <UserCell user={estimate.updatedBy} /> : '-',
         createdAt: displayDate(estimate.createdAt, false, true),
-        actions:(
-          <ButtonActions
-            onDelete={canDelete ? () => onDelete(estimate) : undefined}
-            onPreview={canPreview ? () => onPreview(estimate.objectId) : undefined}
-            onEdit={canEdit ? () => onEdit(estimate) : undefined}
-            value={estimate.reference}
-          />
-        )
-      };
+        actions: canDestroy
+          ? null
+          : (
+              <ButtonActions
+                onDelete={canDelete ? () => onDelete(estimate) : undefined}
+                onPreview={canPreview ? () => onPreview(estimate.objectId) : undefined}
+                onEdit={canEdit ? () => onEdit(estimate) : undefined}
+                value={estimate.reference}
+              />
+            )
+          };
 
       return data as Data;
     });
 
     return estimatesData;
-  }, [estimates, onDelete, onPreview, roles, onEdit]);
+  }, [estimates, onDelete, onPreview, roles, onEdit, canDestroy]);
 
   return (
     <>
-      <Head title="Estimates" />
+      <Head title={t('common:estimates.estimates')} />
       <List
         tabs={estimatesTabOptions}
         // @see estimates.routes.tsx for search params definition
         defaultFilters={searchParams}
+        enableMultipleSelect={!canDestroy}
         onUpdateData={onUpdateData}
         items={dataTable}
         onDeleteSelected={handleDeleteSelected}

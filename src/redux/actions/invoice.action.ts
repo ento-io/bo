@@ -6,7 +6,7 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
 import { addInvoiceToInvoicesSlice, deleteInvoiceFromInvoicesSlice, deleteInvoicesSlice, loadInvoiceSlice, loadInvoicesSlice, setInvoiceErrorSlice, setInvoicesCountSlice, updateInvoicesByInvoiceSlice } from '../reducers/invoice.reducer';
-import { setErrorSlice, setMessageSlice } from '../reducers/app.reducer';
+import { setMessageSlice } from '../reducers/app.reducer';
 import { setValues } from '@/utils/parse.utils';
 import { DEFAULT_PAGINATION, PAGINATION, SERVER_CUSTOM_ERROR_CODES } from '@/utils/constants';
 import { IQueriesInput } from '@/types/app.type';
@@ -16,6 +16,7 @@ import i18n from '@/config/i18n';
 import { IInvoice, InvoiceInput } from '@/types/invoice.type';
 import { Estimate, loadEstimates } from './estimate.action';
 import { generateAndDownloadInvoicePDFApi } from '@/api/invoice.api';
+import { goToNotFound } from './app.action';
 
 const Invoice = Parse.Object.extend('Invoice');
 
@@ -225,7 +226,7 @@ export const editInvoice = (id: string, values: InvoiceInput): any => {
 // ---------------------------------------- //
 // ------------- on page load ------------- //
 // ---------------------------------------- //
-export const onInvoicesEnter = (): any => {
+export const onInvoicesEnter = (route?: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
@@ -238,7 +239,7 @@ export const onInvoicesEnter = (): any => {
 
     // redirect to not found page
     if (!canFind) {
-      dispatch(setErrorSlice(i18n.t('common:errors.accessDenied')));
+      route.navigate(goToNotFound());
       return;
     }
 
@@ -260,12 +261,24 @@ export const onInvoicesEnter = (): any => {
 };
 
 export const onInvoiceEnter = (route?: any): AppThunkAction => {
-  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
-    if (!route.params?.id) return ;
+  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
+    const state = getState?.();
+    const roles = getRoleCurrentUserRolesSelector(state as any);
+    const canPreview = canAccessTo(roles, 'Invoice', 'get');
+    const { id } = route.params;
+
+    // redirect to not found page
+    if (!canPreview || !id) {
+      route.navigate(goToNotFound());
+      return;
+    }
 
     const invoice = await getInvoice(route.params?.id, ['createdBy', 'updatedBy', 'user']);
 
-    if (!invoice) return;
+    if (!invoice) {
+      route.navigate(goToNotFound());
+      return;
+    };
 
     dispatch(loadInvoiceSlice((invoice as Parse.Attributes).toJSON()));
   });

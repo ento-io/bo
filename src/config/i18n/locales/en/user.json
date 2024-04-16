@@ -1,4 +1,7 @@
 {
+  "accountVerified": "Account verified",
+  "verified": "Verified",
+  "unverified": "Unverified",
   "fullName": "Name",
   "birthday": "Birthday",
   "firstName": "First name",
@@ -124,6 +127,7 @@
   },
   "seeAllNewUsers": "See all {{count}} new users",
   "searchByNameOrEmail": "Search by name or email",
+  "nameOrEmail": "Name or email",
   "online": "Online",
   "offline": "Offline",
   "createdBy": "Created by",

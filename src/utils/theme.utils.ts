@@ -1,4 +1,4 @@
-import { PaletteColorOptions, PaletteMode, PaletteOptions, Theme, createTheme } from '@mui/material';
+import { BadgeProps, PaletteColorOptions, PaletteMode, PaletteOptions, Theme, createTheme } from '@mui/material';
 import { grey, teal } from '@mui/material/colors';
 import { IThemeColors } from '@/types/setting.type';
 import { LAYOUT_CONTENT_PADDING, RESPONSIVE_BREAKPOINT } from './constants';
@@ -129,6 +129,51 @@ const defaultTheme = {
     ].join(','),
   },
   components: {
+    MuiSwitch: {
+      styleOverrides: {
+        root: ({ theme, }: { theme: Theme, ownerState: BadgeProps }) => ({
+          width: 38,
+          height: 20,
+          padding: 0,
+          display: 'flex',
+          '&:active': {
+            '& .MuiSwitch-thumb': {
+              width: 19,
+            },
+            '& .MuiSwitch-switchBase.Mui-checked': {
+              transform: 'translateX(9px)',
+            },
+          },
+          '& .MuiSwitch-switchBase': {
+            padding: 1,
+            '&.Mui-checked': {
+              transform: 'translateX(16px)',
+              color: '#fff',
+              '& + .MuiSwitch-track': {
+                opacity: 1,
+                backgroundColor: theme.palette.mode === 'dark' ? '#177ddc' : '#1890ff',
+              },
+            },
+          },
+          '& .MuiSwitch-thumb': {
+            boxShadow: '0 2px 4px 0 rgb(0 35 11 / 20%)',
+            width: 18,
+            height: 18,
+            borderRadius: 20 / 2,
+            transition: theme.transitions.create(['width'], {
+              duration: 200,
+            }),
+          },
+          '& .MuiSwitch-track': {
+            borderRadius: 20 / 2,
+            opacity: 1,
+            backgroundColor:
+              theme.palette.mode === 'dark' ? 'rgba(255,255,255,.35)' : 'rgba(0,0,0,.25)',
+            boxSizing: 'border-box',
+          },
+        }),
+      }
+    },
     MuiChip: {
       styleOverrides: {
         root: {
@@ -144,6 +189,20 @@ const defaultTheme = {
           paddingLeft: 8,
           paddingRight: 8,
         },
+      },
+    },
+    MuiBadge: {
+      styleOverrides: {
+        badge: ({ theme, ownerState }: { theme: Theme, ownerState: BadgeProps }) => {
+          if (ownerState.overlap === 'rectangular') {
+            return {
+              color: '#fff',
+              top: -2,
+              left: 0,
+              border: `1px solid ${theme.palette.background.paper}`,
+            }
+          }
+        }
       },
     },
     MuiButton: {
@@ -213,6 +272,26 @@ const defaultTheme = {
             boxShadow: 'none'
           }
         })
+      }
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        popper: ({ theme }: { theme: Theme }) => ({
+          '& .MuiAutocomplete-listbox': {
+            '& li': {
+              fontSize: '16px !important',
+              paddingTop: 14 + ' !important',
+              paddingBottom: 14 + ' !important',
+              fontFamily: theme.typography.fontFamily + ' !important',
+              '&:hover': {
+                fontWeight: 500,
+              },
+              '&:not(:last-child)': {
+                borderBottom: '1px solid ' + theme.palette.grey[100] + ' !important',
+              }
+            },
+          }
+        }),
       }
     }
   },
