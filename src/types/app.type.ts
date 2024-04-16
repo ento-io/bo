@@ -160,3 +160,10 @@ export interface IAdvancedSearchOption {
   checked: boolean;
   component: ReactNode;
 }
+
+export interface ISEOFields {
+  slug?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  tags?: string;
+}
