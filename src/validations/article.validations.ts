@@ -22,6 +22,7 @@ export const articleFilterSchema = z.object({
   updatedAt: dateForAdvancedSearchSchema,
   user: z.string().optional(),
   category: categoryOptionSchema.optional(),
+  active: z.array(z.boolean().optional()).optional(),
 });
 
 const getTranslatedSchema = () => {
