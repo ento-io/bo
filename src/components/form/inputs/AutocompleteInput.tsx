@@ -142,7 +142,6 @@ const AutocompleteInput = <T extends Record<string, any>>({
 }: AutocompleteInputProps<T>) => {
 
   const [singleSelectionSelectedValues, setSingleSelectionSelectedValues] = useState<ISelectOption<T>[]>([]);
-  const [inputValue, setInputValue] = useState<string>(value);
   const [dynamicOptions, setDynamicOptions] = useState<ISelectOption<T>[]>([]);
 
   const originalOptions = useMemo(() => [...options], [options]);
@@ -189,12 +188,12 @@ const AutocompleteInput = <T extends Record<string, any>>({
 
   // when taping
   const handleInputChange = (_: SyntheticEvent, value: string, reason?: string) => {
+    if (!onInputChange) return;
     if (reason === 'reset') {
-      setInputValue('');
+      onInputChange('');
       return;
     }
-    setInputValue(value);
-    onInputChange?.(value);
+    onInputChange(value);
   };
 
   return (
@@ -207,7 +206,6 @@ const AutocompleteInput = <T extends Record<string, any>>({
           css={classes.autocomplete}
           className={className}
           value={value}
-          inputValue={inputValue}
           onChange={handleChange}
           onInputChange={handleInputChange}
           options={withPreview ? dynamicOptions : originalOptions}
