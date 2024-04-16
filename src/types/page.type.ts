@@ -15,7 +15,6 @@ export interface IPageTranslatedFields extends ISEOFields {
 
 export interface IPage extends Attributes {
   objectId: string;
-  title: string;
   updatedAt?: string;
   createdAt?: string;
   user: IUser;
@@ -27,7 +26,7 @@ export interface IPage extends Attributes {
   bannerImage?: IFileCloud;
   previewImage?: IFileCloud;
   images?: IFileCloud[];
-  categories: ICategory[];
+  category?: ICategory;
 }
 
 export interface IPageState {
