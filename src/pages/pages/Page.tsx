@@ -29,8 +29,9 @@ import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs'
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
-import { getTranslatedCategoriesName } from '@/utils/cms.utils';
 import { getServerUrl } from '@/utils/utils';
+import { getTranslatedField } from '@/utils/settings.utils';
+import { ICategoryTranslatedFields } from '@/types/category.type';
 
 const Page = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
@@ -51,8 +52,8 @@ const Page = () => {
       value: translatedFields.title,
     },
     {
-      label: t('cms:category.categories'),
-      value: getTranslatedCategoriesName(page.categories, tab),
+      label: t('cms:category.category'),
+      value: getTranslatedField<ICategoryTranslatedFields>(page.category.translated, tab, 'name'),
     },
     {
       label: t('common:createdAt'),
