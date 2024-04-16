@@ -155,7 +155,7 @@ const SideBar = ({ open, roles, onClose }: Props) => {
           className: 'Article',
         },
         {
-          id: PATH_NAMES.estimates,
+          id: PATH_NAMES.categories,
           label: t('cms:category.categories'),
           onClick: () => navigate(goToCategories()),
           icon: <FiLayers size={ICON_SIZE} />,

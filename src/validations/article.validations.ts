@@ -22,6 +22,7 @@ export const articleFilterSchema = z.object({
   updatedAt: dateForAdvancedSearchSchema,
   user: z.string().optional(),
   category: categoryOptionSchema.optional(),
+  active: z.array(z.boolean().optional()).optional(),
 });
 
 const getTranslatedSchema = () => {
@@ -31,7 +32,24 @@ const getTranslatedSchema = () => {
     // ------------------------------------ //
     // ----- optional for all locales ----- //
     // ------------------------------------ //
-
+    // slug
+    translatedSchema[locale + ':slug'] = z.string({ errorMap }).max(
+      100,
+      i18n.t('form.error.max', { field: 'Slug', number: 100 }),
+    );
+    // tags
+    translatedSchema[locale + ':tags'] = z.string({ errorMap }).max(
+      200,
+      i18n.t('form.error.max', { field: 'Tags', number: 200 }),
+    );
+    // metaTitle
+    translatedSchema[locale + ':metaTitle'] = z.string({ errorMap }).max(
+      70,
+      i18n.t('form.error.max', { field: i18n.t('common:metaTitle'), number: 70 }),
+    );
+    translatedSchema[locale + ':metaDescription'] = z.string({ errorMap })
+      .max(170, i18n.t('form.error.max', { field: i18n.t('common:metaDescription'), number: 170 }))
+      .transform((value: string): string => (value ? capitalize(value) : ''));
     // ------------------------------------ //
     // - required only for default locale - //
     // ------------------------------------ //
@@ -40,7 +58,6 @@ const getTranslatedSchema = () => {
         value ? capitalize(value) : '',
       );
       translatedSchema[locale + ':content'] = z.string({ errorMap }).optional().transform(emptyContent);
-
     } else {
       translatedSchema[DEFAULT_LANGUAGE + ':title'] = z.string({ errorMap })
         .min(1, i18n.t('form.error.required', { field: i18n.t('common:title') }))

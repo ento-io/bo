@@ -77,10 +77,11 @@ const classes = {
     padding: '4px 3px',
     marginBottom: 6,
   }),
-  required: {
+  required: (theme: Theme) => ({
     marginRight: 6,
     marginLeft: 6,
-  },
+    color: theme.palette.grey[500],
+  }),
   tabs: {
     '& .MuiTabs-indicator': {
       display: 'flex',
@@ -272,7 +273,7 @@ const TextEditor = ({
       {label && (
         <Typography css={classes.label}>
           {label}
-          {required && <span css={classes.required}>{t('required')}</span>}
+          {required && <span css={classes.required}>({t('required')})</span>}
         </Typography>
       )}
       <Tabs

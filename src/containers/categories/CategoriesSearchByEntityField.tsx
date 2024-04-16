@@ -22,6 +22,10 @@ type Props = {
   multiple?: boolean;
 } & Omit<AutocompleteProps<ICategoryOptionValue>, 'options'>
 
+/**
+ * search a category for an article for example
+ * @returns 
+ */
 const CategoriesSearchByEntityField = ({ entity, name, label, placeholder, multiple = true, ...otherProps }: Props) => {
   const language = useSelector(getSettingsLangSelector);
 

@@ -15,18 +15,16 @@ const getTranslatedSchema = () => {
     // ----- optional for all locales ----- //
     // ------------------------------------ //
 
-    // // slug
-    // translatedSchema['slug+' + locale] = z.string({ errorMap }).max(
-    //   100,
-    //   i18n.t('form.error.max', { field: 'Slug', number: 100 }),
-    // );
-    // // tags
-    // translatedSchema['tags+' + locale] = z.string({ errorMap }).max(
-    //   200,
-    //   i18n.t('form.error.max', { field: 'Tags', number: 200 }),
-    // );
-
-    //
+    // slug
+    translatedSchema[locale + ':slug'] = z.string({ errorMap }).max(
+      100,
+      i18n.t('form.error.max', { field: 'Slug', number: 100 }),
+    );
+    // tags
+    translatedSchema[locale + ':tags'] = z.string({ errorMap }).max(
+      200,
+      i18n.t('form.error.max', { field: 'Tags', number: 200 }),
+    );
 
     // ------------------------------------ //
     // - required only for default locale - //
@@ -56,6 +54,8 @@ export const categoryFilterSchema = z.object({
   createdAt: dateForAdvancedSearchSchema,
   updatedAt: dateForAdvancedSearchSchema,
   user: z.string().optional(),
+  entity: z.string().optional(),
+  active: z.array(z.boolean().optional()).optional(),
 });
 
 // [

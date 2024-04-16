@@ -38,7 +38,7 @@ const AdvancedSearchFields = ({ fields = [] }: Props) => {
               css={{ '& .MuiFormControlLabel-label': { fontSize: 14, marginLeft: 8 } }}
             />
             {option.checked && (
-              <div css={{ marginBottom: 8 }}>
+              <div css={{ marginBottom: 8, marginTop: 3 }}>
                 {/* display the input when the checkbox is checked */}
                 {option.component}
               </div>

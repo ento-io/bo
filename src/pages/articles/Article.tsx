@@ -30,6 +30,7 @@ import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
 import { getTranslatedCategoriesName } from '@/utils/cms.utils';
+import { getServerUrl } from '@/utils/utils';
 
 const Article = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
@@ -65,6 +66,25 @@ const Article = () => {
       label: t('common:deletedAt'),
       value: displayDate(article.deletedAt),
       hide: !article.deletedAt
+    },
+  ];
+
+  const seoItems: ISelectOption[] = [
+    {
+      label: `Slug (${t('common:uniqueUrl', { theEntity: t('cms:category.theCategory') })})`,
+      value: translatedFields.slug ? getServerUrl() + '/../../' + translatedFields.slug : '',
+    },
+    {
+      label: 'Tags',
+      value: translatedFields.tags,
+    },
+    {
+      label: t('common:metaTitle'),
+      value: translatedFields.metaTitle,
+    },
+    {
+      label: t('common:metaDescription'),
+      value: translatedFields.metaDescription,
     },
   ];
 
@@ -142,6 +162,9 @@ const Article = () => {
           <Stack spacing={3}>
             <Layout cardTitle={t('common:details')}>
               <Items items={infosItems} />
+            </Layout>
+            <Layout cardTitle={t('cms:seo')} cardDescription={t('cms:seoDescription')}>
+              <Items items={seoItems} />
             </Layout>
             <Layout>
               <TextEditor value={translatedFields.content} editable={false} />
