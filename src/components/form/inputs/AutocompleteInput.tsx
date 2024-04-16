@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { ReactNode, SyntheticEvent, useEffect, useMemo, useState } from 'react';
 
-import { FiX } from 'react-icons/fi';
+import { FiSearch, FiX } from 'react-icons/fi';
 import TextFieldInput from './TextFieldInput';
 import { ISelectOption } from '@/types/app.type';
 
@@ -106,18 +106,19 @@ export type AutocompleteInputProps<T extends Record<string, any>> = {
   options: any[];
   onChange: (value: any) => void;
   placeholder?: string;
-  onChangeList?: (value: ISelectOption<T>[]) => void;
+  onChangeList?: (value: ISelectOption<T>[]) => void; // update the data in the preview list
   loading?: boolean;
-  withPreview?: boolean;
+  withPreview?: boolean; // preview the selected options
   left?: ReactNode | string;
   right?: ReactNode;
   renderPreviews?: (values: ISelectOption<T>[], handleDelete?: (id: string) => void) => ReactNode;
-  onInputChange?: (value: any) => void;
+  onInputChange?: (value: string) => void;
   fullWidth?: boolean;
   inputClassName?: string;
   className?: string;
-  disableNoOptions?: boolean;
+  disableNoOptions?: boolean; // no options message where no option found (mainly for search)
   multiple?: boolean;
+  isSearch?: boolean; // to display a search icon
 } & Omit<MUIAutocompleteProps<any, any, any, any>, 'renderInput' | 'onChange' | 'onInputChange'>;
 
 const AutocompleteInput = <T extends Record<string, any>>({
@@ -136,6 +137,7 @@ const AutocompleteInput = <T extends Record<string, any>>({
   fullWidth,
   inputClassName,
   className,
+  isSearch = false,
   multiple = false,
   disableNoOptions = true,
   ...props
@@ -228,9 +230,9 @@ const AutocompleteInput = <T extends Record<string, any>>({
               {...params}
               placeholder={placeholder}
               label={label}
-              left={left}
               right={right}
               className={classes.input}
+              left={isSearch ? <FiSearch /> : left}
             />
           )}
           PopperComponent={AutocompletePopper(disableNoOptions)}
