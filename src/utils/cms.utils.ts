@@ -135,6 +135,19 @@ export const parseSavedTranslatedValuesToForm = (
   return newValues;
 };
 
+/**
+ * category format for select option
+ * @param language 
+ * @returns 
+ */
+const getCategoryInputValue = (language: Lang) => (category: ICategory) => {
+  return {
+    label: getTranslatedField(category.translated, language, 'name'),
+    value: {
+      objectId: category.objectId,
+    }
+  }
+}
 export const getCmsEditionCmsInitialValues = async (
   page: IArticle | null | undefined,
   language: Lang,
@@ -159,17 +172,12 @@ export const getCmsEditionCmsInitialValues = async (
   // for article
   // array of pointer json to form select option
   if (page.categories) {
-    defaultValues.categories = page.categories.map((category: ICategory) => ({
-      label: getTranslatedField(category.translated, language, 'name'),
-      value: {
-        objectId: category.objectId,
-      }
-    }));
+    defaultValues.categories = page.categories.map(getCategoryInputValue(language));
   }
 
   // for page
   if (page.category) {
-    defaultValues.category = page.category.objectId;
+    defaultValues.category = getCategoryInputValue(language)(page.category);
   }
 
   return defaultValues;
