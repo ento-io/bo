@@ -59,7 +59,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
   }, [page, reset, language]);
 
   // change translated slug field value when title is changed
-  const handleTitleChange = (value: string | number) => {
+  const handlePageNameChange = (value: string | number) => {
     setValue(tab + ':slug', value, { shouldValidate: true });
   };
 
@@ -90,6 +90,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
                 variant="outlined"
                 required={locale === DEFAULT_LANGUAGE}
                 helperText={t('cms:pageNameHelper')}
+                onFieldChange={handlePageNameChange}
               />
               <TextField
                 name={locale + ':title'}
@@ -98,7 +99,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
                 type="text"
                 variant="outlined"
                 required={locale === DEFAULT_LANGUAGE}
-                onFieldChange={handleTitleChange}
+                helperText={t('cms:pageTitleHelper')}
               />
               <TextEditorField
                 name={locale + ':content'}
