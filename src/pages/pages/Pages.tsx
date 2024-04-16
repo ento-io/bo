@@ -15,15 +15,16 @@ import { pagesRoute } from '@/routes/protected/page.routes';
 import { IPage, IPageTranslatedFields } from '@/types/page.type';
 import AddFab from '@/components/AddFab';
 import SearchPages from '@/containers/pages/SearchPages';
-import { pagesTabOptions, getTranslatedCategoriesName } from '@/utils/cms.utils';
+import { pagesTabOptions } from '@/utils/cms.utils';
 import { isRecycleBinTab } from '@/utils/app.utils';
 import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
 import { getTranslatedField } from '@/utils/settings.utils';
 import UserCell from '@/components/UserCell';
+import { ICategoryTranslatedFields } from '@/types/category.type';
 
 interface Data {
   title: string;
-  categories: string;
+  category: string;
   user: string;
   createdAt: string;
   updatedAt: string;
@@ -36,8 +37,8 @@ const headCells: TableHeadCell<keyof Data>[] = [
     label: i18n.t('cms:title'),
   },
   {
-    id: 'categories',
-    label: i18n.t('cms:category.categories'),
+    id: 'category',
+    label: i18n.t('cms:category.category'),
   },
   {
     id: 'user',
@@ -124,7 +125,7 @@ const Pages = () => {
       const data: Record<string, any> = {
         id: page.objectId, // required even if not displayed
         title,
-        categories: getTranslatedCategoriesName(page.categories, language),
+        category: getTranslatedField<ICategoryTranslatedFields>(page.category.translated, language, 'name'),
         user: <UserCell user={page.user} />,
         createdAt: displayDate(page.createdAt, false, true),
         updatedAt: displayDate(page.updatedAt, false, true),
