@@ -8,7 +8,9 @@ import { ISEOFields } from "./app.type";
 
 export interface IPageTranslatedFields extends ISEOFields {
   title: string;
+  name: string;
   content: string;
+  description?: string;
 }
 
 export interface IPage extends Attributes {
