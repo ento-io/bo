@@ -6,7 +6,7 @@ import AutocompleteField, { AutocompleteProps } from "@/components/form/fields/A
 import { searchCategoriesForAutocomplete } from "@/redux/actions/category.action";
 import { getTranslatedField } from "@/utils/settings.utils";
 import { ISelectOption } from "@/types/app.type";
-import { ICategory, ICategoryTypeEntity } from "@/types/category.types";
+import { ICategory, ICategoryTypeEntity } from "@/types/category.type";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 
 type ICategoryOptionValue = {

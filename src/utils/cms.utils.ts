@@ -1,10 +1,10 @@
 import i18n, { locales } from "@/config/i18n";
 import { defaultTabOptions } from "./app.utils";
-import { IArticle, IArticleInput } from "@/types/article.types";
+import { IArticle, IArticleInput } from "@/types/article.type";
 import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from "@/validations/file.validation";
 import { getFileFromUrl } from "./file.utils";
 import { IFileCloud } from "@/types/file.type";
-import { CategoryEntityEnum, ICategory, ICategoryEntityOption, ICategoryInput, ICategoryTranslatedFields } from "@/types/category.types";
+import { CategoryEntityEnum, ICategory, ICategoryEntityOption, ICategoryInput, ICategoryTranslatedFields } from "@/types/category.type";
 import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";

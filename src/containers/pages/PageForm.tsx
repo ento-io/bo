@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "i18next";
 import { useSelector } from "react-redux";
 import { Stack } from "@mui/material";
-import { IPage, IPageInput } from "@/types/page.types"
+import { IPage, IPageInput } from "@/types/page.type"
 import TextField from "@/components/form/fields/TextField";
 import Form from "@/components/form/Form";
 import { pageSchema } from "@/validations/page.validations";
@@ -19,7 +19,7 @@ import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import DropzoneField from "@/components/form/dropzone/DropzoneField";
 import CardFormBlock from "@/components/form/CardFormBlock";
 import CheckboxField from "@/components/form/fields/CheckboxField";
-import { CategoryEntityEnum } from "@/types/category.types";
+import { CategoryEntityEnum } from "@/types/category.type";
 import { useTranslatedValuesByTab } from "@/hooks/useTranslatedValuesByTab";
 import CategoriesSearchByEntityField from "../categories/CategoriesSearchByEntityField";
 import TranslatedSlugField from "../cms/TranslatedSlugField";

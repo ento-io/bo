@@ -22,7 +22,7 @@ import { getPagePageSelector } from '@/redux/reducers/page.reducer';
 import { deletePage, goToAddPage, goToPages, goToEditPage } from '@/redux/actions/page.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { IPage, IPageTranslatedFields } from '@/types/page.types';
+import { IPage, IPageTranslatedFields } from '@/types/page.type';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';

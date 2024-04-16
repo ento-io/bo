@@ -13,7 +13,7 @@ import { getAppErrorSelector } from '@/redux/reducers/app.reducer';
 import { getUserLoadingSelector } from '@/redux/reducers/user.reducer';
 
 import { COLORS } from '@/utils/constants';
-import { ILoginInput } from '@/types/auth.types';
+import { ILoginInput } from '@/types/auth.type';
 import { loginSchema } from '@/validations/auth.validation';
 
 const LoginForm = () => {

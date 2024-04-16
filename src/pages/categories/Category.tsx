@@ -22,7 +22,7 @@ import { getCategoryCategorySelector } from '@/redux/reducers/category.reducer';
 import { deleteCategory, editCategory, goToCategories } from '@/redux/actions/category.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { ICategory, ICategoryInput, ICategoryTranslatedFields } from '@/types/category.types';
+import { ICategory, ICategoryInput, ICategoryTranslatedFields } from '@/types/category.type';
 import { useProtect } from '@/hooks/useProtect';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';

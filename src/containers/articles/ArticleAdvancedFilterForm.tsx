@@ -8,13 +8,13 @@ import Form from '@/components/form/Form';
 
 import { useToggle } from '@/hooks/useToggle';
 
-import { ArticleFiltersInput } from '@/types/article.types';
+import { ArticleFiltersInput } from '@/types/article.type';
 import { articleFilterSchema } from '@/validations/article.validations';
 import DateRangePickerField from '@/components/form/fields/DateRangePickerField';
 import TextField from '@/components/form/fields/TextField';
 import AdvancedSearchFields from '@/components/AdvancedSearchFields';
 import CategoriesSearchByEntityField from '../categories/CategoriesSearchByEntityField';
-import { CategoryEntityEnum } from '@/types/category.types';
+import { CategoryEntityEnum } from '@/types/category.type';
 import ToggleButtonsField from '@/components/form/inputs/ToggleButtonsField';
 import { activeOptions } from '@/utils/cms.utils';
 

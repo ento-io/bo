@@ -18,7 +18,7 @@ import { COLORS } from '@/utils/constants';
 import AuthLink from './AuthLink';
 import { PATH_NAMES } from '@/utils/pathnames';
 import { emailSchema } from '@/validations/auth.validation';
-import { EmailInput } from '@/types/auth.types';
+import { EmailInput } from '@/types/auth.type';
 
 const SendEmailResetPassword = () => {
   const { t } = useTranslation(['user']);

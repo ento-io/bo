@@ -3,7 +3,7 @@ import { z } from "zod";
 import { IUser } from "./user.type";
 import { articleFilterSchema, articleSchema } from "@/validations/article.validations";
 import { IFileCloud } from "./file.type";
-import { ICategory } from "./category.types";
+import { ICategory } from "./category.type";
 import { ISEOFields } from "./app.type";
 
 export interface IPageTranslatedFields extends ISEOFields {

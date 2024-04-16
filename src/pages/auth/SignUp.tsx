@@ -8,7 +8,7 @@ import Head from '@/components/Head';
 import { signUp } from '@/redux/actions/auth.action';
 
 import AuthLink from './AuthLink';
-import { ISignUpInput } from '@/types/auth.types';
+import { ISignUpInput } from '@/types/auth.type';
 import SignUpForm from '@/containers/auth/SignUpForm';
 import { PATH_NAMES } from '@/utils/pathnames';
 

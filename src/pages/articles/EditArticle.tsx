@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import ArticleForm from "@/containers/articles/ArticleForm";
 import { deleteArticle, editArticle, goToAddArticle, goToArticle, goToArticles } from "@/redux/actions/article.action";
 import { getArticleArticleSelector } from "@/redux/reducers/article.reducer";
-import { IArticleInput } from "@/types/article.types";
+import { IArticleInput } from "@/types/article.type";
 import ActionsMenu from "@/components/ActionsMenu";
 import Head from "@/components/Head";
 import Layout from "@/components/layouts/Layout";

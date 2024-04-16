@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IPage, IPageState } from '@/types/page.types';
+import { IPage, IPageState } from '@/types/page.type';
 
 const initialState: IPageState = {
   loading: false,

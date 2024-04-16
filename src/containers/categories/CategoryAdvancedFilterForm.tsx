@@ -12,7 +12,7 @@ import DateRangePickerField from '@/components/form/fields/DateRangePickerField'
 import TextField from '@/components/form/fields/TextField';
 import AdvancedSearchFields from '@/components/AdvancedSearchFields';
 import { categoryFilterSchema } from '@/validations/category.validation';
-import { CategoryFiltersInput } from '@/types/category.types';
+import { CategoryFiltersInput } from '@/types/category.type';
 import SelectField from '@/components/form/fields/SelectField';
 import { activeOptions, categoryEntityOptions } from '@/utils/cms.utils';
 import ToggleButtonsField from '@/components/form/inputs/ToggleButtonsField';

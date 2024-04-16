@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import PageForm from "../../containers/pages/PageForm";
 import { createPage, goToPage, goToPages } from "@/redux/actions/page.action";
 import { getPagePageSelector } from "@/redux/reducers/page.reducer";
-import { IPageInput } from "@/types/page.types";
+import { IPageInput } from "@/types/page.type";
 import Layout from "@/components/layouts/Layout";
 import ActionsMenu from "@/components/ActionsMenu";
 import Head from "@/components/Head";

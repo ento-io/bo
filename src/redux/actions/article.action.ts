@@ -8,7 +8,7 @@ import { PATH_NAMES } from '@/utils/pathnames';
 import { clearArticleSlice, deleteArticleFromArticlesSlice, deleteArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
 import i18n, { locales } from '@/config/i18n';
-import { IArticle, IArticleInput } from '@/types/article.types';
+import { IArticle, IArticleInput } from '@/types/article.type';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { IQueriesInput, ITabAndCategorySearchParams } from '@/types/app.type';
 import { goToNotFound } from './app.action';

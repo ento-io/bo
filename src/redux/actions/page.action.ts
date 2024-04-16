@@ -8,7 +8,7 @@ import { PATH_NAMES } from '@/utils/pathnames';
 import { clearPageSlice, deletePageFromPagesSlice, deletePagesSlice, loadPageSlice, loadPagesSlice, setPagesCountSlice } from '../reducers/page.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
 import i18n, { locales } from '@/config/i18n';
-import { IPage, IPageInput } from '@/types/page.types';
+import { IPage, IPageInput } from '@/types/page.type';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { IQueriesInput, ITabAndCategorySearchParams } from '@/types/app.type';
 import { goToNotFound } from './app.action';

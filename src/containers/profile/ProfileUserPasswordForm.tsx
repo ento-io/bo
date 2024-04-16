@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import PasswordField from '@/components/form/fields/PasswordField';
 import Form from '@/components/form/Form';
 import { changePasswordSchema } from '@/validations/auth.validation';
-import { IChangePasswordInput } from '@/types/auth.types';
+import { IChangePasswordInput } from '@/types/auth.type';
 
 type Props = {
   formId: string;
