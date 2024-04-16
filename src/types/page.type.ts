@@ -1,7 +1,7 @@
 import { Attributes } from "parse";
 import { z } from "zod";
 import { IUser } from "./user.type";
-import { articleFilterSchema, articleSchema } from "@/validations/article.validations";
+import { pageFilterSchema, pageSchema } from "@/validations/page.validations";
 import { IFileCloud } from "./file.type";
 import { ICategory } from "./category.type";
 import { ISEOFields } from "./app.type";
@@ -35,6 +35,6 @@ export interface IPageState {
   count: number;
 }
 
-export type IPageInput = z.infer<typeof articleSchema>;
-export type PageFiltersInput = z.infer<typeof articleFilterSchema>;
+export type IPageInput = z.infer<typeof pageSchema>;
+export type PageFiltersInput = z.infer<typeof pageFilterSchema>;
 
