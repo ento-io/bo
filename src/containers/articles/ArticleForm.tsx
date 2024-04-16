@@ -107,7 +107,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
               type="text"
               variant="outlined"
               placeholder={t('common:infoMessages.separateTagsWithComma')}
-              tooltip={t('common:infoMessages.tagsHelper')}
+              helperText={t('common:infoMessages.tagsHelper')}
             /> 
               <TextField
                 name={locale + ':metaTitle'}
@@ -115,7 +115,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
                 fixedLabel
                 type="text"
                 variant="outlined"
-                tooltip={t('common:infoMessages.metaTitleHelper')}
+                helperText={t('common:infoMessages.metaTitleHelper')}
               />
               <TextField
                 name={locale + ':metaDescription'}
@@ -125,7 +125,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
                 variant="outlined"
                 multiline
                 rows={3}
-                tooltip={t('common:infoMessages.metaDescriptionHelper')}
+                helperText={t('common:infoMessages.metaDescriptionHelper')}
               />
             </Stack>
           </div>
@@ -166,7 +166,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             inputLabel={`${t('common:add')} ${t('common:previewImage')}`}
             maxFiles={1}
             shouldReset={!!article} // can reset input in edition
-            tooltip={t('common:infoMessages.previewImageHelper')}
+            helperText={t('common:infoMessages.previewImageHelper')}
           />
           {/* multiple image upload */}
           <DropzoneField
