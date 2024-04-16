@@ -4,6 +4,7 @@ export const PATH_NAMES = {
   home: '/',
   users: '/' + i18n.t('route:users'),
   articles: '/' + i18n.t('route:articles'),
+  pages: '/' + i18n.t('route:pages'),
   categories: '/' + i18n.t('route:categories'),
   admins: '/' + i18n.t('route:admins'),
   login: '/' + i18n.t('route:login'),
