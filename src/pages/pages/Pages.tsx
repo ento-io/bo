@@ -125,7 +125,9 @@ const Pages = () => {
       const data: Record<string, any> = {
         id: page.objectId, // required even if not displayed
         title,
-        category: getTranslatedField<ICategoryTranslatedFields>(page.category.translated, language, 'name'),
+        category: page.category
+          ? getTranslatedField<ICategoryTranslatedFields>(page.category.translated, language, 'name')
+          : '',
         user: <UserCell user={page.user} />,
         createdAt: displayDate(page.createdAt, false, true),
         updatedAt: displayDate(page.updatedAt, false, true),
