@@ -13,6 +13,8 @@ import TextField from '@/components/form/fields/TextField';
 import AdvancedSearchFields from '@/components/AdvancedSearchFields';
 import { categoryFilterSchema } from '@/validations/category.validation';
 import { CategoryFiltersInput } from '@/types/category.types';
+import SelectField from '@/components/form/fields/SelectField';
+import { categoryEntityOptions } from '@/utils/cms.utils';
 
 const FILTER_FORM_ID = 'category-filter';
 
@@ -50,6 +52,19 @@ const CategoryAdvancedFilterForm = ({ onSubmit }: Props) => {
         <Form formId={FILTER_FORM_ID} form={form} onSubmit={handleSubmit(onSubmitHandler)}>
           <AdvancedSearchFields
             fields={[
+              {
+                label: t('cms:category.categoryFor'),
+                name: 'entity',
+                checked: false,
+                component: (
+                  <SelectField
+                    name="entity"
+                    options={categoryEntityOptions}
+                    variant="standard"
+                    isClearable
+                  />
+                ),
+              },
               {
                 label: t('common:createdAt'),
                 name: 'createdAt',
