@@ -26,6 +26,8 @@
   "activePageVisible": "une page active est visible pour les utilisateurs",
   "pageName": "Nom de la page",
   "pageNameHelper": "Le nom de la page est affiché dans un lien par exemple, et aussi le slug est généré automatiquement par le nom",
+  "pageTitleHelper": "Le titre de la page est affiché sur la page tout en haut",
+
   "otherPages": "Autres pages",
   "pagesHelper": "Données d'autres pages à afficher sur la page actuelle",
   "previewImage": "Aperçu de l'image",
