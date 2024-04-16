@@ -1,10 +1,5 @@
 {
-  "article": {
-    "article": "Article",
-    "articles": "Articles",
-    "thisArticle": "cet article",
-    "theseArticles": "ces articles"
-  },
+  "webSite": "Site web",
   "greeting": "Bonjour, {{name}}!",
   "download": "télécharger",
   "regeneratePdf": "Regénerer PDF",
