@@ -53,7 +53,7 @@ const Page = () => {
     },
     {
       label: t('cms:category.category'),
-      value: getTranslatedField<ICategoryTranslatedFields>(page.category.translated, tab, 'name'),
+      value: page.category ? getTranslatedField<ICategoryTranslatedFields>(page.category.translated, tab, 'name') : '',
     },
     {
       label: t('common:createdAt'),
