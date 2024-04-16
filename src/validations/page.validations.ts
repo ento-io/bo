@@ -11,6 +11,6 @@ export const pageFilterSchema = articleFilterSchema.extend({
 export const pageSchema = cmsSchema
   .extend({
     ...getCMSTranslatedSchema(CategoryEntityEnum.Page), // translated fields
-    category: categoryOptionSchema,
+    category: categoryOptionSchema.optional(),
   })
   .transform(formatTranslatedFormValuesToSave);
