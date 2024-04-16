@@ -5,7 +5,7 @@ import { grey } from '@mui/material/colors';
 import List from '@mui/material/List';
 import { useTranslation } from 'react-i18next';
 import { FaLockOpen } from 'react-icons/fa';
-import { FiChevronRight, FiChevronUp, FiClipboard, FiHome, FiSettings, FiUsers , FiCloudSnow, FiPrinter, FiLayers} from 'react-icons/fi';
+import { FiChevronRight, FiChevronUp, FiHome, FiSettings, FiUsers , FiCloudSnow, FiPrinter, FiLayers, FiFileText, FiLayout} from 'react-icons/fi';
 
 import { useNavigate, useRouterState , RouterState } from '@tanstack/react-router';
 import { canAccessTo } from '@/utils/role.utils';
@@ -19,6 +19,7 @@ import { goToArticles } from '@/redux/actions/article.action';
 import { goToEstimates } from '@/redux/actions/estimate.action';
 import { goToInvoices } from '@/redux/actions/invoice.action';
 import { goToCategories } from '@/redux/actions/category.action';
+import { goToPages } from '@/redux/actions/page.action';
 
 const TEXT_COLOR = grey[700];
 /**
@@ -145,14 +146,21 @@ const SideBar = ({ open, roles, onClose }: Props) => {
       ],
     },
     {
-      title: 'Site web',
+      title: t('common:webSite'),
       subMenus: [
         {
           id: PATH_NAMES.articles,
-          label: t('common:article.articles'),
+          label: t('cms:articles'),
           onClick: () => navigate(goToArticles()),
-          icon: <FiClipboard size={ICON_SIZE} />,
+          icon: <FiLayout size={ICON_SIZE} />,
           className: 'Article',
+        },
+        {
+          id: PATH_NAMES.pages,
+          label: t('cms:pages'),
+          onClick: () => navigate(goToPages()),
+          icon: <FiFileText size={ICON_SIZE} />,
+          className: 'Page',
         },
         {
           id: PATH_NAMES.categories,
