@@ -9,6 +9,7 @@ import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";
 import { ISelectOption } from "@/types/app.type";
+import { IPage, IPageInput } from "@/types/page.type";
 
 export const articlesTabOptions = defaultTabOptions;
 export const pagesTabOptions = defaultTabOptions;
@@ -149,9 +150,9 @@ const getCategoryInputValue = (language: Lang) => (category: ICategory) => {
   }
 }
 export const getCmsEditionCmsInitialValues = async (
-  page: IArticle | null | undefined,
+  page: IArticle | IPage | null | undefined,
   language: Lang,
-): Promise<IArticleInput | undefined> => {
+): Promise<IArticleInput | IPageInput | undefined> => {
   if (!page) return;
   const formattedTranslatedValues = parseSavedTranslatedValuesToForm(page);
 
