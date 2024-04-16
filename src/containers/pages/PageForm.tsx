@@ -138,7 +138,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
         description={t('cms:activePageVisible')}
         rightHeader={<CheckboxField name="active" isSwitch />}
       />
-      <CardFormBlock title={t('cms:category')}>
+      <CardFormBlock title={t('cms:category.category')}>
         <CategoriesSearchByEntityField
           entity={CategoryEntityEnum.Page}
           multiple={false}
