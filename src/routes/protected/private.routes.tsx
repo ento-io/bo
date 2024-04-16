@@ -16,6 +16,7 @@ import rolesRoute from "./role.routes";
 import estimateRoutes, { estimatesLayout } from "./estimate.routes";
 import categoryRoutes, { categoriesLayout } from "./category.routes";
 import invoiceRoutes, { invoicesLayout } from "./invoice.routes";
+import pageRoutes, { pagesLayout } from "./page.routes";
 
 /**
  * add id to pathless route (sub layouts)
@@ -85,6 +86,7 @@ const privateRoutes = privateLayout.addChildren([
   homeRoute,
   // use addChildren in the root because of type errors
   articlesLayout.addChildren(articleRoutes),
+  pagesLayout.addChildren(pageRoutes),
   usersLayout.addChildren(userRoutes),
   profileRoute,
   settingsRoute,
