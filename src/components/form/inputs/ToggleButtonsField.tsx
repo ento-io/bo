@@ -72,11 +72,11 @@ const ToggleButtonsField = ({ name, label, helperText, isMulti, options, ...togg
           >
             {options.map((option, index: number) => (
               <ToggleButton
-              value={option.value}
-              aria-label={option.label}
-              key={option.label + index}
-              css={classes.toggleButton}
-            >
+                value={option.value}
+                aria-label={option.label}
+                key={option.label + index}
+                css={classes.toggleButton}
+              >
                 <Typography>{option.label}</Typography>
               </ToggleButton>
             ))}
