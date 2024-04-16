@@ -74,7 +74,7 @@ export const createArticle = (values: IArticleInput): any => {
     const hasRight = canAccessTo(roles, 'Article', 'create');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToCreate', { value: i18n.t('common:article.thisArticle') }));
+      throw Error(i18n.t('common:errors.hasNoRightToCreate', { value: i18n.t('cms:thisArticle') }));
     }
 
     const currentUser = await Parse.User.currentAsync();
@@ -116,7 +116,7 @@ export const editArticle = (id: string, values: IArticleInput): any => {
     const hasRight = canAccessTo(roles, 'Article', 'update');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('common:article.thisArticle') }));
+      throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('cms:thisArticle') }));
     }
 
     const currentUser = await Parse.User.currentAsync();
@@ -168,7 +168,7 @@ export const deleteArticle = (id: string,): any => {
     const hasRight = canAccessTo(roles, 'Article', 'delete');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('common:article.thisArticle') }));
+      throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('cms:thisArticle') }));
     }
 
     // --------- request --------- //
@@ -206,9 +206,9 @@ export const toggleArticlesByIds = (ids: string[], field: string, value = true):
 
     if (!hasRight) {
       if (isDelete) {
-        throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('common:article.theseArticles') }));
+        throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('cms:theseArticles') }));
       } else {
-        throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('common:article.theseArticles') }));
+        throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('cms:theseArticles') }));
       }
     }
 
