@@ -6,6 +6,7 @@
   "page": "Page",
   "thisPage": "Ce page",
   "published": "Publié",
+  "notPublished": "Non publié",
   "publish": "Publier",
   "noToPublish": "Ne pas publier",
   "pageFrom": "Message de {{user}}",
