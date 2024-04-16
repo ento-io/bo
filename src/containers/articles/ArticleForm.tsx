@@ -143,7 +143,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
           entity={CategoryEntityEnum.Article}
           multiple
           name="categories"
-          label={t('cms:category.category')}
+          label={t('cms:category.categories')}
           fullWidth
         />
       </CardFormBlock>
