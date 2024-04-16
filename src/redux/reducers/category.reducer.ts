@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ICategory, ICategoryState } from '@/types/category.types';
+import { ICategory, ICategoryState } from '@/types/category.type';
 
 const initialState: ICategoryState = {
   loading: false,

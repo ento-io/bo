@@ -8,7 +8,7 @@ import { getUserFullName, isUserFromBO, usersTabOptions } from '@/utils/user.uti
 import { escapeText } from '@/utils/utils';
 import { setValues } from '@/utils/parse.utils';
 
-import { ISignUpInput } from '@/types/auth.types';
+import { ISignUpInput } from '@/types/auth.type';
 import { ProfileUserInfoInput, IUser, SendEmailInput, IUserCloudInput } from '@/types/user.type';
 import i18n from '@/config/i18n';
 import { AppDispatch, AppThunkAction } from '@/redux/store';

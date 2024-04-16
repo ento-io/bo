@@ -5,38 +5,38 @@ import { actionWithLoader, convertTabToFilters } from '@/utils/app.utils';
 import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
-import { clearArticleSlice, deleteArticleFromArticlesSlice, deleteArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
+import { clearPageSlice, deletePageFromPagesSlice, deletePagesSlice, loadPageSlice, loadPagesSlice, setPagesCountSlice } from '../reducers/page.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
 import i18n, { locales } from '@/config/i18n';
-import { IArticle, IArticleInput } from '@/types/article.type';
+import { IPage, IPageInput } from '@/types/page.type';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { IQueriesInput, ITabAndCategorySearchParams } from '@/types/app.type';
 import { goToNotFound } from './app.action';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
-import { ALL_PAGE_FIELDS, articlesTabOptions, getCategoryPointersFromIds } from '@/utils/cms.utils';
+import { ALL_PAGE_FIELDS, pagesTabOptions, getCategoryPointer } from '@/utils/cms.utils';
 import { setValues } from '@/utils/parse.utils';
 import { uploadFormFiles, uploadUpdatedFormFiles } from '@/utils/file.utils';
 
-const Article = Parse.Object.extend("Article");
+const Page = Parse.Object.extend("Page");
 
-const ARTICLE_PROPERTIES = new Set(['translated', 'categories', ...ALL_PAGE_FIELDS]);
+const PAGE_PROPERTIES = new Set(['translated', 'category', ...ALL_PAGE_FIELDS]);
 
-export const getArticle = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
-  const article = await Parse.Cloud.run('getArticle', { id, include });
+export const getPage = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
+  const page = await Parse.Cloud.run('getPage', { id, include });
 
 
-  if (!article) {
-    throw new Error(i18n.t('cms:errors.articleNotFound'));
+  if (!page) {
+    throw new Error(i18n.t('cms:errors.pageNotFound'));
   }
-  return article;
+  return page;
 }
 
 // ----------------------------------------------------- //
 // ------------------- Redux Actions ------------------- //
 // ----------------------------------------------------- //
 
-export const loadArticles = ({
+export const loadPages = ({
   limit = PAGINATION.rowsPerPage,
   skip = 0,
   orderBy = 'updatedAt',
@@ -47,7 +47,7 @@ export const loadArticles = ({
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     // result with count
     // we make it server side because we need to get user infos
-    const result: Record<string, any> = await Parse.Cloud.run('getArticles', {
+    const result: Record<string, any> = await Parse.Cloud.run('getPages', {
       limit,
       skip,
       orderBy,
@@ -55,26 +55,26 @@ export const loadArticles = ({
       filters,
       search,
       locales,
-      include: ['categories'],
+      include: ['category'],
     });
 
-    // save articles to store (in json)
-    const articlesJson = result.results.map((article: any) => article.toJSON());
+    // save pages to store (in json)
+    const pagesJson = result.results.map((page: any) => page.toJSON());
 
-    dispatch(loadArticlesSlice(articlesJson));
-    dispatch(setArticlesCountSlice(result.count));
+    dispatch(loadPagesSlice(pagesJson));
+    dispatch(setPagesCountSlice(result.count));
   });
 };
 
-export const createArticle = (values: IArticleInput): any => {
+export const createPage = (values: IPageInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     // --------- access --------- //
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const hasRight = canAccessTo(roles, 'Article', 'create');
+    const hasRight = canAccessTo(roles, 'Page', 'create');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToCreate', { value: i18n.t('cms:thisArticle') }));
+      throw Error(i18n.t('common:errors.hasNoRightToCreate', { value: i18n.t('cms:thisPage') }));
     }
 
     const currentUser = await Parse.User.currentAsync();
@@ -83,40 +83,40 @@ export const createArticle = (values: IArticleInput): any => {
       throw Error(i18n.t('user:errors.userNotExist'));
     }
 
-    const article = new Article()
+    const page = new Page()
 
-    const uploadedValues = await uploadFormFiles<IArticle>({
-      folder: 'articles',
+    const uploadedValues = await uploadFormFiles<IPage>({
+      folder: 'pages',
       sessionToken: currentUser.getSessionToken(),
       values
     });
 
-    if (values.categories) {
-      values.categories = getCategoryPointersFromIds(values.categories);
+    if (values.category) {
+      values.category = getCategoryPointer(values.category);
     }
 
     const newValues = { ...values, ...uploadedValues };
     
-    setValues(article, newValues, ARTICLE_PROPERTIES);
+    setValues(page, newValues, PAGE_PROPERTIES);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
     // so we use the parse cloud function to do that, instead of a REST API
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
-    const savedArticle = await article.save();
-    dispatch(loadArticleSlice((savedArticle as Attributes).toJSON()));
+    const savedPage = await page.save();
+    dispatch(loadPageSlice((savedPage as Attributes).toJSON()));
   });
 };
 
-export const editArticle = (id: string, values: IArticleInput): any => {
+export const editPage = (id: string, values: IPageInput): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     // --------- access --------- //
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const hasRight = canAccessTo(roles, 'Article', 'update');
+    const hasRight = canAccessTo(roles, 'Page', 'update');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('cms:thisArticle') }));
+      throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('cms:thisPage') }));
     }
 
     const currentUser = await Parse.User.currentAsync();
@@ -125,31 +125,31 @@ export const editArticle = (id: string, values: IArticleInput): any => {
       throw Error(i18n.t('user:errors.userNotExist'));
     }
 
-    const article = await getArticle(id);
+    const page = await getPage(id);
 
-    if (!article) return;
+    if (!page) return;
     
-    const uploadedValues = await uploadUpdatedFormFiles<IArticle>({
-      page: article,
-      folder: 'articles',
+    const uploadedValues = await uploadUpdatedFormFiles<IPage>({
+      page,
+      folder: 'pages',
       sessionToken: currentUser.getSessionToken(),
       values
     });
 
-    if (values.categories) {
-      values.categories = getCategoryPointersFromIds(values.categories);
+    if (values.category) {
+      values.category = getCategoryPointer(values.category);
     }
 
     const newValues = { ...values, ...uploadedValues };
 
-    setValues(article, newValues, ARTICLE_PROPERTIES);
+    setValues(page, newValues, PAGE_PROPERTIES);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
     // so we use the parse cloud function to do that, instead of a REST API
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
-    const savedArticle = await article.save();
-    dispatch(loadArticleSlice((savedArticle as Attributes).toJSON()));
+    const savedPage = await page.save();
+    dispatch(loadPageSlice((savedPage as Attributes).toJSON()));
   });
 };
 
@@ -160,32 +160,32 @@ export const editArticle = (id: string, values: IArticleInput): any => {
  * @param redirectToRecycleBin redirect to recycle bin after the request is deleted
  * @returns
  */
-export const deleteArticle = (id: string,): any => {
+export const deletePage = (id: string,): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     // --------- access --------- //
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const hasRight = canAccessTo(roles, 'Article', 'delete');
+    const hasRight = canAccessTo(roles, 'Page', 'delete');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('cms:thisArticle') }));
+      throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('cms:thisPage') }));
     }
 
     // --------- request --------- //
-    const article = await getArticle(id);
-    if (!article) return;
+    const page = await getPage(id);
+    if (!page) return;
 
     // --------- update database --------- //
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
     // so we use the parse cloud function to do that, instead of a REST API
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
-    article.set('deleted', true);
-    const deletedArticle = await article.save();
+    page.set('deleted', true);
+    const deletedPage = await page.save();
 
     // --------- update store --------- //
-    dispatch(deleteArticleFromArticlesSlice(deletedArticle.id));
-    dispatch(setMessageSlice(i18n.t('cms:messages.articleDeletedSuccessfully', { value: deletedArticle.id })));
+    dispatch(deletePageFromPagesSlice(deletedPage.id));
+    dispatch(setMessageSlice(i18n.t('cms:messages.pageDeletedSuccessfully', { value: deletedPage.id })));
   });
 };
 
@@ -196,30 +196,30 @@ export const deleteArticle = (id: string,): any => {
  * @param ids
  * @returns
  */
-export const toggleArticlesByIds = (ids: string[], field: string, value = true): any => {
+export const togglePagesByIds = (ids: string[], field: string, value = true): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     // --------- access --------- //
     const roles = getRoleCurrentUserRolesSelector(state as any);
     const isDelete = field === 'deleted';
-    const hasRight = canAccessTo(roles, 'Article', isDelete ? 'delete' : 'update');
+    const hasRight = canAccessTo(roles, 'Page', isDelete ? 'delete' : 'update');
 
     if (!hasRight) {
       if (isDelete) {
-        throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('cms:theseArticles') }));
+        throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('cms:thesePages') }));
       } else {
-        throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('cms:theseArticles') }));
+        throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('cms:thesePages') }));
       }
     }
 
     // update the database
-    await new Parse.Query(Article).containedIn('objectId', ids).each(async article => {
-      article.set(field, value);
+    await new Parse.Query(Page).containedIn('objectId', ids).each(async page => {
+      page.set(field, value);
 
-      await article.save();
+      await page.save();
     });
     // delete
-    dispatch(deleteArticlesSlice(ids));
+    dispatch(deletePagesSlice(ids));
   });
 };
 
@@ -227,16 +227,16 @@ export const toggleArticlesByIds = (ids: string[], field: string, value = true):
 // ------------- on page load ------------- //
 // ---------------------------------------- //
 /**
- * load articles data from database before the page is loaded (in route)
+ * load pages data from database before the page is loaded (in route)
  * then load it to the store
  * @param route 
  * @returns 
  */
-export const onArticlesEnter = (route: any): any => {
+export const onPagesEnter = (route: any): any => {
   return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const hasRight = canAccessTo(roles, 'Article', 'find');
+    const hasRight = canAccessTo(roles, 'Page', 'find');
 
     // redirect to not found page
     if (!hasRight) {
@@ -260,36 +260,36 @@ export const onArticlesEnter = (route: any): any => {
     }
 
     // convert the url search params tab to (db) filters
-    const newFilters = convertTabToFilters(articlesTabOptions, route.search.tab, filters);
+    const newFilters = convertTabToFilters(pagesTabOptions, route.search.tab, filters);
     values.filters = newFilters;
 
     // clear the prev state first
-    dispatch(clearArticleSlice());
-    dispatch(loadArticles(values));
+    dispatch(clearPageSlice());
+    dispatch(loadPages(values));
   });
 };
 
-export const onArticleEnter = (route?: any): AppThunkAction => {
+export const onPageEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
     if (!route.params?.id) return ;
 
     // clear the prev state first
-    dispatch(clearArticleSlice());
+    dispatch(clearPageSlice());
 
-    const article = await getArticle(route.params?.id, ['categories']);
+    const page = await getPage(route.params?.id, ['category']);
 
-    if (!article) return;
+    if (!page) return;
 
-    dispatch(loadArticleSlice((article as Parse.Attributes).toJSON()));
+    dispatch(loadPageSlice((page as Parse.Attributes).toJSON()));
   });
 };
 
-export const onEditArticleEnter = (route?: any): AppThunkAction => {
+export const onEditPageEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const canGet = canAccessTo(roles, 'Article', 'get');
-    const canUpdate = canAccessTo(roles, 'Article', 'update');
+    const canGet = canAccessTo(roles, 'Page', 'get');
+    const canUpdate = canAccessTo(roles, 'Page', 'update');
 
     // redirect to not found page
     if (!canGet || !canUpdate) {
@@ -299,21 +299,21 @@ export const onEditArticleEnter = (route?: any): AppThunkAction => {
 
     if (!route.params?.id) return ;
     // clear the prev state first
-    dispatch(clearArticleSlice());
+    dispatch(clearPageSlice());
 
-    const article = await getArticle(route.params?.id, ['categories']);
+    const page = await getPage(route.params?.id, ['category']);
 
-    if (!article) return;
+    if (!page) return;
 
-    dispatch(loadArticleSlice((article as Parse.Attributes).toJSON()));
+    dispatch(loadPageSlice((page as Parse.Attributes).toJSON()));
   });
 };
 
-export const onCreateArticleEnter = (route?: any): AppThunkAction => {
+export const onCreatePageEnter = (route?: any): AppThunkAction => {
   return actionWithLoader(async (dispatch: AppDispatch,  getState?: () => RootState): Promise<void> => {
     const state = getState?.();
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const hasRight = canAccessTo(roles, 'Article', 'create');
+    const hasRight = canAccessTo(roles, 'Page', 'create');
 
     // redirect to not found page
     if (!hasRight) {
@@ -321,14 +321,14 @@ export const onCreateArticleEnter = (route?: any): AppThunkAction => {
       return;
     }
 
-    dispatch(clearArticleSlice());
+    dispatch(clearPageSlice());
   });
 };
 
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //
-export const goToArticles = (searchParams?: ITabAndCategorySearchParams) => ({ to: PATH_NAMES.articles, search: searchParams });
-export const goToArticle = (id: string) => ({ to: PATH_NAMES.articles + '/$id', params: { id }});
-export const goToAddArticle = () => ({ to: PATH_NAMES.articles + '/' + PATH_NAMES.create });
-export const goToEditArticle = (id: string) => ({ to: PATH_NAMES.articles + '/$id/' + PATH_NAMES.edit, params: { id } });
+export const goToPages = (searchParams?: ITabAndCategorySearchParams) => ({ to: PATH_NAMES.pages, search: searchParams });
+export const goToPage = (id: string) => ({ to: PATH_NAMES.pages + '/$id', params: { id }});
+export const goToAddPage = () => ({ to: PATH_NAMES.pages + '/' + PATH_NAMES.create });
+export const goToEditPage = (id: string) => ({ to: PATH_NAMES.pages + '/$id/' + PATH_NAMES.edit, params: { id } });

@@ -11,7 +11,7 @@ import { onArticleEnter, onArticlesEnter, onCreateArticleEnter, onEditArticleEnt
 import CreateArticle from "@/pages/articles/CreateArticle";
 import EditArticle from "@/pages/articles/EditArticle";
 import { tabAndCategoryRouteSearchParams } from "@/validations/app.validations";
-import ArticleFormLayout from "@/containers/articles/ArticleFormLayout";
+import CMSFormLayout from "@/containers/cms/CMSFormLayout";
 
 export const articlesLayout = createRoute({
   getParentRoute: () => privateLayout,
@@ -30,7 +30,7 @@ export const articlesRoute = createRoute({
 export const articleFormLayout = createRoute({
   id: "article",
   getParentRoute: () => articlesLayout,
-  component: ArticleFormLayout,
+  component: CMSFormLayout,
 });
 
 export const articleRoute = createRoute({

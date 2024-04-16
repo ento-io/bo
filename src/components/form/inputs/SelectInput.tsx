@@ -27,23 +27,27 @@ const getCustomStyles = (
     zIndex: 9999,
     ...styleProps?.menu,
   }),
-  control: (styles: any) => ({
-    ...styles,
-    // eslint-disable-next-line no-nested-ternary
-    border: variant === 'outlined'
-      ? theme.palette.mode === 'light' ? '1px solid ' + grey[400] : '1px solid #fff'
-      : 'none',
-    // eslint-disable-next-line no-nested-ternary
-    borderBottom: variant === 'outlined'
-      ? 'none'
-      : theme.palette.mode === 'light' ? '1px solid ' + grey[400] : '1px solid #fff',
-    borderRadius: 4,
-    paddingTop: 5,
-    paddingBottom: 5,
-    backgroundColor: theme.palette.mode === 'light' ? 'none' : theme.palette.background.default,
-    width,
-    ...styleProps?.control,
-  }),
+  control: (styles: any) => {
+    const values = {
+      ...styles,
+      // eslint-disable-next-line no-nested-ternary
+      border: variant === 'outlined'
+        ? theme.palette.mode === 'light' ? '1px solid ' + grey[400] : '1px solid #fff'
+        : 'none',
+      borderRadius: 4,
+      paddingTop: 5,
+      paddingBottom: 5,
+      backgroundColor: theme.palette.mode === 'light' ? 'none' : theme.palette.background.default,
+      width,
+      ...styleProps?.control,
+    };
+
+    if (variant !== 'outlined') {
+      values.borderBottom =theme.palette.mode === 'light' ? '1px solid ' + grey[400] : '1px solid #fff';
+    }
+
+    return values;
+  },
   option: (styles: any, state: any) => ({
     ...styles,
     color: state.isSelected ? theme.palette.primary.main : 'initial',

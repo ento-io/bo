@@ -15,7 +15,7 @@ import { getUserLoadingSelector } from '@/redux/reducers/user.reducer';
 import { COLORS } from '@/utils/constants';
 
 import { resetPasswordSchema } from '@/validations/auth.validation';
-import { ResetPasswordInput } from '@/types/auth.types';
+import { ResetPasswordInput } from '@/types/auth.type';
 import AccountSuccessMessage from '@/containers/auth/AccountSuccessMessage';
 
 const ResetPassword = () => {

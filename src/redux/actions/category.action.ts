@@ -13,7 +13,7 @@ import { IQueriesInput, ITabSearchParams } from '@/types/app.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import { setValues } from '@/utils/parse.utils';
-import { CategoryEntityEnum, ICategory, ICategoryInput } from '@/types/category.types';
+import { CategoryEntityEnum, ICategory, ICategoryInput, ICategoryTypeEntity } from '@/types/category.type';
 import { categoriesTabOptions } from '@/utils/cms.utils';
 import { goToNotFound } from './app.action';
 import { escapeText } from '@/utils/utils';
@@ -39,7 +39,7 @@ export const getCategory = async (id: string, include: string[] = []): Promise<P
  * @param entity 
  * @returns 
  */
-export const searchCategoriesForAutocomplete = async (search: string, entity = CategoryEntityEnum.Article): Promise<ICategory[]> => {
+export const searchCategoriesForAutocomplete = async (search: string, entity: ICategoryTypeEntity = CategoryEntityEnum.Article): Promise<ICategory[]> => {
   let query = new Parse.Query(Category);
 
   // search by translated texts

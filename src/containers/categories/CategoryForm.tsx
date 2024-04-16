@@ -12,7 +12,7 @@ import { DEFAULT_LANGUAGE } from '@/utils/constants';
 import { categoryEntityOptions, getCategoryFormInitialValues, TRANSLATED_CMS_FIELDS } from '@/utils/cms.utils';
 import { getTranslatedFormTabErrors } from '@/utils/utils';
 
-import { ICategory, ICategoryInput } from '@/types/category.types';
+import { ICategory, ICategoryInput } from '@/types/category.type';
 import { categorySchema } from '@/validations/category.validation';
 import Form from '@/components/form/Form';
 import SelectField from '@/components/form/fields/SelectField';

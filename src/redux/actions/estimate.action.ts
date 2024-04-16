@@ -8,7 +8,7 @@ import { PATH_NAMES } from '@/utils/pathnames';
 import { addEstimateToEstimatesSlice, deleteEstimateFromEstimatesSlice, deleteEstimatesSlice, loadEstimateSlice, loadEstimatesSlice, markEstimatesAsSeenSlice, setEstimatesCountSlice, updateEstimatesByEstimateSlice } from '../reducers/estimate.reducer';
 import { getAppNotificationsSelector, setMessageSlice, setNotificationsSlice } from '../reducers/app.reducer';
 import { setValues } from '@/utils/parse.utils';
-import { EstimateInput, IEstimate } from '@/types/estimate.types';
+import { EstimateInput, IEstimate } from '@/types/estimate.type';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { IQueriesInput, ITabSearchParams } from '@/types/app.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';

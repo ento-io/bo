@@ -14,7 +14,7 @@ import i18n from '@/config/i18n';
 import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.type';
 import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
-import { ICategory, ICategoryInput, ICategoryTranslatedFields } from '@/types/category.types';
+import { ICategory, ICategoryInput, ICategoryTranslatedFields } from '@/types/category.type';
 import AddFab from '@/components/AddFab';
 import { articlesTabOptions, getCategoryEntityLabel } from '@/utils/cms.utils';
 import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';

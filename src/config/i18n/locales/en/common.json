@@ -1,10 +1,5 @@
 {
-  "article": {
-    "article": "Article",
-    "articles": "Articles",
-    "thisArticle": "This article",
-    "theseArticles": "These articles"
-  },
+  "webSite": "Web site",
   "download": "Download",
   "regeneratePdf": "Regenerate PDF",
   "greeting": "Hello, {{name}}!",

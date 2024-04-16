@@ -5,10 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "i18next";
 import { useSelector } from "react-redux";
 import { Stack } from "@mui/material";
-import { IArticle, IArticleInput } from "@/types/article.type"
+import { IPage, IPageInput } from "@/types/page.type"
 import TextField from "@/components/form/fields/TextField";
 import Form from "@/components/form/Form";
-import { articleSchema } from "@/validations/article.validations";
+import { pageSchema } from "@/validations/page.validations";
 import TextEditorField from "@/components/form/fields/TextEditorField";
 import { getTranslatedFormTabErrors } from "@/utils/utils";
 import { TRANSLATED_CMS_FIELDS, getCmsEditionCmsInitialValues } from "@/utils/cms.utils";
@@ -30,40 +30,40 @@ const initialValues = {
 };
 
 type Props = {
-  onSubmit: (values: IArticleInput) => void;
-  article?: IArticle | null;
+  onSubmit: (values: IPageInput) => void;
+  page?: IPage | null;
   loading?: boolean;
 }
 
-const ArticleForm = ({ onSubmit, article, loading }: Props) => {
+const PageForm = ({ onSubmit, page, loading }: Props) => {
   const language = useSelector(getSettingsLangSelector);
 
   // get translated fields depending on the selected language (tabs)
   const { onTabChange, tab } = useTranslatedValuesByTab();
 
-  const form = useForm<IArticleInput>({
+  const form = useForm<IPageInput>({
     defaultValues: initialValues,
-    resolver: zodResolver(articleSchema),
+    resolver: zodResolver(pageSchema),
   });
 
   const { handleSubmit, reset, setValue } = form;
 
   useEffect(() => {
-    if (!article) return;
+    if (!page) return;
     const init = async () => {
-      const editionInitialValues = await getCmsEditionCmsInitialValues(article, language);
+      const editionInitialValues = await getCmsEditionCmsInitialValues(page, language);
       reset(editionInitialValues)
     };
 
     init();
-  }, [article, reset, language]);
+  }, [page, reset, language]);
 
   // change translated slug field value when title is changed
-  const handleTitleChange = (value: string | number) => {
+  const handlePageNameChange = (value: string | number) => {
     setValue(tab + ':slug', value, { shouldValidate: true });
   };
 
-  const onFormSubmit: SubmitHandler<IArticleInput> = (values) => {
+  const onFormSubmit: SubmitHandler<IPageInput> = (values) => {
     onSubmit(values);
     reset(initialValues);
   };
@@ -83,13 +83,32 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
           <div key={index} css={{ display: locale === tab ? 'block' : 'none', marginTop: 12 }}>
             <Stack spacing={2}>
               <TextField
+                name={locale + ':name'}
+                label={t('cms:pageName')}
+                fixedLabel
+                type="text"
+                variant="outlined"
+                required={locale === DEFAULT_LANGUAGE}
+                helperText={t('cms:pageNameHelper')}
+                onFieldChange={handlePageNameChange}
+              />
+              <TextField
                 name={locale + ':title'}
                 label={t('cms:title')}
                 fixedLabel
                 type="text"
                 variant="outlined"
                 required={locale === DEFAULT_LANGUAGE}
-                onFieldChange={handleTitleChange}
+                helperText={t('cms:pageTitleHelper')}
+              />
+              <TextField
+                name={locale + ':description'}
+                label={t('common:description')}
+                fixedLabel
+                type="text"
+                variant="outlined"
+                multiline
+                rows={3}
               />
               <TextEditorField
                 name={locale + ':content'}
@@ -97,18 +116,18 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
                 required={locale === DEFAULT_LANGUAGE}
               />
 
-            {/* slug field */}
-            <TranslatedSlugField tab={tab} locale={locale} />
+              {/* slug field */}
+              <TranslatedSlugField tab={tab} locale={locale} />
 
-            <TextField
-              name={locale + ':tags'}
-              label="Tags"
-              fixedLabel
-              type="text"
-              variant="outlined"
-              placeholder={t('common:infoMessages.separateTagsWithComma')}
-              helperText={t('common:infoMessages.tagsHelper')}
-            /> 
+              <TextField
+                name={locale + ':tags'}
+                label="Tags"
+                fixedLabel
+                type="text"
+                variant="outlined"
+                placeholder={t('common:infoMessages.separateTagsWithComma')}
+                helperText={t('common:infoMessages.tagsHelper')}
+              /> 
               <TextField
                 name={locale + ':metaTitle'}
                 label={t('common:metaTitle')}
@@ -140,11 +159,12 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
       />
       <CardFormBlock title={t('cms:category.category')}>
         <CategoriesSearchByEntityField
-          entity={CategoryEntityEnum.Article}
-          multiple
-          name="categories"
-          label={t('cms:category.categories')}
+          entity={CategoryEntityEnum.Page}
+          multiple={false}
+          name="category"
+          label={t('cms:category.category')}
           fullWidth
+          isSearch
         />
       </CardFormBlock>
 
@@ -157,7 +177,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             label={t('cms:bannerImage')}
             inputLabel={t('cms:addBannerImage')}
             maxFiles={1}
-            shouldReset={!!article} // can reset input in edition
+            shouldReset={!!page} // can reset input in edition
             helperText={t('common:infoMessages.bannerImageHelper')}
           />
           <DropzoneField
@@ -165,7 +185,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             label={t('common:previewImage')}
             inputLabel={`${t('common:add')} ${t('common:previewImage')}`}
             maxFiles={1}
-            shouldReset={!!article} // can reset input in edition
+            shouldReset={!!page} // can reset input in edition
             helperText={t('common:infoMessages.previewImageHelper')}
           />
           {/* multiple image upload */}
@@ -174,7 +194,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             label={t('common:images')}
             inputLabel={t('images')}
             maxFiles={5}
-            shouldReset={!!article} // can reset input in edition
+            shouldReset={!!page} // can reset input in edition
           />
         </Stack>
       </CardFormBlock>
@@ -182,4 +202,4 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
   )
 }
 
-export default ArticleForm
+export default PageForm

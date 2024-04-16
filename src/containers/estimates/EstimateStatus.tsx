@@ -1,5 +1,5 @@
 import { Chip } from "@mui/material";
-import { EstimateStatusEnum, IEstimate } from "@/types/estimate.types";
+import { EstimateStatusEnum, IEstimate } from "@/types/estimate.type";
 import { getEstimateStatusLabel } from "@/utils/estimate.utils";
 
 const getColor = (status: IEstimate['status']) => {

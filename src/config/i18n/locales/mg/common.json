@@ -1,10 +1,5 @@
 {
-  "article": {
-    "article": "Lahatsoratra",
-    "articles": "Lahatsoratra",
-    "thisArticle": "an'io lahatsoratra io",
-    "theseArticles": "an'ireo lahatsoratra ireo"
-  },
+  "webSite": "Tranonkala",
   "download": "Télécharger",
   "regeneratePdf": "Averina amboarina PDF",
   "greeting": "Salama, {{name}}!",

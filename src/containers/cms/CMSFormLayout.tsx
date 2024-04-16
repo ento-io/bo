@@ -9,7 +9,7 @@ const classes = {
     marginRight: 'auto',
   }
 }
-const ArticleFormLayout = () => {
+const CMSFormLayout = () => {
     return (
       <div className="stretchSelf">
         <div css={classes.content} className="flexColumn">
@@ -19,4 +19,4 @@ const ArticleFormLayout = () => {
       )
 }
 
-export default ArticleFormLayout;
+export default CMSFormLayout;

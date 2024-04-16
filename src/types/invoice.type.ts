@@ -1,7 +1,7 @@
 import { Attributes } from "parse";
 import { z } from "zod";
 import { invoiceFilterSchema, invoiceSchema } from "@/validations/invoice.validation";
-import { IEstimate } from "./estimate.types";
+import { IEstimate } from "./estimate.type";
 import { IUser } from "./user.type";
 import { IFileCloud } from "./file.type";
 

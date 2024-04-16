@@ -274,6 +274,15 @@ const defaultTheme = {
         })
       }
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiFormHelperText-root': {
+            marginLeft: 0,
+          },
+        }
+      }
+    },
     MuiAutocomplete: {
       styleOverrides: {
         popper: ({ theme }: { theme: Theme }) => ({

@@ -8,7 +8,7 @@ import Form from '@/components/form/Form';
 
 import { useToggle } from '@/hooks/useToggle';
 
-import { EstimateFiltersInput } from '@/types/estimate.types';
+import { EstimateFiltersInput } from '@/types/estimate.type';
 import { estimateFilterSchema } from '@/validations/estimate.validation';
 import DateRangePickerField from '@/components/form/fields/DateRangePickerField';
 import TextField from '@/components/form/fields/TextField';

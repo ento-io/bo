@@ -8,7 +8,7 @@ import Form from '@/components/form/Form';
 import { invoiceSchema } from '@/validations/invoice.validation';
 import { IInvoice, InvoiceInput } from '@/types/invoice.type';
 import SelectField from '@/components/form/fields/SelectField';
-import { IEstimate } from '@/types/estimate.types';
+import { IEstimate } from '@/types/estimate.type';
 import { ISelectOption } from '@/types/app.type';
 import { getEstimateEstimatesSelector } from '@/redux/reducers/estimate.reducer';
 

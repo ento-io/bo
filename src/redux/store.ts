@@ -4,13 +4,14 @@ import storage from 'redux-persist/lib/storage';
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 
 import appReducer from './reducers/app.reducer';
+import articleReducer from './reducers/article.reducer';
 import categoryReducer from './reducers/category.reducer';
 import roleReducer from './reducers/role.reducer';
 import settingsReducer from './reducers/settings.reducer';
 import userReducer from './reducers/user.reducer';
-import articleReducer from './reducers/article.reducer';
 import estimateReducer from './reducers/estimate.reducer';
 import invoiceReducer from './reducers/invoice.reducer';
+import pageReducer from './reducers/page.reducer';
 
 const reducers = {
   app: appReducer,
@@ -21,6 +22,7 @@ const reducers = {
   role: roleReducer,
   estimate: estimateReducer,
   invoice: invoiceReducer,
+  page: pageReducer,
 };
 
 const persistConfig = {

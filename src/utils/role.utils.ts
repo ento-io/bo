@@ -39,6 +39,10 @@ export const ENTITIES_WITH_RIGHTS_OPTIONS: Omit<IRightsItem, 'rights'>[] = [
     className: 'Article',
   },
   {
+    label: i18n.t('cms:pages'),
+    className: 'Page',
+  },
+  {
     label: i18n.t('cms:categories'),
     className: 'Category',
   },

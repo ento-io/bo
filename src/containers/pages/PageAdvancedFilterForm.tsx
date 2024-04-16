@@ -8,32 +8,33 @@ import Form from '@/components/form/Form';
 
 import { useToggle } from '@/hooks/useToggle';
 
+import { PageFiltersInput } from '@/types/page.type';
+import { pageFilterSchema } from '@/validations/page.validations';
 import DateRangePickerField from '@/components/form/fields/DateRangePickerField';
 import TextField from '@/components/form/fields/TextField';
 import AdvancedSearchFields from '@/components/AdvancedSearchFields';
-import { categoryFilterSchema } from '@/validations/category.validation';
-import { CategoryFiltersInput } from '@/types/category.type';
-import SelectField from '@/components/form/fields/SelectField';
-import { activeOptions, categoryEntityOptions } from '@/utils/cms.utils';
+import CategoriesSearchByEntityField from '../categories/CategoriesSearchByEntityField';
+import { CategoryEntityEnum } from '@/types/category.type';
 import ToggleButtonsField from '@/components/form/inputs/ToggleButtonsField';
+import { activeOptions } from '@/utils/cms.utils';
 
-const FILTER_FORM_ID = 'category-filter';
+const ESTIMATE_FILTER_FORM_ID = 'page-filter';
 
 type Props = {
   onSubmit: (values: any) => void;
 };
 
-const CategoryAdvancedFilterForm = ({ onSubmit }: Props) => {
+const PageAdvancedFilterForm = ({ onSubmit }: Props) => {
   const { t } = useTranslation();
   const { open: isOpenFilterDialog, toggle: toggleOpenFilterDialog } = useToggle();
 
-  const form = useForm<CategoryFiltersInput>({
-    resolver: zodResolver(categoryFilterSchema),
+  const form = useForm<PageFiltersInput>({
+    resolver: zodResolver(pageFilterSchema),
   });
 
   const { handleSubmit } = form;
 
-  const onSubmitHandler: SubmitHandler<CategoryFiltersInput> = async values => {
+  const onSubmitHandler: SubmitHandler<PageFiltersInput> = async values => {
     onSubmit(values);
     toggleOpenFilterDialog();
     form.reset();
@@ -49,20 +50,26 @@ const CategoryAdvancedFilterForm = ({ onSubmit }: Props) => {
         primaryButtonText={t('search')}
         open={isOpenFilterDialog}
         toggle={toggleOpenFilterDialog}
-        formId={FILTER_FORM_ID}>
-        <Form formId={FILTER_FORM_ID} form={form} onSubmit={handleSubmit(onSubmitHandler)}>
+        formId={ESTIMATE_FILTER_FORM_ID}>
+        <Form formId={ESTIMATE_FILTER_FORM_ID} form={form} onSubmit={handleSubmit(onSubmitHandler)}>
           <AdvancedSearchFields
             fields={[
               {
-                label: t('cms:category.categoryFor'),
-                name: 'entity',
+                label: t('cms:title'),
+                name: 'title',
+                checked: false,
+                component: <TextField name="title" placeholder={t('cms:title')} fullWidth />,
+              },
+              {
+                label: t('cms:category.category'),
+                name: 'category',
                 checked: false,
                 component: (
-                  <SelectField
-                    name="entity"
-                    options={categoryEntityOptions}
-                    variant="standard"
-                    isClearable
+                  <CategoriesSearchByEntityField
+                    entity={CategoryEntityEnum.Article}
+                    multiple={false}
+                    name="category"
+                    placeholder={t('cms:category.category')}
                   />
                 ),
               },
@@ -78,19 +85,19 @@ const CategoryAdvancedFilterForm = ({ onSubmit }: Props) => {
                 label: t('common:createdAt'),
                 name: 'createdAt',
                 checked: false,
-                component: <DateRangePickerField name="createdAt" variant="standard" fullWidth />,
+                component: <DateRangePickerField name="createdAt" fullWidth />,
               },
               {
                 label: t('common:updatedAt'),
                 name: 'updatedAt',
                 checked: false,
-                component: <DateRangePickerField name="updatedAt" variant="standard" fullWidth />,
+                component: <DateRangePickerField name="updatedAt" fullWidth />,
               },
               {
-                label: t('common:user'),
+                label: t('user:user'),
                 name: 'user',
                 checked: false,
-                component: <TextField name="user" placeholder={t('user:nameOrEmail')} variant="standard" fullWidth />,
+                component: <TextField name="user" placeholder={t('user:nameOrEmail')} fullWidth />,
               },
             ]}
           />
@@ -100,4 +107,4 @@ const CategoryAdvancedFilterForm = ({ onSubmit }: Props) => {
   );
 };
 
-export default CategoryAdvancedFilterForm;
+export default PageAdvancedFilterForm;

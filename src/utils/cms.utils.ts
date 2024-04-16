@@ -1,16 +1,18 @@
 import i18n, { locales } from "@/config/i18n";
 import { defaultTabOptions } from "./app.utils";
-import { IArticle, IArticleInput } from "@/types/article.types";
+import { IArticle, IArticleInput } from "@/types/article.type";
 import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from "@/validations/file.validation";
 import { getFileFromUrl } from "./file.utils";
 import { IFileCloud } from "@/types/file.type";
-import { CategoryEntityEnum, ICategory, ICategoryEntityOption, ICategoryInput, ICategoryTranslatedFields } from "@/types/category.types";
+import { CategoryEntityEnum, ICategory, ICategoryEntityOption, ICategoryInput, ICategoryTranslatedFields } from "@/types/category.type";
 import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";
 import { ISelectOption } from "@/types/app.type";
+import { IPage, IPageInput } from "@/types/page.type";
 
 export const articlesTabOptions = defaultTabOptions;
+export const pagesTabOptions = defaultTabOptions;
 export const categoriesTabOptions = defaultTabOptions;
 
 /**
@@ -134,10 +136,23 @@ export const parseSavedTranslatedValuesToForm = (
   return newValues;
 };
 
+/**
+ * category format for select option
+ * @param language 
+ * @returns 
+ */
+const getCategoryInputValue = (language: Lang) => (category: ICategory) => {
+  return {
+    label: getTranslatedField(category.translated, language, 'name'),
+    value: {
+      objectId: category.objectId,
+    }
+  }
+}
 export const getCmsEditionCmsInitialValues = async (
-  page: IArticle | null | undefined,
+  page: IArticle | IPage | null | undefined,
   language: Lang,
-): Promise<IArticleInput | undefined> => {
+): Promise<IArticleInput | IPageInput | undefined> => {
   if (!page) return;
   const formattedTranslatedValues = parseSavedTranslatedValuesToForm(page);
 
@@ -155,14 +170,15 @@ export const getCmsEditionCmsInitialValues = async (
     images,
   };
 
+  // for article
   // array of pointer json to form select option
   if (page.categories) {
-    defaultValues.categories = page.categories.map((category: ICategory) => ({
-      label: getTranslatedField(category.translated, language, 'name'),
-      value: {
-        objectId: category.objectId,
-      }
-    }));
+    defaultValues.categories = page.categories.map(getCategoryInputValue(language));
+  }
+
+  // for page
+  if (page.category) {
+    defaultValues.category = getCategoryInputValue(language)(page.category);
   }
 
   return defaultValues;
@@ -190,15 +206,30 @@ export const getCategoryFormInitialValues = (category: ICategory | null | undefi
   };
 };
 
-export const getCategoryPointersFromIds = (categoryId: string[]): Parse.Object[] | void => {
-  if (!categoryId) return;
+/**
+ * create a pointer by category id
+ * ex: 'myId' => pointer
+ * @param categoryId 
+ * @returns 
+ */
+export const getCategoryPointer= (categoryId: string): Parse.Object => {
+  // array of pointers
+  const category = new Category();
+  category.id = categoryId;
+  return category;
+}
+
+/**
+ * create a list of pointer by a list of category id
+ * ex: ['myId'] => [pointer]
+ * @param categoryIds 
+ * @returns 
+ */
+export const getCategoryPointersFromIds = (categoryIds: string[]): Parse.Object[] | void => {
+  if (!categoryIds) return;
 
   // array of pointers
-  const categories = categoryId.map((categoryId: string): Parse.Object => {
-    const category = new Category();
-    category.id = categoryId;
-    return category;
-  });
+  const categories = categoryIds.map(getCategoryPointer);
 
   return categories;
 }
