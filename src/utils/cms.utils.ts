@@ -11,6 +11,7 @@ import { Category } from "@/redux/actions/category.action";
 import { ISelectOption } from "@/types/app.type";
 
 export const articlesTabOptions = defaultTabOptions;
+export const pagesTabOptions = defaultTabOptions;
 export const categoriesTabOptions = defaultTabOptions;
 
 /**
