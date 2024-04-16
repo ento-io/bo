@@ -10,6 +10,6 @@ export const pageFilterSchema = articleFilterSchema.extend({
 export const pageSchema = cmsSchema
   .extend({
     ...getCMSTranslatedSchema(), // translated fields
-    categories: z.array(categoryOptionSchema).optional(),
+    category: categoryOptionSchema,
   })
   .transform(formatTranslatedFormValuesToSave);
