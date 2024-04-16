@@ -5,6 +5,9 @@
   "pages": "Pages",
   "page": "Page",
   "thisPage": "Ce page",
+  "thisArticle": "Cet article",
+  "theseArticles": "Ces articles",
+  "thesePages": "Ces pages",
   "published": "Publié",
   "notPublished": "Non publié",
   "publish": "Publier",
@@ -30,6 +33,7 @@
   "articles": "Articles",
   "createArticle": "Créer un article",
   "newArticle": "Nouvel article",
+  "newPage": "Nouvelle page",
   "editArticle": "Modifier l'article - {{title}}",
   "hasPreviewImage": "A une aperçu d'image?",
   "hasBannerImage": "A une image de bannière?",
@@ -71,9 +75,15 @@
     "articleCreatedSuccessfully": "Article créé avec succès",
     "articleEditedSuccessfully": "Article {{value}} modifié avec succès",
     "articleDeletedSuccessfully": "Article {{value}} supprimé avec succès",
-    "missingParamsId": "L'identifiant de la article est manquant",
+    "missingParamsId": "L'identifiant est manquant",
     "articleAlreadyExists": "Article avec la référence {{value}} existe déjà",
-    "thisArticleAlreadyExists": "Cette article existe déjà"
+    "thisArticleAlreadyExists": "Cette article existe déjà",
+
+    "pageCreatedSuccessfully": "Page créé avec succès",
+    "pageEditedSuccessfully": "Page {{value}} modifié avec succès",
+    "pageDeletedSuccessfully": "Page {{value}} supprimé avec succès",
+    "pageAlreadyExists": "Page avec la référence {{value}} existe déjà",
+    "thisPageAlreadyExists": "Cette page existe déjà"
   },
   "errors": {
     "pageToUpdateNotFound": "La page que vous tentez de mettre à jour n'existe pas, elle a peut-être été supprimé.",
