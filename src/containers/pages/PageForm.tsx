@@ -75,7 +75,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
 
   return (
     <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading} isDisabled={false}>
-      <CardFormBlock title={t('details')} description={t('cms:translatedFields')}>
+      <CardFormBlock title={t('cms:blocks')} description={t('cms:blocksHelper')}>
         <TranslatedPageBlocksField
           name="blocks"
         />
