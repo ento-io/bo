@@ -22,6 +22,7 @@ const getTranslatedBlockSchema = () => {
 
   for (const locale of locales) {
     if (locale !== DEFAULT_LANGUAGE) {
+      // ex: fr:title field name
       translatedSchema[locale + ':title'] = z.string({ errorMap }).transform(capitalize);
     } else {
       // required fields only for default locale
