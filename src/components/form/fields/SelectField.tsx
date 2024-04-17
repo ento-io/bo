@@ -7,7 +7,7 @@ import { ISelectOption } from '@/types/app.type';
 
 import SelectInput, { ReactSelectProps } from '../inputs/SelectInput';
 
-type Props = {
+export type SelectProps = {
   name: string;
   options: ISelectOption[];
   helperText?: string;
@@ -18,7 +18,7 @@ const SelectField = ({
   options,
   helperText,
   ...selectProps
-}: Props) => {
+}: SelectProps) => {
   // hooks
   const {
     control,
