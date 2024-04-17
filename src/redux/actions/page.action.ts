@@ -8,7 +8,7 @@ import { PATH_NAMES } from '@/utils/pathnames';
 import { clearPageSlice, deletePageFromPagesSlice, deletePagesSlice, loadPageSlice, loadPagesSlice, setPagesCountSlice } from '../reducers/page.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
 import i18n, { locales } from '@/config/i18n';
-import { IPage, IPageInput } from '@/types/page.type';
+import { IPageInput } from '@/types/page.type';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { IQueriesInput, ITabAndCategorySearchParams } from '@/types/app.type';
 import { goToNotFound } from './app.action';
@@ -20,7 +20,7 @@ import { uploadFormFiles, uploadUpdatedFormFiles } from '@/utils/file.utils';
 
 const Page = Parse.Object.extend("Page");
 
-const PAGE_PROPERTIES = new Set(['translated', 'category', ...ALL_PAGE_FIELDS]);
+const PAGE_PROPERTIES = new Set(['translated', 'category', 'blocks', ...ALL_PAGE_FIELDS]);
 
 export const getPage = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
   const page = await Parse.Cloud.run('getPage', { id, include });
@@ -85,7 +85,7 @@ export const createPage = (values: IPageInput): any => {
 
     const page = new Page()
 
-    const uploadedValues = await uploadFormFiles<IPage>({
+    const uploadedValues = await uploadFormFiles<IPageInput>({
       folder: 'pages',
       sessionToken: currentUser.getSessionToken(),
       values
@@ -129,7 +129,7 @@ export const editPage = (id: string, values: IPageInput): any => {
 
     if (!page) return;
     
-    const uploadedValues = await uploadUpdatedFormFiles<IPage>({
+    const uploadedValues = await uploadUpdatedFormFiles<IPageInput>({
       page,
       folder: 'pages',
       sessionToken: currentUser.getSessionToken(),
