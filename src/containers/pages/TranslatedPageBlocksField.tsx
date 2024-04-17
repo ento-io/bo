@@ -37,9 +37,10 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
 
   const watchFieldArray = watch(name);
   const controlledFields = fields.map((field, index) => {
+    const watchedFields = watchFieldArray?.[index] || {};
     return {
       ...field,
-      ...watchFieldArray[index]
+      ...watchedFields
     };
   });
 
