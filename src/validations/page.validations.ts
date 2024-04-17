@@ -22,12 +22,12 @@ const getTranslatedBlockSchema = () => {
 
   for (const locale of locales) {
     if (locale !== DEFAULT_LANGUAGE) {
-      translatedSchema[locale + ':name'] = z.string({ errorMap }).transform(capitalize);
+      translatedSchema[locale + ':title'] = z.string({ errorMap }).transform(capitalize);
     } else {
       // required fields only for default locale
       [{
-        key: 'name',
-        label: i18n.t('cms:pageName'),
+        key: 'title',
+        label: i18n.t('cms:titleOfEachBlock'),
       }].forEach(({ key, label }) => {
           translatedSchema[locale + ':' + key] = z.string({ errorMap })
           .min(1, i18n.t('form.error.required', { field: label }))
