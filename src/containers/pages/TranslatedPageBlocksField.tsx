@@ -45,10 +45,13 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
 
   return (
     <div>
+        {/* language selection tab */}
         <TranslatedFormTabs
           onTabChange={onTabChange}
           tab={tab}
         />
+
+        {/* fields array */}
         {controlledFields.map((item, index) => {
           const error = errors[name] ?( errors[name] as any)[index] : {};
           return (
@@ -59,17 +62,16 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
                   <CardFormBlock title={'Block #' + (index + 1)} rootClassName={css({ display: locale === tab ? 'block' : 'none', marginTop: 12 })}>
                     <Stack spacing={1}>
                       <TextField
-                        name={`${name}.${index}.${locale}:name`}
-                        label={t('cms:pageName')}
+                        name={`${name}.${index}.${locale}:title`}
+                        label={t('cms:titleOfEachBlock')}
                         fixedLabel
                         type="text"
                         variant="outlined"
                         required={locale === DEFAULT_LANGUAGE}
-                        tooltip={t('cms:pageNameHelper')}
-                        errorMessage={error[`${locale}:name`]}
+                        errorMessage={error[`${locale}:title`]}
                         fieldClassName="flex1"
                       />
-                      {error && <FormHelperText error>{error[`${locale}:name`]?.message}</FormHelperText>}
+                      {error && <FormHelperText error>{error[`${locale}:title`]?.message}</FormHelperText>}
                     </Stack>
                   </CardFormBlock>
                 );
