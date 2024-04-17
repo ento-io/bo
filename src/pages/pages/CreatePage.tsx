@@ -31,7 +31,6 @@ const CreatePage = () => {
   };
   
   const handleSubmitPage = (values: IPageInput) => {
-    console.log('values: ', values);
     dispatch(createPage(values));
   }
 
