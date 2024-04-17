@@ -103,6 +103,21 @@ export const formatTranslatedFormValuesToSave = (values: Record<string, any>): a
   };
 };
 
+export const formatTranslatedPageFormValuesToSave = (values: Record<string, any>) => {
+  const newValues: Record<string, any> = { ...formatTranslatedFormValuesToSave(values) };
+
+  if (values.blocks) {
+    const translatedBlocks = []
+    for (const block of values.blocks) {
+      const translatedBlock = formatTranslatedFormValuesToSave(block)
+      translatedBlocks.push(translatedBlock)
+    }
+    newValues.blocks = translatedBlocks;
+  }
+
+  return newValues;
+}
+
 /**
  * parse data base fields to translated form fields name to data base field
  * ex: { "fr": { "title" : "my-title-fr" }} to { "title+fr": "my-title-fr" }
@@ -182,6 +197,29 @@ export const getCmsEditionCmsInitialValues = async (
   }
 
   return defaultValues;
+};
+
+export const getPageEditionCmsInitialValues = async (
+  page: IPage | null | undefined,
+  language: Lang,
+): Promise<IPageInput | undefined> => {
+  if (!page) return;
+  const formattedTranslatedValues = await getCmsEditionCmsInitialValues(page, language);
+  // const formattedBlockTranslatedValues = parseSavedTranslatedValuesToForm(page);
+  const blocks = [];
+  for (const block of page.blocks) {
+    const bs = parseSavedTranslatedValuesToForm(block);
+    blocks.push(bs)
+    console.log('bs: ', bs);
+  }
+  formattedTranslatedValues.blocks = blocks;
+  
+  // for page
+  if (page.category) {
+    formattedTranslatedValues.category = getCategoryInputValue(language)(page.category);
+  }
+
+  return formattedTranslatedValues;
 };
 
 /**
