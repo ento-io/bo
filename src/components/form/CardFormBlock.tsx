@@ -6,11 +6,12 @@ type Props = {
   title?: string;
   description?: string;
   className?: string;
+  rootClassName?: string;
   rightHeader?: ReactNode;
 }
-const CardFormBlock = ({ title, description, children, className, rightHeader }: Props) => {
+const CardFormBlock = ({ title, description, children, className, rootClassName, rightHeader }: Props) => {
   return (
-    <Card css={{ overflow: 'initial' }}>
+    <Card css={{ overflow: 'initial' }} className={rootClassName}>
       <CardHeader
         action={rightHeader}
         title={title}
