@@ -31,6 +31,7 @@ const getTranslatedBlockSchema = () => {
       }].forEach(({ key, label }) => {
           translatedSchema[locale + ':' + key] = z.string({ errorMap })
           .min(1, i18n.t('form.error.required', { field: label }))
+          .transform(capitalize)
       });
     }
   }
