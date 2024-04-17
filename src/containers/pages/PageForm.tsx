@@ -11,7 +11,7 @@ import Form from "@/components/form/Form";
 import { pageSchema } from "@/validations/page.validations";
 import TextEditorField from "@/components/form/fields/TextEditorField";
 import { getTranslatedFormTabErrors } from "@/utils/utils";
-import { TRANSLATED_CMS_FIELDS, getCmsEditionCmsInitialValues } from "@/utils/cms.utils";
+import { TRANSLATED_CMS_FIELDS, getCmsEditionCmsInitialValues, getPageEditionCmsInitialValues } from "@/utils/cms.utils";
 import TranslatedFormTabs from "@/components/form/translated/TranslatedFormTabs";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 import { locales } from "@/config/i18n";
@@ -23,10 +23,14 @@ import { CategoryEntityEnum } from "@/types/category.type";
 import { useTranslatedValuesByTab } from "@/hooks/useTranslatedValuesByTab";
 import CategoriesSearchByEntityField from "../categories/CategoriesSearchByEntityField";
 import TranslatedSlugField from "../cms/TranslatedSlugField";
+import TranslatedPageBlocksField from "./TranslatedPageBlocksField";
 
 const initialValues = {
   active: true,
-  categories: []
+  categories: [],
+  // blocks: [{
+  //   name: ''
+  // }],
 };
 
 type Props = {
@@ -51,7 +55,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
   useEffect(() => {
     if (!page) return;
     const init = async () => {
-      const editionInitialValues = await getCmsEditionCmsInitialValues(page, language);
+      const editionInitialValues = await getPageEditionCmsInitialValues(page, language);
       reset(editionInitialValues)
     };
 
@@ -69,8 +73,12 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
   };
 
   return (
-    <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading}>
-      {/* translated fields */}
+    <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading} isDisabled={false}>
+      <CardFormBlock title={t('details')} description={t('cms:translatedFields')}>
+        <TranslatedPageBlocksField
+          name="blocks"
+        />
+      </CardFormBlock>
       <CardFormBlock title={t('details')} description={t('cms:translatedFields')}>
         {/* translated tabs */}
         <TranslatedFormTabs
