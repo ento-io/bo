@@ -11,7 +11,7 @@ import Form from "@/components/form/Form";
 import { pageSchema } from "@/validations/page.validations";
 import TextEditorField from "@/components/form/fields/TextEditorField";
 import { getTranslatedFormTabErrors } from "@/utils/utils";
-import { TRANSLATED_CMS_FIELDS, getCmsEditionCmsInitialValues, getPageEditionCmsInitialValues } from "@/utils/cms.utils";
+import { TRANSLATED_CMS_FIELDS, getPageEditionCmsInitialValues } from "@/utils/cms.utils";
 import TranslatedFormTabs from "@/components/form/translated/TranslatedFormTabs";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 import { locales } from "@/config/i18n";
@@ -52,6 +52,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
 
   const { handleSubmit, reset, setValue } = form;
 
+  // initialize form values
   useEffect(() => {
     if (!page) return;
     const init = async () => {
@@ -62,7 +63,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
     init();
   }, [page, reset, language]);
 
-  // change translated slug field value when title is changed
+  // change translated slug field value when the page name is changed
   const handlePageNameChange = (value: string | number) => {
     setValue(tab + ':slug', value, { shouldValidate: true });
   };
