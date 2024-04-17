@@ -89,6 +89,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
         />
         {/* all translated fields */}
         {locales.map((locale: string, index: number) => (
+          // hide other locale fields, display only the selected (current) locale
           <div key={index} css={{ display: locale === tab ? 'block' : 'none', marginTop: 12 }}>
             <Stack spacing={2}>
               <TextField
