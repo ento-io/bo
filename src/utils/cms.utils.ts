@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import i18n, { locales } from "@/config/i18n";
 import { defaultTabOptions } from "./app.utils";
 import { IArticle, IArticleInput } from "@/types/article.type";
@@ -103,9 +104,16 @@ export const formatTranslatedFormValuesToSave = (values: Record<string, any>): a
   };
 };
 
+/**
+ * transform form values to values to save
+ * @param values 
+ * @returns 
+ */
 export const formatTranslatedPageFormValuesToSave = (values: Record<string, any>) => {
+  // other fields transformation
   const newValues: Record<string, any> = { ...formatTranslatedFormValuesToSave(values) };
 
+  // translated blocks transformation
   if (values.blocks) {
     const translatedBlocks = []
     for (const block of values.blocks) {
@@ -164,6 +172,7 @@ const getCategoryInputValue = (language: Lang) => (category: ICategory) => {
     }
   }
 }
+
 export const getCmsEditionCmsInitialValues = async (
   page: IArticle | IPage | null | undefined,
   language: Lang,
@@ -191,32 +200,36 @@ export const getCmsEditionCmsInitialValues = async (
     defaultValues.categories = page.categories.map(getCategoryInputValue(language));
   }
 
-  // for page
-  if (page.category) {
-    defaultValues.category = getCategoryInputValue(language)(page.category);
-  }
-
   return defaultValues;
 };
 
+/**
+ * form initial values for page edition
+ * @param page 
+ * @param language 
+ * @returns 
+ */
 export const getPageEditionCmsInitialValues = async (
   page: IPage | null | undefined,
   language: Lang,
 ): Promise<IPageInput | undefined> => {
   if (!page) return;
-  const formattedTranslatedValues = await getCmsEditionCmsInitialValues(page, language);
-  // const formattedBlockTranslatedValues = parseSavedTranslatedValuesToForm(page);
+  const clonedPage = cloneDeep(page); // immutability
+  const formattedTranslatedValues = await getCmsEditionCmsInitialValues(clonedPage, language);
+
+  // -------- blocks -------- //
   const blocks = [];
-  for (const block of page.blocks) {
-    const bs = parseSavedTranslatedValuesToForm(block);
-    blocks.push(bs)
-    console.log('bs: ', bs);
+  if (clonedPage.blocks) {
+    for (const block of clonedPage.blocks) {
+      const formattedBlock = parseSavedTranslatedValuesToForm(block);
+      blocks.push(formattedBlock)
+    }
+    formattedTranslatedValues.blocks = blocks;
   }
-  formattedTranslatedValues.blocks = blocks;
-  
-  // for page
-  if (page.category) {
-    formattedTranslatedValues.category = getCategoryInputValue(language)(page.category);
+
+  // -------- category -------- //
+  if (clonedPage.category) {
+    formattedTranslatedValues.category = getCategoryInputValue(language)(clonedPage.category);
   }
 
   return formattedTranslatedValues;
