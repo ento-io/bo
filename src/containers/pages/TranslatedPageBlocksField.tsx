@@ -59,7 +59,11 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
               {/* -------- each lang -------- */}
               {locales.map((locale: string) => {
                 return (
-                  <CardFormBlock title={'Block #' + (index + 1)} rootClassName={css({ display: locale === tab ? 'block' : 'none', marginTop: 12 })}>
+                  <CardFormBlock
+                    title={`${t('cms:block')} #${index + 1}`}
+                    // hide other locale fields, display only the selected (current) locale
+                    rootClassName={css({ display: locale === tab ? 'block' : 'none', marginTop: 12 })}
+                  >
                     <Stack spacing={1}>
                       <TextField
                         name={`${name}.${index}.${locale}:title`}
