@@ -66,7 +66,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
                         variant="outlined"
                         required={locale === DEFAULT_LANGUAGE}
                         tooltip={t('cms:pageNameHelper')}
-                        error={!!error[`${locale}:name`]}
+                        errorMessage={error[`${locale}:name`]}
                         fieldClassName="flex1"
                       />
                       {error && <FormHelperText error>{error[`${locale}:name`]?.message}</FormHelperText>}
@@ -97,7 +97,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
         * add a new line of translated fields
         * a new line for each translated fields
       */}
-      <div css={{ marginTop: controlledFields.length > 0 ? 12 : 0 }}>
+      <div css={{ marginTop: 12 }}>
         <Button
           startIcon={<FiPlus size={18} />}
           onClick={() => {
