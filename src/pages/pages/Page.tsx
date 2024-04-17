@@ -161,13 +161,16 @@ const Page = () => {
         {/* left */}
         <Grid item {...PREVIEW_PAGE_GRID.left}>
           <Stack spacing={3}>
+            {/* main infos bloc */}
             <Layout cardTitle={t('common:details')}>
               <Items items={infosItems} />
             </Layout>
+            {/* SEO block */}
             <Layout cardTitle={t('cms:seo')} cardDescription={t('cms:seoDescription')}>
               <Items items={seoItems} />
             </Layout>
-            <Layout>
+            {/* content */}
+            <Layout cardTitle={t('cms:mainContentOfThePage')}>
               <TextEditor value={translatedFields.content} editable={false} />
             </Layout>
 
