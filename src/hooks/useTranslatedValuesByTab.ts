@@ -51,3 +51,24 @@ export const useTranslatedValuesByTab = <T extends object>(translated?: T, keys:
     tab,
   }
 }
+
+
+type BlockOutput = {
+  translatedBlockFields: Record<string, any>[],
+  onTabChange: (value: Lang) => void,
+  tab: Lang,
+} & Omit<Output, 'translatedFields'>;
+
+export const useTranslatedArrayValuesByTab = <T extends Record<string, any>>(blocks: T[] = [], keys: string[] = []): BlockOutput => {
+  const [tab, setTab] = useState<Lang>(DEFAULT_LANGUAGE);
+
+  const onTabChange = (value: Lang) => setTab(value);
+
+  const newBlocks = blocks?.map(block => getFields(block.translated, keys, tab))
+
+  return {
+    translatedBlockFields: newBlocks,
+    onTabChange,
+    tab,
+  }
+}
