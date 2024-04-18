@@ -13,6 +13,12 @@ export interface IPageTranslatedFields extends ISEOFields {
   description?: string;
 }
 
+export interface IPageBlock {
+  translated: {
+    [key: string]: Omit<IPageTranslatedFields, 'name'>
+  };
+}
+
 export interface IPage extends Attributes {
   objectId: string;
   updatedAt?: string;
@@ -27,6 +33,7 @@ export interface IPage extends Attributes {
   previewImage?: IFileCloud;
   images?: IFileCloud[];
   category?: ICategory;
+  blocks?: IPageBlock[];
 }
 
 export interface IPageState {
