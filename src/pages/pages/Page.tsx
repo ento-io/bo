@@ -22,11 +22,11 @@ import { getPagePageSelector } from '@/redux/reducers/page.reducer';
 import { deletePage, goToAddPage, goToPages, goToEditPage } from '@/redux/actions/page.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { IPage, IPageTranslatedFields } from '@/types/page.type';
+import { IPage, IPageBlock, IPageTranslatedFields } from '@/types/page.type';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
-import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
+import { useTranslatedArrayValuesByTab, useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
 import { getServerUrl } from '@/utils/utils';
@@ -43,6 +43,8 @@ const Page = () => {
 
   // get translated fields depending on the selected language (tabs)
   const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<IPageTranslatedFields>(page?.translated, ['title', 'content']);
+  // get translated block fields depending on the selected language (tabs)
+  const { translatedBlockFields, onTabChange: onBlockTabChange, tab: blocTab } = useTranslatedArrayValuesByTab<IPageBlock>(page?.blocks, ['title']);
 
   if (!page) return null;
 
@@ -155,7 +157,6 @@ const Page = () => {
       <TranslatedFormTabs
         onTabChange={onTabChange}
         tab={tab}
-        // errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_PAGE_FIELDS)}
       />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
         {/* left */}
@@ -172,6 +173,21 @@ const Page = () => {
             {/* content */}
             <Layout cardTitle={t('cms:mainContentOfThePage')}>
               <TextEditor value={translatedFields.content} editable={false} />
+            </Layout>
+
+            {/* blocks */}
+            <TranslatedFormTabs
+                onTabChange={onBlockTabChange}
+                tab={blocTab}
+              />
+            <Layout cardTitle={t('cms:blocks')}>
+              {translatedBlockFields.map((block, index) => (
+                <Stack key={index} spacing={3}>
+                  <div>
+                    {block.title}
+                  </div>
+                </Stack>
+              ))}
             </Layout>
 
             {/* images */}
