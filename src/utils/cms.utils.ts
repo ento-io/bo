@@ -10,7 +10,7 @@ import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";
 import { ISelectOption } from "@/types/app.type";
-import { IPage, IPageInput } from "@/types/page.type";
+import { IPage, IPageBlocksInput, IPageInput } from "@/types/page.type";
 
 export const articlesTabOptions = defaultTabOptions;
 export const pagesTabOptions = defaultTabOptions;
@@ -111,7 +111,7 @@ export const formatTranslatedFormValuesToSave = (values: Record<string, any>): a
  */
 export const formatTranslatedPageFormValuesToSave = (values: Record<string, any>) => {
   // other fields transformation
-  const newValues: Record<string, any> = { ...formatTranslatedFormValuesToSave(values) };
+  const newValues: Record<string, any> = {};
 
   // translated blocks transformation
   if (values.blocks) {
@@ -217,15 +217,15 @@ export const getPageEditionCmsInitialValues = async (
   const clonedPage = cloneDeep(page); // immutability
   const formattedTranslatedValues = await getCmsEditionCmsInitialValues(clonedPage, language);
 
-  // -------- blocks -------- //
-  const blocks = [];
-  if (clonedPage.blocks) {
-    for (const block of clonedPage.blocks) {
-      const formattedBlock = parseSavedTranslatedValuesToForm(block);
-      blocks.push(formattedBlock)
-    }
-    formattedTranslatedValues.blocks = blocks;
-  }
+  // // -------- blocks -------- //
+  // const blocks = [];
+  // if (clonedPage.blocks) {
+  //   for (const block of clonedPage.blocks) {
+  //     const formattedBlock = parseSavedTranslatedValuesToForm(block);
+  //     blocks.push(formattedBlock)
+  //   }
+  //   formattedTranslatedValues.blocks = blocks;
+  // }
 
   // -------- category -------- //
   if (clonedPage.category) {
@@ -234,6 +234,26 @@ export const getPageEditionCmsInitialValues = async (
 
   return formattedTranslatedValues;
 };
+
+export const getPageBlocksEditionCmsInitialValues = async (
+  page: IPage | null | undefined,
+): Promise<IPageBlocksInput | undefined> => {
+  if (!page) return;
+  const clonedPage = cloneDeep(page); // immutability
+
+  // -------- blocks -------- //
+  const blocks = [];
+  if (clonedPage.blocks) {
+    for (const block of clonedPage.blocks) {
+      const formattedBlock = parseSavedTranslatedValuesToForm(block);
+      blocks.push(formattedBlock)
+    }
+    clonedPage.blocks = blocks;
+  }
+
+  return clonedPage;
+};
+
 
 /**
  * initial form values for creation or edition
