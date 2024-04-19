@@ -24,6 +24,8 @@ const CreatePageBlocks = () => {
   const language = useSelector(getSettingsLangSelector);
   const page = useSelector(getPagePageSelector);
 
+  if (!page) return null;
+  
   const pageTitle = getTranslatedField(page.translated, language, 'title');
 
   const handleGoToList = () => {
@@ -53,7 +55,9 @@ const CreatePageBlocks = () => {
       <PageBlocksForm
         onSubmit={handleSubmit}
       />
-      <Button onClick={handleGoToPage}>{t('cms:ignore')}</Button>
+      <Button onClick={handleGoToPage} variant="outlined" fullWidth css={{ marginTop: 8 }}>
+        {t('common:ignore')}
+      </Button>
     </Layout>
   )
 }
