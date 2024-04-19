@@ -20,15 +20,13 @@ import { uploadFormFiles, uploadUpdatedFormFiles } from '@/utils/file.utils';
 
 const Page = Parse.Object.extend("Page");
 
-const PAGE_PROPERTIES = new Set(['translated', 'category', 'blocks', ...ALL_PAGE_FIELDS]);
+const PAGE_PROPERTIES = new Set(['translated', 'category', /* 'blocks' */ ...ALL_PAGE_FIELDS]);
 
 export const getPage = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
   const page = await Parse.Cloud.run('getPage', { id, include });
 
+  if (!page) return;
 
-  if (!page) {
-    throw new Error(i18n.t('cms:errors.pageNotFound'));
-  }
   return page;
 }
 
@@ -276,7 +274,7 @@ export const onPageEnter = (route?: any): AppThunkAction => {
     // clear the prev state first
     dispatch(clearPageSlice());
 
-    const page = await getPage(route.params?.id, ['category']);
+    const page = await getPage(route.params?.id, ['category', 'blocks']);
 
     if (!page) return;
 
