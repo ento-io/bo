@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from '@tanstack/react-router';
 import { FaCheck, FaCheckDouble } from 'react-icons/fa';
 import { ReactNode } from 'react';
+import { FiEdit2, FiPlus } from 'react-icons/fi';
 import ActionsMenu from '@/components/ActionsMenu';
 import Head from '@/components/Head';
 import Items from '@/components/Items';
@@ -22,16 +23,17 @@ import { getPagePageSelector } from '@/redux/reducers/page.reducer';
 import { deletePage, goToAddPage, goToPages, goToEditPage } from '@/redux/actions/page.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { IPage, IPageTranslatedFields } from '@/types/page.type';
+import { IPage, IPageBlock, IPageTranslatedFields } from '@/types/page.type';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
-import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
+import { useTranslatedArrayValuesByTab, useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
 import { getServerUrl } from '@/utils/utils';
 import { getTranslatedField } from '@/utils/settings.utils';
 import { ICategoryTranslatedFields } from '@/types/category.type';
+import { goToAddPageBlocks, goToEditPageBlocks } from '@/redux/actions/pageBlock.action';
 
 const Page = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
@@ -43,6 +45,8 @@ const Page = () => {
 
   // get translated fields depending on the selected language (tabs)
   const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<IPageTranslatedFields>(page?.translated, ['title', 'content']);
+  // get translated block fields depending on the selected language (tabs)
+  const { translatedBlockFields, onTabChange: onBlockTabChange, tab: blocTab } = useTranslatedArrayValuesByTab<IPageBlock>(page?.blocks, ['title']);
 
   if (!page) return null;
 
@@ -122,6 +126,14 @@ const Page = () => {
     dispatch(toggleUserNotification(page.objectId));
   };
 
+  const handleEditBlocks = () => {
+    navigate(goToEditPageBlocks(page.objectId));
+  };
+
+  const handleAddBlocks = () => {
+    navigate(goToAddPageBlocks(page.objectId));
+  };
+
   const menus = [
     {
       onClick: togglePublish,
@@ -155,20 +167,57 @@ const Page = () => {
       <TranslatedFormTabs
         onTabChange={onTabChange}
         tab={tab}
-        // errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_PAGE_FIELDS)}
       />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
         {/* left */}
         <Grid item {...PREVIEW_PAGE_GRID.left}>
           <Stack spacing={3}>
+            {/* main infos bloc */}
             <Layout cardTitle={t('common:details')}>
               <Items items={infosItems} />
             </Layout>
+            {/* SEO block */}
             <Layout cardTitle={t('cms:seo')} cardDescription={t('cms:seoDescription')}>
               <Items items={seoItems} />
             </Layout>
-            <Layout>
+            {/* content */}
+            <Layout cardTitle={t('cms:mainContentOfThePage')}>
               <TextEditor value={translatedFields.content} editable={false} />
+            </Layout>
+
+            {/* blocks */}
+            <TranslatedFormTabs
+                onTabChange={onBlockTabChange}
+                tab={blocTab}
+              />
+            <Layout
+              cardTitle={t('cms:blocks')}
+              actionsEmplacement='content'
+              actions={(page.blocks as any)?.length > 0
+                ? (
+                  <Button
+                    startIcon={<FiEdit2 size={16} />}
+                    onClick={handleEditBlocks}
+                  >
+                    {t('cms:editBlocks')}
+                  </Button>
+                ) : (
+                  <Button
+                    startIcon={<FiPlus size={16} />}
+                    onClick={handleAddBlocks}
+                  >
+                    {t('cms:addBlocks')}
+                  </Button>
+                )
+              }
+            >
+              {translatedBlockFields.map((block, index) => (
+                <Stack key={index} spacing={3}>
+                  <div>
+                    {block.title}
+                  </div>
+                </Stack>
+              ))}
             </Layout>
 
             {/* images */}

@@ -68,6 +68,7 @@ export const getCMSTranslatedSchema = (entity = CategoryEntityEnum.Article) => {
       translatedSchema[locale + ':title'] = z.string({ errorMap }).transform(capitalize);
       translatedSchema[locale + ':content'] = z.string({ errorMap }).optional().transform(emptyContent);
     } else {
+      // required fields only for default locale
       [{
         key: 'name',
         label: i18n.t('cms:pageName'),

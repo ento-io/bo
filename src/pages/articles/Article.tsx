@@ -166,7 +166,7 @@ const Article = () => {
             <Layout cardTitle={t('cms:seo')} cardDescription={t('cms:seoDescription')}>
               <Items items={seoItems} />
             </Layout>
-            <Layout>
+            <Layout cardTitle={t('cms:contentOfTheArticle')}>
               <TextEditor value={translatedFields.content} editable={false} />
             </Layout>
 

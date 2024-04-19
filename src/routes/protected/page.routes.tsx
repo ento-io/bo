@@ -12,6 +12,9 @@ import CreatePage from "@/pages/pages/CreatePage";
 import EditPage from "@/pages/pages/EditPage";
 import { tabAndCategoryRouteSearchParams } from "@/validations/app.validations";
 import CMSFormLayout from "@/containers/cms/CMSFormLayout";
+import EditPageBlocks from "@/pages/pages/blocks/EditPageBlocks";
+import CreatePageBlocks from "@/pages/pages/blocks/CreatePageBlocks";
+import { onAddPageBlocksEnter, onEditPageBlocksEnter } from "@/redux/actions/pageBlock.action";
 
 export const pagesLayout = createRoute({
   getParentRoute: () => privateLayout,
@@ -53,6 +56,26 @@ export const editPageRoute = createRoute({
   component: EditPage,
 });
 
+export const createPageBlocksRoute = createRoute({
+  parseParams: (params: any) => ({
+    pageId: z.string().parse(params.pageId),
+  }),
+  path: `$pageId/${PATH_NAMES.blocks}/${PATH_NAMES.create}`,
+  beforeLoad: onEnter(onAddPageBlocksEnter),
+  getParentRoute: () => pageFormLayout,
+  component: CreatePageBlocks,
+});
+
+export const editPageBlocksRoute = createRoute({
+  parseParams: (params: any) => ({
+    pageId: z.string().parse(params.pageId),
+  }),
+  path: `$pageId/${PATH_NAMES.blocks}/${PATH_NAMES.edit}`,
+  beforeLoad: onEnter(onEditPageBlocksEnter),
+  getParentRoute: () => pageFormLayout,
+  component: EditPageBlocks,
+});
+
 export const createPageRoute = createRoute({
   path: PATH_NAMES.create,
   beforeLoad: onEnter(onCreatePageEnter),
@@ -66,6 +89,9 @@ const pageRoutes = [
   pageFormLayout.addChildren([
     createPageRoute,
     editPageRoute,
+    // page blocks
+    createPageBlocksRoute,
+    editPageBlocksRoute,
   ])
 ];
 

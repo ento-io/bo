@@ -25,15 +25,16 @@ const EditArticle = () => {
     navigate(goToArticle(article.objectId));
   }
 
-  const handleDelete = () => {
-    if (!canDelete) return;
-    navigate(deleteArticle(article.objectId));
-  }
-
   const handleGoToList = () => {
     if (!canFind) return;
     navigate(goToArticles());
   };
+
+  const handleDelete = async () => {
+    if (!canDelete) return;
+    await dispatch(deleteArticle(article.objectId));
+    handleGoToList();
+  }
 
   const handleCreate = () => {
     if (!canCreate) return;

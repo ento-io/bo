@@ -45,6 +45,12 @@ export const page = createSlice({
       const newPages = state.pages.filter(prevPage => !action.payload.includes(prevPage.objectId));
       state.pages = newPages;
     },
+    deletePageBlockSlice: (state: IPageState, action: PayloadAction<string[]>) => {
+      const blocks = state.page?.blocks || [];
+      const newBlocks = blocks.filter(prevBlock => !action.payload.includes(prevBlock.objectId));
+      if (!state.page) return;
+      state.page.blocks = newBlocks;
+    },
   },
 });
 
@@ -59,6 +65,7 @@ export const {
   addPageToPagesSlice,
   deletePageFromPagesSlice,
   deletePagesSlice,
+  deletePageBlockSlice,
 } = page.actions;
 
 // ---------------------------------------------- //

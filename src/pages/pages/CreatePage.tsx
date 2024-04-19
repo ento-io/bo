@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import PageForm from "../../containers/pages/PageForm";
-import { createPage, goToPage, goToPages } from "@/redux/actions/page.action";
+import { createPage, goToPages } from "@/redux/actions/page.action";
 import { getPagePageSelector } from "@/redux/reducers/page.reducer";
 import { IPageInput } from "@/types/page.type";
 import Layout from "@/components/layouts/Layout";
 import ActionsMenu from "@/components/ActionsMenu";
 import Head from "@/components/Head";
 import { useProtect } from "@/hooks/useProtect";
+import { goToAddPageBlocks } from "@/redux/actions/pageBlock.action";
 
 const CreatePage = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const CreatePage = () => {
 
   useEffect(() => {
     if (!newPage) return;
-    navigate(goToPage(newPage.objectId));
+    navigate(goToAddPageBlocks(newPage.objectId));
   }, [newPage, navigate]);
 
   const handleGoToList = () => {
@@ -30,23 +31,18 @@ const CreatePage = () => {
     navigate(goToPages())
   };
   
-  const handleSubmitPage = (values: IPageInput) => {
-    dispatch(createPage(values));
+  const handleSubmitPage = async (values: IPageInput) => {
+    await dispatch(createPage(values, ));
   }
 
   return (
     <Layout
-      title={(
-        <span css={{ marginRight: 10 }}>{t('cms:newPage')}</span>
-      )}
+      title={t('cms:newPage')}
       isCard={false}
-      actions={
-        <ActionsMenu goToList={handleGoToList} />
-      }>
+      actions={<ActionsMenu goToList={handleGoToList} />}
+    >
       <Head title={t('cms:createPage')} />
-      <PageForm
-        onSubmit={handleSubmitPage}
-      />          
+      <PageForm onSubmit={handleSubmitPage} />
     </Layout>
   )
 }

@@ -24,6 +24,19 @@
   "savePage": "Enregistrer page",
   "thePage": "la page",
   "activePageVisible": "une page active est visible pour les utilisateurs",
+  "block": "Bloc",
+  "addBlock": "Ajouter un bloc",
+  "editBlocks": "Modifier les blocs",
+  "addBlocks": "Ajouter des blocs",
+  "createBlocksForPage": "Créer des blocs pour la page - {{title}}",
+  "editBlocksForPage": "Modifier les blocs pour la page - {{title}}",
+  "mainContentOfThePage": "Contenu principal de la page",
+  "contentOfTheArticle": "Contenu de l'article",
+  "editorHelper": "C'est un éditeur WYSIWYG, vous pouvez rédiger votre contenu ici. Vous pouvez également ajouter un titre, des liens, ...",
+  "blocks": "Blocs",
+  "titleOfEachBlock": "Titre de chaque bloc",
+  "blockTitle": "Titre du bloc",
+  "blocksHelper": "Les blocs sont une liste de données. Chaque bloc est principalement affiché sous forme de colonne de gauche (image) et de droite (titre et description) de la page.",
   "pageName": "Nom de la page",
   "pageNameHelper": "Le nom de la page est affiché dans un lien par exemple, et aussi le slug est généré automatiquement par le nom",
   "pageTitleHelper": "Le titre de la page est affiché sur la page tout en haut",
@@ -85,7 +98,10 @@
     "pageEditedSuccessfully": "Page {{value}} modifié avec succès",
     "pageDeletedSuccessfully": "Page {{value}} supprimé avec succès",
     "pageAlreadyExists": "Page avec la référence {{value}} existe déjà",
-    "thisPageAlreadyExists": "Cette page existe déjà"
+    "thisPageAlreadyExists": "Cette page existe déjà",
+
+    "blocksAddedToThePage": "Blocs ajoutés à la page",
+    "blocksEditedForThisPage": "Blocs modifiés pour cette page"
   },
   "errors": {
     "pageToUpdateNotFound": "La page que vous tentez de mettre à jour n'existe pas, elle a peut-être été supprimé.",

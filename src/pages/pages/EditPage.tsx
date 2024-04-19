@@ -23,17 +23,18 @@ const EditPage = () => {
   const handlePreview = () => {
     if (!canPreview) return;
     navigate(goToPage(page.objectId));
-  }
-
-  const handleDelete = () => {
-    if (!canDelete) return;
-    navigate(deletePage(page.objectId));
-  }
+  };
 
   const handleGoToList = () => {
     if (!canFind) return;
     navigate(goToPages());
   };
+
+  const handleDelete = async () => {
+    if (!canDelete) return;
+    await dispatch(deletePage(page.objectId));
+    handleGoToList();
+  }
 
   const handleCreate = () => {
     if (!canCreate) return;

@@ -5,15 +5,16 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import TextFieldInput, { CustomTextFieldInputProps } from '../inputs/TextFieldInput';
 
-type Props = {
+export type TextFieldProps = {
   name: string;
   errorMessage?: string;
   transformValuePreview?: (value: string) => string;
   onFieldChange?: (value: string | number) => void;
   preview?: string;
+  fieldClassName?: string;
 } & CustomTextFieldInputProps;
 
-const TextField = ({ name, errorMessage, onFieldChange, transformValuePreview, preview, ...inputProps }: Props) => {
+const TextField = ({ name, errorMessage, onFieldChange, transformValuePreview, fieldClassName, preview, ...inputProps }: TextFieldProps) => {
   // hooks
   const {
     control,
@@ -26,7 +27,7 @@ const TextField = ({ name, errorMessage, onFieldChange, transformValuePreview, p
       name={name}
       defaultValue=""
       render={({ field }) => (
-        <Stack>
+        <Stack className={fieldClassName}>
           <TextFieldInput
             {...field}
             {...inputProps}

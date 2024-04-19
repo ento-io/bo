@@ -11,7 +11,7 @@ import Form from "@/components/form/Form";
 import { pageSchema } from "@/validations/page.validations";
 import TextEditorField from "@/components/form/fields/TextEditorField";
 import { getTranslatedFormTabErrors } from "@/utils/utils";
-import { TRANSLATED_CMS_FIELDS, getCmsEditionCmsInitialValues } from "@/utils/cms.utils";
+import { TRANSLATED_CMS_FIELDS, getPageEditionCmsInitialValues } from "@/utils/cms.utils";
 import TranslatedFormTabs from "@/components/form/translated/TranslatedFormTabs";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 import { locales } from "@/config/i18n";
@@ -26,7 +26,10 @@ import TranslatedSlugField from "../cms/TranslatedSlugField";
 
 const initialValues = {
   active: true,
-  categories: []
+  categories: [],
+  // blocks: [{
+  //   name: ''
+  // }],
 };
 
 type Props = {
@@ -48,17 +51,18 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
 
   const { handleSubmit, reset, setValue } = form;
 
+  // initialize form values
   useEffect(() => {
     if (!page) return;
     const init = async () => {
-      const editionInitialValues = await getCmsEditionCmsInitialValues(page, language);
+      const editionInitialValues = await getPageEditionCmsInitialValues(page, language);
       reset(editionInitialValues)
     };
 
     init();
   }, [page, reset, language]);
 
-  // change translated slug field value when title is changed
+  // change translated slug field value when the page name is changed
   const handlePageNameChange = (value: string | number) => {
     setValue(tab + ':slug', value, { shouldValidate: true });
   };
@@ -69,8 +73,12 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
   };
 
   return (
-    <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading}>
-      {/* translated fields */}
+    <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading} isDisabled={false}>
+      {/* <CardFormBlock title={t('cms:blocks')} description={t('cms:blocksHelper')}>
+        <TranslatedPageBlocksField
+          name="blocks"
+        />
+      </CardFormBlock> */}
       <CardFormBlock title={t('details')} description={t('cms:translatedFields')}>
         {/* translated tabs */}
         <TranslatedFormTabs
@@ -80,6 +88,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
         />
         {/* all translated fields */}
         {locales.map((locale: string, index: number) => (
+          // hide other locale fields, display only the selected (current) locale
           <div key={index} css={{ display: locale === tab ? 'block' : 'none', marginTop: 12 }}>
             <Stack spacing={2}>
               <TextField
