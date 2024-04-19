@@ -11,7 +11,7 @@ import { useProtect } from "@/hooks/useProtect";
 import PageBlocksForm from "@/containers/pages/PageBlocksForm";
 import { getTranslatedField } from "@/utils/settings.utils";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
-import { editPageBlocks } from "@/redux/actions/pageBlock.action";
+import { addBlocksToPage } from "@/redux/actions/pageBlock.action";
 
 const EditPageBlocks = () => {
   const navigate = useNavigate();
@@ -22,6 +22,8 @@ const EditPageBlocks = () => {
 
   const language = useSelector(getSettingsLangSelector);
   const page = useSelector(getPagePageSelector);
+
+  if (!page) return null;
 
   const pageTitle = getTranslatedField(page.translated, language, 'title');
 
@@ -36,7 +38,7 @@ const EditPageBlocks = () => {
   
   const handleSubmit = async (values: IPageBlocksInput) => {
     if (!page) return;
-    await dispatch(editPageBlocks(page.objectId, values));
+    await dispatch(addBlocksToPage(page.objectId, values, 'update'));
     if (!canPreview) return;
     handleGoToPage();
   }
@@ -51,6 +53,7 @@ const EditPageBlocks = () => {
       <Head title={t('cms:editBlocksForPage', { title: pageTitle })} />
       <PageBlocksForm
         onSubmit={handleSubmit}
+        page={page}
       />          
     </Layout>
   )
