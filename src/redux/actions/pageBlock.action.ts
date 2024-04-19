@@ -38,16 +38,20 @@ export const getPageBlock = async (id: string, include: string[] = []): Promise<
 // ----------------------------------------------------- //
 
 
-export const createPageBlocks = (pageId: string, values: IPageBlocksInput): any => {
+export const addBlocksToPage = (
+  pageId: string,
+  values: IPageBlocksInput,
+  type: 'creation' | 'update' = 'creation'
+): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
     const newValues = { ...values };
     const state = getState?.();
     // --------- access --------- //
     const roles = getRoleCurrentUserRolesSelector(state as any);
-    const hasRight = canAccessTo(roles, 'Page', 'create');
+    const hasRight = canAccessTo(roles, 'Page', 'update');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToCreate', { value: i18n.t('cms:thisPage') }));
+      throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('cms:thisPage') }));
     }
 
     const currentUser = await Parse.User.currentAsync();
@@ -76,51 +80,10 @@ export const createPageBlocks = (pageId: string, values: IPageBlocksInput): any 
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
     const savedPage = await page.save();
     dispatch(loadPageSlice((savedPage as Attributes).toJSON()));
-    dispatch(setMessageSlice(i18n.t('cms:messages.blocksAddedToThePage')));
-  });
-};
-
-export const editPageBlocks = (pageId: string, values: IPageBlocksInput): any => {
-  return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
-    const newValues = { ...values };
-    const state = getState?.();
-    // --------- access --------- //
-    const roles = getRoleCurrentUserRolesSelector(state as any);
-    const hasRight = canAccessTo(roles, 'Page', 'create');
-
-    if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToCreate', { value: i18n.t('cms:thisPage') }));
+    if (type === 'creation') {
+      dispatch(setMessageSlice(i18n.t('cms:messages.blocksAddedToThePage')));
+      return;
     }
-
-    const currentUser = await Parse.User.currentAsync();
-
-    if (!currentUser) {
-      throw Error(i18n.t('user:errors.userNotExist'));
-    }
-
-    const newBlocks = [];
-    for (const block of newValues.blocks) {
-      let newBlock = new PageBlock();
-      if (block.objectId) {
-        newBlock = await getPageBlock(block.objectId);
-      }
-      setValues(newBlock, block, PAGE_BLOCK_PROPERTIES);
-      newBlocks.push(newBlock);
-    }
-
-    const savedBlocks = await Parse.Object.saveAll(newBlocks);
-
-    const savedValues = { blocks: savedBlocks };
-    const page = convertIdToPointer('Page', pageId);
-    
-    setValues(page, savedValues, PAGE_PROPERTIES);
-
-    // only the user or the MasterKey can update or deleted its own account
-    // the master key can only accessible in server side
-    // so we use the parse cloud function to do that, instead of a REST API
-    // you can sse the cloud function in server in the /cloud/hooks/users.js file
-    const savedPage = await page.save();
-    dispatch(loadPageSlice((savedPage as Attributes).toJSON()));
     dispatch(setMessageSlice(i18n.t('cms:messages.blocksEditedForThisPage')));
   });
 };
