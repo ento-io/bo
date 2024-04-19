@@ -1,4 +1,4 @@
-import { IconButton, Stack, Theme, Tooltip } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from '@tanstack/react-router';
 import { FaCheck, FaCheckDouble } from 'react-icons/fa';
 import { ReactNode } from 'react';
-import { FiEdit3 } from 'react-icons/fi';
+import { FiEdit2, FiPlus } from 'react-icons/fi';
 import ActionsMenu from '@/components/ActionsMenu';
 import Head from '@/components/Head';
 import Items from '@/components/Items';
@@ -33,7 +33,7 @@ import BooleanIcons from '@/components/BooleanIcons';
 import { getServerUrl } from '@/utils/utils';
 import { getTranslatedField } from '@/utils/settings.utils';
 import { ICategoryTranslatedFields } from '@/types/category.type';
-import { goToEditPageBlocks } from '@/redux/actions/pageBlock.action';
+import { goToAddPageBlocks, goToEditPageBlocks } from '@/redux/actions/pageBlock.action';
 
 const Page = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
@@ -130,6 +130,10 @@ const Page = () => {
     navigate(goToEditPageBlocks(page.objectId));
   };
 
+  const handleAddBlocks = () => {
+    navigate(goToAddPageBlocks(page.objectId));
+  };
+
   const menus = [
     {
       onClick: togglePublish,
@@ -189,13 +193,23 @@ const Page = () => {
             <Layout
               cardTitle={t('cms:blocks')}
               actionsEmplacement='content'
-              actions={(
-                <Tooltip title={t('editBlocksForPage')}>
-                  <IconButton aria-label="edit" onClick={handleEditBlocks}>
-                    <FiEdit3 size={20} css={(theme: Theme) => ({ color: theme.palette.primary.main })} />
-                  </IconButton>
-                </Tooltip>
-              )}
+              actions={(page.blocks as any)?.length > 0
+                ? (
+                  <Button
+                    startIcon={<FiEdit2 size={16} />}
+                    onClick={handleEditBlocks}
+                  >
+                    {t('cms:editBlocks')}
+                  </Button>
+                ) : (
+                  <Button
+                    startIcon={<FiPlus size={16} />}
+                    onClick={handleAddBlocks}
+                  >
+                    {t('cms:addBlocks')}
+                  </Button>
+                )
+              }
             >
               {translatedBlockFields.map((block, index) => (
                 <Stack key={index} spacing={3}>
