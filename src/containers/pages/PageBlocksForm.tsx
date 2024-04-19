@@ -12,11 +12,9 @@ import CardFormBlock from "@/components/form/CardFormBlock";
 import TranslatedPageBlocksField from "./TranslatedPageBlocksField";
 
 const initialValues = {
-  active: true,
-  categories: [],
-  // blocks: [{
-  //   name: ''
-  // }],
+  blocks: [{
+    name: ''
+  }],
 };
 
 type Props = {
@@ -46,7 +44,6 @@ const PageBlocksForm = ({ onSubmit, page, loading }: Props) => {
 
   const onFormSubmit: SubmitHandler<IPageInput> = (values) => {
     onSubmit(values);
-    reset(initialValues);
   };
 
   return (
