@@ -23,7 +23,6 @@ import { CategoryEntityEnum } from "@/types/category.type";
 import { useTranslatedValuesByTab } from "@/hooks/useTranslatedValuesByTab";
 import CategoriesSearchByEntityField from "../categories/CategoriesSearchByEntityField";
 import TranslatedSlugField from "../cms/TranslatedSlugField";
-import TranslatedPageBlocksField from "./TranslatedPageBlocksField";
 
 const initialValues = {
   active: true,
@@ -75,11 +74,11 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
 
   return (
     <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading} isDisabled={false}>
-      <CardFormBlock title={t('cms:blocks')} description={t('cms:blocksHelper')}>
+      {/* <CardFormBlock title={t('cms:blocks')} description={t('cms:blocksHelper')}>
         <TranslatedPageBlocksField
           name="blocks"
         />
-      </CardFormBlock>
+      </CardFormBlock> */}
       <CardFormBlock title={t('details')} description={t('cms:translatedFields')}>
         {/* translated tabs */}
         <TranslatedFormTabs
