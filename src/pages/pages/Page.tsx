@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { IconButton, Stack, Theme, Tooltip } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from '@tanstack/react-router';
 import { FaCheck, FaCheckDouble } from 'react-icons/fa';
 import { ReactNode } from 'react';
+import { FiEdit3 } from 'react-icons/fi';
 import ActionsMenu from '@/components/ActionsMenu';
 import Head from '@/components/Head';
 import Items from '@/components/Items';
@@ -32,6 +33,7 @@ import BooleanIcons from '@/components/BooleanIcons';
 import { getServerUrl } from '@/utils/utils';
 import { getTranslatedField } from '@/utils/settings.utils';
 import { ICategoryTranslatedFields } from '@/types/category.type';
+import { goToEditPageBlocks } from '@/redux/actions/pageBlock.action';
 
 const Page = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
@@ -124,6 +126,10 @@ const Page = () => {
     dispatch(toggleUserNotification(page.objectId));
   };
 
+  const handleEditBlocks = () => {
+    navigate(goToEditPageBlocks(page.objectId));
+  };
+
   const menus = [
     {
       onClick: togglePublish,
@@ -180,7 +186,17 @@ const Page = () => {
                 onTabChange={onBlockTabChange}
                 tab={blocTab}
               />
-            <Layout cardTitle={t('cms:blocks')}>
+            <Layout
+              cardTitle={t('cms:blocks')}
+              actionsEmplacement='content'
+              actions={(
+                <Tooltip title={t('editBlocksForPage')}>
+                  <IconButton aria-label="edit" onClick={handleEditBlocks}>
+                    <FiEdit3 size={20} css={(theme: Theme) => ({ color: theme.palette.primary.main })} />
+                  </IconButton>
+                </Tooltip>
+              )}
+            >
               {translatedBlockFields.map((block, index) => (
                 <Stack key={index} spacing={3}>
                   <div>
