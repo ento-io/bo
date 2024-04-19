@@ -12,7 +12,7 @@ import { useProtect } from "@/hooks/useProtect";
 import PageBlocksForm from "@/containers/pages/PageBlocksForm";
 import { getTranslatedField } from "@/utils/settings.utils";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
-import { createPageBlocks } from "@/redux/actions/pageBlock.action";
+import { addBlocksToPage } from "@/redux/actions/pageBlock.action";
 
 const CreatePageBlocks = () => {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const CreatePageBlocks = () => {
   
   const handleSubmit = async (values: IPageBlocksInput) => {
     if (!page) return;
-    await dispatch(createPageBlocks(page.objectId, values));
+    await dispatch(addBlocksToPage(page.objectId, values));
     if (!canPreview) return;
     navigate(goToPage(page.objectId));
   }
