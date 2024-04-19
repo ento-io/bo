@@ -26,6 +26,8 @@
   "activePageVisible": "une page active est visible pour les utilisateurs",
   "block": "Bloc",
   "addBlock": "Ajouter un bloc",
+  "createBlocksForPage": "Créer des blocs pour la page {{title}}",
+  "editBlocksForPage": "Modifier les blocs pour la page {{title}}",
   "mainContentOfThePage": "Contenu principal de la page",
   "contentOfTheArticle": "Contenu de l'article",
   "editorHelper": "C'est un éditeur WYSIWYG, vous pouvez rédiger votre contenu ici. Vous pouvez également ajouter un titre, des liens, ...",
@@ -94,7 +96,10 @@
     "pageEditedSuccessfully": "Page {{value}} modifié avec succès",
     "pageDeletedSuccessfully": "Page {{value}} supprimé avec succès",
     "pageAlreadyExists": "Page avec la référence {{value}} existe déjà",
-    "thisPageAlreadyExists": "Cette page existe déjà"
+    "thisPageAlreadyExists": "Cette page existe déjà",
+
+    "blocksAddedToThePage": "Blocs ajoutés à la page",
+    "blocksEditedForThisPage": "Blocs modifiés pour cette page"
   },
   "errors": {
     "pageToUpdateNotFound": "La page que vous tentez de mettre à jour n'existe pas, elle a peut-être été supprimé.",
