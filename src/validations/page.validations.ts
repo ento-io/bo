@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { capitalize } from "string-ts";
 import { articleFilterSchema, cmsSchema, getCMSTranslatedSchema } from "./article.validations";
-import { formatTranslatedPageFormValuesToSave } from "@/utils/cms.utils";
+import { formatTranslatedFormValuesToSave, formatTranslatedPageFormValuesToSave } from "@/utils/cms.utils";
 import { categoryOptionSchema } from "./category.validation";
 import { CategoryEntityEnum } from "@/types/category.type";
 import i18n, { locales } from "@/config/i18n";
@@ -39,7 +39,7 @@ const getTranslatedBlockSchema = () => {
   return translatedSchema
 }
 
-export const pageSchema: any = cmsSchema
+export const pageSchema = cmsSchema
   .extend({
     ...getCMSTranslatedSchema(CategoryEntityEnum.Page), // translated fields
     // optional category
@@ -48,6 +48,10 @@ export const pageSchema: any = cmsSchema
       (value) => value === '' ? undefined : value,
       categoryOptionSchema.optional()),
     // ex: [{ 'fr:name': 'xxx', 'en:name': 'yyy' }, { 'fr:name': 'xxx', 'en:name': 'yyy' }]
+  })
+  .transform(formatTranslatedFormValuesToSave);
+
+export const pageBlocksSchema = z.object({
     blocks: z.array(z.object(getTranslatedBlockSchema())).optional()
   })
   .transform(formatTranslatedPageFormValuesToSave);
