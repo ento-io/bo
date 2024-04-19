@@ -21,8 +21,11 @@ export const PATH_NAMES = {
     resetPassword: '/' + i18n.t('route:emailResetPassword'),
     verifyAccount: '/' + i18n.t('route:verifyAccount'),
   },
-  create: i18n.t('route:add'),
-  edit: i18n.t('route:edit'),
   estimates: '/' + i18n.t('route:estimates'),
   invoices: '/' + i18n.t('route:invoices'),
+
+  // static pathnames (no '/' at the beginning)
+  create: i18n.t('route:add'),
+  edit: i18n.t('route:edit'),
+  blocks: i18n.t('route:blocks'),
 };
