@@ -86,6 +86,7 @@
   "deniedLocation": "Permission to access location was denied",
   "ignore": "Ignore",
   "noDataAvailable": "No data available yet",
+  "addImage": "Add an image",
   "noData": "No data",
   "notDefined": "Not defined",
   "sureToDelete" : "Are you sure to delete {{value}}?",
