@@ -7,15 +7,14 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 import { PATH_NAMES } from '@/utils/pathnames';
 import { deletePageBlockSlice, getPagePageSelector, loadPageSlice } from '../reducers/page.reducer';
 import i18n from '@/config/i18n';
-import { IPageBlockInput, IPageBlocksInput } from '@/types/page.type';
+import { IPageBlocksInput } from '@/types/page.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import { convertIdToPointer, setValues } from '@/utils/parse.utils';
 import { setMessageSlice } from '../reducers/app.reducer';
 import { getPage } from './page.action';
 import { goToNotFound } from './app.action';
-import { uploadFileAPI, uploadFormFiles } from '@/utils/file.utils';
-import { PAGE_BLOCK_SINGLE_IMAGE_FIELDS } from '@/validations/file.validation';
+import { uploadFileAPI } from '@/utils/file.utils';
 
 const PageBlock = Parse.Object.extend("PageBlock");
 
