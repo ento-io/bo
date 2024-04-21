@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { capitalize } from "string-ts";
-import { articleFilterSchema, cmsSchema, getCMSTranslatedSchema } from "./article.validations";
+import { articleFilterSchema, cmsSchema, emptyContent, getCMSTranslatedSchema } from "./article.validations";
 import { formatTranslatedFormValuesToSave, formatTranslatedPageFormValuesToSave } from "@/utils/cms.utils";
 import { categoryOptionSchema } from "./category.validation";
 import { CategoryEntityEnum } from "@/types/category.type";
@@ -24,15 +24,29 @@ const getTranslatedBlockSchema = () => {
     if (locale !== DEFAULT_LANGUAGE) {
       // ex: fr:title field name
       translatedSchema[locale + ':title'] = z.string({ errorMap }).transform(capitalize);
+      translatedSchema[locale + ':description'] = z.string({ errorMap });
+      translatedSchema[locale + ':content'] = z.string({ errorMap }).optional().transform(emptyContent);
+
     } else {
       // required fields only for default locale
-      [{
+      [
+        {
         key: 'title',
         label: i18n.t('cms:titleOfEachBlock'),
-      }].forEach(({ key, label }) => {
+      },
+      {
+        key: 'description',
+        label: i18n.t('common:description'),
+      },
+      {
+        key: 'content',
+        label: i18n.t('common:content'),
+      }
+    ].forEach(({ key, label }) => {
           translatedSchema[locale + ':' + key] = z.string({ errorMap })
-          .min(1, i18n.t('form.error.required', { field: label }))
-          .transform(capitalize)
+            .min(1, i18n.t('form.error.required', { field: label }))
+            .max(250, i18n.t('form.error.max', { field: label, number: 250 }))
+            .transform(capitalize)
       });
     }
   }
