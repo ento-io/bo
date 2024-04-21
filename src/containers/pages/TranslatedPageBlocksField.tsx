@@ -11,6 +11,7 @@ import { locales } from '@/config/i18n';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import TextEditorField from '@/components/form/fields/TextEditorField';
+import DropzoneField from '@/components/form/dropzone/DropzoneField';
 
 type Props = {
   name: string;
@@ -102,6 +103,18 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
                 </CardFormBlock>
               );
             })}
+
+            <Stack css={{ marginTop: 24 }}>
+              <DropzoneField
+                name={`${name}.${index}.image`}
+                label={t('common:image')}
+                inputLabel={t('cms:addImage')}
+                maxFiles={1}
+                shouldReset // can reset input in edition
+                helperText={t('common:infoMessages.blockImageHelper')}
+              />
+              {errors && (errors as any)[name]?.[index] && <FormHelperText error>{(errors as any)[name][index]?.image?.message}</FormHelperText>}
+            </Stack>
             {/* 
               * delete a line, each line of translated fields are removed
               * NOTE: it's should be outside of the locale loop
