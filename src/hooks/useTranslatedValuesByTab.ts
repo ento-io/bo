@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Lang } from "@/types/setting.type";
 import { getTranslatedField } from "@/utils/settings.utils";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
@@ -53,6 +53,7 @@ export const useTranslatedValuesByTab = <T extends object>(translated?: T, keys:
 }
 
 
+
 type BlockOutput = {
   translatedBlockFields: Record<string, any>[],
   onTabChange: (value: Lang) => void,
@@ -64,7 +65,17 @@ export const useTranslatedArrayValuesByTab = <T extends Record<string, any>>(blo
 
   const onTabChange = (value: Lang) => setTab(value);
 
-  const newBlocks = blocks?.map(block => getFields(block.translated, keys, tab))
+  const newBlocks = useMemo(() => {
+    return blocks?.map(block => {
+      const values = {
+        ...getFields(block.translated, keys, tab),
+        ...block, // non translated fields
+      };
+      delete values.translated
+
+      return values
+    })
+  }, [blocks, tab, keys])
 
   return {
     translatedBlockFields: newBlocks,
