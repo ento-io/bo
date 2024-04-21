@@ -1,7 +1,7 @@
 import { http, protectRequest } from '@/config/http';
 
 import { IFileCloud, IMultipleUploadResponse, IUploadFile, IUploadFileAPI, IUploadFilesAPI } from '@/types/file.type';
-import { PAGE_IMAGES_FIELDS, PAGE_SINGLE_IMAGE_FIELDS } from '@/validations/file.validation';
+import { PAGE_SINGLE_IMAGE_FIELDS } from '@/validations/file.validation';
 
 /**
  * get the original filename from the url
@@ -291,13 +291,17 @@ type UploadInput<T> = {
   userId?: string;
   sessionToken: string;
   values: T;
+  singleUploadFields?: string[];
+  multipleUploadFields?: string[]
 };
 
 export const uploadFormFiles = async <T extends Record<string, any>>({
   folder,
   sessionToken,
   userId,
-  values
+  values,
+  singleUploadFields = PAGE_SINGLE_IMAGE_FIELDS,
+  multipleUploadFields,
 }: UploadInput<T>): Promise<Record<string, IFileCloud | IFileCloud[]>> => {
   const uploadInput = {
     folder,
@@ -308,7 +312,7 @@ export const uploadFormFiles = async <T extends Record<string, any>>({
   const newValues: Record<string, any> = {};
 
   // --------- single file fields --------- //
-  for (const field of PAGE_SINGLE_IMAGE_FIELDS) {
+  for (const field of singleUploadFields) {
     if (values[field]) {
       const fileUploadInput = { ...uploadInput, file: values[field] };
       const uploadedFileUrl = await uploadFileAPI(fileUploadInput);
@@ -318,11 +322,13 @@ export const uploadFormFiles = async <T extends Record<string, any>>({
   }
 
   // --------- multiple files fields --------- //
-  for (const field of PAGE_IMAGES_FIELDS) {
-    if (values[field] && Array.isArray(values[field])) {
-      const fileUploadInput = { ...uploadInput, files: values[field] };
-      const uploadedFilesUrls = await uploadFilesAPI(fileUploadInput);
-      newValues[field] = uploadedFilesUrls;
+  if (multipleUploadFields) {
+    for (const field of multipleUploadFields) {
+      if (values[field] && Array.isArray(values[field])) {
+        const fileUploadInput = { ...uploadInput, files: values[field] };
+        const uploadedFilesUrls = await uploadFilesAPI(fileUploadInput);
+        newValues[field] = uploadedFilesUrls;
+      }
     }
   }
 
@@ -342,7 +348,9 @@ export const uploadUpdatedFormFiles = async <T extends Record<string, any>>({
   folder,
   sessionToken,
   userId,
-  values
+  values,
+  singleUploadFields = PAGE_SINGLE_IMAGE_FIELDS,
+  multipleUploadFields,
 }: UpdatedUploadInput<T>): Promise<any> => {
   const uploadInput = {
     folder,
@@ -353,7 +361,7 @@ export const uploadUpdatedFormFiles = async <T extends Record<string, any>>({
   const newValues: Record<string, any> = {};
 
   // --------- single file fields --------- //
-  for (const field of PAGE_SINGLE_IMAGE_FIELDS) {
+  for (const field of singleUploadFields) {
     const oldFieldValue = page.get(field);
     if (values[field]) {
       const fileName = values[field].name.split('.')[0];
@@ -372,34 +380,36 @@ export const uploadUpdatedFormFiles = async <T extends Record<string, any>>({
     }
   }
 
-  for (const field of PAGE_IMAGES_FIELDS) {
-    const oldSavedFiles = page.get(field);
-    // input values
-    if (values[field] && Array.isArray(values[field])) {
-      const inputFiles = values[field];
-      const newInputFilesToUpload = [];
-      const oldSavedFilesToKeep = [];
-
-      for (const inputFile of inputFiles) {
-        // get the input file name
-        const inputFileName = inputFile.name.split('.')[0];
-        // check if the file name exist in database file list
-        const oldSavedFileToKeep = oldSavedFiles?.find((oldFile: IFileCloud) =>
-          oldFile.publicId.includes(inputFileName),
-        );
-
-        if (oldSavedFileToKeep) {
-          oldSavedFilesToKeep.push(oldSavedFileToKeep);
-        } else {
-          newInputFilesToUpload.push(inputFile);
+  if (multipleUploadFields) {
+    for (const field of multipleUploadFields) {
+      const oldSavedFiles = page.get(field);
+      // input values
+      if (values[field] && Array.isArray(values[field])) {
+        const inputFiles = values[field];
+        const newInputFilesToUpload = [];
+        const oldSavedFilesToKeep = [];
+  
+        for (const inputFile of inputFiles) {
+          // get the input file name
+          const inputFileName = inputFile.name.split('.')[0];
+          // check if the file name exist in database file list
+          const oldSavedFileToKeep = oldSavedFiles?.find((oldFile: IFileCloud) =>
+            oldFile.publicId.includes(inputFileName),
+          );
+  
+          if (oldSavedFileToKeep) {
+            oldSavedFilesToKeep.push(oldSavedFileToKeep);
+          } else {
+            newInputFilesToUpload.push(inputFile);
+          }
         }
+  
+        // upload the new files
+        const fileUploadInput = { ...uploadInput, files: newInputFilesToUpload };
+        const uploadedFilesUrls = await uploadFilesAPI(fileUploadInput);
+        // will save the new files and the remove old ones
+        newValues[field] = [...uploadedFilesUrls, ...oldSavedFilesToKeep];
       }
-
-      // upload the new files
-      const fileUploadInput = { ...uploadInput, files: newInputFilesToUpload };
-      const uploadedFilesUrls = await uploadFilesAPI(fileUploadInput);
-      // will save the new files and the remove old ones
-      newValues[field] = [...uploadedFilesUrls, ...oldSavedFilesToKeep];
     }
   }
 
