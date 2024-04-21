@@ -218,6 +218,9 @@ const Page = () => {
               {translatedBlockFields.map((block, index) => (
                 <Stack key={index} spacing={3}>
                   <div>
+                    {block.image && <img alt="block" src={block.image.url} css={{ width: '100%' }} />}
+                  </div>
+                  <div>
                     <Typography>{block.title}</Typography>
                     {block.description && <Typography>{block.description}</Typography>}
                     <TextEditor value={block.content} editable={false} />
