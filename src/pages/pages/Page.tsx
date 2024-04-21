@@ -1,4 +1,4 @@
-import { Button, Stack } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -44,9 +44,13 @@ const Page = () => {
   const { canPreview, canDelete, canCreate, canFind } = useProtect('Page');
 
   // get translated fields depending on the selected language (tabs)
-  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<IPageTranslatedFields>(page?.translated, ['title', 'content']);
+  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<IPageTranslatedFields>(page?.translated, ['title', 'description', 'content']);
   // get translated block fields depending on the selected language (tabs)
-  const { translatedBlockFields, onTabChange: onBlockTabChange, tab: blocTab } = useTranslatedArrayValuesByTab<IPageBlock>(page?.blocks, ['title']);
+  const {
+    translatedBlockFields,
+    onTabChange: onBlockTabChange,
+    tab: blocTab
+  } = useTranslatedArrayValuesByTab<IPageBlock>(page?.blocks, ['title', 'description', 'content']);
 
   if (!page) return null;
 
@@ -214,7 +218,9 @@ const Page = () => {
               {translatedBlockFields.map((block, index) => (
                 <Stack key={index} spacing={3}>
                   <div>
-                    {block.title}
+                    <Typography>{block.title}</Typography>
+                    {block.description && <Typography>{block.description}</Typography>}
+                    <TextEditor value={block.content} editable={false} />
                   </div>
                 </Stack>
               ))}
