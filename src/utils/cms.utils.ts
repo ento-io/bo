@@ -217,16 +217,6 @@ export const getPageEditionCmsInitialValues = async (
   const clonedPage = cloneDeep(page); // immutability
   const formattedTranslatedValues = await getCmsEditionCmsInitialValues(clonedPage, language);
 
-  // // -------- blocks -------- //
-  // const blocks = [];
-  // if (clonedPage.blocks) {
-  //   for (const block of clonedPage.blocks) {
-  //     const formattedBlock = parseSavedTranslatedValuesToForm(block);
-  //     blocks.push(formattedBlock)
-  //   }
-  //   formattedTranslatedValues.blocks = blocks;
-  // }
-
   // -------- category -------- //
   if (clonedPage.category) {
     formattedTranslatedValues.category = getCategoryInputValue(language)(clonedPage.category);
@@ -246,8 +236,16 @@ export const getPageBlocksEditionCmsInitialValues = async (
   if (clonedPage.blocks) {
     for (const block of clonedPage.blocks) {
       const formattedBlock = parseSavedTranslatedValuesToForm(block);
-      blocks.push(formattedBlock)
+      const values = { ...formattedBlock };
+
+      if (block.image) {
+        const file = await getFileFromUrl(block.image.url);
+        values.image = [file]; // should be an array
+      }
+
+      blocks.push(values);
     }
+    
     clonedPage.blocks = blocks;
   }
 
