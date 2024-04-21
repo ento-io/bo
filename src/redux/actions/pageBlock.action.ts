@@ -7,17 +7,19 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 import { PATH_NAMES } from '@/utils/pathnames';
 import { deletePageBlockSlice, getPagePageSelector, loadPageSlice } from '../reducers/page.reducer';
 import i18n from '@/config/i18n';
-import { IPageBlocksInput } from '@/types/page.type';
+import { IPageBlockInput, IPageBlocksInput } from '@/types/page.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import { convertIdToPointer, setValues } from '@/utils/parse.utils';
 import { setMessageSlice } from '../reducers/app.reducer';
 import { getPage } from './page.action';
 import { goToNotFound } from './app.action';
+import { uploadFileAPI, uploadFormFiles } from '@/utils/file.utils';
+import { PAGE_BLOCK_SINGLE_IMAGE_FIELDS } from '@/validations/file.validation';
 
 const PageBlock = Parse.Object.extend("PageBlock");
 
-const PAGE_BLOCK_PROPERTIES = new Set(['translated']);
+const PAGE_BLOCK_PROPERTIES = new Set(['translated', 'image']);
 const PAGE_PROPERTIES = new Set(['blocks']);
 
 export const getPageBlock = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
@@ -62,9 +64,22 @@ export const addBlocksToPage = (
 
     const newBlocks = [];
     for (const block of newValues.blocks) {
-      const newBlock = new PageBlock();
-      setValues(newBlock, block, PAGE_BLOCK_PROPERTIES);
-      newBlocks.push(newBlock);
+      const blockObj = new PageBlock();
+
+      if (block.image) {
+        const uploadInput = {
+          folder: 'pages',
+          sessionToken: currentUser.getSessionToken(),
+          file: block.image
+        };
+        const uploadedFileUrl = await uploadFileAPI(uploadInput);
+        block.image = uploadedFileUrl
+      }
+
+      const newValues = { ...block };
+
+      setValues(blockObj, newValues, PAGE_BLOCK_PROPERTIES);
+      newBlocks.push(blockObj);
     }
 
     const savedBlocks = await Parse.Object.saveAll(newBlocks);
