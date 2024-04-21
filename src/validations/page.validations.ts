@@ -7,6 +7,7 @@ import { CategoryEntityEnum } from "@/types/category.type";
 import i18n, { locales } from "@/config/i18n";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import { errorMap } from '@/config/zod';
+import { getSingleImageSchema } from "./file.validation";
 
 export const pageFilterSchema = articleFilterSchema.extend({
   metaTitle: z.string().optional(),
@@ -17,7 +18,7 @@ export const pageFilterSchema = articleFilterSchema.extend({
  * ex: { 'fr:name': 'xxx', 'en:name': 'yyy' }
  * @returns 
  */
-const getTranslatedBlockSchema = () => {
+const getTranslatedBlockSchema = (): Record<string, any> => {
   const translatedSchema: Record<string, any> = {};
 
   for (const locale of locales) {
@@ -33,6 +34,7 @@ const getTranslatedBlockSchema = () => {
         {
         key: 'title',
         label: i18n.t('cms:titleOfEachBlock'),
+        min: 1,
       },
       {
         key: 'description',
@@ -41,12 +43,19 @@ const getTranslatedBlockSchema = () => {
       {
         key: 'content',
         label: i18n.t('common:content'),
+        max: 500,
       }
-    ].forEach(({ key, label }) => {
-          translatedSchema[locale + ':' + key] = z.string({ errorMap })
-            .min(1, i18n.t('form.error.required', { field: label }))
-            .max(250, i18n.t('form.error.max', { field: label, number: 250 }))
-            .transform(capitalize)
+    ].forEach(({ key, label, min, max }) => {
+      const stringSchema = z.string({ errorMap });
+
+      if (min) {
+        stringSchema.min(min, i18n.t('form.error.required', { field: label }));
+      }
+      if (max) {
+        stringSchema.max(max, i18n.t('form.error.max', { field: label, number: max }));
+      }
+      
+      translatedSchema[locale + ':' + key] = stringSchema.transform(capitalize)
       });
     }
   }
@@ -65,7 +74,11 @@ export const pageSchema = cmsSchema
   })
   .transform(formatTranslatedFormValuesToSave);
 
+export const pageBlockSchema = z.object({
+  ...getTranslatedBlockSchema(),
+  image: getSingleImageSchema(),
+})
 export const pageBlocksSchema = z.object({
-    blocks: z.array(z.object(getTranslatedBlockSchema())).optional()
+    blocks: z.array(pageBlockSchema).optional()
   })
   .transform(formatTranslatedPageFormValuesToSave);
