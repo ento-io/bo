@@ -55,6 +55,7 @@
   "year": "Année",
   "date": "Date",
   "hour": "Heure",
+  "addImage": "Ajouter une image",
   "placesCount": "{{number}} Places",
   "searchByTown": "Entrer votre quartier ou cité",
   "selectADate": "Choisir la date",
