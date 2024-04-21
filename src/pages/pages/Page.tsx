@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, Theme, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -34,6 +34,22 @@ import { getServerUrl } from '@/utils/utils';
 import { getTranslatedField } from '@/utils/settings.utils';
 import { ICategoryTranslatedFields } from '@/types/category.type';
 import { goToAddPageBlocks, goToEditPageBlocks } from '@/redux/actions/pageBlock.action';
+
+const classes = {
+  imageContainer: (theme: Theme) => ({
+    width: 500,
+    height: 300,
+    overflow: 'hidden',
+    '& > img': {
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover' as const,
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  })
+};
 
 const Page = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
@@ -191,9 +207,9 @@ const Page = () => {
 
             {/* blocks */}
             <TranslatedFormTabs
-                onTabChange={onBlockTabChange}
-                tab={blocTab}
-              />
+              onTabChange={onBlockTabChange}
+              tab={blocTab}
+            />
             <Layout
               cardTitle={t('cms:blocks')}
               actionsEmplacement='content'
@@ -215,18 +231,20 @@ const Page = () => {
                 )
               }
             >
-              {translatedBlockFields.map((block, index) => (
-                <Stack key={index} spacing={3}>
-                  <div>
-                    {block.image && <img alt="block" src={block.image.url} css={{ width: '100%' }} />}
-                  </div>
-                  <div>
-                    <Typography>{block.title}</Typography>
-                    {block.description && <Typography>{block.description}</Typography>}
-                    <TextEditor value={block.content} editable={false} />
-                  </div>
-                </Stack>
-              ))}
+              <Stack spacing={3}>
+                {translatedBlockFields.map((block, index) => (
+                  <Stack key={index} spacing={3} direction={{ md: "row" }}>
+                    <div css={classes.imageContainer} className="flex1">
+                      {block.image && <img alt="block" src={block.image.url} css={{ width: '100%' }} />}
+                    </div>
+                    <div className="flexColumn flex1">
+                      <Typography variant="h5">{block.title}</Typography>
+                      {block.description && <Typography>{block.description}</Typography>}
+                      <TextEditor value={block.content} editable={false} />
+                    </div>
+                  </Stack>
+                ))}
+              </Stack>
             </Layout>
 
             {/* images */}
