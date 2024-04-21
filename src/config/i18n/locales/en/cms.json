@@ -27,6 +27,7 @@
   "editBlocksForPage": "Edit blocks for the page - {{title}}",
   "editBlocks": "Edit blocks",
   "addBlocks": "Add blocks",
+  "blockImageHelper": "The image of the block, it will be displayed on the left side of the page",
   "mainContentOfThePage": "Ny tena votoatin'ny pejy",
   "contentOfTheArticle": "Votoatin'ny article",
   "editorHelper": "It's a WYSIWYG editor, you can write your content here. You can also add title, links, ...",
