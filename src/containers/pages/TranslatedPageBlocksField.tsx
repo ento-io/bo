@@ -111,7 +111,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
                 inputLabel={t('cms:addImage')}
                 maxFiles={1}
                 shouldReset // can reset input in edition
-                helperText={t('common:infoMessages.blockImageHelper')}
+                helperText={t('cms:blockImageHelper')}
               />
               {errors && (errors as any)[name]?.[index] && <FormHelperText error>{(errors as any)[name][index]?.image?.message}</FormHelperText>}
             </Stack>
