@@ -17,6 +17,7 @@ import { canAccessTo } from '@/utils/role.utils';
 import { ALL_PAGE_FIELDS, pagesTabOptions, getCategoryPointer } from '@/utils/cms.utils';
 import { setValues } from '@/utils/parse.utils';
 import { uploadFormFiles, uploadUpdatedFormFiles } from '@/utils/file.utils';
+import { PAGE_IMAGES_FIELDS } from '@/validations/file.validation';
 
 const Page = Parse.Object.extend("Page");
 
@@ -86,7 +87,8 @@ export const createPage = (values: IPageInput): any => {
     const uploadedValues = await uploadFormFiles<IPageInput>({
       folder: 'pages',
       sessionToken: currentUser.getSessionToken(),
-      values
+      values,
+      multipleUploadFields: PAGE_IMAGES_FIELDS,
     });
 
     if (values.category) {
@@ -131,7 +133,8 @@ export const editPage = (id: string, values: IPageInput): any => {
       page,
       folder: 'pages',
       sessionToken: currentUser.getSessionToken(),
-      values
+      values,
+      multipleUploadFields: PAGE_IMAGES_FIELDS,
     });
 
     if (values.category) {
