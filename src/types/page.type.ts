@@ -23,6 +23,7 @@ export interface IPageBlock extends Attributes {
   createdAt?: string;
   deleted: boolean;
   translated: ITranslatedPageBlock;
+  image: IFileCloud;
 }
 export interface IPage extends Attributes {
   objectId: string;
