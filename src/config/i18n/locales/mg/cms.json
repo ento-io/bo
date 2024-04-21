@@ -30,6 +30,7 @@
   "editBlocksForPage": "Hanova blocs ho an'ny pejy - {{title}}",
   "editBlocks": "Hanova ireo blocs",
   "addBlocks": "Hanampy blocs",
+  "blockImageHelper": "Ny sary dia aseho indrindra amin'ny tsanganana havia na havanana amin'ny pejy",
   "blocks": "Blocs",
   "editorHelper": "Mpanonta (Editeur) WYSIWYG io, azonao atao ny manoratra ny votoatiny eto eto. Azonao atao koa ny manampy lohateny, rohy, ...",
   "mainContentOfThePage": "Contenu principal de la page",
