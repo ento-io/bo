@@ -22,9 +22,10 @@ type Props = {
   onSubmit: (values: IPageStepOneInput) => void;
   page?: IPage | null;
   loading?: boolean;
+  buttonText?: string;
 }
 
-const PageFormStepOne = ({ onSubmit, page, loading }: Props) => {
+const PageFormStepOne = ({ onSubmit, page, loading, buttonText }: Props) => {
   // get translated fields depending on the selected language (tabs)
   const { onTabChange, tab } = useTranslatedValuesByTab();
 
@@ -56,7 +57,13 @@ const PageFormStepOne = ({ onSubmit, page, loading }: Props) => {
   };
 
   return (
-    <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading} isDisabled={false}>
+    <Form
+      form={form}
+      onSubmit={handleSubmit(onFormSubmit)}
+      loading={loading}
+      isDisabled={false}
+      primaryButtonText={buttonText}
+    >
       <CardFormBlock title={t('details')} description={t('cms:translatedFields')}>
         {/* translated tabs */}
         <TranslatedFormTabs
