@@ -92,7 +92,8 @@
     "categoryDeletedSuccessfully": "Sokajy voafafa soamantsara",
     "categoryFor": "Sokajy ho an'ny",
     "categoryForHelper": "Sokajina inona ito sokajy ito (ex: sokajina article, ...)",
-    "seeArticles": "Hijery ireo articles"
+    "seeArticlesForThisCategory": "Hijery ny articles ho an'io sokajy io",
+    "seePagesForThisCategory": "Hijery ny pejy ho an'io sokajy io"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article voaforona soamantsara",
