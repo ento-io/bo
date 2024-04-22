@@ -91,7 +91,8 @@
     "categoryDeletedSuccessfully": "Category deleted successfully",
     "categoryFor": "Category for",
     "categoryForHelper": "Category for which entity is this for (ex: category of an article, ...)",
-    "seeArticles": "See articles"
+    "seeArticlesForThisCategory": "See articles for this category",
+    "seePagesForThisCategory": "See pages for this category"
   },
   "messages": {
     "articleCreatedSuccessfully": "Article created successfully",
