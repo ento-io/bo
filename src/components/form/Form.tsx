@@ -8,12 +8,14 @@ import { useTranslation } from 'react-i18next';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 const classes = {
-  buttons: (direction: 'row' | 'column') => {
+  buttons: (direction: 'row' | 'column') => (theme: Theme) => {
     if (direction === 'row') {
       return {
-        display: 'flex',
-        flexDirection: 'row'as const,
-        justifyContent: 'space-between' as const,
+        [theme.breakpoints.up('md')]: {
+          display: 'flex',
+          flexDirection: 'row'as const,
+          justifyContent: 'space-between' as const,
+        },
       };
     }
     return {
@@ -21,7 +23,7 @@ const classes = {
       flexDirection: 'column'as const,
     };
   },
-  secondaryButton: (direction: 'row' | 'column') => (theme: Theme) =>{
+  secondaryButton: (direction: 'row' | 'column') => (theme: Theme) => {
     if (direction === 'row') {
       return {
         [theme.breakpoints.up('md')]: {
