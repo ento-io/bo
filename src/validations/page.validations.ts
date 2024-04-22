@@ -62,18 +62,6 @@ const getTranslatedBlockSchema = (): Record<string, any> => {
   return translatedSchema
 }
 
-export const pageSchema = cmsSchema
-  .extend({
-    ...getCMSTranslatedSchema(CategoryEntityEnum.Page), // translated fields
-    // optional category
-    category: z.preprocess(
-      // ISSUE: https://stackoverflow.com/questions/74256866/validating-optional-fields-in-react-using-zod
-      (value) => value === '' ? undefined : value,
-      categoryOptionSchema.optional()),
-    // ex: [{ 'fr:name': 'xxx', 'en:name': 'yyy' }, { 'fr:name': 'xxx', 'en:name': 'yyy' }]
-  })
-  .transform(formatTranslatedFormValuesToSave);
-
 export const pageStepOneSchema = z.object({
   ...getCMSTranslatedSchema(CategoryEntityEnum.Page), // translated fields
 })
