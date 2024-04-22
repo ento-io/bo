@@ -80,6 +80,7 @@ export const pageStepThreeSchema = z.object({
     categoryOptionSchema.nullable().optional()
   ),
   active: z.boolean({ errorMap }).optional(),
+  linkLocations: z.array(z.enum(['menu', 'footer'])).optional(),
 });
 
 export const pageBlockSchema = z.object({
