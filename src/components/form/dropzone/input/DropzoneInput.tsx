@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { Box, Stack, styled, Typography, useTheme } from '@mui/material';
+import { Box, FormHelperText, Stack, styled, Typography, useTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { uniqBy } from 'lodash';
 import { DropzoneOptions, FileRejection, useDropzone } from 'react-dropzone';
@@ -31,7 +31,7 @@ const StyledDropzone = styled('div', {
   background: theme.palette.mode === 'light' ? 'none' : theme.palette.background.default,
 }));
 
-type Props = {
+export type CustomDropzoneInputProps = {
   onChange: (...event: any[]) => void;
   onBlur: () => void;
   value?: File[];
@@ -41,6 +41,7 @@ type Props = {
   inputLabel?: string;
   error: string;
   shouldReset?: boolean;
+  helperText?: string;
 } & DropzoneOptions;
 
 const DropzoneInput = ({
@@ -52,9 +53,10 @@ const DropzoneInput = ({
   inputLabel,
   error,
   shouldReset,
+  helperText,
   noDuplicateFiles = true,
   ...rest
-}: Props) => {
+}: CustomDropzoneInputProps) => {
   const { t } = useTranslation();
   const [files, setFiles] = useState<File[]>([]);
   const [initialFiles, setInitialFiles] = useState<File[]>([]);
@@ -187,6 +189,8 @@ const DropzoneInput = ({
           </Stack>
         )}
       </StyledDropzone>
+      {helperText && !error && <FormHelperText>{helperText}</FormHelperText>}
+      {error && <FormHelperText error>{error}</FormHelperText>}
 
       {/* ----- image previews ----- */}
       {type === 'image' && files.length > 0 && (
