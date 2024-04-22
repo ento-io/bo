@@ -141,7 +141,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
               );
             })}
 
-            <Stack css={{ marginTop: 24 }}>
+            <Stack css={{ marginTop: 12 }}>
               <DropzoneField
                 name={`${name}.${index}.image`}
                 label={t('common:image')}
