@@ -20,7 +20,7 @@ type Props = {
 const PageForm = ({ onSubmit, page, loading }: Props) => {
   const { t } = useTranslation();
 
-  const [step, setStep] = useState<IStep>(1);
+  const [step, setStep] = useState<IStep>(3);
   const [finalValues, setFinalValues] = useState<IPageInput | null>(null);
 
   const handlePrevious = () => {
