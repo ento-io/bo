@@ -40,6 +40,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
   const divToFixedRef = useRef(null);
   const [fixed, setFixed] = useState<boolean>(false);
 
+  // fix the tabs on top when scrolling
   useLayoutEffect(() => {
     if (!divToFixedRef.current) return;
     const current = divToFixedRef.current as HTMLDivElement;
