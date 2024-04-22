@@ -1,7 +1,7 @@
 import { useState } from "react"
 
 import { useTranslation } from "react-i18next";
-import { IFinalPageInput, IPage, IPageInput } from "@/types/page.type"
+import { IPageInput, IPage } from "@/types/page.type"
 
 import PageFormStepOne from "./PageFormStepOne";
 import PageFormStepTwo from "./PageFormStepTwo";
@@ -21,7 +21,7 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
   const { t } = useTranslation();
 
   const [step, setStep] = useState<IStep>(1);
-  const [finalValues, setFinalValues] = useState<IFinalPageInput | null>(null);
+  const [finalValues, setFinalValues] = useState<IPageInput | null>(null);
 
   const handlePrevious = () => {
     // do not decrement if the step is the first one
@@ -30,13 +30,13 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
     setStep((prev) => prev - 1);
   }
 
-  const onFormSubmit = (step: IStep) =>(values: IFinalPageInput) => {
+  const onFormSubmit = (step: IStep) =>(values: IPageInput) => {
     // do not increment in last step
     if (step < lastStep) {
       // increment the step
       setStep((prev) => prev + 1);
       // store the values of each form step in the finalValues state
-      setFinalValues((prev: IFinalPageInput | null) => ({ ...prev, [step]: values }));
+      setFinalValues((prev: IPageInput | null) => ({ ...prev, [step]: values }));
       return ;
     }
 
