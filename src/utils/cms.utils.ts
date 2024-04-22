@@ -16,6 +16,21 @@ export const articlesTabOptions = defaultTabOptions;
 export const pagesTabOptions = defaultTabOptions;
 export const categoriesTabOptions = defaultTabOptions;
 
+export const imagePositionOptions: ISelectOption[] = [
+  {
+    label: i18n.t('cms:bottom'),
+    value: 'bottom',
+  },
+  {
+    label: i18n.t('cms:right'),
+    value: 'right',
+  },
+  {
+    label: i18n.t('cms:left'),
+    value: 'left',
+  },
+];
+
 /**
  * in the database, these translated fields is transformed to have this schema
  * { "fr": { "title": "xxx_fr", "description": "yyyy_fr" },  "en": { "title": "xxx_en", "description": "yyyy_en" }, ... }
@@ -311,4 +326,9 @@ export const getCategoryPointersFromIds = (categoryIds: string[]): Parse.Object[
  */
 export const getTranslatedCategoriesName = (categories: ICategory[], lang: Lang) => {
   return categories.map((category: ICategory) => getTranslatedField<ICategoryTranslatedFields>(category.translated, lang, 'name')).join(', ');
+}
+
+export const getImagePositionLabel = (position: string): string => {
+  const option = imagePositionOptions.find((option) => option.value === position);
+  return option ? option.label : '';
 }
