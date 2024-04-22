@@ -129,12 +129,12 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
                     />
                     {error && <FormHelperText error>{error[`${locale}:description`]?.message}</FormHelperText>}
                   </Stack>
-                  <Stack>
-                  <TextEditorField
-                    name={`${name}.${index}.${locale}:content`}
-                    label={t('cms:content')}
-                    required={locale === DEFAULT_LANGUAGE}
-                  />
+                  <Stack css={{ marginTop: 12 }}>
+                    <TextEditorField
+                      name={`${name}.${index}.${locale}:content`}
+                      label={t('cms:content')}
+                      required={locale === DEFAULT_LANGUAGE}
+                    />
                     {error && <FormHelperText error>{error[`${locale}:content`]?.message}</FormHelperText>}
                   </Stack>
                 </CardFormBlock>
