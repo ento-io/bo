@@ -14,12 +14,37 @@ type CustomStyleProps = {
   singleValue?: Record<string, any>;
   multiValue?: Record<string, any>;
 };
-const getCustomStyles = (
-  theme: Theme,
-  width: number | string = '100%',
-  variant: 'standard' | 'outlined' = 'outlined',
-  styleProps?: CustomStyleProps
-) => ({
+
+type CustomStyle = {
+  theme: Theme;
+  width: number | string;
+  variant: 'standard' | 'outlined';
+  styleProps?: CustomStyleProps;
+  hasError?: boolean;
+};
+
+const getControlBorder = (variant: CustomStyle['variant'], theme: CustomStyle['theme'], hasError: CustomStyle['hasError']) => {
+  if (hasError) {
+    return '1px solid ' + theme.palette.error.main;
+  }
+  if (variant === 'outlined') {
+    if (theme.palette.mode === 'light') {
+      return '1px solid ' + grey[400];
+    }
+
+    return '1px solid #fff';
+  }
+
+  return 'none';
+};
+
+const getCustomStyles = ({
+  theme,
+  width = '100%',
+  variant = 'outlined',
+  styleProps,
+  hasError
+}: CustomStyle) => ({
   menu: (styles: any) => ({
     ...styles,
     backgroundColor: theme.palette.mode === 'light' ? '#fff' : theme.palette.background.default,
@@ -30,10 +55,7 @@ const getCustomStyles = (
   control: (styles: any) => {
     const values = {
       ...styles,
-      // eslint-disable-next-line no-nested-ternary
-      border: variant === 'outlined'
-        ? theme.palette.mode === 'light' ? '1px solid ' + grey[400] : '1px solid #fff'
-        : 'none',
+      border: getControlBorder(variant, theme, hasError),
       borderRadius: 4,
       paddingTop: 5,
       paddingBottom: 5,
@@ -103,6 +125,7 @@ export type ReactSelectProps = {
   onChange: (values: Record<string, any> | Record<string, any>[] | string | number) => void;
   direction?: 'row' | 'column';
   styles?: Record<string, any>;
+  hasError?: string;
 };
 
 const SelectInput = ({
@@ -123,6 +146,7 @@ const SelectInput = ({
   direction = 'column',
   width = '100%',
   isMulti = false,
+  hasError,
 }: ReactSelectProps) => {
   const muiTheme = useTheme();
   const { t } = useTranslation();
@@ -145,7 +169,13 @@ const SelectInput = ({
     <Stack direction={direction}>
       {label && <InputLabel label={label} tooltip={tooltip} required={required} sx={{ color: '#000' }} />}
       <Select
-        styles={getCustomStyles(muiTheme, width, variant, styles)}
+        styles={getCustomStyles({
+          theme: muiTheme,
+          width,
+          variant,
+          styleProps: styles,
+          hasError: !!hasError,
+        })}
         menuPosition="fixed"
         value={formatValue(value)}
         classNamePrefix="select"
