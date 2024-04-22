@@ -39,7 +39,6 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
 
   const divToFixedRef = useRef(null);
   const [fixed, setFixed] = useState<boolean>(false);
-  console.log('fixed: ', fixed);
 
   useLayoutEffect(() => {
     if (!divToFixedRef.current) return;
@@ -90,7 +89,6 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
           tab={tab}
         />
       </div>
-
 
       {/* fields array */}
       {controlledFields.map((item, index) => {
