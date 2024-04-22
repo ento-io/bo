@@ -23,9 +23,10 @@ type Props = {
   onSubmit: (values: IPageStepThreeInput) => void;
   page?: IPage | null;
   loading?: boolean;
+  buttonText?: string;
 }
 
-const PageFormStepThree = ({ onSubmit, page, loading }: Props) => {
+const PageFormStepThree = ({ onSubmit, page, loading, buttonText }: Props) => {
   const language = useSelector(getSettingsLangSelector);
 
   const form = useForm<IPageStepThreeInput>({
@@ -51,7 +52,13 @@ const PageFormStepThree = ({ onSubmit, page, loading }: Props) => {
   };
 
   return (
-    <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading} isDisabled={false}>
+    <Form
+      form={form}
+      onSubmit={handleSubmit(onFormSubmit)}
+      loading={loading}
+      isDisabled={false}
+      primaryButtonText={buttonText}
+    >
       {/* active card */}
       <CardFormBlock
         title={t('common:active')}
