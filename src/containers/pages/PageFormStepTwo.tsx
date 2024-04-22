@@ -15,9 +15,10 @@ type Props = {
   onSubmit: (values: IPageStepTwoInput) => void;
   page?: IPage | null;
   loading?: boolean;
+  buttonText?: string;
 }
 
-const PageFormStepTwo = ({ onSubmit, page, loading }: Props) => {
+const PageFormStepTwo = ({ onSubmit, page, loading, buttonText }: Props) => {
   const form = useForm<IPageStepTwoInput>({
     resolver: zodResolver(pageStepTwoSchema),
   });
@@ -40,8 +41,13 @@ const PageFormStepTwo = ({ onSubmit, page, loading }: Props) => {
   };
 
   return (
-    <Form form={form} onSubmit={handleSubmit(onFormSubmit)} loading={loading} isDisabled={false}>
-      {/* images card */}
+    <Form
+      form={form}
+      onSubmit={handleSubmit(onFormSubmit)}
+      loading={loading}
+      isDisabled={false}
+      primaryButtonText={buttonText}
+    >
       <CardFormBlock title={t('images')}>
         <Stack spacing={2}>
           {/* non translated fields */}
