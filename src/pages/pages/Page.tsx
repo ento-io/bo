@@ -34,6 +34,8 @@ import { getServerUrl } from '@/utils/utils';
 import { getTranslatedField } from '@/utils/settings.utils';
 import { ICategoryTranslatedFields } from '@/types/category.type';
 import { goToAddPageBlocks, goToEditPageBlocks } from '@/redux/actions/pageBlock.action';
+import { PATH_NAMES } from '@/utils/pathnames';
+import Link from '@/components/Link';
 
 const classes = {
   imageContainer: (theme: Theme) => ({
@@ -100,7 +102,18 @@ const Page = () => {
     },
     {
       label: t('cms:category.category'),
-      value: page.category ? getTranslatedField<ICategoryTranslatedFields>(page.category.translated, tab, 'name') : '',
+      value: page.category
+      ? (
+        <Link
+          to={PATH_NAMES.pages}
+          search={{
+            category: page.category.objectId,
+          }}
+        >
+          {getTranslatedField<ICategoryTranslatedFields>(page.category.translated, tab, 'name')}
+        </Link>
+      )
+      : '',
     },
     {
       label: t('common:createdAt'),
