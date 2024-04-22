@@ -40,7 +40,7 @@ export interface IPage extends Attributes {
   images?: IFileCloud[];
   category?: ICategory;
   blocks?: IPageBlock[];
-  linkLocations?: 'menu' | 'footer';
+  linkLocations?: ('menu' | 'footer')[];
 }
 
 export interface IPageState {
