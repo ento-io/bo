@@ -23,6 +23,13 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
   const [step, setStep] = useState<IStep>(1);
   const [finalValues, setFinalValues] = useState<IFinalPageInput | null>(null);
 
+  const handlePrevious = () => {
+    // do not decrement if the step is the first one
+    if (step === 1) return;
+    // decrement the step
+    setStep((prev) => prev - 1);
+  }
+
   const onFormSubmit = (step: IStep) =>(values: IFinalPageInput) => {
     // do not increment in last step
     if (step < lastStep) {
@@ -53,9 +60,16 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
             onSubmit={onFormSubmit(currentStep)}
             page={page}
             loading={loading}
-            buttonText={currentStep === lastStep
+            // no previous button in the first step
+            onSecondaryButtonClick={currentStep !== 1 ? handlePrevious : undefined}
+            buttonDirection={currentStep === 1 ? 'column' : 'row'}
+            primaryButtonText={currentStep === lastStep
               ? t('common:terminateAndSaveStep', { step, total: lastStep })
               : t('common:nextStep', { step, total: lastStep })
+            }
+            secondaryButtonText={currentStep !== 1
+              ? t('common:previous')
+              : ''
             }
           />
         )
