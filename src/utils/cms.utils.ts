@@ -10,7 +10,7 @@ import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";
 import { ISelectOption } from "@/types/app.type";
-import { IPage, IPageBlocksInput, IPageInput } from "@/types/page.type";
+import { IPage, IPageBlocksInput, IPageInput, IPageStepOneInput, IPageStepThreeInput, IPageStepTwoInput } from "@/types/page.type";
 
 export const articlesTabOptions = defaultTabOptions;
 export const pagesTabOptions = defaultTabOptions;
@@ -188,13 +188,9 @@ const getCategoryInputValue = (language: Lang) => (category: ICategory) => {
   }
 }
 
-export const getCmsEditionCmsInitialValues = async (
-  page: IArticle | IPage | null | undefined,
-  language: Lang,
-): Promise<IArticleInput | IPageInput | undefined> => {
-  if (!page) return;
-  const formattedTranslatedValues = parseSavedTranslatedValuesToForm(page);
-
+const getCMSImagesInitialValues = async (
+  page: IArticle | IPage,
+) => {
   const [bannerImage, previewImage] = await Promise.all([
     page.bannerImage ? getFileFromUrl(page.bannerImage.url) : [],
     page.previewImage ? getFileFromUrl(page.previewImage.url) : [],
@@ -202,11 +198,24 @@ export const getCmsEditionCmsInitialValues = async (
 
   const images = await Promise.all(page.images?.map((image: IFileCloud) => getFileFromUrl(image.url)) ?? []);
 
-  const defaultValues = {
-    ...formattedTranslatedValues,
+  return {
     bannerImage: Array.isArray(bannerImage) ? bannerImage : [bannerImage], // should be an array
     previewImage: Array.isArray(previewImage) ? previewImage : [previewImage], // should be an array
     images,
+  };
+}
+
+export const getCmsEditionCmsInitialValues = async (
+  page: IArticle | IPage | null | undefined,
+  language: Lang,
+): Promise<IArticleInput | IPageInput | undefined> => {
+  if (!page) return;
+  const formattedTranslatedValues = parseSavedTranslatedValuesToForm(page);
+  const imagesFields = await getCMSImagesInitialValues(page);
+
+  const defaultValues = {
+    ...formattedTranslatedValues,
+    ...imagesFields,
   };
 
   // for article
@@ -238,6 +247,50 @@ export const getPageEditionCmsInitialValues = async (
   }
 
   return formattedTranslatedValues;
+};
+
+/**
+ * form initial values for page edition
+ * @param page 
+ * @param language 
+ * @returns 
+ */
+export const getPageStepOneEditionInitialValues = async (
+  page: IPage | null | undefined,
+): Promise<IPageStepOneInput | undefined> => {
+  if (!page) return;
+  const clonedPage = cloneDeep(page); // immutability
+  const formattedTranslatedValues = parseSavedTranslatedValuesToForm(clonedPage);
+
+
+  return formattedTranslatedValues;
+};
+
+export const getPageStepTwoEditionInitialValues = async (
+  page: IPage | null | undefined,
+): Promise<IPageStepTwoInput | undefined> => {
+  if (!page) return;
+  const clonedPage = cloneDeep(page); // immutability
+  const imagesFields = await getCMSImagesInitialValues(clonedPage);
+
+  return imagesFields;
+};
+
+export const getPageStepThreeEditionInitialValues = async (
+  page: IPage | null | undefined,
+  language: Lang,
+): Promise<IPageStepThreeInput | undefined> => {
+  if (!page) return;
+  const clonedPage = cloneDeep(page); // immutability
+  const values: Record<string, any> = {
+    active: !!clonedPage.active,
+  };
+  // -------- category -------- //
+  if (clonedPage.category) {
+    values.category = getCategoryInputValue(language)(clonedPage.category);
+  }
+
+  return values;
 };
 
 export const getPageBlocksEditionCmsInitialValues = async (
