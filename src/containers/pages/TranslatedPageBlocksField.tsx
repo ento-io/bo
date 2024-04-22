@@ -12,6 +12,8 @@ import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs'
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import TextEditorField from '@/components/form/fields/TextEditorField';
 import DropzoneField from '@/components/form/dropzone/DropzoneField';
+import SelectField from '@/components/form/fields/SelectField';
+import { imagePositionOptions } from '@/utils/cms.utils';
 
 type Props = {
   name: string;
@@ -108,13 +110,31 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
               <DropzoneField
                 name={`${name}.${index}.image`}
                 label={t('common:image')}
-                inputLabel={t('cms:addImage')}
+                inputLabel={t('common:addImage')}
                 maxFiles={1}
                 shouldReset // can reset input in edition
                 helperText={t('cms:blockImageHelper')}
+                type="image"
+                error={(errors as any)?.[name]?.[index]?.image?.message}
               />
-              {errors && (errors as any)[name]?.[index] && <FormHelperText error>{(errors as any)[name][index]?.image?.message}</FormHelperText>}
             </Stack>
+
+            {/* displayed only if an image was selected */}
+            {watch(`${name}.${index}.image`)?.length > 0 && (
+              <Stack css={{ marginTop: 24 }}>
+                <SelectField
+                  name={`${name}.${index}.imagePosition`}
+                  options={imagePositionOptions}
+                  variant="outlined"
+                  isClearable
+                  label={t('cms:imagePosition')}
+                  hasError={errors && (errors as any)?.[name]?.[index]?.imagePosition}
+                  helperText={t('cms:imagePositionHelper')}
+                  required
+                />
+                {(errors as any)?.[name]?.[index] && <FormHelperText error>{(errors as any)[name][index]?.imagePosition?.message}</FormHelperText>}
+              </Stack>
+            )}
             {/* 
               * delete a line, each line of translated fields are removed
               * NOTE: it's should be outside of the locale loop
