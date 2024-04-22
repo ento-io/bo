@@ -15,11 +15,16 @@
   "author": "Author",
   "searchByPage": "Search title, content",
   "bannerImage": "Banner image",
+  "imagePosition": "Image position",
+  "imagePositionHelper": "The position of the image should be on the left, right or bottom side of text",
   "addBannerImage": "Add banner image",
   "savePage": "Save page",
   "thePage": "the page",
   "activePageVisible": "An active page is visible to users",
   "block": "Block",
+  "bottom": "Bottom",
+  "left": "Left",
+  "right": "Right",
   "addBlock": "Add block",
   "blocks": "Blocks",
   "titleOfEachBlock": "Title of each block",
@@ -27,6 +32,7 @@
   "editBlocksForPage": "Edit blocks for the page - {{title}}",
   "editBlocks": "Edit blocks",
   "addBlocks": "Add blocks",
+  "blockImageHelper": "The image of the block, it will be displayed on the left side of the page",
   "mainContentOfThePage": "Ny tena votoatin'ny pejy",
   "contentOfTheArticle": "Votoatin'ny article",
   "editorHelper": "It's a WYSIWYG editor, you can write your content here. You can also add title, links, ...",
@@ -111,7 +117,8 @@
     "hasNoRightToCreateCategory": "You can not create a category",
     "articleNotFound": "Article not found",
     "mustProvideSecureUrl": "You must provide a secure url",
-    "categoryNotFound": "Category not found"
+    "categoryNotFound": "Category not found",
+    "imagePositionRequired": "Image position is required if there is an image"
   },
   "editor": {
     "table": {

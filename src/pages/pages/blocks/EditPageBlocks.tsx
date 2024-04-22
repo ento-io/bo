@@ -1,7 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Button } from "@mui/material";
 import { goToPage, goToPages } from "@/redux/actions/page.action";
 import { getPagePageSelector } from "@/redux/reducers/page.reducer";
 import { IPageBlocksInput } from "@/types/page.type";
@@ -56,9 +55,6 @@ const EditPageBlocks = () => {
         onSubmit={handleSubmit}
         page={page}
       />
-      <Button onClick={handleGoToPage} variant="outlined" fullWidth css={{ marginTop: 8 }}>
-        {t('common:cancel')}
-      </Button>
     </Layout>
   )
 }

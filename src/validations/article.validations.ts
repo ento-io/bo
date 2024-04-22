@@ -9,7 +9,7 @@ import i18n, { locales } from "@/config/i18n";
 import { getMultipleImagesSchema, getSingleImageSchema } from "./file.validation";
 import { categoryOptionSchema } from "./category.validation";
 
-const emptyContent = (value?: string): string => {
+export const emptyContent = (value?: string): string => {
   if (!value || value === '<p><br></p>') {
     return '';
   }

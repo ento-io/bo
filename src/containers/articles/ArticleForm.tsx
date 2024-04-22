@@ -159,6 +159,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             maxFiles={1}
             shouldReset={!!article} // can reset input in edition
             helperText={t('common:infoMessages.bannerImageHelper')}
+            type="image"
           />
           <DropzoneField
             name="previewImage"
@@ -167,6 +168,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             maxFiles={1}
             shouldReset={!!article} // can reset input in edition
             helperText={t('common:infoMessages.previewImageHelper')}
+            type="image"
           />
           {/* multiple image upload */}
           <DropzoneField
@@ -175,6 +177,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             inputLabel={t('images')}
             maxFiles={5}
             shouldReset={!!article} // can reset input in edition
+            type="image"
           />
         </Stack>
       </CardFormBlock>

@@ -1,4 +1,4 @@
-import { Button, Stack } from '@mui/material';
+import { Button, Stack, Theme, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -35,6 +35,45 @@ import { getTranslatedField } from '@/utils/settings.utils';
 import { ICategoryTranslatedFields } from '@/types/category.type';
 import { goToAddPageBlocks, goToEditPageBlocks } from '@/redux/actions/pageBlock.action';
 
+const classes = {
+  imageContainer: (theme: Theme) => ({
+    width: 500,
+    height: 300,
+    overflow: 'hidden',
+    '& > img': {
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover' as const,
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
+  }),
+  blockTexts: (imagePosition: 'bottom' | 'right' | 'left') => (theme: Theme) => {
+    switch (imagePosition) {
+      case 'right':
+        return {
+          order: -1
+        }
+      case 'left':
+        return {
+          order: 1
+        }
+      case 'bottom':
+        return {
+          marginBottom: 8,
+          order: 1
+        }
+      default:
+        return {
+          [theme.breakpoints.down('md')]: {
+            order: -1
+          },
+        }
+    }
+  }
+};
+
 const Page = () => {
   const { t } = useTranslation(['common', 'user', 'cms']);
   const dispatch = useDispatch();
@@ -44,9 +83,13 @@ const Page = () => {
   const { canPreview, canDelete, canCreate, canFind } = useProtect('Page');
 
   // get translated fields depending on the selected language (tabs)
-  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<IPageTranslatedFields>(page?.translated, ['title', 'content']);
+  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<IPageTranslatedFields>(page?.translated, ['title', 'description', 'content']);
   // get translated block fields depending on the selected language (tabs)
-  const { translatedBlockFields, onTabChange: onBlockTabChange, tab: blocTab } = useTranslatedArrayValuesByTab<IPageBlock>(page?.blocks, ['title']);
+  const {
+    translatedBlockFields,
+    onTabChange: onBlockTabChange,
+    tab: blocTab
+  } = useTranslatedArrayValuesByTab<IPageBlock>(page?.blocks, ['title', 'description', 'content']);
 
   if (!page) return null;
 
@@ -187,9 +230,9 @@ const Page = () => {
 
             {/* blocks */}
             <TranslatedFormTabs
-                onTabChange={onBlockTabChange}
-                tab={blocTab}
-              />
+              onTabChange={onBlockTabChange}
+              tab={blocTab}
+            />
             <Layout
               cardTitle={t('cms:blocks')}
               actionsEmplacement='content'
@@ -211,13 +254,24 @@ const Page = () => {
                 )
               }
             >
-              {translatedBlockFields.map((block, index) => (
-                <Stack key={index} spacing={3}>
-                  <div>
-                    {block.title}
-                  </div>
-                </Stack>
-              ))}
+              <Stack spacing={3}>
+                {translatedBlockFields.map((block, index) => (
+                  <Stack
+                    key={index}
+                    spacing={3}
+                    direction={{ md: "row" }}
+                  >
+                    <div css={classes.imageContainer} className="flex1">
+                      {block.image && <img alt="block" src={block.image.url} css={{ width: '100%' }} />}
+                    </div>
+                    <div className="flexColumn flex1" css={classes.blockTexts(block.imagePosition)}>
+                      <Typography variant="h5">{block.title}</Typography>
+                      {block.description && <Typography>{block.description}</Typography>}
+                      <TextEditor value={block.content} editable={false} />
+                    </div>
+                  </Stack>
+                ))}
+              </Stack>
             </Layout>
 
             {/* images */}

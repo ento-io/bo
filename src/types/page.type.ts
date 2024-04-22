@@ -1,7 +1,7 @@
 import { Attributes } from "parse";
 import { z } from "zod";
 import { IUser } from "./user.type";
-import { pageBlocksSchema, pageFilterSchema, pageSchema } from "@/validations/page.validations";
+import { pageBlocksSchema, pageFilterSchema, pageStepOneSchema, pageStepThreeSchema } from "@/validations/page.validations";
 import { IFileCloud } from "./file.type";
 import { ICategory } from "./category.type";
 import { ISEOFields } from "./app.type";
@@ -23,6 +23,7 @@ export interface IPageBlock extends Attributes {
   createdAt?: string;
   deleted: boolean;
   translated: ITranslatedPageBlock;
+  image: IFileCloud;
 }
 export interface IPage extends Attributes {
   objectId: string;
@@ -48,7 +49,11 @@ export interface IPageState {
   count: number;
 }
 
-export type IPageInput = z.infer<typeof pageSchema>;
+export type IPageStepOneInput = z.infer<typeof pageStepOneSchema>;
+export type IPageStepTwoInput = z.infer<typeof pageStepOneSchema>;
+export type IPageStepThreeInput = z.infer<typeof pageStepThreeSchema>;
+export type IPageInput = IPageStepOneInput & IPageStepTwoInput & IPageStepThreeInput;
+
 export type IPageBlocksInput = z.infer<typeof pageBlocksSchema>;
 
 export type PageFiltersInput = z.infer<typeof pageFilterSchema>;

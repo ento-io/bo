@@ -5,6 +5,7 @@ import i18n from '@/config/i18n';
 import { hasAcceptedFileTypes, hasFilesMaxSize } from '@/utils/file.utils';
 
 export const PAGE_SINGLE_IMAGE_FIELDS = ['bannerImage', 'previewImage'];
+export const PAGE_BLOCK_SINGLE_IMAGE_FIELDS = ['image'];
 export const PAGE_IMAGES_FIELDS = ['images'];
 
 const ACCEPTED_IMAGE_TYPES = ['jpg', 'jpeg', 'png', 'svg'];

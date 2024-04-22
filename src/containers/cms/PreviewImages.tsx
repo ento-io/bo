@@ -20,7 +20,7 @@ const PreviewImages = <T extends Record<string, any>>({ page }: Props<T>) => {
               <Typography sx={{ fontWeight: 600, mb: 1 }}>{t('cms:' + field)}</Typography>
               {page[field] ? (
                 <Box sx={{ width: 300 }}>
-                  <Box component="img" alt="image" src={page[field].url} sx={{ width: '100%' }} />
+                  <img alt={field} src={page[field].url} css={{ width: '100%' }} />
                 </Box>
               ) : (
                 <Typography>{t('common:errors.noField', { field: t('common:' + field) })}</Typography>
@@ -38,7 +38,7 @@ const PreviewImages = <T extends Record<string, any>>({ page }: Props<T>) => {
                   {page[field].map((image: IFileCloud, index: number) => (
                     <Box key={image.url + index}>
                       <Box sx={{ width: 300 }}>
-                        <Box component="img" alt={image.url} src={image.url} sx={{ width: '100%' }} />
+                        <img alt={image.url} src={image.url} css={{ width: '100%' }} />
                       </Box>
                     </Box>
                   ))}

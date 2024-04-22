@@ -14,10 +14,11 @@ import { convertIdToPointer, setValues } from '@/utils/parse.utils';
 import { setMessageSlice } from '../reducers/app.reducer';
 import { getPage } from './page.action';
 import { goToNotFound } from './app.action';
+import { uploadFileAPI } from '@/utils/file.utils';
 
 const PageBlock = Parse.Object.extend("PageBlock");
 
-const PAGE_BLOCK_PROPERTIES = new Set(['translated']);
+const PAGE_BLOCK_PROPERTIES = new Set(['translated', 'image', 'imagePosition']);
 const PAGE_PROPERTIES = new Set(['blocks']);
 
 export const getPageBlock = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
@@ -62,9 +63,22 @@ export const addBlocksToPage = (
 
     const newBlocks = [];
     for (const block of newValues.blocks) {
-      const newBlock = new PageBlock();
-      setValues(newBlock, block, PAGE_BLOCK_PROPERTIES);
-      newBlocks.push(newBlock);
+      const blockObj = new PageBlock();
+
+      if (block.image) {
+        const uploadInput = {
+          folder: 'pages',
+          sessionToken: currentUser.getSessionToken(),
+          file: block.image
+        };
+        const uploadedFileUrl = await uploadFileAPI(uploadInput);
+        block.image = uploadedFileUrl
+      }
+
+      const newValues = { ...block };
+
+      setValues(blockObj, newValues, PAGE_BLOCK_PROPERTIES);
+      newBlocks.push(blockObj);
     }
 
     const savedBlocks = await Parse.Object.saveAll(newBlocks);
