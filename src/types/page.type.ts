@@ -41,6 +41,7 @@ export interface IPage extends Attributes {
   category?: ICategory;
   blocks?: IPageBlock[];
   linkLocations?: ('menu' | 'footer')[];
+  active: boolean;
 }
 
 export interface IPageState {
