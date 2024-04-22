@@ -54,7 +54,6 @@ export type IPageStepOneInput = z.infer<typeof pageStepOneSchema>;
 export type IPageStepTwoInput = z.infer<typeof pageStepOneSchema>;
 export type IPageStepThreeInput = z.infer<typeof pageStepThreeSchema>;
 export type IFinalPageInput = IPageStepOneInput & IPageStepTwoInput & IPageStepThreeInput;
-export type IEachPageInput = IPageStepOneInput | IPageStepTwoInput | IPageStepThreeInput;
 
 export type IPageBlocksInput = z.infer<typeof pageBlocksSchema>;
 
