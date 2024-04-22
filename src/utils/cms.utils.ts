@@ -256,6 +256,7 @@ export const getPageBlocksEditionCmsInitialValues = async (
       if (block.image) {
         const file = await getFileFromUrl(block.image.url);
         values.image = [file]; // should be an array
+        values.imagePosition = block.imagePosition;
       }
 
       blocks.push(values);
