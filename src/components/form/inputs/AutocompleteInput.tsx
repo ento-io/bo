@@ -121,6 +121,20 @@ export type AutocompleteInputProps<T extends Record<string, any>> = {
   isSearch?: boolean; // to display a search icon
 } & Omit<MUIAutocompleteProps<any, any, any, any>, 'renderInput' | 'onChange' | 'onInputChange'>;
 
+type RightProps = {
+  onClear: () => void;
+} & Pick<AutocompleteInputProps<Record<string, any>>, 'right' | 'multiple'>;
+
+const Right = ({ right, multiple, onClear }: RightProps) => {
+  if (right) return right;
+  if (multiple) return null;
+  return (
+    <IconButton onClick={onClear}>
+      <FiX size={16} />
+    </IconButton>
+  );
+
+}
 const AutocompleteInput = <T extends Record<string, any>>({
   value,
   label,
@@ -188,6 +202,11 @@ const AutocompleteInput = <T extends Record<string, any>>({
     onChange(newValues);
   };
 
+  const handleClearSingleValue = () => {
+    onInputChange?.('');
+    onChange(null);
+  }
+
   // when taping
   const handleInputChange = (_: SyntheticEvent, value: string, reason?: string) => {
     if (!onInputChange) return;
@@ -230,9 +249,10 @@ const AutocompleteInput = <T extends Record<string, any>>({
               {...params}
               placeholder={placeholder}
               label={label}
-              right={right}
+              // right={right}
               className={classes.input}
               left={isSearch ? <FiSearch /> : left}
+              right={<Right multiple={multiple} right={right} onClear={handleClearSingleValue}  />}
             />
           )}
           PopperComponent={AutocompletePopper(disableNoOptions)}
