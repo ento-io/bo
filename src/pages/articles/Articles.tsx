@@ -12,7 +12,7 @@ import { IQueriesInput, IRenderSearchProps, TableHeadCell } from '@/types/app.ty
 import ButtonActions from '@/components/ButtonActions';
 import Head from '@/components/Head';
 import { articlesRoute } from '@/routes/protected/article.routes';
-import { IArticle, IArticleTranslatedFields } from '@/types/article.types';
+import { IArticle, IArticleTranslatedFields } from '@/types/article.type';
 import AddFab from '@/components/AddFab';
 import SearchArticles from '@/containers/articles/SearchArticles';
 import { articlesTabOptions, getTranslatedCategoriesName } from '@/utils/cms.utils';

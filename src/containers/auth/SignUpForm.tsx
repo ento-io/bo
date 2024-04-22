@@ -11,7 +11,7 @@ import { getAppErrorSelector } from '@/redux/reducers/app.reducer';
 import { getUserLoadingSelector } from '@/redux/reducers/user.reducer';
 
 import { COLORS } from '@/utils/constants';
-import { ISignUpInput } from '@/types/auth.types';
+import { ISignUpInput } from '@/types/auth.type';
 import { signUpSchema } from '@/validations/auth.validation';
 
 type Props = {

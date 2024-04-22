@@ -1,13 +1,9 @@
 import { ReactNode } from 'react';
 
-import { Box, Stack, SxProps, Theme, Typography, styled } from '@mui/material';
+import { Box, Stack, SxProps, Theme, Typography } from '@mui/material';
 
-type StyledLayoutProps = {
-  theme?: Theme;
-  isCard: boolean;
-};
-const StyledLayout = styled(Box, { shouldForwardProp: prop => prop !== 'isCard' })<StyledLayoutProps>(
-  ({ theme, isCard }) => {
+const classes = {
+  layoutContent: (isCard: boolean) => (theme: Theme) => {
     if (!isCard) return null;
     return {
       backgroundColor: theme.palette.mode === 'light' ? 'rgb(255, 255, 255)' : theme.palette.background.paper,
@@ -32,17 +28,16 @@ const StyledLayout = styled(Box, { shouldForwardProp: prop => prop !== 'isCard' 
       },
     };
   },
-);
-
-const StyledTitle = styled(Typography)(({ theme }) => ({
-  [theme.breakpoints.up('xl')]: {
-    fontSize: 32,
-  },
-  [theme.breakpoints.down('xl')]: {
-    fontSize: 22,
-    margin: 0,
-  },
-}));
+  title: (theme: Theme) => ({
+    [theme.breakpoints.up('xl')]: {
+      fontSize: 32,
+    },
+    [theme.breakpoints.down('xl')]: {
+      fontSize: 22,
+      margin: 0,
+    },
+  }),
+}
 
 type Props = {
   children: ReactNode;
@@ -68,13 +63,13 @@ const Layout = ({
   actionsEmplacement = 'head',
 }: Props) => {
   return (
-    <Box sx={sx} px={{ xs: 1, lg: 0 }} width="100%">
+    <Box sx={sx} width="100%">
       {title && (
         <Box py={{ xs: 2, lg: 2 }} display="flex" justifyContent="space-between">
           <Stack spacing={0} justifyContent="center">
-            <StyledTitle variant="h2" gutterBottom>
+            <Typography css={classes.title} variant="h2" gutterBottom>
               {title}
-            </StyledTitle>
+            </Typography>
             {description && (
               <Typography variant="h6" gutterBottom>
                 {description}
@@ -84,7 +79,7 @@ const Layout = ({
           {actions && actionsEmplacement === 'head' && <Box className="flexRow">{actions}</Box>}
         </Box>
       )}
-      <StyledLayout isCard={isCard}>
+      <div css={classes.layoutContent(isCard)}>
         <Box display="flex" justifyContent="space-between">
           {(cardTitle || cardDescription) && (
             <Stack>
@@ -104,7 +99,7 @@ const Layout = ({
           {isCard && actionsEmplacement === 'content' && actions && <Box className="flexRow">{actions}</Box>}
         </Box>
         {children}
-      </StyledLayout>
+      </div>
     </Box>
   );
 };

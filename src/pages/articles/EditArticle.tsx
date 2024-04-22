@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import ArticleForm from "@/containers/articles/ArticleForm";
 import { deleteArticle, editArticle, goToAddArticle, goToArticle, goToArticles } from "@/redux/actions/article.action";
 import { getArticleArticleSelector } from "@/redux/reducers/article.reducer";
-import { IArticleInput } from "@/types/article.types";
+import { IArticleInput } from "@/types/article.type";
 import ActionsMenu from "@/components/ActionsMenu";
 import Head from "@/components/Head";
 import Layout from "@/components/layouts/Layout";
@@ -25,15 +25,16 @@ const EditArticle = () => {
     navigate(goToArticle(article.objectId));
   }
 
-  const handleDelete = () => {
-    if (!canDelete) return;
-    navigate(deleteArticle(article.objectId));
-  }
-
   const handleGoToList = () => {
     if (!canFind) return;
     navigate(goToArticles());
   };
+
+  const handleDelete = async () => {
+    if (!canDelete) return;
+    await dispatch(deleteArticle(article.objectId));
+    handleGoToList();
+  }
 
   const handleCreate = () => {
     if (!canCreate) return;

@@ -22,7 +22,7 @@ import { getArticleArticleSelector } from '@/redux/reducers/article.reducer';
 import { deleteArticle, goToAddArticle, goToArticles, goToEditArticle } from '@/redux/actions/article.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { IArticle, IArticleTranslatedFields } from '@/types/article.types';
+import { IArticle, IArticleTranslatedFields } from '@/types/article.type';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
@@ -166,7 +166,7 @@ const Article = () => {
             <Layout cardTitle={t('cms:seo')} cardDescription={t('cms:seoDescription')}>
               <Items items={seoItems} />
             </Layout>
-            <Layout>
+            <Layout cardTitle={t('cms:contentOfTheArticle')}>
               <TextEditor value={translatedFields.content} editable={false} />
             </Layout>
 

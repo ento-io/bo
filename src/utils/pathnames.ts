@@ -4,6 +4,7 @@ export const PATH_NAMES = {
   home: '/',
   users: '/' + i18n.t('route:users'),
   articles: '/' + i18n.t('route:articles'),
+  pages: '/' + i18n.t('route:pages'),
   categories: '/' + i18n.t('route:categories'),
   admins: '/' + i18n.t('route:admins'),
   login: '/' + i18n.t('route:login'),
@@ -20,8 +21,11 @@ export const PATH_NAMES = {
     resetPassword: '/' + i18n.t('route:emailResetPassword'),
     verifyAccount: '/' + i18n.t('route:verifyAccount'),
   },
-  create: i18n.t('route:add'),
-  edit: i18n.t('route:edit'),
   estimates: '/' + i18n.t('route:estimates'),
   invoices: '/' + i18n.t('route:invoices'),
+
+  // static pathnames (no '/' at the beginning)
+  create: i18n.t('route:add'),
+  edit: i18n.t('route:edit'),
+  blocks: i18n.t('route:blocks'),
 };

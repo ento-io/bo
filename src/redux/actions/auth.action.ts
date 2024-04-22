@@ -1,6 +1,6 @@
 
 import Parse from 'parse';
-import { IChangePasswordInput, ILoginInput, ResetPasswordInput, ISignUpInput } from '@/types/auth.types';
+import { IChangePasswordInput, ILoginInput, ResetPasswordInput, ISignUpInput } from '@/types/auth.type';
 import { IPlatform, IUser, PlatformEnum } from '@/types/user.type';
 import i18n from '@/config/i18n';
 

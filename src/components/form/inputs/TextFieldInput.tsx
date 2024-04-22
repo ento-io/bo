@@ -90,9 +90,10 @@ const classes = {
       alignItems: 'center',
     },
     '& .MuiInputAdornment-positionStart': {
-      borderRight: '1px solid ' + theme.palette.grey[800],
+      borderRight: '1px solid ' + theme.palette.grey[300],
       borderTopLeftRadius: theme.shape.borderRadius + 'px',
       borderBottomLeftRadius: theme.shape.borderRadius + 'px',
+      paddingRight: 6,
     },
   }),
 };

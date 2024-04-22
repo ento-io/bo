@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IEstimate, IEstimateState } from '@/types/estimate.types';
+import { IEstimate, IEstimateState } from '@/types/estimate.type';
 
 const initialState: IEstimateState = {
   loading: false,

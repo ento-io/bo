@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import TextField from '@/components/form/fields/TextField';
 import Form from '@/components/form/Form';
 
-import { EstimateInput, IEstimate } from '@/types/estimate.types';
+import { EstimateInput, IEstimate } from '@/types/estimate.type';
 import { estimateSchema } from '@/validations/estimate.validation';
 
 const getInitialValues = (estimate: IEstimate | null): EstimateInput => {

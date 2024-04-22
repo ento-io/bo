@@ -10,7 +10,7 @@ import Dialog from '@/components/Dialog';
 import { changePassword } from '@/redux/actions/auth.action';
 
 import ProfileUserPasswordForm from './ProfileUserPasswordForm';
-import { IChangePasswordInput } from '@/types/auth.types';
+import { IChangePasswordInput } from '@/types/auth.type';
 
 const USER_PASSWORD_FORM_ID = 'user-password-form-id';
 

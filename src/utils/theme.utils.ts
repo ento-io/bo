@@ -214,7 +214,7 @@ const defaultTheme = {
           textTransform: 'initial',
           padding: '12px 24px',
           borderRadius: 60,
-          border: 'none',
+          // border: 'none',
           '&.Mui-disabled': {
             color: '#fff',
             backgroundColor: theme.palette.grey[300],
@@ -224,13 +224,6 @@ const defaultTheme = {
           backgroundColor: theme.palette.primary.main,
           color: 'white',
           boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
-        }),
-        outlined: ({ theme }: { theme: Theme }) => ({
-          color: theme.palette.grey[600],
-          boxShadow: '0px 0px 1px rgba(0, 0, 0, 0.25)',
-          ':hover': {
-            border: 'none',
-          },
         }),
       },
     },
@@ -272,6 +265,15 @@ const defaultTheme = {
             boxShadow: 'none'
           }
         })
+      }
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& .MuiFormHelperText-root': {
+            marginLeft: 0,
+          },
+        }
       }
     },
     MuiAutocomplete: {

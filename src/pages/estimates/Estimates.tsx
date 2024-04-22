@@ -16,7 +16,7 @@ import Head from '@/components/Head';
 import { estimatesRoute } from '@/routes/protected/estimate.routes';
 import Dialog from '@/components/Dialog';
 import UserCell from '@/components/UserCell';
-import { EstimateInput, IEstimate } from '@/types/estimate.types';
+import { EstimateInput, IEstimate } from '@/types/estimate.type';
 import EstimateForm from '../../containers/estimates/EstimateForm';
 import AddFab from '@/components/AddFab';
 import { useToggle } from '@/hooks/useToggle';

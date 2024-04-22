@@ -8,7 +8,7 @@ import { PATH_NAMES } from '@/utils/pathnames';
 import { clearArticleSlice, deleteArticleFromArticlesSlice, deleteArticlesSlice, loadArticleSlice, loadArticlesSlice, setArticlesCountSlice } from '../reducers/article.reducer';
 import { setMessageSlice } from '../reducers/app.reducer';
 import i18n, { locales } from '@/config/i18n';
-import { IArticle, IArticleInput } from '@/types/article.types';
+import { IArticleInput } from '@/types/article.type';
 import { DEFAULT_PAGINATION, PAGINATION } from '@/utils/constants';
 import { IQueriesInput, ITabAndCategorySearchParams } from '@/types/app.type';
 import { goToNotFound } from './app.action';
@@ -74,7 +74,7 @@ export const createArticle = (values: IArticleInput): any => {
     const hasRight = canAccessTo(roles, 'Article', 'create');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToCreate', { value: i18n.t('common:article.thisArticle') }));
+      throw Error(i18n.t('common:errors.hasNoRightToCreate', { value: i18n.t('cms:thisArticle') }));
     }
 
     const currentUser = await Parse.User.currentAsync();
@@ -85,7 +85,7 @@ export const createArticle = (values: IArticleInput): any => {
 
     const article = new Article()
 
-    const uploadedValues = await uploadFormFiles<IArticle>({
+    const uploadedValues = await uploadFormFiles<IArticleInput>({
       folder: 'articles',
       sessionToken: currentUser.getSessionToken(),
       values
@@ -116,7 +116,7 @@ export const editArticle = (id: string, values: IArticleInput): any => {
     const hasRight = canAccessTo(roles, 'Article', 'update');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('common:article.thisArticle') }));
+      throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('cms:thisArticle') }));
     }
 
     const currentUser = await Parse.User.currentAsync();
@@ -129,7 +129,7 @@ export const editArticle = (id: string, values: IArticleInput): any => {
 
     if (!article) return;
     
-    const uploadedValues = await uploadUpdatedFormFiles<IArticle>({
+    const uploadedValues = await uploadUpdatedFormFiles<IArticleInput>({
       page: article,
       folder: 'articles',
       sessionToken: currentUser.getSessionToken(),
@@ -168,7 +168,7 @@ export const deleteArticle = (id: string,): any => {
     const hasRight = canAccessTo(roles, 'Article', 'delete');
 
     if (!hasRight) {
-      throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('common:article.thisArticle') }));
+      throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('cms:thisArticle') }));
     }
 
     // --------- request --------- //
@@ -206,9 +206,9 @@ export const toggleArticlesByIds = (ids: string[], field: string, value = true):
 
     if (!hasRight) {
       if (isDelete) {
-        throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('common:article.theseArticles') }));
+        throw Error(i18n.t('common:errors.hasNoRightToDelete', { value: i18n.t('cms:theseArticles') }));
       } else {
-        throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('common:article.theseArticles') }));
+        throw Error(i18n.t('common:errors.hasNoRightToUpdate', { value: i18n.t('cms:theseArticles') }));
       }
     }
 

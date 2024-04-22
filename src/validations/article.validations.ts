@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { capitalize } from "string-ts";
+import { CategoryEntityEnum } from "../types/category.type";
 import { dateForAdvancedSearchSchema } from "./app.validations";
 import { formatTranslatedFormValuesToSave } from "@/utils/cms.utils";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
@@ -8,7 +9,7 @@ import i18n, { locales } from "@/config/i18n";
 import { getMultipleImagesSchema, getSingleImageSchema } from "./file.validation";
 import { categoryOptionSchema } from "./category.validation";
 
-const emptyContent = (value?: string): string => {
+export const emptyContent = (value?: string): string => {
   if (!value || value === '<p><br></p>') {
     return '';
   }
@@ -25,7 +26,7 @@ export const articleFilterSchema = z.object({
   active: z.array(z.boolean().optional()).optional(),
 });
 
-const getTranslatedSchema = () => {
+export const getCMSTranslatedSchema = (entity = CategoryEntityEnum.Article) => {
   const translatedSchema: Record<string, any> = {};
 
   locales.forEach((locale: string) => {
@@ -46,25 +47,47 @@ const getTranslatedSchema = () => {
     translatedSchema[locale + ':metaTitle'] = z.string({ errorMap }).max(
       70,
       i18n.t('form.error.max', { field: i18n.t('common:metaTitle'), number: 70 }),
-    );
+    ).transform(capitalize);
     translatedSchema[locale + ':metaDescription'] = z.string({ errorMap })
       .max(170, i18n.t('form.error.max', { field: i18n.t('common:metaDescription'), number: 170 }))
-      .transform((value: string): string => (value ? capitalize(value) : ''));
+      .transform(capitalize);
+
+    if (entity === CategoryEntityEnum.Page) {
+      translatedSchema[locale + ':description'] = z.string({ errorMap })
+        .max(300, i18n.t('form.error.max', { field: i18n.t('common:description'), number: 300 }))
+        .transform(capitalize);
+    }
     // ------------------------------------ //
     // - required only for default locale - //
     // ------------------------------------ //
+    // other locales are optional
     if (locale !== DEFAULT_LANGUAGE) {
-      translatedSchema[locale + ':title'] = z.string({ errorMap }).transform((value: string): string =>
-        value ? capitalize(value) : '',
-      );
+      if (entity === CategoryEntityEnum.Page) {
+        translatedSchema[locale + ':name'] = z.string({ errorMap }).optional();
+      }
+      translatedSchema[locale + ':title'] = z.string({ errorMap }).transform(capitalize);
       translatedSchema[locale + ':content'] = z.string({ errorMap }).optional().transform(emptyContent);
     } else {
-      translatedSchema[DEFAULT_LANGUAGE + ':title'] = z.string({ errorMap })
-        .min(1, i18n.t('form.error.required', { field: i18n.t('common:title') }))
-        .transform(capitalize);
-      translatedSchema[DEFAULT_LANGUAGE + ':content'] = z.string({ errorMap })
-        .min(1, i18n.t('form.error.required', { field: i18n.t('common:content') }))
-        .transform(emptyContent);
+      // required fields only for default locale
+      [{
+        key: 'name',
+        label: i18n.t('cms:pageName'),
+        validate: entity === CategoryEntityEnum.Page
+      }, {
+        key: 'title',
+        label: i18n.t('common:title'),
+        validate: true,
+      }, {
+        key: 'content',
+        label: i18n.t('common:content'),
+        validate: true,
+      }].forEach(({ key, label, validate }) => {
+        if (validate) {
+          translatedSchema[locale + ':' + key] = z.string({ errorMap })
+          .min(1, i18n.t('form.error.required', { field: label }))
+          .transform(emptyContent);
+        }
+      });
     }
   });
 
@@ -80,7 +103,7 @@ export const cmsSchema = z.object({
 
 export const articleSchema = cmsSchema
   .extend({
-    ...getTranslatedSchema(), // translated fields
+    ...getCMSTranslatedSchema(), // translated fields
     categories: z.array(categoryOptionSchema).optional(),
   })
   .transform(formatTranslatedFormValuesToSave);

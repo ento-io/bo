@@ -1,10 +1,5 @@
 {
-  "article": {
-    "article": "Lahatsoratra",
-    "articles": "Lahatsoratra",
-    "thisArticle": "an'io lahatsoratra io",
-    "theseArticles": "an'ireo lahatsoratra ireo"
-  },
+  "webSite": "Tranonkala",
   "download": "Télécharger",
   "regeneratePdf": "Averina amboarina PDF",
   "greeting": "Salama, {{name}}!",
@@ -62,6 +57,7 @@
   "date": "Daty",
   "year": "Year",
   "hour": "Ora",
+  "addImage": "Ampidirina sary",
   "placesCount": "Toerana {{number}}",
   "searchByTown": "Anaran-tanàna",
   "selectADate": "Misafidiana andro",
@@ -85,6 +81,7 @@
   "comment": "Commentaire",
   "continue": "Tohizana",
   "finish": "Tapitra",
+  "terminateAndSaveStep": "Taperina sy tehirizina ({{step}}/{{total}})",
   "book": "Reserver",
   "cancel": "Ajanona",
   "confirm": "Ekena",
@@ -316,6 +313,7 @@
   "employee": "Mpiasa",
   "next": "Manaraka",
   "previous": "Miverina",
+  "nextStep": "Manaraka ({{step}}/{{total}})",
   "invite": "Asàna",
   "sorry": "Azafady tompoko",
   "returnToHome": "Hiverina amin'ny pejy fandraisana",

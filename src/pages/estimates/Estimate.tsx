@@ -21,7 +21,7 @@ import { getEstimateEstimateSelector } from '@/redux/reducers/estimate.reducer';
 import { goToEstimates } from '@/redux/actions/estimate.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { IEstimate } from '@/types/estimate.types';
+import { IEstimate } from '@/types/estimate.type';
 import EstimateStatus from '@/containers/estimates/EstimateStatus';
 
 const classes = {

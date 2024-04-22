@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "i18next";
 import { useSelector } from "react-redux";
 import { Stack } from "@mui/material";
-import { IArticle, IArticleInput } from "@/types/article.types"
+import { IArticle, IArticleInput } from "@/types/article.type"
 import TextField from "@/components/form/fields/TextField";
 import Form from "@/components/form/Form";
 import { articleSchema } from "@/validations/article.validations";
@@ -19,7 +19,7 @@ import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import DropzoneField from "@/components/form/dropzone/DropzoneField";
 import CardFormBlock from "@/components/form/CardFormBlock";
 import CheckboxField from "@/components/form/fields/CheckboxField";
-import { CategoryEntityEnum } from "@/types/category.types";
+import { CategoryEntityEnum } from "@/types/category.type";
 import { useTranslatedValuesByTab } from "@/hooks/useTranslatedValuesByTab";
 import CategoriesSearchByEntityField from "../categories/CategoriesSearchByEntityField";
 import TranslatedSlugField from "../cms/TranslatedSlugField";
@@ -107,7 +107,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
               type="text"
               variant="outlined"
               placeholder={t('common:infoMessages.separateTagsWithComma')}
-              tooltip={t('common:infoMessages.tagsHelper')}
+              helperText={t('common:infoMessages.tagsHelper')}
             /> 
               <TextField
                 name={locale + ':metaTitle'}
@@ -115,7 +115,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
                 fixedLabel
                 type="text"
                 variant="outlined"
-                tooltip={t('common:infoMessages.metaTitleHelper')}
+                helperText={t('common:infoMessages.metaTitleHelper')}
               />
               <TextField
                 name={locale + ':metaDescription'}
@@ -125,7 +125,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
                 variant="outlined"
                 multiline
                 rows={3}
-                tooltip={t('common:infoMessages.metaDescriptionHelper')}
+                helperText={t('common:infoMessages.metaDescriptionHelper')}
               />
             </Stack>
           </div>
@@ -138,12 +138,12 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
         description={t('cms:activePageVisible')}
         rightHeader={<CheckboxField name="active" isSwitch />}
       />
-      <CardFormBlock title={t('common:seo')}>
+      <CardFormBlock title={t('cms:category.category')}>
         <CategoriesSearchByEntityField
           entity={CategoryEntityEnum.Article}
           multiple
           name="categories"
-          label={t('cms:category.category')}
+          label={t('cms:category.categories')}
           fullWidth
         />
       </CardFormBlock>
@@ -159,6 +159,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             maxFiles={1}
             shouldReset={!!article} // can reset input in edition
             helperText={t('common:infoMessages.bannerImageHelper')}
+            type="image"
           />
           <DropzoneField
             name="previewImage"
@@ -166,7 +167,8 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             inputLabel={`${t('common:add')} ${t('common:previewImage')}`}
             maxFiles={1}
             shouldReset={!!article} // can reset input in edition
-            tooltip={t('common:infoMessages.previewImageHelper')}
+            helperText={t('common:infoMessages.previewImageHelper')}
+            type="image"
           />
           {/* multiple image upload */}
           <DropzoneField
@@ -175,6 +177,7 @@ const ArticleForm = ({ onSubmit, article, loading }: Props) => {
             inputLabel={t('images')}
             maxFiles={5}
             shouldReset={!!article} // can reset input in edition
+            type="image"
           />
         </Stack>
       </CardFormBlock>

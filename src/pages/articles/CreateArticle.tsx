@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import ArticleForm from "../../containers/articles/ArticleForm";
 import { createArticle, goToArticle, goToArticles } from "@/redux/actions/article.action";
 import { getArticleArticleSelector } from "@/redux/reducers/article.reducer";
-import { IArticleInput } from "@/types/article.types";
+import { IArticleInput } from "@/types/article.type";
 import Layout from "@/components/layouts/Layout";
 import ActionsMenu from "@/components/ActionsMenu";
 import Head from "@/components/Head";

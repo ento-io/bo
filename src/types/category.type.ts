@@ -13,7 +13,7 @@ export enum CategoryEntityEnum {
   Page = "page",
 }
 
-type ICategoryTypeEntity = `${CategoryEntityEnum}`;
+export type ICategoryTypeEntity = `${CategoryEntityEnum}`;
 export type ICategoryEntityOption = ISelectOption<ICategoryTypeEntity>;
 export interface ICategory extends Attributes {
   objectId: string;
