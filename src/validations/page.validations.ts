@@ -77,7 +77,7 @@ export const pageStepThreeSchema = z.object({
   category: z.preprocess(
     // ISSUE: https://stackoverflow.com/questions/74256866/validating-optional-fields-in-react-using-zod
     (value) => value === '' ? undefined : value,
-    categoryOptionSchema.optional()
+    categoryOptionSchema.nullable().optional()
   ),
   active: z.boolean({ errorMap }).optional(),
 });
