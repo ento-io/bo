@@ -18,7 +18,7 @@ import { uploadFileAPI } from '@/utils/file.utils';
 
 const PageBlock = Parse.Object.extend("PageBlock");
 
-const PAGE_BLOCK_PROPERTIES = new Set(['translated', 'image']);
+const PAGE_BLOCK_PROPERTIES = new Set(['translated', 'image', 'imagePosition']);
 const PAGE_PROPERTIES = new Set(['blocks']);
 
 export const getPageBlock = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
