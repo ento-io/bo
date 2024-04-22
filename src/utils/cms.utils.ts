@@ -10,7 +10,7 @@ import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";
 import { ISelectOption } from "@/types/app.type";
-import { IPage, IPageBlocksInput, IPageInput, IPageStepOneInput, IPageStepThreeInput, IPageStepTwoInput } from "@/types/page.type";
+import { IPage, IPageBlocksInput, IPageStepOneInput, IPageStepThreeInput, IPageStepTwoInput } from "@/types/page.type";
 
 export const articlesTabOptions = defaultTabOptions;
 export const pagesTabOptions = defaultTabOptions;
@@ -206,9 +206,9 @@ const getCMSImagesInitialValues = async (
 }
 
 export const getCmsEditionCmsInitialValues = async (
-  page: IArticle | IPage | null | undefined,
+  page: IArticle | null | undefined,
   language: Lang,
-): Promise<IArticleInput | IPageInput | undefined> => {
+): Promise<IArticleInput | undefined> => {
   if (!page) return;
   const formattedTranslatedValues = parseSavedTranslatedValuesToForm(page);
   const imagesFields = await getCMSImagesInitialValues(page);
@@ -225,28 +225,6 @@ export const getCmsEditionCmsInitialValues = async (
   }
 
   return defaultValues;
-};
-
-/**
- * form initial values for page edition
- * @param page 
- * @param language 
- * @returns 
- */
-export const getPageEditionCmsInitialValues = async (
-  page: IPage | null | undefined,
-  language: Lang,
-): Promise<IPageInput | undefined> => {
-  if (!page) return;
-  const clonedPage = cloneDeep(page); // immutability
-  const formattedTranslatedValues = await getCmsEditionCmsInitialValues(clonedPage, language);
-
-  // -------- category -------- //
-  if (clonedPage.category) {
-    formattedTranslatedValues.category = getCategoryInputValue(language)(clonedPage.category);
-  }
-
-  return formattedTranslatedValues;
 };
 
 /**
