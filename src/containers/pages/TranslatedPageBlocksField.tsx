@@ -1,7 +1,7 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { useTranslation } from 'react-i18next';
-import { Button, FormHelperText, Stack } from '@mui/material';
+import { Button, FormHelperText, Stack, Theme } from '@mui/material';
 import { FiPlus, FiTrash } from 'react-icons/fi';
 import { css } from '@emotion/css';
 import { useLayoutEffect, useRef, useState } from 'react';
@@ -17,12 +17,17 @@ import SelectField from '@/components/form/fields/SelectField';
 import { imagePositionOptions } from '@/utils/cms.utils';
 
 const classes = {
-  tabsContainer: (fixed: boolean) => {
+  tabsContainer: (fixed: boolean) => (theme: Theme) => {
     if (fixed) {
       return {
         position: 'fixed' as const,
         top: 0,
         zIndex: 10000,
+        backgroundColor: 'red',
+        [theme.breakpoints.down('sm')]: {
+          right: 0,
+          left: 0,
+        },
       };
     }
 
