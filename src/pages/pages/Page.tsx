@@ -48,7 +48,30 @@ const classes = {
     [theme.breakpoints.down('md')]: {
       width: '100%',
     },
-  })
+  }),
+  blockTexts: (imagePosition: 'bottom' | 'right' | 'left') => (theme: Theme) => {
+    switch (imagePosition) {
+      case 'right':
+        return {
+          order: -1
+        }
+      case 'left':
+        return {
+          order: 1
+        }
+      case 'bottom':
+        return {
+          marginBottom: 8,
+          order: 1
+        }
+      default:
+        return {
+          [theme.breakpoints.down('md')]: {
+            order: -1
+          },
+        }
+    }
+  }
 };
 
 const Page = () => {
@@ -233,11 +256,15 @@ const Page = () => {
             >
               <Stack spacing={3}>
                 {translatedBlockFields.map((block, index) => (
-                  <Stack key={index} spacing={3} direction={{ md: "row" }}>
+                  <Stack
+                    key={index}
+                    spacing={3}
+                    direction={{ md: "row" }}
+                  >
                     <div css={classes.imageContainer} className="flex1">
                       {block.image && <img alt="block" src={block.image.url} css={{ width: '100%' }} />}
                     </div>
-                    <div className="flexColumn flex1">
+                    <div className="flexColumn flex1" css={classes.blockTexts(block.imagePosition)}>
                       <Typography variant="h5">{block.title}</Typography>
                       {block.description && <Typography>{block.description}</Typography>}
                       <TextEditor value={block.content} editable={false} />
