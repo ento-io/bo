@@ -7,12 +7,13 @@ import { useSelector } from "react-redux";
 import { IPage, IPageStepThreeInput } from "@/types/page.type"
 import Form, { IFormProps } from "@/components/form/Form";
 import { pageStepThreeSchema } from "@/validations/page.validations";
-import { getPageStepThreeEditionInitialValues } from "@/utils/cms.utils";
+import { getPageStepThreeEditionInitialValues, pageLinkLocationOptions } from "@/utils/cms.utils";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 import CardFormBlock from "@/components/form/CardFormBlock";
 import CheckboxField from "@/components/form/fields/CheckboxField";
 import { CategoryEntityEnum } from "@/types/category.type";
 import CategoriesSearchByEntityField from "../categories/CategoriesSearchByEntityField";
+import SelectField from "@/components/form/fields/SelectField";
 
 const initialValues = {
   active: true,
@@ -72,6 +73,16 @@ const PageFormStepThree = ({ onSubmit, page, loading, ...formProps }: Props) => 
           label={t('cms:category.category')}
           fullWidth
           isSearch
+        />
+      </CardFormBlock>
+
+      <CardFormBlock title={t('cms:linkLocation')}>
+        <SelectField
+          name="linkLocations"
+          options={pageLinkLocationOptions}
+          variant="outlined"
+          isClearable
+          isMulti
         />
       </CardFormBlock>
     </Form>
