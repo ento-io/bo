@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+import { useTranslation } from "react-i18next";
 import { IFinalPageInput, IPage, IPageInput } from "@/types/page.type"
 
 import PageFormStepOne from "./PageFormStepOne";
@@ -7,6 +8,9 @@ import PageFormStepTwo from "./PageFormStepTwo";
 import PageFormStepThree from "./PageFormStepThree";
 
 type IStep = 1 | 2 | 3 | number;
+
+const lastStep = 3;
+
 type Props = {
   onSubmit: (values: IPageInput) => void;
   page?: IPage | null;
@@ -14,18 +18,14 @@ type Props = {
 }
 
 const PageForm = ({ onSubmit, page, loading }: Props) => {
+  const { t } = useTranslation();
+
   const [step, setStep] = useState<IStep>(1);
   const [finalValues, setFinalValues] = useState<IFinalPageInput | null>(null);
 
-  // const onFormSubmit: SubmitHandler<IPageInput> = (values) => {
-  //   onSubmit(values);
-  //   reset(initialValues);
-  // };
-
   const onFormSubmit = (step: IStep) =>(values: IFinalPageInput) => {
-    console.log('step: ', step);
     // do not increment in last step
-    if (step < 3) {
+    if (step < lastStep) {
       // increment the step
       setStep((prev) => prev + 1);
       // store the values of each form step in the finalValues state
@@ -45,13 +45,18 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
     <div>
       {[PageFormStepOne, PageFormStepTwo, PageFormStepThree].map((Component, index) => {
         // display only the current step
-        if ((index + 1) !== step) return null;
+        const currentStep = index + 1;
+        if (currentStep !== step) return null;
         return (
           <Component
             key={index}
-            onSubmit={onFormSubmit(index + 1)}
+            onSubmit={onFormSubmit(currentStep)}
             page={page}
             loading={loading}
+            buttonText={currentStep === lastStep
+              ? t('common:nextStep', { step, total: lastStep })
+              : t('common:terminateAndSaveStep', { step, total: lastStep })
+            }
           />
         )
       })}
