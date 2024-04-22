@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { t } from "i18next";
-import { IPage, IPageBlocksInput, IPageInput } from "@/types/page.type"
+import { IPage, IPageBlocksInput } from "@/types/page.type"
 import Form from "@/components/form/Form";
 import { pageBlocksSchema } from "@/validations/page.validations";
 import { getPageBlocksEditionCmsInitialValues } from "@/utils/cms.utils";
@@ -18,7 +18,7 @@ const initialValues = {
 };
 
 type Props = {
-  onSubmit: (values: IPageInput) => void;
+  onSubmit: (values: IPageBlocksInput) => void;
   page?: IPage | null;
   loading?: boolean;
 }
@@ -42,7 +42,7 @@ const PageBlocksForm = ({ onSubmit, page, loading }: Props) => {
     init();
   }, [page, reset]);
 
-  const onFormSubmit: SubmitHandler<IPageInput> = (values) => {
+  const onFormSubmit: SubmitHandler<IPageBlocksInput> = (values) => {
     onSubmit(values);
   };
 
