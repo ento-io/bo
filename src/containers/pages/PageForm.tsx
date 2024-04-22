@@ -54,8 +54,8 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
             page={page}
             loading={loading}
             buttonText={currentStep === lastStep
-              ? t('common:nextStep', { step, total: lastStep })
-              : t('common:terminateAndSaveStep', { step, total: lastStep })
+              ? t('common:terminateAndSaveStep', { step, total: lastStep })
+              : t('common:nextStep', { step, total: lastStep })
             }
           />
         )
