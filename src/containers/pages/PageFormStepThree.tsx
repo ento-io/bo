@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "i18next";
 import { useSelector } from "react-redux";
 import { IPage, IPageStepThreeInput } from "@/types/page.type"
-import Form from "@/components/form/Form";
+import Form, { IFormProps } from "@/components/form/Form";
 import { pageStepThreeSchema } from "@/validations/page.validations";
 import { getPageStepThreeEditionInitialValues } from "@/utils/cms.utils";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
@@ -23,10 +23,9 @@ type Props = {
   onSubmit: (values: IPageStepThreeInput) => void;
   page?: IPage | null;
   loading?: boolean;
-  buttonText?: string;
-}
+} & Pick<IFormProps, 'buttonDirection' | 'onSecondaryButtonClick' | 'primaryButtonText' | 'secondaryButtonText'>;
 
-const PageFormStepThree = ({ onSubmit, page, loading, buttonText }: Props) => {
+const PageFormStepThree = ({ onSubmit, page, loading, ...formProps }: Props) => {
   const language = useSelector(getSettingsLangSelector);
 
   const form = useForm<IPageStepThreeInput>({
@@ -57,7 +56,7 @@ const PageFormStepThree = ({ onSubmit, page, loading, buttonText }: Props) => {
       onSubmit={handleSubmit(onFormSubmit)}
       loading={loading}
       isDisabled={false}
-      primaryButtonText={buttonText}
+      {...formProps}
     >
       {/* active card */}
       <CardFormBlock
