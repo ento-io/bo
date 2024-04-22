@@ -24,15 +24,16 @@ type Props = {
   onTabChange: (value: Lang) => void;
   tab: Lang;
   errors?: string[];
+  className?: string;
 };
 
-const TranslatedFormTabs = ({ onTabChange, tab, errors }: Props) => {
+const TranslatedFormTabs = ({ onTabChange, tab, errors, className }: Props) => {
   const handleTabChange = (_: SyntheticEvent, value: Lang) => {
     onTabChange(value);
   };
 
   return (
-    <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
+    <Tabs value={tab} onChange={handleTabChange} aria-label="language selection tabs" className={className}>
       {languagesOptions.map((languageOption: ISelectOption, index: number) => (
         <Tab
           label={<LanguageTab language={languageOption.value} label={languageOption.label} />}
