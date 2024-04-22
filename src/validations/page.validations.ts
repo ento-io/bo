@@ -74,6 +74,26 @@ export const pageSchema = cmsSchema
   })
   .transform(formatTranslatedFormValuesToSave);
 
+export const pageStepOneSchema = z.object({
+  ...getCMSTranslatedSchema(CategoryEntityEnum.Page), // translated fields
+})
+.transform(formatTranslatedFormValuesToSave);
+
+export const pageStepTwoSchema = cmsSchema.pick({
+  bannerImage: true,
+  previewImage: true,
+  images: true
+});
+
+export const pageStepThreeSchema = z.object({
+  category: z.preprocess(
+    // ISSUE: https://stackoverflow.com/questions/74256866/validating-optional-fields-in-react-using-zod
+    (value) => value === '' ? undefined : value,
+    categoryOptionSchema.optional()
+  ),
+  active: z.boolean({ errorMap }).optional(),
+});
+
 export const pageBlockSchema = z.object({
   ...getTranslatedBlockSchema(),
   image: getSingleImageSchema(),
