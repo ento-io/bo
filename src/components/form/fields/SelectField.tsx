@@ -43,7 +43,6 @@ const SelectField = ({
               {isString((errors as any)[name]) ? (errors as any)[name] : (errors as any)[name].message}
             </FormHelperText>
           )}
-          {helperText && <FormHelperText>{helperText}</FormHelperText>}
         </Box>
       )}
     />
