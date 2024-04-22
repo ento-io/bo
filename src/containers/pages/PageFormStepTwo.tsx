@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { t } from "i18next";
 import { Stack } from "@mui/material";
 import { IPage, IPageStepTwoInput } from "@/types/page.type"
-import Form from "@/components/form/Form";
+import Form, { IFormProps } from "@/components/form/Form";
 import { pageStepTwoSchema } from "@/validations/page.validations";
 import { getPageStepTwoEditionInitialValues } from "@/utils/cms.utils";
 import DropzoneField from "@/components/form/dropzone/DropzoneField";
@@ -15,10 +15,9 @@ type Props = {
   onSubmit: (values: IPageStepTwoInput) => void;
   page?: IPage | null;
   loading?: boolean;
-  buttonText?: string;
-}
+} & Pick<IFormProps, 'buttonDirection' | 'onSecondaryButtonClick' | 'primaryButtonText' | 'secondaryButtonText'>;
 
-const PageFormStepTwo = ({ onSubmit, page, loading, buttonText }: Props) => {
+const PageFormStepTwo = ({ onSubmit, page, loading, ...formProps }: Props) => {
   const form = useForm<IPageStepTwoInput>({
     resolver: zodResolver(pageStepTwoSchema),
   });
@@ -46,7 +45,7 @@ const PageFormStepTwo = ({ onSubmit, page, loading, buttonText }: Props) => {
       onSubmit={handleSubmit(onFormSubmit)}
       loading={loading}
       isDisabled={false}
-      primaryButtonText={buttonText}
+      {...formProps}
     >
       <CardFormBlock title={t('images')}>
         <Stack spacing={2}>
