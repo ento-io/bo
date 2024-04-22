@@ -31,6 +31,17 @@ export const imagePositionOptions: ISelectOption[] = [
   },
 ];
 
+export const pageLinkLocationOptions: ISelectOption[] = [
+  {
+    label: i18n.t('cms:inTheMenu'),
+    value: 'menu',
+  },
+  {
+    label: i18n.t('cms:inTheFooter'),
+    value: 'footer',
+  },
+];
+
 /**
  * in the database, these translated fields is transformed to have this schema
  * { "fr": { "title": "xxx_fr", "description": "yyyy_fr" },  "en": { "title": "xxx_en", "description": "yyyy_en" }, ... }
@@ -48,8 +59,6 @@ export const TRANSLATED_CMS_FIELDS = [
 
 export const ALL_PAGE_FIELDS = [
   'active',
-  'linkLocations',
-  'pages',
   'category',
   ...PAGE_SINGLE_IMAGE_FIELDS,
   ...PAGE_IMAGES_FIELDS,
@@ -362,5 +371,10 @@ export const getTranslatedCategoriesName = (categories: ICategory[], lang: Lang)
 
 export const getImagePositionLabel = (position: string): string => {
   const option = imagePositionOptions.find((option) => option.value === position);
+  return option ? option.label : '';
+}
+
+export const getLinkEmplacementLabel = (emplacement: string): string => {
+  const option = pageLinkLocationOptions.find((option) => option.value === emplacement);
   return option ? option.label : '';
 }
