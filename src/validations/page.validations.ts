@@ -77,7 +77,12 @@ export const pageSchema = cmsSchema
 export const pageBlockSchema = z.object({
   ...getTranslatedBlockSchema(),
   image: getSingleImageSchema(),
-})
+  imagePosition: z.enum(['left', 'right', 'bottom']).optional(),
+}).refine(values => values.image && values.imagePosition, {
+  message: i18n.t('cms:errors.imagePositionRequired'),
+  path: ['imagePosition'],
+});;
+
 export const pageBlocksSchema = z.object({
     blocks: z.array(pageBlockSchema).optional()
   })
