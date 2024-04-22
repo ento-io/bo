@@ -6,7 +6,7 @@ import { t } from "i18next";
 import { Stack } from "@mui/material";
 import { IPage, IPageStepOneInput } from "@/types/page.type"
 import TextField from "@/components/form/fields/TextField";
-import Form from "@/components/form/Form";
+import Form, { IFormProps } from "@/components/form/Form";
 import { pageStepOneSchema } from "@/validations/page.validations";
 import TextEditorField from "@/components/form/fields/TextEditorField";
 import { getTranslatedFormTabErrors } from "@/utils/utils";
@@ -22,10 +22,9 @@ type Props = {
   onSubmit: (values: IPageStepOneInput) => void;
   page?: IPage | null;
   loading?: boolean;
-  buttonText?: string;
-}
+} & Pick<IFormProps, 'buttonDirection' | 'onSecondaryButtonClick' | 'primaryButtonText'>;
 
-const PageFormStepOne = ({ onSubmit, page, loading, buttonText }: Props) => {
+const PageFormStepOne = ({ onSubmit, page, loading, ...formProps }: Props) => {
   // get translated fields depending on the selected language (tabs)
   const { onTabChange, tab } = useTranslatedValuesByTab();
 
@@ -62,7 +61,7 @@ const PageFormStepOne = ({ onSubmit, page, loading, buttonText }: Props) => {
       onSubmit={handleSubmit(onFormSubmit)}
       loading={loading}
       isDisabled={false}
-      primaryButtonText={buttonText}
+      {...formProps}
     >
       <CardFormBlock title={t('details')} description={t('cms:translatedFields')}>
         {/* translated tabs */}
