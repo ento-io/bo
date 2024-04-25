@@ -1,4 +1,4 @@
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useLayoutEffect, useRef, useState } from 'react';
 
 import { Tab, Tabs, Theme } from '@mui/material';
 
@@ -10,6 +10,22 @@ import { Lang } from '@/types/setting.type';
 import LanguageTab from './LanguageTab';
 
 const classes = {
+  tabsContainer: (fixed: boolean) => (theme: Theme) => {
+    if (fixed) {
+      return {
+        position: 'fixed' as const,
+        top: 0,
+        zIndex: 10000,
+        backgroundColor: 'red',
+        [theme.breakpoints.down('sm')]: {
+          right: 0,
+          left: 0,
+        },
+      };
+    }
+
+    return { position: 'relative' as const };
+  },
   tabs: (theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
     [theme.breakpoints.down('sm')]: {
@@ -35,30 +51,53 @@ type Props = {
   tab: Lang;
   errors?: string[];
   className?: string;
+  fixedOnScroll?: boolean;
 };
 
-const TranslatedFormTabs = ({ onTabChange, tab, errors, className }: Props) => {
+const TranslatedFormTabs = ({ onTabChange, tab, errors, className, fixedOnScroll = false }: Props) => {
+  const divToFixedRef = useRef(null);
+  const [fixed, setFixed] = useState<boolean>(false);
+
+  // fix the tabs on top when scrolling
+  useLayoutEffect(() => {
+    if (!fixedOnScroll) return;
+    if (!divToFixedRef.current) return;
+    const current = divToFixedRef.current as HTMLDivElement;
+    const divAnimate = current.getBoundingClientRect().top;
+    const onScroll = () => {
+      if (divAnimate < window.scrollY) {
+        setFixed(true);
+      } else {
+        setFixed(false);
+      }
+    };
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [fixedOnScroll]);
+
   const handleTabChange = (_: SyntheticEvent, value: Lang) => {
     onTabChange(value);
   };
 
   return (
-    <Tabs
-      value={tab}
-      onChange={handleTabChange}
-      aria-label="language selection tabs"
-      className={className}
-      css={classes.tabs}
-    >
-      {languagesOptions.map((languageOption: ISelectOption, index: number) => (
-        <Tab
-          label={<LanguageTab language={languageOption.value} label={languageOption.label} />}
-          key={index}
-          value={languageOption.value}
-          css={classes.tab(!!errors?.includes(languageOption.value))}
-        />
-      ))}
-    </Tabs>
+    <div ref={divToFixedRef} css={classes.tabsContainer(fixed)}>
+      <Tabs
+        value={tab}
+        onChange={handleTabChange}
+        aria-label="language selection tabs"
+        className={className}
+        css={classes.tabs}
+      >
+        {languagesOptions.map((languageOption: ISelectOption, index: number) => (
+          <Tab
+            label={<LanguageTab language={languageOption.value} label={languageOption.label} />}
+            key={index}
+            value={languageOption.value}
+            css={classes.tab(!!errors?.includes(languageOption.value))}
+          />
+        ))}
+      </Tabs>
+    </div>
   );
 };
 
