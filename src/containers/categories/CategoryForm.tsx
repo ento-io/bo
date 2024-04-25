@@ -18,6 +18,7 @@ import Form from '@/components/form/Form';
 import SelectField from '@/components/form/fields/SelectField';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import TranslatedSlugField from '../cms/TranslatedSlugField';
+import DropzoneField from '@/components/form/dropzone/DropzoneField';
 
 type Props = {
   formId: string;
@@ -81,6 +82,16 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
           </div>
         ))}
       </div>
+
+      <DropzoneField
+        name="image"
+        label={t('common:image')}
+        inputLabel={t('comment:addImage')}
+        maxFiles={1}
+        shouldReset={!!category} // can reset input in edition
+        helperText={t('cms:category.imageHelper')}
+        type="image"
+      />
 
       <SelectField
         name="entity"
