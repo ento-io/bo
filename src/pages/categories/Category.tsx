@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -154,6 +154,17 @@ const Category = () => {
             </Layout>
             <Layout cardTitle={t('cms:seo')} cardDescription={t('cms:seoDescription')}>
               <Items items={seoItems} />
+            </Layout>
+            <Layout cardTitle={t('common:image')}>
+              {category.image
+                ? (
+                  <div css={{ width: 300 }}>
+                    <img alt={translatedFields.name} src={category.image.url} css={{ width: '100%' }} />
+                  </div>
+                ) : (
+                  <Typography>{t('common:errors.noField', { field: t('common:image') })}</Typography>
+                )
+              }
             </Layout>
           </Stack>
         </Grid>
