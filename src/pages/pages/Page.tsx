@@ -26,7 +26,7 @@ import UsersForEntity from '@/containers/users/UsersForEntity';
 import { IPage } from '@/types/page.type';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
-import LanguageTabs from '@/components/form/translated/TranslatedFormTabs';
+import TranslationTabs from '@/components/form/translated/TranslationTabs';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
 import { getServerUrl } from '@/utils/utils';
@@ -236,7 +236,7 @@ const Page = () => {
         />
       }>
       <Head title={translatedFields.title} />
-      <LanguageTabs
+      <TranslationTabs
         onTabChange={onTabChange}
         tab={tab}
         fixedOnScroll
