@@ -68,20 +68,20 @@ const getTranslatedPageBlockSchema = (): Record<string, any> => {
   for (const locale of locales) {
     if (locale !== DEFAULT_LANGUAGE) {
       // ex: fr:title field name
-      translatedSchema[locale + ':blockTitle'] = z.string({ errorMap }).transform(capitalize);
-      translatedSchema[locale + ':blockDescription'] = z.string({ errorMap }).optional().transform(emptyContent);
+      translatedSchema[locale + ':blocksTitle'] = z.string({ errorMap }).transform(capitalize);
+      translatedSchema[locale + ':blocksDescription'] = z.string({ errorMap }).optional().transform(emptyContent);
 
     } else {
       // required fields only for default locale
       [
         {
-        key: 'blockTitle',
-        label: i18n.t('cms:title'),
+        key: 'blocksTitle',
+        label: i18n.t('cms:blocksTitle'),
         min: 1,
       },
       {
-        key: 'blockDescription',
-        label: i18n.t('common:description'),
+        key: 'blocksDescription',
+        label: i18n.t('common:blocksDescription'),
         max: 300,
       },
     ].forEach(({ key, label, min, max }) => {
