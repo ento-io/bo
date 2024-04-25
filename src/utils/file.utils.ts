@@ -335,6 +335,12 @@ export const uploadFormFiles = async <T extends Record<string, any>>({
   return newValues;
 }
 
+export const isUpdatedFileChanged = (prevField: IFileCloud, formField: Record<string, string>): boolean => {
+  const fileName = formField.name.split('.')[0];
+  const hasTheName = prevField?.publicId.includes(fileName);
+
+  return hasTheName;
+}
 /**
  * upload all single file and multiple files fields files
  * ex: bannerImage, previewImage, images, ...
@@ -362,14 +368,12 @@ export const uploadUpdatedFormFiles = async <T extends Record<string, any>>({
 
   // --------- single file fields --------- //
   for (const field of singleUploadFields) {
-    const oldFieldValue = page.get(field);
     if (values[field]) {
-      const fileName = values[field].name.split('.')[0];
+      const oldFieldValue = page.get(field);
+      const isNew = isUpdatedFileChanged(oldFieldValue, values[field]);
 
       // new uploaded file
-      if (!oldFieldValue?.publicId.includes(fileName)) {
-        // if (!oldFieldValue || (oldFieldValue && !oldFieldValue.publicId.includes(fileName))) {
-
+      if (!isNew) {
         const fileUploadInput = { ...uploadInput, file: values[field] };
         const uploadedFilesUrl = await uploadFileAPI(fileUploadInput);
 
