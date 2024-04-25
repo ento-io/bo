@@ -8,7 +8,7 @@ import TextField from '@/components/form/fields/TextField';
 import { DEFAULT_LANGUAGE } from '@/utils/constants';
 import CardFormBlock from '@/components/form/CardFormBlock';
 import { locales } from '@/config/i18n';
-import LanguageTabs from '@/components/form/translated/TranslatedFormTabs';
+import TranslationTabs from '@/components/form/translated/TranslationTabs';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import TextEditorField from '@/components/form/fields/TextEditorField';
 import DropzoneField from '@/components/form/dropzone/DropzoneField';
@@ -51,7 +51,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
   return (
     <div>
       {/* language selection tab */}
-      <LanguageTabs
+      <TranslationTabs
         onTabChange={onTabChange}
         tab={tab}
         fixedOnScroll
