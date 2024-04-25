@@ -6,11 +6,11 @@ import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
 
 import { PATH_NAMES } from '@/utils/pathnames';
 import { deletePageBlockSlice, getPagePageSelector, loadPageSlice } from '../reducers/page.reducer';
-import i18n from '@/config/i18n';
-import { IPageBlocksInput } from '@/types/page.type';
+import i18n, { locales } from '@/config/i18n';
+import { IPageBlocksStepTwoInput } from '@/types/page.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
-import { convertIdToPointer, setValues } from '@/utils/parse.utils';
+import { setValues } from '@/utils/parse.utils';
 import { setMessageSlice } from '../reducers/app.reducer';
 import { getPage } from './page.action';
 import { goToNotFound } from './app.action';
@@ -19,7 +19,7 @@ import { uploadFileAPI } from '@/utils/file.utils';
 const PageBlock = Parse.Object.extend("PageBlock");
 
 const PAGE_BLOCK_PROPERTIES = new Set(['translated', 'image', 'imagePosition']);
-const PAGE_PROPERTIES = new Set(['blocks']);
+const PAGE_PROPERTIES = new Set(['translated', 'blocks']);
 
 export const getPageBlock = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
   const block = await new Parse.Query(PageBlock)
@@ -37,11 +37,9 @@ export const getPageBlock = async (id: string, include: string[] = []): Promise<
 // ----------------------------------------------------- //
 // ------------------- Redux Actions ------------------- //
 // ----------------------------------------------------- //
-
-
 export const addBlocksToPage = (
   pageId: string,
-  values: IPageBlocksInput,
+  values: IPageBlocksStepTwoInput,
   type: 'creation' | 'update' = 'creation'
 ): any => {
   return actionWithLoader(async (dispatch: AppDispatch, getState?: () => RootState): Promise<void> => {
@@ -61,6 +59,12 @@ export const addBlocksToPage = (
       throw Error(i18n.t('user:errors.userNotExist'));
     }
 
+    const page = await getPage(pageId);
+    if (!page) {
+      throw Error(i18n.t('cms:errors.pageNotFound'));
+    }
+
+    // ------------ save blocks ------------ //
     const newBlocks = [];
     for (const block of newValues.blocks) {
       const blockObj = new PageBlock();
@@ -81,12 +85,25 @@ export const addBlocksToPage = (
       newBlocks.push(blockObj);
     }
 
+    // ------------ save page ------------ //
     const savedBlocks = await Parse.Object.saveAll(newBlocks);
 
-    const savedValues = { blocks: savedBlocks };
-    const page = convertIdToPointer('Page', pageId);
+    const pageValues: Record<string, any> = { blocks: savedBlocks };
+    if (newValues.translated) {
+      const translated = { ...page.get('translated') };
+      locales.forEach((locale) => {
+        if (newValues.translated[locale]) {
+          translated[locale] = {
+            ...translated[locale],
+            ...newValues.translated[locale],
+          };
+        }
+      });
+
+      pageValues.translated = translated;
+    }
     
-    setValues(page, savedValues, PAGE_PROPERTIES);
+    setValues(page, pageValues, PAGE_PROPERTIES);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
