@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { useEffect } from 'react';
 import CheckboxField from '@/components/form/fields/CheckboxField';
 import TextField from '@/components/form/fields/TextField';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
@@ -33,10 +34,20 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
 
   const form = useForm<ICategoryInput>({
     resolver: zodResolver(categorySchema),
-    defaultValues: getCategoryFormInitialValues(category),
   });
 
-  const { handleSubmit, setValue } = form;
+  const { handleSubmit, setValue, reset } = form;
+
+  
+  useEffect(() => {
+    if (!category) return;
+    const init = async () => {
+      const editionInitialValues = await getCategoryFormInitialValues(category);
+      reset(editionInitialValues)
+    };
+
+    init();
+  }, [category, reset]);
 
   const handleFormSubmit: SubmitHandler<ICategoryInput> = async values => {
     onSubmit(values);
