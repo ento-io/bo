@@ -46,11 +46,6 @@ const PageBlocksForm = ({ onSubmit, page, loading }: Props) => {
     onSubmit(allValues as any);
   };
 
-  // const handleGoToPage = () => {
-  //   if (!page) return;
-  //   navigate(goToPage(page.objectId))
-  // };
-
   return (
     <div>
       {[PageBlocksFormStepOne, PageBlocksFormStepTwo].map((Component, index) => {
