@@ -62,6 +62,45 @@ const getTranslatedBlockSchema = (): Record<string, any> => {
   return translatedSchema
 }
 
+const getTranslatedPageBlockSchema = (): Record<string, any> => {
+  const translatedSchema: Record<string, any> = {};
+
+  for (const locale of locales) {
+    if (locale !== DEFAULT_LANGUAGE) {
+      // ex: fr:title field name
+      translatedSchema[locale + ':blockTitle'] = z.string({ errorMap }).transform(capitalize);
+      translatedSchema[locale + ':blockDescription'] = z.string({ errorMap }).optional().transform(emptyContent);
+
+    } else {
+      // required fields only for default locale
+      [
+        {
+        key: 'blockTitle',
+        label: i18n.t('cms:title'),
+        min: 1,
+      },
+      {
+        key: 'blockDescription',
+        label: i18n.t('common:description'),
+        max: 300,
+      },
+    ].forEach(({ key, label, min, max }) => {
+      const stringSchema = z.string({ errorMap });
+
+      if (min) {
+        stringSchema.min(min, i18n.t('form.error.required', { field: label }));
+      }
+      if (max) {
+        stringSchema.max(max, i18n.t('form.error.max', { field: label, number: max }));
+      }
+      
+      translatedSchema[locale + ':' + key] = stringSchema.transform(capitalize)
+      });
+    }
+  }
+  return translatedSchema
+}
+
 export const pageStepOneSchema = z.object({
   ...getCMSTranslatedSchema(CategoryEntityEnum.Page), // translated fields
 })
@@ -90,9 +129,14 @@ export const pageBlockSchema = z.object({
 }).refine(values => values.image && values.imagePosition, {
   message: i18n.t('cms:errors.imagePositionRequired'),
   path: ['imagePosition'],
-});;
+});
 
-export const pageBlocksSchema = z.object({
+export const pageBlocksStepOneSchema = z.object({
+  ...getTranslatedPageBlockSchema(), // translated fields
+})
+.transform(formatTranslatedFormValuesToSave);
+
+export const pageBlocksStepTwoSchema = z.object({
     blocks: z.array(pageBlockSchema).optional()
   })
   .transform(formatTranslatedPageFormValuesToSave);
