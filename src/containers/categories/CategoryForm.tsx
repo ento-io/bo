@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import CheckboxField from '@/components/form/fields/CheckboxField';
 import TextField from '@/components/form/fields/TextField';
-import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
+import LanguageTabs from '@/components/form/translated/TranslatedFormTabs';
 
 import { locales } from '@/config/i18n';
 
@@ -61,7 +61,7 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
   return (
     <Form formId={formId} form={form} onSubmit={handleSubmit(handleFormSubmit)}>
       {/* translated tabs */}
-      <TranslatedFormTabs
+      <LanguageTabs
         onTabChange={onTabChange}
         tab={tab}
         errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_CMS_FIELDS)}
