@@ -72,7 +72,7 @@ export const addBlocksToPage = (
           file: block.image
         };
         const uploadedFileUrl = await uploadFileAPI(uploadInput);
-        block.image = uploadedFileUrl
+        block.image = uploadedFileUrl;
       }
 
       const newValues = { ...block };
