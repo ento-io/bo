@@ -25,7 +25,7 @@ import UsersForEntity from '@/containers/users/UsersForEntity';
 import { IArticle, IArticleTranslatedFields } from '@/types/article.type';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
-import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
+import LanguageTabs from '@/components/form/translated/TranslatedFormTabs';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
@@ -151,7 +151,7 @@ const Article = () => {
         />
       }>
       <Head title={translatedFields.title} />
-      <TranslatedFormTabs
+      <LanguageTabs
         onTabChange={onTabChange}
         tab={tab}
         // errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_PAGE_FIELDS)}
