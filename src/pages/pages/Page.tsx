@@ -285,11 +285,11 @@ const Page = () => {
                   <Items items={[
                     {
                       label: t('cms:blocksTitle'),
-                      value: translatedFields.blockTitle,
+                      value: translatedFields.blocksTitle,
                     },
                     {
                       label: t('cms:blocksDescription'),
-                      value: translatedFields.blockDescription,
+                      value: translatedFields.blocksDescription,
                     }
                   ]}
                   />
