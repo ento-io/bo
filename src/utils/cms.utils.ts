@@ -314,7 +314,7 @@ export const getPageBlocksEditionCmsInitialValues = async (
  * @param category
  * @returns
  */
-export const getCategoryFormInitialValues = (category: ICategory | null | undefined): ICategoryInput => {
+export const getCategoryFormInitialValues = async (category: ICategory | null | undefined): Promise<ICategoryInput> => {
   // ----------- creation ----------- //
   if (!category) {
     return {
@@ -324,11 +324,18 @@ export const getCategoryFormInitialValues = (category: ICategory | null | undefi
 
   // ----------- update ----------- //
   const translatedValues = parseSavedTranslatedValuesToForm(category);
-  return {
+  const values = {
     ...translatedValues,
     active: category.active,
     entity: category.entity
-  };
+  }
+
+  if (category.image) {
+    const file = await getFileFromUrl(category.image.url);
+    values.image = [file]; // should be an array
+  }
+
+  return values;
 };
 
 /**
