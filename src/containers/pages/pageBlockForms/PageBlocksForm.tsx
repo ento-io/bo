@@ -1,23 +1,14 @@
-import { useEffect } from "react"
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react"
 
-import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { IPage, IPageBlocksInput } from "@/types/page.type"
-import Form from "@/components/form/Form";
-import { pageBlocksSchema } from "@/validations/page.validations";
-import { getPageBlocksEditionCmsInitialValues } from "@/utils/cms.utils";
 
-import CardFormBlock from "@/components/form/CardFormBlock";
-import TranslatedPageBlocksField from "./TranslatedPageBlocksField";
-import { goToPage } from "@/redux/actions/page.action";
+import PageBlocksFormStepTwo from "./PageBlocksFormStepTwo";
+import PageBlocksFormStepOne from "./PageBlocksFormStepOne";
 
-const initialValues = {
-  blocks: [{
-    name: ''
-  }],
-};
+type IStep = 1 | 2 | number;
+
+const lastStep = 2;
 
 type Props = {
   onSubmit: (values: IPageBlocksInput) => void;
@@ -26,52 +17,67 @@ type Props = {
 }
 
 const PageBlocksForm = ({ onSubmit, page, loading }: Props) => {
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const form = useForm<IPageBlocksInput>({
-    defaultValues: initialValues,
-    resolver: zodResolver(pageBlocksSchema),
-  });
+  const [step, setStep] = useState<IStep>(1);
+  const [finalValues, setFinalValues] = useState<IPageBlocksInput | null>(null);
 
-  const { handleSubmit, reset } = form;
+  const handlePrevious = () => {
+    // do not decrement if the step is the first one
+    if (step === 1) return;
+    // decrement the step
+    setStep((prev) => prev - 1);
+  }
 
-  // initialize form values
-  useEffect(() => {
-    if (!page) return;
-    const init = async () => {
-      const editionInitialValues = await getPageBlocksEditionCmsInitialValues(page);
-      reset(editionInitialValues)
-    };
+  const onFormSubmit = (step: IStep) => (values: IPageBlocksInput) => {
+    // do not increment in last step
+    if (step < lastStep) {
+      // increment the step
+      setStep((prev) => prev + 1);
+      // store the values of each form step in the finalValues state
+      setFinalValues((prev: IPageBlocksInput | null) => ({ ...prev, [step]: values }));
+      return ;
+    }
 
-    init();
-  }, [page, reset]);
+    // if the step is the last one, submit the form
+    const allValues = Object.values({ ...finalValues, [step]: values})
+      .reduce((acc: any, curr: any) => ({ ...acc, ...curr }), {});
 
-  const handleGoToPage = () => {
-    if (!page) return;
-    navigate(goToPage(page.objectId))
+    onSubmit(allValues as any);
   };
 
-  const onFormSubmit: SubmitHandler<IPageBlocksInput> = (values) => {
-    onSubmit(values);
-  };
+  // const handleGoToPage = () => {
+  //   if (!page) return;
+  //   navigate(goToPage(page.objectId))
+  // };
 
   return (
-    <Form
-      form={form}
-      onSubmit={handleSubmit(onFormSubmit)}
-      loading={loading}
-      isDisabled={false}
-      buttonDirection="row"
-      secondaryButtonText={t('common:ignore')}
-      onSecondaryButtonClick={handleGoToPage}
-    >
-      <CardFormBlock title={t('cms:blocks')} description={t('cms:blocksHelper')}>
-        <TranslatedPageBlocksField
-          name="blocks"
-        />
-      </CardFormBlock>
-    </Form>
+    <div>
+      {[PageBlocksFormStepOne, PageBlocksFormStepTwo].map((Component, index) => {
+        // display only the current step
+        const currentStep = index + 1;
+        if (currentStep !== step) return null;
+        return (
+          <Component
+            key={index}
+            onSubmit={onFormSubmit(currentStep)}
+            page={page}
+            loading={loading}
+            // no previous button in the first step
+            onSecondaryButtonClick={currentStep !== 1 ? handlePrevious : undefined}
+            buttonDirection={currentStep === 1 ? 'column' : 'row'}
+            primaryButtonText={currentStep === lastStep
+              ? t('common:terminateAndSaveStep', { step, total: lastStep })
+              : t('common:nextStep', { step, total: lastStep })
+            }
+            secondaryButtonText={currentStep !== 1
+              ? t('common:previous')
+              : ''
+            }
+          />
+        )
+      })}
+    </div>
   )
 }
 
