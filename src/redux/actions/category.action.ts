@@ -17,19 +17,16 @@ import { CategoryEntityEnum, ICategory, ICategoryInput, ICategoryTypeEntity } fr
 import { categoriesTabOptions } from '@/utils/cms.utils';
 import { goToNotFound } from './app.action';
 import { escapeText } from '@/utils/utils';
+import { isUpdatedFileChanged, uploadFileAPI } from '@/utils/file.utils';
 
 export const Category = Parse.Object.extend("Category");
 
-const CATEGORY_PROPERTIES = new Set(['translated', 'active', 'entity']);
+const CATEGORY_PROPERTIES = new Set(['translated', 'active', 'entity', 'image']);
 
 export const getCategory = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
-  const article = await Parse.Cloud.run('getCategory', { id, include });
+  const category = await Parse.Cloud.run('getCategory', { id, include });
 
-
-  if (!article) {
-    throw new Error(i18n.t('cms:errors.categoryNotFound'));
-  }
-  return article;
+  return category;
 }
 
 /**
@@ -118,9 +115,20 @@ export const createCategory = (values: ICategoryInput): any => {
       throw Error(i18n.t('user:errors.userNotExist'));
     }
 
-    const category = new Category()
+    const newValues = { ...values };
+    const category = new Category();
+
+    if (values.image) {
+      const uploadInput = {
+        folder: 'categories',
+        sessionToken: currentUser.getSessionToken(),
+        file: values.image
+      };
+      const uploadedFileUrl = await uploadFileAPI(uploadInput);
+      newValues.image = uploadedFileUrl;
+    }
   
-    setValues(category, values, CATEGORY_PROPERTIES);
+    setValues(category, newValues, CATEGORY_PROPERTIES);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
@@ -152,8 +160,29 @@ export const editCategory = (id: string, values: ICategoryInput): any => {
     const category = await getCategory(id);
 
     if (!category) return;
-    
-    setValues(category, values, CATEGORY_PROPERTIES);
+
+    const newValues = { ...values };
+
+    // --------- update image --------- //
+    if (category.has('image')) {
+      const oldFieldValue = category.get('image');
+
+      const isNew = isUpdatedFileChanged(oldFieldValue, values.image);
+      if (!isNew) {
+        const uploadInput = {
+          folder: 'categories',
+          sessionToken: currentUser.getSessionToken(),
+          file: values.image
+        };
+        const uploadedFilesUrl = await uploadFileAPI(uploadInput);
+  
+        newValues.image = uploadedFilesUrl;
+      } else {
+        newValues.image = oldFieldValue;
+      }
+    }
+
+    setValues(category, newValues, CATEGORY_PROPERTIES);
 
     // only the user or the MasterKey can update or deleted its own account
     // the master key can only accessible in server side
