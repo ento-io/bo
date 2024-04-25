@@ -23,11 +23,10 @@ import { getPagePageSelector } from '@/redux/reducers/page.reducer';
 import { deletePage, goToAddPage, goToPages, goToEditPage } from '@/redux/actions/page.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { IPage, IPageBlock, IPageTranslatedFields } from '@/types/page.type';
+import { IPage } from '@/types/page.type';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
 import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
-import { useTranslatedArrayValuesByTab, useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
 import { getServerUrl } from '@/utils/utils';
@@ -36,6 +35,7 @@ import { ICategoryTranslatedFields } from '@/types/category.type';
 import { goToAddPageBlocks, goToEditPageBlocks } from '@/redux/actions/pageBlock.action';
 import { PATH_NAMES } from '@/utils/pathnames';
 import Link from '@/components/Link';
+import { usePageTranslatedValuesByTab } from '@/hooks/usePageTranslatedValuesByTab';
 
 const classes = {
   imageContainer: (theme: Theme) => ({
@@ -102,14 +102,12 @@ const Page = () => {
 
   const { canPreview, canDelete, canCreate, canFind } = useProtect('Page');
 
-  // get translated fields depending on the selected language (tabs)
-  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<IPageTranslatedFields>(page?.translated, ['title', 'description', 'content']);
-  // get translated block fields depending on the selected language (tabs)
   const {
     translatedBlockFields,
-    onTabChange: onBlockTabChange,
-    tab: blocTab
-  } = useTranslatedArrayValuesByTab<IPageBlock>(page?.blocks, ['title', 'description', 'content']);
+    translatedFields,
+    onTabChange,
+    tab,
+  } = usePageTranslatedValuesByTab(page);
 
   if (!page) return null;
 
@@ -261,12 +259,12 @@ const Page = () => {
 
             {/* blocks */}
             {/* not display translated tabs if there is no blocks */}
-            {page.blocks && page.blocks.length > 0 && (
+            {/* {page.blocks && page.blocks.length > 0 && (
               <TranslatedFormTabs
                 onTabChange={onBlockTabChange}
                 tab={blocTab}
               />
-            )}
+            )} */}
             <Layout
               cardTitle={t('cms:blocks')}
               actionsEmplacement='content'
@@ -289,6 +287,19 @@ const Page = () => {
               }
             >
               <Stack spacing={3}>
+                <div>
+                  <Items items={[
+                    {
+                      label: t('cms:blocksTitle'),
+                      value: translatedFields.blockTitle,
+                    },
+                    {
+                      label: t('cms:blocksDescription'),
+                      value: translatedFields.blockDescription,
+                    }
+                  ]}
+                  />
+                </div>
                 {translatedBlockFields.map((block, index) => (
                   <div
                     key={index}
