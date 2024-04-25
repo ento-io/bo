@@ -256,15 +256,8 @@ const Page = () => {
             <Layout cardTitle={t('cms:mainContentOfThePage')}>
               <TextEditor value={translatedFields.content} editable={false} />
             </Layout>
-
+            
             {/* blocks */}
-            {/* not display translated tabs if there is no blocks */}
-            {/* {page.blocks && page.blocks.length > 0 && (
-              <TranslatedFormTabs
-                onTabChange={onBlockTabChange}
-                tab={blocTab}
-              />
-            )} */}
             <Layout
               cardTitle={t('cms:blocks')}
               actionsEmplacement='content'
