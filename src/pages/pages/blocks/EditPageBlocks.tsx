@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { goToPage, goToPages } from "@/redux/actions/page.action";
 import { getPagePageSelector } from "@/redux/reducers/page.reducer";
-import { IPageBlocksInput } from "@/types/page.type";
+import { IPageBlocksStepTwoInput } from "@/types/page.type";
 import Layout from "@/components/layouts/Layout";
 import ActionsMenu from "@/components/ActionsMenu";
 import Head from "@/components/Head";
@@ -36,7 +36,7 @@ const EditPageBlocks = () => {
     navigate(goToPage(page.objectId));
   };
   
-  const handleSubmit = async (values: IPageBlocksInput) => {
+  const handleSubmit = async (values: IPageBlocksStepTwoInput) => {
     if (!page) return;
     await dispatch(addBlocksToPage(page.objectId, values, 'update'));
     if (!canPreview) return;
