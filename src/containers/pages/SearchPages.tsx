@@ -2,8 +2,8 @@ import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import SearchInput from '@/components/form/inputs/SearchInput';
 
-import ArticleAdvancedFilterForm from '@/containers/articles/ArticleAdvancedFilterForm';
 import { IRenderSearchProps } from '@/types/app.type';
+import PageAdvancedFilterForm from './PageAdvancedFilterForm';
 
 const SearchPages = ({ onSearch, onAdvancedSearch }: IRenderSearchProps) => {
   const { t } = useTranslation();
@@ -17,7 +17,7 @@ const SearchPages = ({ onSearch, onAdvancedSearch }: IRenderSearchProps) => {
           placeholder={t('cms:searchByPage')}
         />
       </Stack>
-      <ArticleAdvancedFilterForm onSubmit={onAdvancedSearch} />
+      <PageAdvancedFilterForm onSubmit={onAdvancedSearch} />
     </>
   );
 }
