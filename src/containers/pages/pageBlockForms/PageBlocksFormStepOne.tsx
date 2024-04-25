@@ -70,8 +70,8 @@ const PageBlocksFormStepOne = ({ onSubmit, page, loading, ...formProps }: Props)
           <div key={index} css={{ display: locale === tab ? 'block' : 'none', marginTop: 12 }}>
             <Stack spacing={2}>
               <TextField
-                name={locale + ':blockTitle'}
-                label={t('cms:title')}
+                name={locale + ':blocksTitle'}
+                label={t('cms:blocksTitle')}
                 fixedLabel
                 type="text"
                 variant="outlined"
@@ -79,8 +79,8 @@ const PageBlocksFormStepOne = ({ onSubmit, page, loading, ...formProps }: Props)
                 helperText={t('cms:pageTitleHelper')}
               />
               <TextField
-                name={locale + ':blockDescription'}
-                label={t('common:description')}
+                name={locale + ':blocksDescription'}
+                label={t('cms:blocksDescription')}
                 fixedLabel
                 type="text"
                 variant="outlined"
