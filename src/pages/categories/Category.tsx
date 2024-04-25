@@ -24,7 +24,7 @@ import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
 import { ICategory, ICategoryInput, ICategoryTranslatedFields } from '@/types/category.type';
 import { useProtect } from '@/hooks/useProtect';
-import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
+import LanguageTabs from '@/components/form/translated/TranslatedFormTabs';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import BooleanIcons from '@/components/BooleanIcons';
 import { getCategoryEntityLabel } from '@/utils/cms.utils';
@@ -141,7 +141,7 @@ const Category = () => {
         />
       }>
       <Head title={translatedFields.name} />
-      <TranslatedFormTabs
+      <LanguageTabs
         onTabChange={onTabChange}
         tab={tab}
       />
