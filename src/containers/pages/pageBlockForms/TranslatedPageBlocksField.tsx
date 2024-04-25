@@ -107,7 +107,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
               );
             })}
 
-            <Stack css={{ marginTop: 12 }}>
+            <div css={{ marginTop: 12 }}>
               <DropzoneField
                 name={`${name}.${index}.image`}
                 label={t('common:image')}
@@ -118,7 +118,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
                 type="image"
                 error={(errors as any)?.[name]?.[index]?.image?.message}
               />
-            </Stack>
+            </div>
 
             {/* displayed only if an image was selected */}
             {watch(`${name}.${index}.image`)?.length > 0 && (
