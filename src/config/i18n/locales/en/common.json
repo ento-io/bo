@@ -142,8 +142,7 @@
     "linkLocationHelper": "Where in the website to place the link of the page",
     "sureToDeleteThing": "Are you sure you want to delete",
     "enterConfirmAndDelete": "Enter {{type}} to confirm and delete",
-    "pleaserEnterValue": "Please enter \"{{value}}\" to confirm deletion",
-    "cooperativeAlreadyExist": "You have already a cooperative"
+    "pleaserEnterValue": "Please enter \"{{value}}\" to confirm deletion"
   },
   "at": "at",
   "fullDateFormat": "MM/DD/YYYY [at] HH:mm",
