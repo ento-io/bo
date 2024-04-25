@@ -93,7 +93,9 @@
     "categoryFor": "Sokajy ho an'ny",
     "categoryForHelper": "Sokajina inona ito sokajy ito (ex: sokajina article, ...)",
     "seeArticlesForThisCategory": "Hijery ny articles ho an'io sokajy io",
-    "seePagesForThisCategory": "Hijery ny pejy ho an'io sokajy io"
+    "seePagesForThisCategory": "Hijery ny pejy ho an'io sokajy io",
+    "imageHelper": "Ny sary dia ilaina amin'ireo motera fikarohana (google, ...) sy ireo tamban-jotra sosialy (facebook, twitter, ...)"
+
   },
   "messages": {
     "articleCreatedSuccessfully": "Article voaforona soamantsara",
