@@ -239,6 +239,7 @@ const Page = () => {
       <TranslatedFormTabs
         onTabChange={onTabChange}
         tab={tab}
+        fixedOnScroll
       />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
         {/* left */}
@@ -256,7 +257,7 @@ const Page = () => {
             <Layout cardTitle={t('cms:mainContentOfThePage')}>
               <TextEditor value={translatedFields.content} editable={false} />
             </Layout>
-            
+
             {/* blocks */}
             <Layout
               cardTitle={t('cms:blocks')}
