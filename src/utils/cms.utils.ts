@@ -55,8 +55,8 @@ export const TRANSLATED_CMS_FIELDS = [
   'metaTitle',
   'metaDescription',
   'tags',
-  'blockTitle',
-  'blockDescription',
+  'blocksTitle',
+  'blocksDescription',
 ];
 
 export const ALL_PAGE_FIELDS = [
