@@ -242,14 +242,17 @@ const Page = () => {
             </Layout>
 
             {/* blocks */}
-            <TranslatedFormTabs
-              onTabChange={onBlockTabChange}
-              tab={blocTab}
-            />
+            {/* not display translated tabs if there is no blocks */}
+            {page.blocks && page.blocks.length > 0 && (
+              <TranslatedFormTabs
+                onTabChange={onBlockTabChange}
+                tab={blocTab}
+              />
+            )}
             <Layout
               cardTitle={t('cms:blocks')}
               actionsEmplacement='content'
-              actions={(page.blocks as any)?.length > 0
+              actions={page.blocks && page.blocks.length > 0
                 ? (
                   <Button
                     startIcon={<FiEdit2 size={16} />}
