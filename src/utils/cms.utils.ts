@@ -10,7 +10,7 @@ import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";
 import { ISelectOption } from "@/types/app.type";
-import { IPage, IPageBlocksInput, IPageStepOneInput, IPageStepThreeInput, IPageStepTwoInput } from "@/types/page.type";
+import { IPage, IPageBlocksStepTwoInput, IPageStepOneInput, IPageStepThreeInput, IPageStepTwoInput } from "@/types/page.type";
 
 export const articlesTabOptions = defaultTabOptions;
 export const pagesTabOptions = defaultTabOptions;
@@ -55,6 +55,8 @@ export const TRANSLATED_CMS_FIELDS = [
   'metaTitle',
   'metaDescription',
   'tags',
+  'blockTitle',
+  'blockDescription',
 ];
 
 export const ALL_PAGE_FIELDS = [
@@ -249,7 +251,6 @@ export const getPageStepOneEditionInitialValues = async (
   const clonedPage = cloneDeep(page); // immutability
   const formattedTranslatedValues = parseSavedTranslatedValuesToForm(clonedPage);
 
-
   return formattedTranslatedValues;
 };
 
@@ -280,9 +281,12 @@ export const getPageStepThreeEditionInitialValues = async (
   return values;
 };
 
+// ------------------------ //
+// -------- blocks -------- //
+// ------------------------ //
 export const getPageBlocksEditionCmsInitialValues = async (
   page: IPage | null | undefined,
-): Promise<IPageBlocksInput | undefined> => {
+): Promise<IPageBlocksStepTwoInput | undefined> => {
   if (!page) return;
   const clonedPage = cloneDeep(page); // immutability
 
