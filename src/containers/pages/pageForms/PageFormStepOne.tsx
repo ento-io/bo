@@ -11,7 +11,7 @@ import { pageStepOneSchema } from "@/validations/page.validations";
 import TextEditorField from "@/components/form/fields/TextEditorField";
 import { getTranslatedFormTabErrors } from "@/utils/utils";
 import { TRANSLATED_CMS_FIELDS, getPageStepOneEditionInitialValues } from "@/utils/cms.utils";
-import LanguageTabs from "@/components/form/translated/TranslatedFormTabs";
+import TranslationTabs from "@/components/form/translated/TranslationTabs";
 import { locales } from "@/config/i18n";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
 import CardFormBlock from "@/components/form/CardFormBlock";
@@ -65,7 +65,7 @@ const PageFormStepOne = ({ onSubmit, page, loading, ...formProps }: Props) => {
     >
       <CardFormBlock title={t('details')} description={t('cms:translatedFields')}>
         {/* translated tabs */}
-        <LanguageTabs
+        <TranslationTabs
           onTabChange={onTabChange}
           tab={tab}
           errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_CMS_FIELDS)}
