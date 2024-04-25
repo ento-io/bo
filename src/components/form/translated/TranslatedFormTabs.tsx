@@ -54,7 +54,7 @@ type Props = {
   fixedOnScroll?: boolean;
 };
 
-const TranslatedFormTabs = ({ onTabChange, tab, errors, className, fixedOnScroll = false }: Props) => {
+const LanguageTabs = ({ onTabChange, tab, errors, className, fixedOnScroll = false }: Props) => {
   const divToFixedRef = useRef(null);
   const [fixed, setFixed] = useState<boolean>(false);
 
@@ -101,4 +101,4 @@ const TranslatedFormTabs = ({ onTabChange, tab, errors, className, fixedOnScroll
   );
 };
 
-export default TranslatedFormTabs;
+export default LanguageTabs;
