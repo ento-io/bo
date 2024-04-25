@@ -92,7 +92,8 @@
     "categoryFor": "Category for",
     "categoryForHelper": "Category for which entity is this for (ex: category of an article, ...)",
     "seeArticlesForThisCategory": "See articles for this category",
-    "seePagesForThisCategory": "See pages for this category"
+    "seePagesForThisCategory": "See pages for this category",
+    "imageHelper": "The image of the category is used for search engine (google, ...) or social media sharing (facebook, twitter)."
   },
   "messages": {
     "articleCreatedSuccessfully": "Article created successfully",
