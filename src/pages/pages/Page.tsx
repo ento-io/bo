@@ -64,12 +64,30 @@ const classes = {
       case 'bottom':
         return {
           marginBottom: 8,
-          order: 1
+          // the text should be above the image
+          order: -1
         }
       default:
         return {
           [theme.breakpoints.down('md')]: {
             order: -1
+          },
+        }
+    }
+  },
+  block: (imagePosition: 'bottom' | 'right' | 'left') => (theme: Theme) => {
+    switch (imagePosition) {
+      case 'bottom':
+        return {
+          flexDirection: 'column' as const,
+          display: 'flex',
+        }
+      default:
+        return {
+          flexDirection: 'row' as const,
+          display: 'flex',
+          [theme.breakpoints.down('md')]: {
+            flexDirection: 'column' as const,
           },
         }
     }
@@ -272,10 +290,9 @@ const Page = () => {
             >
               <Stack spacing={3}>
                 {translatedBlockFields.map((block, index) => (
-                  <Stack
+                  <div
                     key={index}
-                    spacing={3}
-                    direction={{ md: "row" }}
+                    css={classes.block(block.imagePosition)}
                   >
                     <div css={classes.imageContainer} className="flex1">
                       {block.image && <img alt="block" src={block.image.url} css={{ width: '100%' }} />}
@@ -285,7 +302,7 @@ const Page = () => {
                       {block.description && <Typography>{block.description}</Typography>}
                       <TextEditor value={block.content} editable={false} />
                     </div>
-                  </Stack>
+                  </div>
                 ))}
               </Stack>
             </Layout>
