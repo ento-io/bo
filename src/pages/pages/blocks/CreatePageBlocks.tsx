@@ -8,7 +8,7 @@ import Layout from "@/components/layouts/Layout";
 import ActionsMenu from "@/components/ActionsMenu";
 import Head from "@/components/Head";
 import { useProtect } from "@/hooks/useProtect";
-import PageBlocksForm from "@/containers/pages/PageBlocksForm";
+import PageBlocksForm from "@/containers/pages/pageBlockForms/PageBlocksForm";
 import { getTranslatedField } from "@/utils/settings.utils";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 import { addBlocksToPage } from "@/redux/actions/pageBlock.action";
