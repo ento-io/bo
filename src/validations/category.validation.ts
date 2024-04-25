@@ -6,6 +6,8 @@ import { DEFAULT_LANGUAGE } from '@/utils/constants';
 import { formatTranslatedFormValuesToSave } from '@/utils/cms.utils';
 import { errorMap } from '@/config/zod';
 import { dateForAdvancedSearchSchema } from './app.validations';
+import { getSingleImageSchema } from './file.validation';
+import { CategoryEntityEnum } from '@/types/category.type';
 
 const getTranslatedSchema = () => {
   const translatedSchema: Record<string, any> = {};
@@ -46,7 +48,8 @@ const getTranslatedSchema = () => {
 
 export const categorySchema = z.object({
   active: z.boolean(),
-  entity: z.union([z.literal('article'), z.literal('page')]),
+  entity: z.nativeEnum(CategoryEntityEnum, { required_error: i18n.t('form.error.required', { field: i18n.t('cms:category.category') }) }),
+  image: getSingleImageSchema(),
   ...getTranslatedSchema(),
 }).transform(formatTranslatedFormValuesToSave);
 
@@ -58,14 +61,6 @@ export const categoryFilterSchema = z.object({
   active: z.array(z.boolean().optional()).optional(),
 });
 
-// [
-//   {
-//       "label": "Science",
-//       "value": {
-//           "objectId": "JAUDgRjRyZ"
-//       }
-//   }
-// ]
 export const categoryOptionSchema = z.object({
   label: z.string(),
   value: z.object({
