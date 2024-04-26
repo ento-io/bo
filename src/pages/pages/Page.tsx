@@ -7,6 +7,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { FaCheck, FaCheckDouble } from 'react-icons/fa';
 import { ReactNode } from 'react';
 import { FiEdit2, FiPlus } from 'react-icons/fi';
+import { grey } from '@mui/material/colors';
 import ActionsMenu from '@/components/ActionsMenu';
 import Head from '@/components/Head';
 import Items from '@/components/Items';
@@ -36,7 +37,6 @@ import { goToAddPageBlocks, goToEditPageBlocks } from '@/redux/actions/pageBlock
 import { PATH_NAMES } from '@/utils/pathnames';
 import Link from '@/components/Link';
 import { usePageTranslatedValuesByTab } from '@/hooks/usePageTranslatedValuesByTab';
-import { grey } from '@mui/material/colors';
 
 const classes = {
   imageContainer: (theme: Theme) => ({
@@ -262,6 +262,7 @@ const Page = () => {
             {/* blocks */}
             <Layout
               cardTitle={t('cms:blocks')}
+              cardDescription={t('cms:blocksHelper')}
               actionsEmplacement='content'
               actions={page.blocks && page.blocks.length > 0
                 ? (
