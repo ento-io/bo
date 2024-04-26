@@ -13,7 +13,7 @@ import TranslatedPageBlocksField from "./TranslatedPageBlocksField";
 
 const initialValues = {
   blocks: [{
-    name: ''
+    name: '' // mock line
   }],
 };
 
@@ -24,7 +24,6 @@ type Props = {
 } & Pick<IFormProps, 'buttonDirection' | 'onSecondaryButtonClick' | 'primaryButtonText' | 'secondaryButtonText'>;
 
 const PageBlocksFormStepTwo = ({ onSubmit, page, loading, ...formProps }: Props) => {
-  // const navigate = useNavigate();
   const { t } = useTranslation();
 
   const form = useForm<IPageBlocksStepTwoInput>({
@@ -45,11 +44,6 @@ const PageBlocksFormStepTwo = ({ onSubmit, page, loading, ...formProps }: Props)
     init();
   }, [page, reset]);
 
-  // const handleGoToPage = () => {
-  //   if (!page) return;
-  //   navigate(goToPage(page.objectId))
-  // };
-
   const onFormSubmit: SubmitHandler<IPageBlocksStepTwoInput> = (values) => {
     onSubmit(values);
   };
@@ -61,10 +55,6 @@ const PageBlocksFormStepTwo = ({ onSubmit, page, loading, ...formProps }: Props)
       loading={loading}
       isDisabled={false}
       {...formProps}
-
-      // buttonDirection="row"
-      // secondaryButtonText={t('common:ignore')}
-      // onSecondaryButtonClick={handleGoToPage}
     >
       <CardFormBlock title={t('cms:blocks')} description={t('cms:blocksHelper')}>
         <TranslatedPageBlocksField
