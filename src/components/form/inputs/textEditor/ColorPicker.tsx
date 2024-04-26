@@ -1,6 +1,5 @@
 import { Editor } from "@tiptap/react";
 
-import { Stack, Typography } from "@mui/material";
 import { ChangeEvent } from "react";
 
 const classes = {
@@ -32,17 +31,14 @@ const ColorPicker = ({ editor }: Props) => {
   };
 
   return (
-    <Stack direction="row" alignItems="center" alignSelf="stretch">
+    <div className="flexRow center stretchSelf">
       <input
         type="color"
         onInput={handleInput}
         value={editor.getAttributes("textStyle").color}
         css={classes.color}
       />
-      <Typography>
-        {editor.getAttributes("textStyle").color || "#000"}
-      </Typography>
-    </Stack>
+    </div>
   );
 };
 
