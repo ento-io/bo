@@ -100,6 +100,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
                       name={`${name}.${index}.${locale}:content`}
                       label={t('cms:content')}
                       required={locale === DEFAULT_LANGUAGE}
+                      toolbar={['bold', 'italic', 'underline', 'link', 'orderedList', 'bulletList']}
                     />
                     {error && <FormHelperText error>{error[`${locale}:content`]?.message}</FormHelperText>}
                   </Stack>
