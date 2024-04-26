@@ -2,7 +2,7 @@ import { Theme } from "@emotion/react";
 import { css, cx } from "@emotion/css";
 import { IconButton } from "@mui/material";
 import { Editor } from "@tiptap/react";
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useMemo, useCallback } from "react";
 
 import { useToggle } from "../../../../hooks/useToggle";
 import TableMenuDialog from "./TableMenuDialog";
@@ -83,21 +83,23 @@ const MenuBar = ({
     null
   );
 
-  const handleOpenTableMenu = (event: MouseEvent<HTMLElement>) => {
+  const handleOpenTableMenu = useCallback((event: MouseEvent<HTMLElement>) => {
     setTableAnchorEl(event.currentTarget);
-  };
+  }, []);
+
   const handleCloseTableMenu = () => {
     setTableAnchorEl(null);
   };
 
-  const handleOpenHeadingMenu = (event: MouseEvent<HTMLElement>) => {
+  const handleOpenHeadingMenu = useCallback((event: MouseEvent<HTMLElement>) => {
     setHeadingAnchorEl(event.currentTarget);
-  };
+  }, []);
+  
   const handleCloseHeadingMenu = () => {
     setHeadingAnchorEl(null);
   };
 
-  const menus = [
+  const menus = useMemo(() => [
     {
       name: "heading",
       icon: "title",
@@ -224,7 +226,7 @@ const MenuBar = ({
       disabled: !editor.can().redo(),
       split: true
     }
-  ];
+  ], [editor, toggleLinkDialog, toggleYoutubeDialog, handleOpenTableMenu, handleOpenHeadingMenu]);
 
   return (
     <div className={cx(className, 'flexRow')} css={classes.menu}>
