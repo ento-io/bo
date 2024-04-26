@@ -281,19 +281,21 @@ const Page = () => {
               }
             >
               <Stack spacing={3}>
-                <div>
-                  <Items items={[
-                    {
-                      label: t('cms:blocksTitle'),
-                      value: translatedFields.blocksTitle,
-                    },
-                    {
-                      label: t('cms:blocksDescription'),
-                      value: translatedFields.blocksDescription,
-                    }
-                  ]}
-                  />
-                </div>
+                {page.blocks && page.blocks.length > 0 && (
+                  <div>
+                    <Items items={[
+                      {
+                        label: t('cms:blocksTitle'),
+                        value: translatedFields.blocksTitle,
+                      },
+                      {
+                        label: t('cms:blocksDescription'),
+                        value: translatedFields.blocksDescription,
+                      }
+                    ]}
+                    />
+                  </div> 
+                )}
                 {translatedBlockFields.map((block, index) => (
                   <div
                     key={index}
