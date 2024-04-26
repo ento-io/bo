@@ -174,7 +174,6 @@ const TextEditor = ({
           <EditorContent editor={editor} className={className} />
         )
       }
-  
     </div>
   );
 };
