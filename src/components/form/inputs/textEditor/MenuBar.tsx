@@ -10,6 +10,8 @@ import LinkDialog from "./LinkDialog";
 import HeadingMenu from "./HeadingMenu";
 import ColorPicker from "./ColorPicker";
 import YoutubeDialog from "./YoutubeDialog";
+import { IEditorToolbar } from "@/types/app.type";
+import { defaultEditorToolbar } from "@/utils/app.utils";
 
 const classes = {
   menu: (theme: Theme) => ({
@@ -66,11 +68,25 @@ const classes = {
 type Props = {
   editor: Editor;
   className?: string;
+  toolbar?: IEditorToolbar[];
+};
+
+// menus to display
+const displayToolbar = (toolbar: Props["toolbar"], menu: any): boolean => {
+  return !!toolbar?.find((t: IEditorToolbar) => {
+    if (typeof menu === "string") {
+      return t === menu;
+    }
+    if (menu.default) return true;
+    // if group is defined, otherwise check the name
+    return menu.group ? menu.group === t : menu.name === t;
+  });
 };
 
 const MenuBar = ({
   editor,
-  className
+  className,
+  toolbar = defaultEditorToolbar
 }: Props) => {
   const { open: openLinkDialog, toggle: toggleLinkDialog } = useToggle();
   const { open: openYoutubeDialog, toggle: toggleYoutubeDialog } = useToggle();
@@ -146,7 +162,7 @@ const MenuBar = ({
       icon: "ordered-list",
       onClick: () => editor.chain().focus().toggleOrderedList().run(),
       disabled: !editor.can().chain().focus().toggleOrderedList().run(),
-      split: true
+      split: true,
     },
     // alignment
     {
@@ -154,21 +170,24 @@ const MenuBar = ({
       icon: "align-left",
       onClick: () => editor.chain().focus().setTextAlign("left").run(),
       disabled: false,
-      active: { textAlign: "left" }
+      active: { textAlign: "left" },
+      group: "align"
     },
     {
       name: "align-center",
       icon: "align-center",
       onClick: () => editor.chain().focus().setTextAlign("center").run(),
       disabled: false,
-      active: { textAlign: "center" }
+      active: { textAlign: "center" },
+      group: "align"
     },
     {
       name: "align-right",
       icon: "align-right",
       onClick: () => editor.chain().focus().setTextAlign("right").run(),
       disabled: false,
-      active: { textAlign: "right" }
+      active: { textAlign: "right" },
+      group: "align"
     },
     {
       name: "align-justify",
@@ -176,7 +195,8 @@ const MenuBar = ({
       onClick: () => editor.chain().focus().setTextAlign("justify").run(),
       disabled: false,
       active: { textAlign: "justify" },
-      split: true
+      split: true,
+      group: "align"
     },
     {
       name: "blockquote",
@@ -222,50 +242,63 @@ const MenuBar = ({
     <div className={cx(className, 'flexRow')} css={classes.menu}>
       {/* other options */}
       {menus.map((menu, index) => (
-        <IconButton
-          key={menu.name + index}
-          onClick={menu.onClick}
-          disabled={menu.disabled}
-          css={classes.button(
-            // the order is important
-            editor.isActive(menu.isActive || menu.active || menu.name),
-            !!menu.split
-          )}
-        >
-          <img alt={menu.name} src={`/icons/${menu.icon || menu.name}.svg`} />
-        </IconButton>
+        displayToolbar(toolbar, menu) && (
+          <IconButton
+            key={menu.name + index}
+            onClick={menu.onClick}
+            disabled={menu.disabled}
+            css={classes.button(
+              // the order is important
+              editor.isActive(menu.isActive || menu.active || menu.name),
+              !!menu.split
+            )}
+          >
+            <img alt={menu.name} src={`/icons/${menu.icon || menu.name}.svg`} />
+          </IconButton>
+        )
       ))}
 
       {/* youtube dialog */}
-      <LinkDialog
-        editor={editor}
-        open={openLinkDialog}
-        onClose={toggleLinkDialog}
-      />
+      {displayToolbar(toolbar, "link") && (
+        <LinkDialog
+          editor={editor}
+          open={openLinkDialog}
+          onClose={toggleLinkDialog}
+        />
+      )}
 
       {/* youtube dialog */}
-      <YoutubeDialog
-        editor={editor}
-        open={openYoutubeDialog}
-        onClose={toggleYoutubeDialog}
-      />
+      {displayToolbar(toolbar, "youtube") && (
+        <YoutubeDialog
+          editor={editor}
+          open={openYoutubeDialog}
+          onClose={toggleYoutubeDialog}
+        />
+      )}
+
       {/* color picker */}
-      <ColorPicker editor={editor} />
+      {displayToolbar(toolbar, "color") && (
+        <ColorPicker editor={editor} />
+      )}
 
       {/* table menu to be opened */}
-      <TableMenuDialog
-        editor={editor}
-        anchorEl={tableAnchorEl}
-        onClose={handleCloseTableMenu}
-      />
+      {displayToolbar(toolbar, "table") && (
+        <TableMenuDialog
+          editor={editor}
+          anchorEl={tableAnchorEl}
+          onClose={handleCloseTableMenu}
+        />
+      )}
 
       {/* table menu to be opened */}
-      <HeadingMenu
-        editor={editor}
-        anchorEl={headingAnchorEl}
-        onClose={handleCloseHeadingMenu}
-      />
-    </div>
+      {displayToolbar(toolbar, "table") && (
+        <HeadingMenu
+          editor={editor}
+          anchorEl={headingAnchorEl}
+          onClose={handleCloseHeadingMenu}
+        />
+      )}
+      </div>
   );
 };
 
