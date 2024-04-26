@@ -26,6 +26,7 @@ import { categoriesRoute } from '@/routes/protected/category.routes';
 import { isRecycleBinTab } from '@/utils/app.utils';
 import SearchCategories from '@/containers/categories/SearchCategories';
 import { goToArticles } from '@/redux/actions/article.action';
+import { goToPages } from '@/redux/actions/page.action';
 
 const CATEGORY_FORM_ID = 'send-email-form-id'
 
@@ -121,8 +122,13 @@ const Categories = () => {
     dispatch(loadCategories(queries));
   }
 
-  const handleGoToArticlesForCategory = useCallback((id: string) => {
-    navigate(goToArticles({ category: id }));
+  const handleGoToArticlesOrPages = useCallback((id: string, entity: ICategory['entity']) => {
+    if (entity === 'article') {
+      navigate(goToArticles({ category: id }));
+      return;
+    }
+
+    navigate(goToPages({ category: id }));
   }, [navigate])
 
   const handleSubmitCategory = (values: ICategoryInput) => {
@@ -160,8 +166,8 @@ const Categories = () => {
                 onEdit={canEdit ? () => onEdit(category) : undefined}
                 value={category.reference}
               >
-                <Tooltip title={t('cms:category.seeArticles')}>
-                  <IconButton onClick={() => handleGoToArticlesForCategory(category.objectId)} color="info" css={{ order: -1 }}>
+                <Tooltip title={category.entity === 'article' ? t('cms:category.seeArticlesForThisCategory') : t('cms:category.seePagesForThisCategory')}>
+                  <IconButton onClick={() => handleGoToArticlesOrPages(category.objectId, category.entity)} color="info" css={{ order: -1 }}>
                     <FiClipboard size={20} />
                   </IconButton>
                 </Tooltip>
@@ -182,7 +188,7 @@ const Categories = () => {
     language,
     canDestroy,
     t,
-    handleGoToArticlesForCategory
+    handleGoToArticlesOrPages
   ]);
 
   return (

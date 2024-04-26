@@ -8,6 +8,10 @@
   "thisPage": "Ity pejy ity",
   "theseArticles": "Ireo articles",
   "thesePages": "Ireo pejy",
+  "inTheMenu": "Ao amin'ny menio",
+  "inTheFooter": "Ao amin'ny faran'ny pejy (footer)",
+  "linkLocation": "Toeran'ny rohy",
+  "linkLocationHelper": "Ny toerana aseho ny rohy dia eo ambony (menio) na ery ambany (footer) amin'ny pejy",
   "published": "Voavoaka",
   "publish": "Avoaka",
   "notPublished": "Tsy voavoaka",
@@ -42,6 +46,10 @@
   "contentOfTheArticle": "Contenu de l'article",
   "blockTitle": "Lohatenin'ny bloc",
   "titleOfEachBlock": "Anaran'ny bloc tsirairay",
+  "blocksTitle": "Lohaten'ireo blocs",
+  "blocksDescription": "Fanazavana ireo blocs",
+  "thereIsNoBlocks": "Tsy misy blocs ito pejy ito",
+  "blockDescription": "Fanazavana ny bloc",
   "blocksHelper": "Ny blocs dia lisitry ny données. Ny bloc tsirairay dia aseho indrindra amin'ny tsanganana havia (sary) sy havanana (lohateny sy famaritana) amin'ny pejy.",
   "pageName": "Anaran'ny pejy",
   "pageNameHelper": "Ny anaran'ny pejy no aseho amin'ny rohy, sy ny slug dia voaforona hoazy avy amin'ny alalan'ny anarana",
@@ -88,7 +96,10 @@
     "categoryDeletedSuccessfully": "Sokajy voafafa soamantsara",
     "categoryFor": "Sokajy ho an'ny",
     "categoryForHelper": "Sokajina inona ito sokajy ito (ex: sokajina article, ...)",
-    "seeArticles": "Hijery ireo articles"
+    "seeArticlesForThisCategory": "Hijery ny articles ho an'io sokajy io",
+    "seePagesForThisCategory": "Hijery ny pejy ho an'io sokajy io",
+    "imageHelper": "Ny sary dia ilaina amin'ireo motera fikarohana (google, ...) sy ireo tamban-jotra sosialy (facebook, twitter, ...)"
+
   },
   "messages": {
     "articleCreatedSuccessfully": "Article voaforona soamantsara",

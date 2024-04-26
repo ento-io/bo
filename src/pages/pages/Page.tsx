@@ -7,6 +7,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { FaCheck, FaCheckDouble } from 'react-icons/fa';
 import { ReactNode } from 'react';
 import { FiEdit2, FiPlus } from 'react-icons/fi';
+import { grey } from '@mui/material/colors';
 import ActionsMenu from '@/components/ActionsMenu';
 import Head from '@/components/Head';
 import Items from '@/components/Items';
@@ -23,17 +24,19 @@ import { getPagePageSelector } from '@/redux/reducers/page.reducer';
 import { deletePage, goToAddPage, goToPages, goToEditPage } from '@/redux/actions/page.action';
 import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
-import { IPage, IPageBlock, IPageTranslatedFields } from '@/types/page.type';
+import { IPage } from '@/types/page.type';
 import { useProtect } from '@/hooks/useProtect';
 import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
-import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
-import { useTranslatedArrayValuesByTab, useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
+import TranslationTabs from '@/components/form/translated/TranslationTabs';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
 import { getServerUrl } from '@/utils/utils';
 import { getTranslatedField } from '@/utils/settings.utils';
 import { ICategoryTranslatedFields } from '@/types/category.type';
 import { goToAddPageBlocks, goToEditPageBlocks } from '@/redux/actions/pageBlock.action';
+import { PATH_NAMES } from '@/utils/pathnames';
+import Link from '@/components/Link';
+import { usePageTranslatedValuesByTab } from '@/hooks/usePageTranslatedValuesByTab';
 
 const classes = {
   imageContainer: (theme: Theme) => ({
@@ -62,12 +65,30 @@ const classes = {
       case 'bottom':
         return {
           marginBottom: 8,
-          order: 1
+          // the text should be above the image
+          order: -1
         }
       default:
         return {
           [theme.breakpoints.down('md')]: {
             order: -1
+          },
+        }
+    }
+  },
+  block: (imagePosition: 'bottom' | 'right' | 'left') => (theme: Theme) => {
+    switch (imagePosition) {
+      case 'bottom':
+        return {
+          flexDirection: 'column' as const,
+          display: 'flex',
+        }
+      default:
+        return {
+          flexDirection: 'row' as const,
+          display: 'flex',
+          [theme.breakpoints.down('md')]: {
+            flexDirection: 'column' as const,
           },
         }
     }
@@ -82,14 +103,12 @@ const Page = () => {
 
   const { canPreview, canDelete, canCreate, canFind } = useProtect('Page');
 
-  // get translated fields depending on the selected language (tabs)
-  const { translatedFields, onTabChange, tab } = useTranslatedValuesByTab<IPageTranslatedFields>(page?.translated, ['title', 'description', 'content']);
-  // get translated block fields depending on the selected language (tabs)
   const {
     translatedBlockFields,
-    onTabChange: onBlockTabChange,
-    tab: blocTab
-  } = useTranslatedArrayValuesByTab<IPageBlock>(page?.blocks, ['title', 'description', 'content']);
+    translatedFields,
+    onTabChange,
+    tab,
+  } = usePageTranslatedValuesByTab(page);
 
   if (!page) return null;
 
@@ -100,7 +119,18 @@ const Page = () => {
     },
     {
       label: t('cms:category.category'),
-      value: page.category ? getTranslatedField<ICategoryTranslatedFields>(page.category.translated, tab, 'name') : '',
+      value: page.category
+      ? (
+        <Link
+          to={PATH_NAMES.pages}
+          search={{
+            category: page.category.objectId,
+          }}
+        >
+          {getTranslatedField<ICategoryTranslatedFields>(page.category.translated, tab, 'name')}
+        </Link>
+      )
+      : '',
     },
     {
       label: t('common:createdAt'),
@@ -207,9 +237,10 @@ const Page = () => {
         />
       }>
       <Head title={translatedFields.title} />
-      <TranslatedFormTabs
+      <TranslationTabs
         onTabChange={onTabChange}
         tab={tab}
+        fixedOnScroll
       />
       <Grid container spacing={PREVIEW_PAGE_GRID.spacing}>
         {/* left */}
@@ -229,14 +260,11 @@ const Page = () => {
             </Layout>
 
             {/* blocks */}
-            <TranslatedFormTabs
-              onTabChange={onBlockTabChange}
-              tab={blocTab}
-            />
             <Layout
               cardTitle={t('cms:blocks')}
+              cardDescription={t('cms:blocksHelper')}
               actionsEmplacement='content'
-              actions={(page.blocks as any)?.length > 0
+              actions={page.blocks && page.blocks.length > 0
                 ? (
                   <Button
                     startIcon={<FiEdit2 size={16} />}
@@ -244,33 +272,57 @@ const Page = () => {
                   >
                     {t('cms:editBlocks')}
                   </Button>
-                ) : (
-                  <Button
-                    startIcon={<FiPlus size={16} />}
-                    onClick={handleAddBlocks}
-                  >
-                    {t('cms:addBlocks')}
-                  </Button>
-                )
+                ) : null
               }
             >
               <Stack spacing={3}>
-                {translatedBlockFields.map((block, index) => (
-                  <Stack
-                    key={index}
-                    spacing={3}
-                    direction={{ md: "row" }}
-                  >
-                    <div css={classes.imageContainer} className="flex1">
-                      {block.image && <img alt="block" src={block.image.url} css={{ width: '100%' }} />}
-                    </div>
-                    <div className="flexColumn flex1" css={classes.blockTexts(block.imagePosition)}>
-                      <Typography variant="h5">{block.title}</Typography>
-                      {block.description && <Typography>{block.description}</Typography>}
-                      <TextEditor value={block.content} editable={false} />
+                {page.blocks && page.blocks.length > 0 
+                ? (
+                  <>
+                    <div>
+                      <Items items={[
+                        {
+                          label: t('cms:blocksTitle'),
+                          value: translatedFields.blocksTitle,
+                        },
+                        {
+                          label: t('cms:blocksDescription'),
+                          value: translatedFields.blocksDescription,
+                        }
+                      ]}
+                      />
+                    </div> 
+                    {translatedBlockFields.map((block, index) => (
+                      <div
+                        key={index}
+                        css={classes.block(block.imagePosition)}
+                      >
+                        <div css={classes.imageContainer} className="flex1">
+                          {block.image && <img alt="block" src={block.image.url} css={{ width: '100%' }} />}
+                        </div>
+                        <div className="flexColumn flex1" css={classes.blockTexts(block.imagePosition)}>
+                          <Typography variant="h5">{block.title}</Typography>
+                          {block.description && <Typography>{block.description}</Typography>}
+                          <TextEditor value={block.content} editable={false} />
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <Stack spacing={2} css={{ marginTop: 8 }}>
+                    <Typography css={{ color: grey[600]}}>{t('cms:thereIsNoBlocks')}</Typography>
+                    <div>
+                      <Button
+                        startIcon={<FiPlus size={16} />}
+                        onClick={handleAddBlocks}
+                        variant="contained"
+                        fullWidth={false}
+                      >
+                        {t('cms:addBlocks')}
+                      </Button>
                     </div>
                   </Stack>
-                ))}
+                )}
               </Stack>
             </Layout>
 

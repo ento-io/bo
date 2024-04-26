@@ -2,36 +2,33 @@ import { useEffect } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { IPage, IPageBlocksInput } from "@/types/page.type"
-import Form from "@/components/form/Form";
-import { pageBlocksSchema } from "@/validations/page.validations";
+import { IPage, IPageBlocksStepTwoInput } from "@/types/page.type"
+import Form, { IFormProps } from "@/components/form/Form";
+import { pageBlocksStepTwoSchema } from "@/validations/page.validations";
 import { getPageBlocksEditionCmsInitialValues } from "@/utils/cms.utils";
 
 import CardFormBlock from "@/components/form/CardFormBlock";
 import TranslatedPageBlocksField from "./TranslatedPageBlocksField";
-import { goToPage } from "@/redux/actions/page.action";
 
 const initialValues = {
   blocks: [{
-    name: ''
+    name: '' // mock line
   }],
 };
 
 type Props = {
-  onSubmit: (values: IPageBlocksInput) => void;
+  onSubmit: (values: IPageBlocksStepTwoInput) => void;
   page?: IPage | null;
   loading?: boolean;
-}
+} & Pick<IFormProps, 'buttonDirection' | 'onSecondaryButtonClick' | 'primaryButtonText' | 'secondaryButtonText'>;
 
-const PageBlocksForm = ({ onSubmit, page, loading }: Props) => {
-  const navigate = useNavigate();
+const PageBlocksFormStepTwo = ({ onSubmit, page, loading, ...formProps }: Props) => {
   const { t } = useTranslation();
 
-  const form = useForm<IPageBlocksInput>({
+  const form = useForm<IPageBlocksStepTwoInput>({
     defaultValues: initialValues,
-    resolver: zodResolver(pageBlocksSchema),
+    resolver: zodResolver(pageBlocksStepTwoSchema),
   });
 
   const { handleSubmit, reset } = form;
@@ -47,12 +44,7 @@ const PageBlocksForm = ({ onSubmit, page, loading }: Props) => {
     init();
   }, [page, reset]);
 
-  const handleGoToPage = () => {
-    if (!page) return;
-    navigate(goToPage(page.objectId))
-  };
-
-  const onFormSubmit: SubmitHandler<IPageBlocksInput> = (values) => {
+  const onFormSubmit: SubmitHandler<IPageBlocksStepTwoInput> = (values) => {
     onSubmit(values);
   };
 
@@ -62,9 +54,7 @@ const PageBlocksForm = ({ onSubmit, page, loading }: Props) => {
       onSubmit={handleSubmit(onFormSubmit)}
       loading={loading}
       isDisabled={false}
-      buttonDirection="row"
-      secondaryButtonText={t('common:ignore')}
-      onSecondaryButtonClick={handleGoToPage}
+      {...formProps}
     >
       <CardFormBlock title={t('cms:blocks')} description={t('cms:blocksHelper')}>
         <TranslatedPageBlocksField
@@ -75,4 +65,4 @@ const PageBlocksForm = ({ onSubmit, page, loading }: Props) => {
   )
 }
 
-export default PageBlocksForm
+export default PageBlocksFormStepTwo;

@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -24,7 +24,7 @@ import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
 import { ICategory, ICategoryInput, ICategoryTranslatedFields } from '@/types/category.type';
 import { useProtect } from '@/hooks/useProtect';
-import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
+import TranslationTabs from '@/components/form/translated/TranslationTabs';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import BooleanIcons from '@/components/BooleanIcons';
 import { getCategoryEntityLabel } from '@/utils/cms.utils';
@@ -141,7 +141,7 @@ const Category = () => {
         />
       }>
       <Head title={translatedFields.name} />
-      <TranslatedFormTabs
+      <TranslationTabs
         onTabChange={onTabChange}
         tab={tab}
       />
@@ -154,6 +154,17 @@ const Category = () => {
             </Layout>
             <Layout cardTitle={t('cms:seo')} cardDescription={t('cms:seoDescription')}>
               <Items items={seoItems} />
+            </Layout>
+            <Layout cardTitle={t('common:image')}>
+              {category.image
+                ? (
+                  <div css={{ width: 300 }}>
+                    <img alt={translatedFields.name} src={category.image.url} css={{ width: '100%' }} />
+                  </div>
+                ) : (
+                  <Typography>{t('common:errors.noField', { field: t('common:image') })}</Typography>
+                )
+              }
             </Layout>
           </Stack>
         </Grid>

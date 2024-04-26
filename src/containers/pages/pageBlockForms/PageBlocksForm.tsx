@@ -1,27 +1,26 @@
 import { useState } from "react"
 
 import { useTranslation } from "react-i18next";
-import { IPageInput, IPage } from "@/types/page.type"
+import { IPage, IPageBlocksInput } from "@/types/page.type"
 
-import PageFormStepOne from "./PageFormStepOne";
-import PageFormStepTwo from "./PageFormStepTwo";
-import PageFormStepThree from "./PageFormStepThree";
+import PageBlocksFormStepTwo from "./PageBlocksFormStepTwo";
+import PageBlocksFormStepOne from "./PageBlocksFormStepOne";
 
-type IStep = 1 | 2 | 3 | number;
+type IStep = 1 | 2 | number;
 
-const lastStep = 3;
+const lastStep = 2;
 
 type Props = {
-  onSubmit: (values: IPageInput) => void;
+  onSubmit: (values: IPageBlocksInput) => void;
   page?: IPage | null;
   loading?: boolean;
 }
 
-const PageForm = ({ onSubmit, page, loading }: Props) => {
+const PageBlocksForm = ({ onSubmit, page, loading }: Props) => {
   const { t } = useTranslation();
 
-  const [step, setStep] = useState<IStep>(3);
-  const [finalValues, setFinalValues] = useState<IPageInput | null>(null);
+  const [step, setStep] = useState<IStep>(1);
+  const [finalValues, setFinalValues] = useState<IPageBlocksInput | null>(null);
 
   const handlePrevious = () => {
     // do not decrement if the step is the first one
@@ -30,27 +29,26 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
     setStep((prev) => prev - 1);
   }
 
-  const onFormSubmit = (step: IStep) =>(values: IPageInput) => {
+  const onFormSubmit = (step: IStep) => (values: IPageBlocksInput) => {
     // do not increment in last step
     if (step < lastStep) {
       // increment the step
       setStep((prev) => prev + 1);
       // store the values of each form step in the finalValues state
-      setFinalValues((prev: IPageInput | null) => ({ ...prev, [step]: values }));
+      setFinalValues((prev: IPageBlocksInput | null) => ({ ...prev, [step]: values }));
       return ;
     }
-
 
     // if the step is the last one, submit the form
     const allValues = Object.values({ ...finalValues, [step]: values})
       .reduce((acc: any, curr: any) => ({ ...acc, ...curr }), {});
 
-    onSubmit(allValues);
+    onSubmit(allValues as any);
   };
 
   return (
     <div>
-      {[PageFormStepOne, PageFormStepTwo, PageFormStepThree].map((Component, index) => {
+      {[PageBlocksFormStepOne, PageBlocksFormStepTwo].map((Component, index) => {
         // display only the current step
         const currentStep = index + 1;
         if (currentStep !== step) return null;
@@ -78,4 +76,4 @@ const PageForm = ({ onSubmit, page, loading }: Props) => {
   )
 }
 
-export default PageForm
+export default PageBlocksForm

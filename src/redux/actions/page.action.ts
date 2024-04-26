@@ -21,7 +21,7 @@ import { PAGE_IMAGES_FIELDS } from '@/validations/file.validation';
 
 const Page = Parse.Object.extend("Page");
 
-const PAGE_PROPERTIES = new Set(['translated', 'category', /* 'blocks' */ ...ALL_PAGE_FIELDS]);
+const PAGE_PROPERTIES = new Set(['translated', 'category', 'linkLocations', /* 'blocks' */ ...ALL_PAGE_FIELDS]);
 
 export const getPage = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
   const page = await Parse.Cloud.run('getPage', { id, include });

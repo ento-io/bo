@@ -14,7 +14,7 @@ import Head from '@/components/Head';
 import { pagesRoute } from '@/routes/protected/page.routes';
 import { IPage, IPageTranslatedFields } from '@/types/page.type';
 import AddFab from '@/components/AddFab';
-import SearchPages from '@/containers/pages/SearchPages';
+import SearchPages from '@/containers/pages/pageForms/SearchPages';
 import { pagesTabOptions } from '@/utils/cms.utils';
 import { isRecycleBinTab } from '@/utils/app.utils';
 import { getSettingsLangSelector } from '@/redux/reducers/settings.reducer';
