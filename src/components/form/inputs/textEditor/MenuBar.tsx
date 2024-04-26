@@ -11,7 +11,7 @@ import HeadingMenu from "./HeadingMenu";
 import ColorPicker from "./ColorPicker";
 import YoutubeDialog from "./YoutubeDialog";
 import { IEditorToolbar } from "@/types/app.type";
-import { defaultEditorToolbar } from "@/utils/app.utils";
+import { defaultEditorToolbar, showTextEditorToolbarMenu } from "@/utils/app.utils";
 
 const classes = {
   menu: (theme: Theme) => ({
@@ -69,18 +69,6 @@ type Props = {
   editor: Editor;
   className?: string;
   toolbar?: IEditorToolbar[];
-};
-
-// menus to display
-const displayToolbar = (toolbar: Props["toolbar"], menu: any): boolean => {
-  return !!toolbar?.find((t: IEditorToolbar) => {
-    if (typeof menu === "string") {
-      return t === menu;
-    }
-    if (menu.default) return true;
-    // if group is defined, otherwise check the name
-    return menu.group ? menu.group === t : menu.name === t;
-  });
 };
 
 const MenuBar = ({
@@ -242,7 +230,7 @@ const MenuBar = ({
     <div className={cx(className, 'flexRow')} css={classes.menu}>
       {/* other options */}
       {menus.map((menu, index) => (
-        displayToolbar(toolbar, menu) && (
+        showTextEditorToolbarMenu(toolbar, menu) && (
           <IconButton
             key={menu.name + index}
             onClick={menu.onClick}
@@ -259,7 +247,7 @@ const MenuBar = ({
       ))}
 
       {/* youtube dialog */}
-      {displayToolbar(toolbar, "link") && (
+      {showTextEditorToolbarMenu(toolbar, "link") && (
         <LinkDialog
           editor={editor}
           open={openLinkDialog}
@@ -268,7 +256,7 @@ const MenuBar = ({
       )}
 
       {/* youtube dialog */}
-      {displayToolbar(toolbar, "youtube") && (
+      {showTextEditorToolbarMenu(toolbar, "youtube") && (
         <YoutubeDialog
           editor={editor}
           open={openYoutubeDialog}
@@ -277,12 +265,12 @@ const MenuBar = ({
       )}
 
       {/* color picker */}
-      {displayToolbar(toolbar, "color") && (
+      {showTextEditorToolbarMenu(toolbar, "color") && (
         <ColorPicker editor={editor} />
       )}
 
       {/* table menu to be opened */}
-      {displayToolbar(toolbar, "table") && (
+      {showTextEditorToolbarMenu(toolbar, "table") && (
         <TableMenuDialog
           editor={editor}
           anchorEl={tableAnchorEl}
@@ -291,7 +279,7 @@ const MenuBar = ({
       )}
 
       {/* table menu to be opened */}
-      {displayToolbar(toolbar, "table") && (
+      {showTextEditorToolbarMenu(toolbar, "table") && (
         <HeadingMenu
           editor={editor}
           anchorEl={headingAnchorEl}
