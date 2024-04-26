@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { Button } from "@mui/material";
 import { goToPage, goToPages } from "@/redux/actions/page.action";
 import { getPagePageSelector } from "@/redux/reducers/page.reducer";
 import { IPageBlocksInput } from "@/types/page.type";
@@ -52,6 +53,11 @@ const CreatePageBlocks = () => {
       }>
       <Head title={t('cms:createBlocksForPage', { title: pageTitle })} />
       <PageBlocksForm onSubmit={handleSubmit} />
+      <div css={{ marginTop: 12 }}>
+        <Button onClick={handleGoToPage} variant="outlined" fullWidth>
+          {t('common:ignore')}
+        </Button>
+      </div>
     </Layout>
   )
 }
