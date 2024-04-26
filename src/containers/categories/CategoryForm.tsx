@@ -34,10 +34,12 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
 
   const form = useForm<ICategoryInput>({
     resolver: zodResolver(categorySchema),
+    defaultValues: {
+      active: true,
+    },
   });
 
   const { handleSubmit, setValue, reset } = form;
-
   
   useEffect(() => {
     if (!category) return;
@@ -97,7 +99,7 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
       <DropzoneField
         name="image"
         label={t('common:image')}
-        inputLabel={t('comment:addImage')}
+        inputLabel={t('common:addImage')}
         maxFiles={1}
         shouldReset={!!category} // can reset input in edition
         helperText={t('cms:category.imageHelper')}
