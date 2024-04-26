@@ -55,7 +55,7 @@ const CreatePageBlocks = () => {
       <PageBlocksForm onSubmit={handleSubmit} />
       <div css={{ marginTop: 12 }}>
         <Button onClick={handleGoToPage} variant="outlined" fullWidth>
-          {t('common:ignore')}
+          {t('common:cancel')}
         </Button>
       </div>
     </Layout>
