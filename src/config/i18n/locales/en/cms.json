@@ -41,6 +41,7 @@
   "contentOfTheArticle": "Votoatin'ny article",
   "editorHelper": "It's a WYSIWYG editor, you can write your content here. You can also add title, links, ...",
   "blockTitle": "Block title",
+  "thereIsNoBlocks": "There is no blocks for this page",
   "blocksTitle": "Blocks title",
   "blocksDescription": "Blocks description",
   "blockDescription": "Block description",
