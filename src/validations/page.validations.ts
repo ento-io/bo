@@ -126,7 +126,12 @@ export const pageBlockSchema = z.object({
   ...getTranslatedBlockSchema(),
   image: getSingleImageSchema(),
   imagePosition: z.enum(['left', 'right', 'bottom']).optional(),
-}).refine(values => values.image && values.imagePosition, {
+}).refine(values => {
+  if (!values.image) return true;
+  // imagePosition is required if image is set
+  return values.imagePosition;
+
+}, {
   message: i18n.t('cms:errors.imagePositionRequired'),
   path: ['imagePosition'],
 });
