@@ -49,6 +49,7 @@
   "blocksTitle": "Titre des blocs",
   "blocksDescription": "Description des blocs",
   "blockDescription": "Description du bloc",
+  "thereIsNoBlocks": "Il n'y a pas de blocs pour cette page",
   "blocksHelper": "Les blocs sont une liste de données. Chaque bloc est principalement affiché sous forme de colonne de gauche (image) et de droite (titre et description) de la page.",
   "pageName": "Nom de la page",
   "pageNameHelper": "Le nom de la page est affiché dans un lien par exemple, et aussi le slug est généré automatiquement par le nom",
