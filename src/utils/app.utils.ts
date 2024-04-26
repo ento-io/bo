@@ -2,7 +2,7 @@ import i18n from '@/config/i18n';
 
 import { closeMessageSlice, endLoadingSlice, getAppMessageSelector, setErrorSlice, startLoadingSlice } from '@/redux/reducers/app.reducer';
 import { AppDispatch, AppThunkAction, RootState } from '@/redux/store';
-import { IListTabValue, ISelectOption } from '@/types/app.type';
+import { IEditorToolbar, IListTabValue, ISelectOption } from '@/types/app.type';
 
 // options for select input
 export const booleanOptions: ISelectOption<boolean>[] = [
@@ -124,3 +124,25 @@ export const defaultTabOptions = [
  * @returns 
  */
 export const isRecycleBinTab = (searchParamsTab: string): boolean => searchParamsTab === i18n.t('common:route.recycleBin');
+
+export const defaultEditorToolbar: IEditorToolbar[] = [
+  "heading",
+  "bold",
+  "italic",
+  "strike",
+  "link",
+  "underline",
+  "image",
+  "code",
+  "orderedList",
+  "bulletList",
+  "align",
+  "codeBlock",
+  "blockquote",
+  "table",
+  "history",
+  "youtube",
+  "color",
+  "mention",
+  "ai"
+];
