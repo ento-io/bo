@@ -36,6 +36,7 @@ import { goToAddPageBlocks, goToEditPageBlocks } from '@/redux/actions/pageBlock
 import { PATH_NAMES } from '@/utils/pathnames';
 import Link from '@/components/Link';
 import { usePageTranslatedValuesByTab } from '@/hooks/usePageTranslatedValuesByTab';
+import { grey } from '@mui/material/colors';
 
 const classes = {
   imageContainer: (theme: Theme) => ({
@@ -270,47 +271,57 @@ const Page = () => {
                   >
                     {t('cms:editBlocks')}
                   </Button>
-                ) : (
-                  <Button
-                    startIcon={<FiPlus size={16} />}
-                    onClick={handleAddBlocks}
-                  >
-                    {t('cms:addBlocks')}
-                  </Button>
-                )
+                ) : null
               }
             >
               <Stack spacing={3}>
-                {page.blocks && page.blocks.length > 0 && (
-                  <div>
-                    <Items items={[
-                      {
-                        label: t('cms:blocksTitle'),
-                        value: translatedFields.blocksTitle,
-                      },
-                      {
-                        label: t('cms:blocksDescription'),
-                        value: translatedFields.blocksDescription,
-                      }
-                    ]}
-                    />
-                  </div> 
+                {page.blocks && page.blocks.length > 0 
+                ? (
+                  <>
+                    <div>
+                      <Items items={[
+                        {
+                          label: t('cms:blocksTitle'),
+                          value: translatedFields.blocksTitle,
+                        },
+                        {
+                          label: t('cms:blocksDescription'),
+                          value: translatedFields.blocksDescription,
+                        }
+                      ]}
+                      />
+                    </div> 
+                    {translatedBlockFields.map((block, index) => (
+                      <div
+                        key={index}
+                        css={classes.block(block.imagePosition)}
+                      >
+                        <div css={classes.imageContainer} className="flex1">
+                          {block.image && <img alt="block" src={block.image.url} css={{ width: '100%' }} />}
+                        </div>
+                        <div className="flexColumn flex1" css={classes.blockTexts(block.imagePosition)}>
+                          <Typography variant="h5">{block.title}</Typography>
+                          {block.description && <Typography>{block.description}</Typography>}
+                          <TextEditor value={block.content} editable={false} />
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                ) : (
+                  <Stack spacing={2} css={{ marginTop: 8 }}>
+                    <Typography css={{ color: grey[600]}}>{t('cms:thereIsNoBlocks')}</Typography>
+                    <div>
+                      <Button
+                        startIcon={<FiPlus size={16} />}
+                        onClick={handleAddBlocks}
+                        variant="contained"
+                        fullWidth={false}
+                      >
+                        {t('cms:addBlocks')}
+                      </Button>
+                    </div>
+                  </Stack>
                 )}
-                {translatedBlockFields.map((block, index) => (
-                  <div
-                    key={index}
-                    css={classes.block(block.imagePosition)}
-                  >
-                    <div css={classes.imageContainer} className="flex1">
-                      {block.image && <img alt="block" src={block.image.url} css={{ width: '100%' }} />}
-                    </div>
-                    <div className="flexColumn flex1" css={classes.blockTexts(block.imagePosition)}>
-                      <Typography variant="h5">{block.title}</Typography>
-                      {block.description && <Typography>{block.description}</Typography>}
-                      <TextEditor value={block.content} editable={false} />
-                    </div>
-                  </div>
-                ))}
               </Stack>
             </Layout>
 
