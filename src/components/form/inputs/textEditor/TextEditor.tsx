@@ -36,6 +36,7 @@ import { useEffect, useState, SyntheticEvent } from 'react';
 import Heading from '@tiptap/extension-heading';
 import { useTranslation } from 'react-i18next';
 import MenuBar from './MenuBar';
+import { IEditorToolbar } from "@/types/app.type";
 
 const classes = {
   editorRoot: (theme: Theme) => ({
@@ -181,6 +182,7 @@ export type TextEditorProps = {
   menuClassName?: string;
   required?: boolean;
   withFloatingButtons?: boolean;
+  toolbar?: IEditorToolbar[];
 } & Partial<EditorOptions>;
 
 const TextEditor = ({
@@ -192,6 +194,7 @@ const TextEditor = ({
   value,
   menuClassName,
   required,
+  toolbar,
   editable = true,
   withFloatingButtons = false,
   ...editorOptions
@@ -316,6 +319,7 @@ const TextEditor = ({
               <MenuBar
                 editor={editor}
                 className="stretchSelf"
+                toolbar={toolbar}
               />
             )}
           </div>
