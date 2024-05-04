@@ -2,9 +2,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { useEffect } from 'react';
 import CheckboxField from '@/components/form/fields/CheckboxField';
 import TextField from '@/components/form/fields/TextField';
-import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
+import TranslationTabs from '@/components/form/translated/TranslationTabs';
 
 import { locales } from '@/config/i18n';
 
@@ -18,6 +19,7 @@ import Form from '@/components/form/Form';
 import SelectField from '@/components/form/fields/SelectField';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import TranslatedSlugField from '../cms/TranslatedSlugField';
+import DropzoneField from '@/components/form/dropzone/DropzoneField';
 
 type Props = {
   formId: string;
@@ -32,10 +34,22 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
 
   const form = useForm<ICategoryInput>({
     resolver: zodResolver(categorySchema),
-    defaultValues: getCategoryFormInitialValues(category),
+    defaultValues: {
+      active: true,
+    },
   });
 
-  const { handleSubmit, setValue } = form;
+  const { handleSubmit, setValue, reset } = form;
+  
+  useEffect(() => {
+    if (!category) return;
+    const init = async () => {
+      const editionInitialValues = await getCategoryFormInitialValues(category);
+      reset(editionInitialValues)
+    };
+
+    init();
+  }, [category, reset]);
 
   const handleFormSubmit: SubmitHandler<ICategoryInput> = async values => {
     onSubmit(values);
@@ -49,7 +63,7 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
   return (
     <Form formId={formId} form={form} onSubmit={handleSubmit(handleFormSubmit)}>
       {/* translated tabs */}
-      <TranslatedFormTabs
+      <TranslationTabs
         onTabChange={onTabChange}
         tab={tab}
         errors={getTranslatedFormTabErrors(form?.formState.errors, TRANSLATED_CMS_FIELDS)}
@@ -81,6 +95,16 @@ const CategoryForm = ({ formId, category, onSubmit }: Props) => {
           </div>
         ))}
       </div>
+
+      <DropzoneField
+        name="image"
+        label={t('common:image')}
+        inputLabel={t('common:addImage')}
+        maxFiles={1}
+        shouldReset={!!category} // can reset input in edition
+        helperText={t('cms:category.imageHelper')}
+        type="image"
+      />
 
       <SelectField
         name="entity"

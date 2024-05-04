@@ -13,12 +13,12 @@ import { pageFilterSchema } from '@/validations/page.validations';
 import DateRangePickerField from '@/components/form/fields/DateRangePickerField';
 import TextField from '@/components/form/fields/TextField';
 import AdvancedSearchFields from '@/components/AdvancedSearchFields';
-import CategoriesSearchByEntityField from '../categories/CategoriesSearchByEntityField';
+import CategoriesSearchByEntityField from '../../categories/CategoriesSearchByEntityField';
 import { CategoryEntityEnum } from '@/types/category.type';
 import ToggleButtonsField from '@/components/form/inputs/ToggleButtonsField';
 import { activeOptions } from '@/utils/cms.utils';
 
-const ESTIMATE_FILTER_FORM_ID = 'page-filter';
+const PAGE_FILTER_FORM_ID = 'page-filter';
 
 type Props = {
   onSubmit: (values: any) => void;
@@ -50,10 +50,16 @@ const PageAdvancedFilterForm = ({ onSubmit }: Props) => {
         primaryButtonText={t('search')}
         open={isOpenFilterDialog}
         toggle={toggleOpenFilterDialog}
-        formId={ESTIMATE_FILTER_FORM_ID}>
-        <Form formId={ESTIMATE_FILTER_FORM_ID} form={form} onSubmit={handleSubmit(onSubmitHandler)}>
+        formId={PAGE_FILTER_FORM_ID}>
+        <Form formId={PAGE_FILTER_FORM_ID} form={form} onSubmit={handleSubmit(onSubmitHandler)}>
           <AdvancedSearchFields
             fields={[
+              {
+                label: t('cms:pageName'),
+                name: 'name',
+                checked: false,
+                component: <TextField name="name" placeholder={t('cms:pageName')} fullWidth />,
+              },
               {
                 label: t('cms:title'),
                 name: 'title',
@@ -72,6 +78,12 @@ const PageAdvancedFilterForm = ({ onSubmit }: Props) => {
                     placeholder={t('cms:category.category')}
                   />
                 ),
+              },
+              {
+                label: t('common:metaTitle'),
+                name: 'metaTitle',
+                checked: false,
+                component: <TextField name="metaTitle" placeholder={t('common:metaTitle')} fullWidth />,
               },
               {
                 label: t('common:active'),

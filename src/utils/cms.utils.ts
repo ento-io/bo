@@ -10,7 +10,7 @@ import { getTranslatedField } from "./settings.utils";
 import { Lang } from "@/types/setting.type";
 import { Category } from "@/redux/actions/category.action";
 import { ISelectOption } from "@/types/app.type";
-import { IPage, IPageBlocksInput, IPageStepOneInput, IPageStepThreeInput, IPageStepTwoInput } from "@/types/page.type";
+import { IPage, IPageBlocksStepTwoInput, IPageStepOneInput, IPageStepThreeInput, IPageStepTwoInput } from "@/types/page.type";
 
 export const articlesTabOptions = defaultTabOptions;
 export const pagesTabOptions = defaultTabOptions;
@@ -31,6 +31,17 @@ export const imagePositionOptions: ISelectOption[] = [
   },
 ];
 
+export const pageLinkLocationOptions: ISelectOption[] = [
+  {
+    label: i18n.t('cms:inTheMenu'),
+    value: 'menu',
+  },
+  {
+    label: i18n.t('cms:inTheFooter'),
+    value: 'footer',
+  },
+];
+
 /**
  * in the database, these translated fields is transformed to have this schema
  * { "fr": { "title": "xxx_fr", "description": "yyyy_fr" },  "en": { "title": "xxx_en", "description": "yyyy_en" }, ... }
@@ -44,12 +55,12 @@ export const TRANSLATED_CMS_FIELDS = [
   'metaTitle',
   'metaDescription',
   'tags',
+  'blocksTitle',
+  'blocksDescription',
 ];
 
 export const ALL_PAGE_FIELDS = [
   'active',
-  'linkLocations',
-  'pages',
   'category',
   ...PAGE_SINGLE_IMAGE_FIELDS,
   ...PAGE_IMAGES_FIELDS,
@@ -240,7 +251,6 @@ export const getPageStepOneEditionInitialValues = async (
   const clonedPage = cloneDeep(page); // immutability
   const formattedTranslatedValues = parseSavedTranslatedValuesToForm(clonedPage);
 
-
   return formattedTranslatedValues;
 };
 
@@ -271,9 +281,12 @@ export const getPageStepThreeEditionInitialValues = async (
   return values;
 };
 
+// ------------------------ //
+// -------- blocks -------- //
+// ------------------------ //
 export const getPageBlocksEditionCmsInitialValues = async (
   page: IPage | null | undefined,
-): Promise<IPageBlocksInput | undefined> => {
+): Promise<IPageBlocksStepTwoInput | undefined> => {
   if (!page) return;
   const clonedPage = cloneDeep(page); // immutability
 
@@ -305,7 +318,7 @@ export const getPageBlocksEditionCmsInitialValues = async (
  * @param category
  * @returns
  */
-export const getCategoryFormInitialValues = (category: ICategory | null | undefined): ICategoryInput => {
+export const getCategoryFormInitialValues = async (category: ICategory | null | undefined): Promise<ICategoryInput> => {
   // ----------- creation ----------- //
   if (!category) {
     return {
@@ -315,11 +328,18 @@ export const getCategoryFormInitialValues = (category: ICategory | null | undefi
 
   // ----------- update ----------- //
   const translatedValues = parseSavedTranslatedValuesToForm(category);
-  return {
+  const values = {
     ...translatedValues,
     active: category.active,
     entity: category.entity
-  };
+  }
+
+  if (category.image) {
+    const file = await getFileFromUrl(category.image.url);
+    values.image = [file]; // should be an array
+  }
+
+  return values;
 };
 
 /**
@@ -362,5 +382,10 @@ export const getTranslatedCategoriesName = (categories: ICategory[], lang: Lang)
 
 export const getImagePositionLabel = (position: string): string => {
   const option = imagePositionOptions.find((option) => option.value === position);
+  return option ? option.label : '';
+}
+
+export const getLinkEmplacementLabel = (emplacement: string): string => {
+  const option = pageLinkLocationOptions.find((option) => option.value === emplacement);
   return option ? option.label : '';
 }

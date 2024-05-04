@@ -1,33 +1,16 @@
 import { useMemo, useState } from "react";
 import { Lang } from "@/types/setting.type";
-import { getTranslatedField } from "@/utils/settings.utils";
 import { DEFAULT_LANGUAGE } from "@/utils/constants";
+import { IPage, IPageBlock } from "@/types/page.type";
+import { getFields } from "./useTranslatedValuesByTab";
+import { TRANSLATED_CMS_FIELDS } from "@/utils/cms.utils";
 
 type Output = {
-  translatedFields: Record<string, any>,
-  onTabChange: (value: Lang) => void,
-  tab: Lang,
+  translatedFields: Record<string, any>;
+  onTabChange: (value: Lang) => void;
+  tab: Lang;
+  translatedBlockFields: Record<string, any>[];
 }
-
-/**
- * input: { "en": { "title": "" }, "fr": { "title": "Bjr 01" }}
- * output: { "title": "Bjr 01" }
- * @param translated 
- * @param keys 
- * @param tab 
- * @returns 
- */
-export const getFields = <T extends object>(translated: T, keys: string[], tab: Output['tab']) => {
-  if (!translated) return {};
-
-  const lang = tab;
-  const translatedFields = keys.reduce((acc, key) => {
-    const value = getTranslatedField<T>(translated, lang, key);
-    return { ...acc, [key]: value };
-  }, {});
-
-  return translatedFields;
-};
 
 /**
  * this will return the translated values depending on the selected language (via tabs)
@@ -38,13 +21,31 @@ export const getFields = <T extends object>(translated: T, keys: string[], tab: 
  * @param keys 
  * @returns 
  */
-export const useTranslatedValuesByTab = <T extends object>(translated?: T, keys: string[] = []): Output => {
+export const usePageTranslatedValuesByTab = (page: IPage): Output => {
   const [tab, setTab] = useState<Lang>(DEFAULT_LANGUAGE);
 
   const onTabChange = (value: Lang) => setTab(value);
 
+  // translated blocks
+  const newBlocks = useMemo(() => {
+    if (!page?.blocks) return [];
+    return page.blocks.map((block: IPageBlock) => {
+      const values = {
+        ...getFields(block.translated, ['title', 'description', 'content'], tab),
+        ...block, // non translated fields
+      };
+
+      const newValues: Partial<IPageBlock> = { ...values }
+      delete newValues.translated
+
+      return newValues
+    })
+  }, [page, tab])
+  
+
   return {
-    translatedFields: translated ? getFields(translated, keys, tab) : {},
+    translatedFields: page ? getFields(page.translated, TRANSLATED_CMS_FIELDS, tab): {},
+    translatedBlockFields: newBlocks,
     onTabChange,
     tab,
   }

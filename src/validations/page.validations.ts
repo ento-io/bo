@@ -62,6 +62,45 @@ const getTranslatedBlockSchema = (): Record<string, any> => {
   return translatedSchema
 }
 
+const getTranslatedPageBlockSchema = (): Record<string, any> => {
+  const translatedSchema: Record<string, any> = {};
+
+  for (const locale of locales) {
+    if (locale !== DEFAULT_LANGUAGE) {
+      // ex: fr:title field name
+      translatedSchema[locale + ':blocksTitle'] = z.string({ errorMap }).transform(capitalize);
+      translatedSchema[locale + ':blocksDescription'] = z.string({ errorMap }).optional().transform(emptyContent);
+
+    } else {
+      // required fields only for default locale
+      [
+        {
+        key: 'blocksTitle',
+        label: i18n.t('cms:blocksTitle'),
+        min: 1,
+      },
+      {
+        key: 'blocksDescription',
+        label: i18n.t('common:blocksDescription'),
+        max: 300,
+      },
+    ].forEach(({ key, label, min, max }) => {
+      const stringSchema = z.string({ errorMap });
+
+      if (min) {
+        stringSchema.min(min, i18n.t('form.error.required', { field: label }));
+      }
+      if (max) {
+        stringSchema.max(max, i18n.t('form.error.max', { field: label, number: max }));
+      }
+      
+      translatedSchema[locale + ':' + key] = stringSchema.transform(capitalize)
+      });
+    }
+  }
+  return translatedSchema
+}
+
 export const pageStepOneSchema = z.object({
   ...getCMSTranslatedSchema(CategoryEntityEnum.Page), // translated fields
 })
@@ -80,18 +119,29 @@ export const pageStepThreeSchema = z.object({
     categoryOptionSchema.nullable().optional()
   ),
   active: z.boolean({ errorMap }).optional(),
+  linkLocations: z.array(z.enum(['menu', 'footer'])).optional(),
 });
 
 export const pageBlockSchema = z.object({
   ...getTranslatedBlockSchema(),
   image: getSingleImageSchema(),
   imagePosition: z.enum(['left', 'right', 'bottom']).optional(),
-}).refine(values => values.image && values.imagePosition, {
+}).refine(values => {
+  if (!values.image) return true;
+  // imagePosition is required if image is set
+  return values.imagePosition;
+
+}, {
   message: i18n.t('cms:errors.imagePositionRequired'),
   path: ['imagePosition'],
-});;
+});
 
-export const pageBlocksSchema = z.object({
+export const pageBlocksStepOneSchema = z.object({
+  ...getTranslatedPageBlockSchema(), // translated fields
+})
+.transform(formatTranslatedFormValuesToSave);
+
+export const pageBlocksStepTwoSchema = z.object({
     blocks: z.array(pageBlockSchema).optional()
   })
   .transform(formatTranslatedPageFormValuesToSave);

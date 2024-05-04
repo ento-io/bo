@@ -3,6 +3,7 @@ import { z } from "zod";
 import { IUser } from "./user.type";
 import { categoryFilterSchema, categorySchema } from "@/validations/category.validation";
 import { ISelectOption } from "./app.type";
+import { IFileCloud } from "./file.type";
 
 export interface ICategoryTranslatedFields {
   name: string;
@@ -25,6 +26,7 @@ export interface ICategory extends Attributes {
   deletedAt?: string;
   deleted: boolean;
   translated: ICategoryTranslatedFields;
+  image?: IFileCloud;
   // each category can be linked to an article, a page, product, ...
   entity: CategoryEntityEnum;
 }

@@ -1,14 +1,15 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { Button } from "@mui/material";
 import { goToPage, goToPages } from "@/redux/actions/page.action";
 import { getPagePageSelector } from "@/redux/reducers/page.reducer";
-import { IPageBlocksInput } from "@/types/page.type";
+import { IPageBlocksStepTwoInput } from "@/types/page.type";
 import Layout from "@/components/layouts/Layout";
 import ActionsMenu from "@/components/ActionsMenu";
 import Head from "@/components/Head";
 import { useProtect } from "@/hooks/useProtect";
-import PageBlocksForm from "@/containers/pages/PageBlocksForm";
+import PageBlocksForm from "@/containers/pages/pageBlockForms/PageBlocksForm";
 import { getTranslatedField } from "@/utils/settings.utils";
 import { getSettingsLangSelector } from "@/redux/reducers/settings.reducer";
 import { addBlocksToPage } from "@/redux/actions/pageBlock.action";
@@ -36,7 +37,7 @@ const EditPageBlocks = () => {
     navigate(goToPage(page.objectId));
   };
   
-  const handleSubmit = async (values: IPageBlocksInput) => {
+  const handleSubmit = async (values: IPageBlocksStepTwoInput) => {
     if (!page) return;
     await dispatch(addBlocksToPage(page.objectId, values, 'update'));
     if (!canPreview) return;
@@ -55,6 +56,11 @@ const EditPageBlocks = () => {
         onSubmit={handleSubmit}
         page={page}
       />
+      <div css={{ marginTop: 12 }}>
+        <Button onClick={handleGoToPage} variant="outlined" fullWidth>
+          {t('common:cancel')}
+        </Button>
+      </div>
     </Layout>
   )
 }

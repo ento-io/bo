@@ -2,7 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import PageForm from "../../containers/pages/PageForm";
+import PageForm from "../../containers/pages/pageForms/PageForm";
 import { createPage, goToPages } from "@/redux/actions/page.action";
 import { getPagePageSelector } from "@/redux/reducers/page.reducer";
 import { IPageInput } from "@/types/page.type";

@@ -1,39 +1,20 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { useTranslation } from 'react-i18next';
-import { Button, FormHelperText, Stack, Theme } from '@mui/material';
+import { Button, FormHelperText, Stack } from '@mui/material';
 import { FiPlus, FiTrash } from 'react-icons/fi';
 import { css } from '@emotion/css';
-import { useLayoutEffect, useRef, useState } from 'react';
 import TextField from '@/components/form/fields/TextField';
 import { DEFAULT_LANGUAGE } from '@/utils/constants';
 import CardFormBlock from '@/components/form/CardFormBlock';
 import { locales } from '@/config/i18n';
-import TranslatedFormTabs from '@/components/form/translated/TranslatedFormTabs';
+import TranslationTabs from '@/components/form/translated/TranslationTabs';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import TextEditorField from '@/components/form/fields/TextEditorField';
 import DropzoneField from '@/components/form/dropzone/DropzoneField';
 import SelectField from '@/components/form/fields/SelectField';
 import { imagePositionOptions } from '@/utils/cms.utils';
 
-const classes = {
-  tabsContainer: (fixed: boolean) => (theme: Theme) => {
-    if (fixed) {
-      return {
-        position: 'fixed' as const,
-        top: 0,
-        zIndex: 10000,
-        backgroundColor: 'red',
-        [theme.breakpoints.down('sm')]: {
-          right: 0,
-          left: 0,
-        },
-      };
-    }
-
-    return { position: 'relative' as const };
-  }
-}
 type Props = {
   name: string;
 };
@@ -41,25 +22,6 @@ type Props = {
 const TranslatedPageBlocksField = ({ name }: Props) => {
   const { t } = useTranslation();
   const { onTabChange, tab } = useTranslatedValuesByTab();
-
-  const divToFixedRef = useRef(null);
-  const [fixed, setFixed] = useState<boolean>(false);
-
-  // fix the tabs on top when scrolling
-  useLayoutEffect(() => {
-    if (!divToFixedRef.current) return;
-    const current = divToFixedRef.current as HTMLDivElement;
-    const divAnimate = current.getBoundingClientRect().top;
-    const onScroll = () => {
-      if (divAnimate < window.scrollY) {
-        setFixed(true);
-      } else {
-        setFixed(false);
-      }
-    };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   // hooks
   const {
@@ -89,12 +51,11 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
   return (
     <div>
       {/* language selection tab */}
-      <div ref={divToFixedRef} css={classes.tabsContainer(fixed)}>
-        <TranslatedFormTabs
-          onTabChange={onTabChange}
-          tab={tab}
-        />
-      </div>
+      <TranslationTabs
+        onTabChange={onTabChange}
+        tab={tab}
+        fixedOnScroll
+      />
 
       {/* fields array */}
       {controlledFields.map((item, index) => {
@@ -139,6 +100,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
                       name={`${name}.${index}.${locale}:content`}
                       label={t('cms:content')}
                       required={locale === DEFAULT_LANGUAGE}
+                      toolbar={['bold', 'italic', 'underline', 'link', 'orderedList', 'bulletList']}
                     />
                     {error && <FormHelperText error>{error[`${locale}:content`]?.message}</FormHelperText>}
                   </Stack>
@@ -146,7 +108,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
               );
             })}
 
-            <Stack css={{ marginTop: 12 }}>
+            <div css={{ marginTop: 12 }}>
               <DropzoneField
                 name={`${name}.${index}.image`}
                 label={t('common:image')}
@@ -157,7 +119,7 @@ const TranslatedPageBlocksField = ({ name }: Props) => {
                 type="image"
                 error={(errors as any)?.[name]?.[index]?.image?.message}
               />
-            </Stack>
+            </div>
 
             {/* displayed only if an image was selected */}
             {watch(`${name}.${index}.image`)?.length > 0 && (

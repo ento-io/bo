@@ -29,7 +29,7 @@ const PageFormStepTwo = ({ onSubmit, page, loading, ...formProps }: Props) => {
     if (!page) return;
     const init = async () => {
       const editionInitialValues = await getPageStepTwoEditionInitialValues(page);
-      reset(editionInitialValues)
+      reset(editionInitialValues);
     };
 
     init();
