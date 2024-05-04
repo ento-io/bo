@@ -29,6 +29,12 @@
     "lastName": "Anarana misoratra amin'ny kara-panondro na passport",
     "dateOfBirth": "Day nahaterahana misoratra amin'ny kara-panondro na passport"
   },
+  "serverErrors": {
+    "lastNameRequired": "Anarana ilaina",
+    "nameMax": "Anarana lava loatra",
+    "emailRequired": "Mailaka ilaina",
+    "passwordRequired": "Mot de passe ilaina"
+  },
   "editMyProfile": "Ovaina ny mombamomba ahy",
   "currentPassword": "Mot de passe amin'izao",
   "newPassword": "Mot de passe vaovao",
