@@ -2,6 +2,8 @@
   "enterYourEmail": "Entrez votre email",
   "yourPassword": "Votre mot de passe",
   "welcomeToTheApp": "Bienvenue sur le back-office de {{app}}",
+  "anAdminAcceptsYourAccount": "Un administrateur va valider votre compte.",
+  "createAnAdminAccount": "Créer un compte administrateur",
   "loginToApp": "Se connecter à {{app}}",
   "accessToBO": "Accéder et gérer l'application {{app}} dans le back office — rapidement et en toute sécurité.",
   "accountVerified": "Compte vérifié",
