@@ -5,7 +5,7 @@ import { z } from "zod";
 import { appLayout } from "../routes";
 import Login from "@/pages/auth/Login";
 import SignUp from "@/pages/auth/SignUp";
-import AuthLayout from "@/pages/auth/AuthLayout";
+import AuthRouteLayout from "@/pages/auth/AuthRouteLayout";
 import { PATH_NAMES } from "@/utils/pathnames";
 
 /**
@@ -15,7 +15,7 @@ import { PATH_NAMES } from "@/utils/pathnames";
 const authPublicLayout = createRoute({
   id: "public",
   getParentRoute: () => appLayout,
-  component: AuthLayout,
+  component: AuthRouteLayout,
   beforeLoad: async ({ context, location }) => {
     // If the user is logged in, redirect them to the home page
     // only in signup and login page
@@ -39,7 +39,7 @@ const loginRoute = createRoute({
   validateSearch: z.object({
     redirect: z.string().optional(),
   }),
-  getParentRoute: () => authPublicLayout,
+  getParentRoute: () => appLayout,
   component: Login,
   path: PATH_NAMES.login,
 });
