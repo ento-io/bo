@@ -36,32 +36,31 @@ const SignUpForm = ({ onSubmit, formId, from = 'signUp' }: Props) => {
   };
 
   return (
-      <Form
-          form={form}
-          formId={formId}
-          onSubmit={handleSubmit(onSubmitHandler)}
-          loading={loading}
-          error={error}
-          buttonClassName="textCapitalize bR10"
-          isDisabled={false}
-          primaryButtonText={button}>
-          <TextField
-            name="email"
-            placeholder={t('user:email')}
-            type="email"
-            fullWidth
-          />
-          <TextField name="firstName" placeholder={t('user:firstName')} fullWidth />
-          <TextField name="lastName" placeholder={t('user:lastName')} fullWidth />
-          <PasswordField name="password" placeholder={t('user:password')} fullWidth />
-          <PasswordField
-            name="passwordConfirmation"
-            placeholder="Confirm password"
-            fullWidth
-        />
+    <Form
+      form={form}
+      formId={formId}
+      onSubmit={handleSubmit(onSubmitHandler)}
+      loading={loading}
+      error={error}
+      buttonClassName="textCapitalize bR10"
+      isDisabled={false}
+      primaryButtonText={button}
+    >
+      <TextField
+        name="email"
+        placeholder={t('user:email')}
+        type="email"
+        fullWidth
+      />
+      <TextField name="firstName" placeholder={t('user:firstName')} fullWidth />
+      <TextField name="lastName" placeholder={t('user:lastName')} fullWidth />
+      <PasswordField name="password" placeholder={t('user:password')} fullWidth />
+      <PasswordField
+        name="passwordConfirmation"
+        placeholder="Confirm password"
+        fullWidth
+      />
     </Form>
-    //   </div> 
-    // </div>
   );
 };
 
