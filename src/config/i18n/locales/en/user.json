@@ -29,6 +29,12 @@
     "lastName": "Last name used in your national ID or passport",
     "dateOfBirth": "Date of birth as listed in your national ID or passport"
   },
+  "serverErrors": {
+    "lastNameRequired": "Last name is required",
+    "nameMax": "Name is too long",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required"
+  },
   "editMyProfile": "Edit my profile",
   "currentPassword": "Current Password",
   "newPassword": "New Password",
