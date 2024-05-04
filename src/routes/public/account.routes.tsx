@@ -2,7 +2,7 @@ import { Outlet, createRoute } from "@tanstack/react-router";
 
 import { z } from "zod";
 import { appLayout } from "../routes";
-import AuthLayout from "@/pages/auth/AuthLayout";
+import AuthRouteLayout from "@/pages/auth/AuthRouteLayout";
 import { PATH_NAMES } from "@/utils/pathnames";
 import ConfirmAccount from "@/pages/auth/ConfirmAccount";
 import SendEmailResetPassword from "@/pages/auth/SendEmailResetPassword";
@@ -13,7 +13,7 @@ import ResetPassword from "@/pages/auth/ResetPassword";
 
 const accountPublicLayout = createRoute({
   getParentRoute: () => appLayout,
-  component: AuthLayout,
+  component: AuthRouteLayout,
   path: PATH_NAMES.account.root
 });
 
