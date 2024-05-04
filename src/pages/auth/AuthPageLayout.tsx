@@ -15,7 +15,7 @@ const classes = {
     },
   }),
   title: (theme: Theme) => ({
-    lineHeight: 1,
+    lineHeight: 1.1,
     fontWeight: 600,
     [theme.breakpoints.between('md', 'lg')]: {
       textAlign: 'center' as const,
@@ -66,8 +66,8 @@ const classes = {
       width: '100%',
     },
     [theme.breakpoints.up('lg')]: {
-      paddingLeft: 60,
-      paddingRight: 60,
+      paddingLeft: 82,
+      paddingRight: 82,
     },
     [theme.breakpoints.between('md', 'lg')]: {
       paddingLeft: 10,
@@ -108,8 +108,8 @@ const AuthPageLayout = ({ title, description, children, formTitle, formDescripti
       <div className="flexColumn center stretchSelf spaceBetween" css={classes.right}>
         <div>{rightHeader}</div>
         <div css={classes.rightContent}>
-          <Stack spacing={2}>
-            <Typography variant="h4" css={{ fontSize: 31 }}>
+          <Stack spacing={2.5}>
+            <Typography variant="h4" css={{ fontSize: 28 }}>
               {formTitle}
             </Typography>
             {formDescription && (
