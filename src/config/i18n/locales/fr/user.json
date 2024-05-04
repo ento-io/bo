@@ -29,6 +29,12 @@
     "lastName": "Nom utilisé à votre carte d'identité nationale ou passport",
     "dateOfBirth": "Date de naissance utilisé à votre carte d'identité nationale ou passport"
   },
+  "serverErrors": {
+    "lastNameRequired": "Nom est requis",
+    "nameMax": "Nom trop long",
+    "emailRequired": "Email est requis",
+    "passwordRequired": "Mot de passe est requis"
+  },
   "editMyProfile": "Modifier mon profil",
   "currentPassword": "Mot de passe actuel",
   "newPassword": "Nouveau mot de passe",
