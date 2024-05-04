@@ -94,7 +94,7 @@ const MenuBar = ({
   const handleOpenHeadingMenu = useCallback((event: MouseEvent<HTMLElement>) => {
     setHeadingAnchorEl(event.currentTarget);
   }, []);
-  
+
   const handleCloseHeadingMenu = () => {
     setHeadingAnchorEl(null);
   };
@@ -218,13 +218,15 @@ const MenuBar = ({
     {
       name: "undo",
       onClick: () => editor.chain().focus().undo().run(),
-      disabled: !editor.can().undo()
+      disabled: !editor.can().undo(),
+      default: true // always display
     },
     {
       name: "redo",
       onClick: () => editor.chain().focus().redo().run(),
       disabled: !editor.can().redo(),
-      split: true
+      split: true,
+      default: true // always display
     }
   ], [editor, toggleLinkDialog, toggleYoutubeDialog, handleOpenTableMenu, handleOpenHeadingMenu]);
 
