@@ -26,7 +26,7 @@ import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
 import { IPage } from '@/types/page.type';
 import { useProtect } from '@/hooks/useProtect';
-import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
+import { TextEditorReadOnly } from 'mui-tiptap-editor';
 import TranslationTabs from '@/components/form/translated/TranslationTabs';
 import PreviewImages from '@/containers/cms/PreviewImages';
 import BooleanIcons from '@/components/BooleanIcons';
@@ -256,7 +256,7 @@ const Page = () => {
             </Layout>
             {/* content */}
             <Layout cardTitle={t('cms:mainContentOfThePage')}>
-              <TextEditor value={translatedFields.content} editable={false} />
+              <TextEditorReadOnly value={translatedFields.content} />
             </Layout>
 
             {/* blocks */}
