@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
 import { useNavigate } from '@tanstack/react-router';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import Head from '@/components/Head';
 
 import { signUp } from '@/redux/actions/auth.action';
@@ -11,6 +11,8 @@ import AuthLink from './AuthLink';
 import { ISignUpInput } from '@/types/auth.type';
 import SignUpForm from '@/containers/auth/SignUpForm';
 import { PATH_NAMES } from '@/utils/pathnames';
+import AuthPageLayout from './AuthPageLayout';
+import { APP_NAME } from '@/utils/constants';
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -23,20 +25,18 @@ const SignUp = () => {
   };
 
   return (
-    <>
+    <AuthPageLayout
+      title={t('user:welcomeToTheApp', { app: APP_NAME })}
+      description={t('user:accessToBO', { app: APP_NAME })}
+      formTitle={t('user:createAnAdminAccount')}
+      formDescription={t('user:anAdminAcceptsYourAccount')}
+    >
       <Head title= { title } />
       <Stack spacing={2}>
-      <div className='flexCenter'>
-        <Typography variant="h4" gutterBottom>
-          {t('user:signUp')}
-        </Typography>
-      </div>
-      <Stack spacing={2}>
         <SignUpForm onSubmit={handleSubmitAccount} />
-            <AuthLink label={t('user:alreadyHaveAccount')} text={t('user:login')} url={PATH_NAMES.login} />
-        </Stack>    
-      </Stack>
-    </>
+        <AuthLink label={t('user:alreadyHaveAccount')} text={t('user:login')} url={PATH_NAMES.login} />
+      </Stack>    
+    </AuthPageLayout>
   );
 };
 
