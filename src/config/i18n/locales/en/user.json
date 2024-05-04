@@ -1,4 +1,9 @@
 {
+  "enterYourEmail": "Enter your email",
+  "yourPassword": "Your password",
+  "loginToApp": "Log in to {{app}}",
+  "welcomeToTheApp": "Welcome to the back-office of {{app}}",
+  "accessToBO": "Access and manage the {{app}} in the back office — quickly and securely.",
   "accountVerified": "Account verified",
   "verified": "Verified",
   "unverified": "Unverified",
