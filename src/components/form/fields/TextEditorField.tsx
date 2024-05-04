@@ -1,5 +1,5 @@
 import { useFormContext, Controller } from 'react-hook-form';
-import TextEditor, { TextEditorProps } from '../inputs/textEditor/TextEditor';
+import { TextEditor, TextEditorProps } from 'mui-tiptap-editor';
 
 type Props = {
   name: string;
