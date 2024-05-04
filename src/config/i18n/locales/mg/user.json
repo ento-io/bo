@@ -1,4 +1,9 @@
 {
+  "enterYourEmail": "Ampidiro ny mailaka",
+  "yourPassword": "Ny teny miafina anao",
+  "welcomeToTheApp": "Tonga soa eto amn'ny back-office ny {{app}}",
+  "accessToBO": "Miditra sy handrindra ny fampiasana ny {{app}} ao amin'ny back office — haingana sy voaaro.",
+  "loginToApp": "Hifandray amin'ny {{app}}",
   "accountVerified": "Kaonty voamarina",
   "verified": "Voamarina",
   "unverified": "Tsy voamarina",
