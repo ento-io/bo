@@ -24,7 +24,8 @@ import ItemsStatus from '@/components/ItemsStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
 import { IArticle, IArticleTranslatedFields } from '@/types/article.type';
 import { useProtect } from '@/hooks/useProtect';
-import TextEditor from '@/components/form/inputs/textEditor/TextEditor';
+import { TextEditorReadOnly } from 'mui-tiptap-editor';
+
 import TranslationTabs from '@/components/form/translated/TranslationTabs';
 import { useTranslatedValuesByTab } from '@/hooks/useTranslatedValuesByTab';
 import PreviewImages from '@/containers/cms/PreviewImages';
@@ -167,7 +168,7 @@ const Article = () => {
               <Items items={seoItems} />
             </Layout>
             <Layout cardTitle={t('cms:contentOfTheArticle')}>
-              <TextEditor value={translatedFields.content} editable={false} />
+              <TextEditorReadOnly value={translatedFields.content} />
             </Layout>
 
             {/* images */}
