@@ -2,6 +2,8 @@
   "enterYourEmail": "Enter your email",
   "yourPassword": "Your password",
   "loginToApp": "Log in to {{app}}",
+  "createAnAdminAccount": "Create an admin account",
+  "anAdminAcceptsYourAccount": "An admin will validate your account",
   "welcomeToTheApp": "Welcome to the back-office of {{app}}",
   "accessToBO": "Access and manage the {{app}} in the back office — quickly and securely.",
   "accountVerified": "Account verified",
