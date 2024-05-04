@@ -49,24 +49,18 @@ const SignUpForm = ({ onSubmit, formId, from = 'signUp' }: Props) => {
           isDisabled={false}
           primaryButtonText={button}>
           <TextField
-            bgcolor={color}
-            mode={mode}
             name="email"
             placeholder={t('user:email')}
             type="email"
             fullWidth
-            required
           />
-          <TextField bgcolor={color} mode={mode} name="firstName" placeholder={t('user:firstName')} fullWidth />
-          <TextField bgcolor={color} mode={mode} name="lastName" placeholder={t('user:lastName')} fullWidth required />
-          <PasswordField bgcolor={color} mode={mode} name="password" placeholder={t('user:password')} fullWidth required />
+          <TextField name="firstName" placeholder={t('user:firstName')} fullWidth />
+          <TextField name="lastName" placeholder={t('user:lastName')} fullWidth />
+          <PasswordField name="password" placeholder={t('user:password')} fullWidth />
           <PasswordField
-            bgcolor={color}
-            mode={mode}
             name="passwordConfirmation"
             placeholder="Confirm password"
             fullWidth
-            required
         />
     </Form>
     //   </div> 
