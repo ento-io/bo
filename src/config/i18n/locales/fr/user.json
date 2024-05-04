@@ -1,4 +1,9 @@
 {
+  "enterYourEmail": "Entrez votre email",
+  "yourPassword": "Votre mot de passe",
+  "welcomeToTheApp": "Bienvenue sur le back-office de {{app}}",
+  "loginToApp": "Se connecter à {{app}}",
+  "accessToBO": "Accéder et gérer l'application {{app}} dans le back office — rapidement et en toute sécurité.",
   "accountVerified": "Compte vérifié",
   "verified": "Verifié",
   "unverified": "Non vérifié",
