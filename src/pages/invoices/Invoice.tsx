@@ -25,6 +25,7 @@ import { useToggle } from '@/hooks/useToggle';
 import InvoiceStatus from '@/containers/invoices/InvoiceStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
 import EstimateStatus from '@/containers/estimates/EstimateStatus';
+import { getUserFullName } from '@/utils/user.utils';
 
 const classes = {
   reference: (theme: Theme) => ({
@@ -37,6 +38,8 @@ const classes = {
 
 const INVOICES_FORM_ID = 'send-email-form-id';
 
+const SEND_INVOICES_FORM_ID = 'send-email-form-id';
+
 const Invoice = () => {
   const { t } = useTranslation(['common', 'user']);
   const dispatch = useDispatch();
@@ -44,6 +47,9 @@ const Invoice = () => {
   const invoice = useSelector(getInvoiceInvoiceSelector);
   const roles = useSelector(getRoleCurrentUserRolesSelector);
   const { open: isOpenEdition, toggle: toggleDialogEdition } = useToggle();
+
+  const { open: isOpenSendInvoice, toggle: toggleDialogSendInvoice } = useToggle();
+
 
   const canDelete = canAccessTo(roles, 'Invoice', 'delete');
   const canPreview = canAccessTo(roles, 'Invoice', 'get');
@@ -118,6 +124,11 @@ const Invoice = () => {
     toggleDialogEdition();
   };
 
+  const handleSelectRow = () => {
+    
+    toggleDialogSendInvoice();
+  }
+
   const handleRegenerate = () => {
     dispatch(regenerateInvoicePDF(invoice.objectId));
   }
@@ -140,6 +151,7 @@ const Invoice = () => {
           onDownloadPDF={handleDownload}
           goToList={handleGoToList}
           onRegeneratePDF={handleRegenerate}
+          onSendInvoice={handleSelectRow}
           label={invoice.estimate.reference}
         />
       }>
@@ -196,6 +208,18 @@ const Invoice = () => {
           onSubmit={handleEdit}
           invoice={invoice}
         />
+      </Dialog>
+
+      <Dialog
+        title={invoice.user ? t('user:sendInvoiceTo', {name: getUserFullName(invoice.user)}) : t('sendEmail')}
+        open={!!invoice.user && isOpenSendInvoice}
+        toggle={toggleDialogSendInvoice}
+        maxWidth="sm"
+        fullWidth
+        formId={SEND_INVOICES_FORM_ID}
+        primaryButtonText={t('send')}
+      >
+        <p>Date de facturation: 14/05/2024 à 15:13</p>
       </Dialog>
     </Layout>
   );

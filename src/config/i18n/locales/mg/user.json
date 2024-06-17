@@ -160,5 +160,7 @@
   },
   "addEmployee": "Hampiditra mpiasa",
   "employeeCooperativeExists": "Efa miasa ao amin'ny coopérative-nao io mpiasa io",
-  "sendMail": "mandefa hafatra"
+  "sendMail": "mandefa hafatra",
+  "sendInvoiceTo": "Handefa faktiora ho an'i {{name}}",
+  "sendInvoice": "Handefa faktiora"
 }

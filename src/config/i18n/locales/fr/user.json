@@ -163,5 +163,7 @@
   },
   "addEmployee": "Ajouter un employé",
   "employeeCooperativeExists": "Cet(te) employé(e) existe déjà dans votre coopérative",
-  "sendMail": "Envoyer un email"
+  "sendMail": "Envoyer un email",
+  "sendInvoiceTo": "Envoyer une facture à {{name}}",
+  "sendInvoice": "Envoyer la facture"
 }
