@@ -1,4 +1,11 @@
 {
+  "enterYourEmail": "Ampidiro ny mailaka",
+  "yourPassword": "Ny teny miafina anao",
+  "welcomeToTheApp": "Tonga soa eto amn'ny back-office ny {{app}}",
+  "anAdminAcceptsYourAccount": "Ny mpitantana iray dia hanamarina ny kaonty iray azo atao.",
+  "createAnAdminAccount": "Amorona kaonty mpitantana",
+  "accessToBO": "Miditra sy handrindra ny fampiasana ny {{app}} ao amin'ny back office — haingana sy voaaro.",
+  "loginToApp": "Hifandray amin'ny {{app}}",
   "accountVerified": "Kaonty voamarina",
   "verified": "Voamarina",
   "unverified": "Tsy voamarina",
@@ -21,6 +28,12 @@
     "firstName": "Fanampin'anarana misoratra amin'ny kara-panondro na passport",
     "lastName": "Anarana misoratra amin'ny kara-panondro na passport",
     "dateOfBirth": "Day nahaterahana misoratra amin'ny kara-panondro na passport"
+  },
+  "serverErrors": {
+    "lastNameRequired": "Anarana ilaina",
+    "nameMax": "Anarana lava loatra",
+    "emailRequired": "Mailaka ilaina",
+    "passwordRequired": "Mot de passe ilaina"
   },
   "editMyProfile": "Ovaina ny mombamomba ahy",
   "currentPassword": "Mot de passe amin'izao",
@@ -147,5 +160,7 @@
   },
   "addEmployee": "Hampiditra mpiasa",
   "employeeCooperativeExists": "Efa miasa ao amin'ny coopérative-nao io mpiasa io",
-  "sendMail": "mandefa hafatra"
+  "sendMail": "mandefa hafatra",
+  "sendInvoiceTo": "Handefa faktiora ho an'i {{name}}",
+  "sendInvoice": "Handefa faktiora"
 }

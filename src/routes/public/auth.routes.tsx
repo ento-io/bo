@@ -1,11 +1,10 @@
-import { createRoute , redirect } from "@tanstack/react-router";
+import { Outlet, createRoute , redirect } from "@tanstack/react-router";
 
 import Parse from "parse";
 import { z } from "zod";
 import { appLayout } from "../routes";
 import Login from "@/pages/auth/Login";
 import SignUp from "@/pages/auth/SignUp";
-import AuthLayout from "@/pages/auth/AuthLayout";
 import { PATH_NAMES } from "@/utils/pathnames";
 
 /**
@@ -15,7 +14,7 @@ import { PATH_NAMES } from "@/utils/pathnames";
 const authPublicLayout = createRoute({
   id: "public",
   getParentRoute: () => appLayout,
-  component: AuthLayout,
+  component: () => <Outlet />,
   beforeLoad: async ({ context, location }) => {
     // If the user is logged in, redirect them to the home page
     // only in signup and login page

@@ -1,4 +1,11 @@
 {
+  "enterYourEmail": "Entrez votre email",
+  "yourPassword": "Votre mot de passe",
+  "welcomeToTheApp": "Bienvenue sur le back-office de {{app}}",
+  "anAdminAcceptsYourAccount": "Un administrateur va valider votre compte.",
+  "createAnAdminAccount": "Créer un compte administrateur",
+  "loginToApp": "Se connecter à {{app}}",
+  "accessToBO": "Accéder et gérer l'application {{app}} dans le back office — rapidement et en toute sécurité.",
   "accountVerified": "Compte vérifié",
   "verified": "Verifié",
   "unverified": "Non vérifié",
@@ -21,6 +28,12 @@
     "firstName": "Prénom utilisé à votre carte d'identité nationale ou passport",
     "lastName": "Nom utilisé à votre carte d'identité nationale ou passport",
     "dateOfBirth": "Date de naissance utilisé à votre carte d'identité nationale ou passport"
+  },
+  "serverErrors": {
+    "lastNameRequired": "Nom est requis",
+    "nameMax": "Nom trop long",
+    "emailRequired": "Email est requis",
+    "passwordRequired": "Mot de passe est requis"
   },
   "editMyProfile": "Modifier mon profil",
   "currentPassword": "Mot de passe actuel",
@@ -150,5 +163,7 @@
   },
   "addEmployee": "Ajouter un employé",
   "employeeCooperativeExists": "Cet(te) employé(e) existe déjà dans votre coopérative",
-  "sendMail": "Envoyer un email"
+  "sendMail": "Envoyer un email",
+  "sendInvoiceTo": "Envoyer une facture à {{name}}",
+  "sendInvoice": "Envoyer la facture"
 }

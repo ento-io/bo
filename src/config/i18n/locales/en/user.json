@@ -1,4 +1,11 @@
 {
+  "enterYourEmail": "Enter your email",
+  "yourPassword": "Your password",
+  "loginToApp": "Log in to {{app}}",
+  "createAnAdminAccount": "Create an admin account",
+  "anAdminAcceptsYourAccount": "An admin will validate your account",
+  "welcomeToTheApp": "Welcome to the back-office of {{app}}",
+  "accessToBO": "Access and manage the {{app}} in the back office — quickly and securely.",
   "accountVerified": "Account verified",
   "verified": "Verified",
   "unverified": "Unverified",
@@ -21,6 +28,12 @@
     "firstName": "First name used in your national ID or passport",
     "lastName": "Last name used in your national ID or passport",
     "dateOfBirth": "Date of birth as listed in your national ID or passport"
+  },
+  "serverErrors": {
+    "lastNameRequired": "Last name is required",
+    "nameMax": "Name is too long",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required"
   },
   "editMyProfile": "Edit my profile",
   "currentPassword": "Current Password",
@@ -148,5 +161,7 @@
   },
   "addEmployee": "Add employee",
   "employeeCooperativeExists": "This employee works already in your cooperative",
-  "sendMail": "send email"
+  "sendMail": "send email",
+  "sendInvoiceTo": "Send invoice to {{name}}",
+  "sendInvoice": "Send invoice"
 }

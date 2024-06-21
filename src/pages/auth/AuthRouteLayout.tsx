@@ -7,7 +7,7 @@ const classes = {
     minHeight: '100vh'
   }
 }
-const AuthLayout = () => {
+const AuthRouteLayout = () => {
   return (
     <div css={classes.root} className="flexCenter">
         <div css={{ paddingBottom: 40} }>
@@ -20,4 +20,4 @@ const AuthLayout = () => {
   );
 }
 
-export default AuthLayout
+export default AuthRouteLayout

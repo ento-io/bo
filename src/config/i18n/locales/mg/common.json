@@ -43,7 +43,8 @@
       "invalidEmail": "Tsy mailaka",
       "requiredEmail": "Mailaka tsy maintsy misy",
       "passwordMax": "Ny {{field}} dia tokony ho 64 isa raha betsaka indrindra",
-      "passwordMin": "Ny {{field}} dia tokony ho 8 isa raha kely indrindra"
+      "passwordMin": "Ny {{field}} dia tokony ho 8 isa raha kely indrindra",
+      "passwordAndEmailShouldBeDifferent": "Aza atao mot de passe ny mailaka-anao"
     }
   },
   "translatedDetails": "Tsipiriany nadika",

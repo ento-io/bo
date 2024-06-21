@@ -25,6 +25,7 @@ import { useToggle } from '@/hooks/useToggle';
 import InvoiceStatus from '@/containers/invoices/InvoiceStatus';
 import UsersForEntity from '@/containers/users/UsersForEntity';
 import EstimateStatus from '@/containers/estimates/EstimateStatus';
+import { sendInvoiceToUser } from '@/redux/actions/user.action';
 
 const classes = {
   reference: (theme: Theme) => ({
@@ -37,6 +38,7 @@ const classes = {
 
 const INVOICES_FORM_ID = 'send-email-form-id';
 
+
 const Invoice = () => {
   const { t } = useTranslation(['common', 'user']);
   const dispatch = useDispatch();
@@ -44,6 +46,8 @@ const Invoice = () => {
   const invoice = useSelector(getInvoiceInvoiceSelector);
   const roles = useSelector(getRoleCurrentUserRolesSelector);
   const { open: isOpenEdition, toggle: toggleDialogEdition } = useToggle();
+
+
 
   const canDelete = canAccessTo(roles, 'Invoice', 'delete');
   const canPreview = canAccessTo(roles, 'Invoice', 'get');
@@ -117,6 +121,10 @@ const Invoice = () => {
     dispatch(editInvoice(invoice.objectId, values));
     toggleDialogEdition();
   };
+  
+  const handleSelectRow = async () => {
+    await dispatch(sendInvoiceToUser(invoice.objectId));
+}
 
   const handleRegenerate = () => {
     dispatch(regenerateInvoicePDF(invoice.objectId));
@@ -140,6 +148,7 @@ const Invoice = () => {
           onDownloadPDF={handleDownload}
           goToList={handleGoToList}
           onRegeneratePDF={handleRegenerate}
+          onSendInvoice={handleSelectRow}
           label={invoice.estimate.reference}
         />
       }>
@@ -197,6 +206,7 @@ const Invoice = () => {
           invoice={invoice}
         />
       </Dialog>
+
     </Layout>
   );
 };

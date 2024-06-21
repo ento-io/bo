@@ -4,7 +4,7 @@ import { Theme } from '@emotion/react';
 import { IMAGES } from '@/utils/constants';
 
 const classes = {
-  logo: (theme: Theme) => ({
+  logo: (width = 100) => (theme: Theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: 75,
     },
@@ -14,7 +14,7 @@ const classes = {
     [theme.breakpoints.between('md', 'lg')]: {
       width: 100,
     },
-    width: '100%',
+    width,
   })
 }
 
@@ -22,20 +22,19 @@ const classes = {
  * the original svg is w=100px h=23.44px
  * @returns 
  */
-const Logo = () => {
+type Props = {
+  width?: number;
+}
+const Logo = ({ width }: Props) => {
   const theme = useTheme();
-
-  if (theme.palette.mode === 'light') {
-    return (
-      <a href="/">
-        <img alt="logo" src={IMAGES.defaultLogo} css={classes.logo} />
-      </a>
-    );
-  }
 
   return (
     <a href="/">
-      <img alt="logo" src={IMAGES.whiteLogo} css={classes.logo} />
+      <img
+        alt="logo"
+        src={theme.palette.mode === 'light' ? IMAGES.defaultLogo : IMAGES.whiteLogo}
+        css={classes.logo(width)}
+      />
     </a>
   );
 };

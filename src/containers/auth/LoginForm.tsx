@@ -12,7 +12,6 @@ import { login } from '@/redux/actions/auth.action';
 import { getAppErrorSelector } from '@/redux/reducers/app.reducer';
 import { getUserLoadingSelector } from '@/redux/reducers/user.reducer';
 
-import { COLORS } from '@/utils/constants';
 import { ILoginInput } from '@/types/auth.type';
 import { loginSchema } from '@/validations/auth.validation';
 
@@ -34,32 +33,31 @@ const LoginForm = () => {
   };
 
   return (
-          <Form
-              form={form}
-              onSubmit={handleSubmit(onSubmitHandler)}
-              loading={loading}
-              primaryButtonText={t('user:login')}
-              error={error}
-              isDisabled={false}
-              buttonClassName="textCapitalize bR10">
-                <TextField
-                  bgcolor={COLORS.authBackground}
-                  mode="dark"
-                  name="email"
-                  placeholder={t('user:email')}
-                  type="email"
-                  fullWidth
-                  required
-                />
-              <PasswordField
-                bgcolor={COLORS.authBackground}
-                mode="dark"
-                name="password"
-                placeholder={t('user:password')}
-                fullWidth
-                required
-              />
-        </Form>
+    <Form
+      form={form}
+      onSubmit={handleSubmit(onSubmitHandler)}
+      loading={loading}
+      primaryButtonText={t('user:login')}
+      error={error}
+      isDisabled={false}
+      buttonClassName="textCapitalize bR10"
+    >
+      <TextField
+        name="email"
+        placeholder={t('user:enterYourEmail')}
+        label={t('user:email')}
+        fixedLabel
+        type="email"
+        fullWidth
+      />
+      <PasswordField
+        name="password"
+        label={t('user:password')}
+        placeholder={t('user:yourPassword')}
+        fixedLabel
+        fullWidth
+      />
+  </Form>
   );
 };
 

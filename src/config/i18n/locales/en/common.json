@@ -40,7 +40,8 @@
       "invalidEmail": "Invalid email",
       "requiredEmail": "Required email",
       "passwordMax": "Password must be less than 64 characters",
-      "passwordMin": "Password must be greater than 8 characters"
+      "passwordMin": "Password must be greater than 8 characters",
+      "passwordAndEmailShouldBeDifferent": "Do not use your email as password"
     }
   },
   "translatedDetails": "Translated details",

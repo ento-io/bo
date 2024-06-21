@@ -53,6 +53,10 @@ export const signUpSchema = userSchema
   .refine((value: any) => value.password === value.passwordConfirmation, {
     message: i18n.t('form.error.passwordNotMatch'),
     path: ['passwordConfirmation'],
+  })
+  .refine((value: any) => value.password !== value.email, {
+    message: i18n.t('form.error.passwordAndEmailShouldBeDifferent'),
+    path: ['password'],
   });
 
 export const signUpInfoSchema = object({

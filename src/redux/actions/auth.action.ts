@@ -56,7 +56,7 @@ export const signUp = (values: ISignUpInput, navigate: INavigate): any => {
     setValues(user, newValues, SIGNUP_PROPERTIES);
 
     try {
-      await user.signUp();
+      const newUser = await user.signUp();
       // * This should be placed elsewhere:
       // * I moved it in the ConfirmEmail component
 
@@ -68,8 +68,13 @@ export const signUp = (values: ISignUpInput, navigate: INavigate): any => {
       if (DISABLE_USER_ACCOUNT_CONFIRMATION) {
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         await dispatch(logout());
+        if (newUser.get('verified')) {
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
+          navigate(goToLogin());
+          return;
+        }
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        navigate(goToLogin())
+        navigate(goToAccountVerificationCode());
         return ;
       }
 
