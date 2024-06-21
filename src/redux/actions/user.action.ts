@@ -9,7 +9,7 @@ import { escapeText } from '@/utils/utils';
 import { setValues } from '@/utils/parse.utils';
 
 import { ISignUpInput } from '@/types/auth.type';
-import { ProfileUserInfoInput, IUser, SendEmailInput, IUserCloudInput } from '@/types/user.type';
+import { ProfileUserInfoInput, IUser, SendEmailInput, IUserCloudInput, SendInvoiceInput } from '@/types/user.type';
 import i18n from '@/config/i18n';
 import { AppDispatch, AppThunkAction } from '@/redux/store';
 import {
@@ -372,6 +372,20 @@ export const sendEmailToUser = (user: IUser, values: SendEmailInput): any => {
 
     if (!isSend) {
       dispatch(setErrorSlice(i18n.t('user:emailNotSendTo', { email: values.email })))
+      return 
+    }
+    // TODO: send email to user here
+    const message = i18n.t('user:emailSentTo', { name: getUserFullName(user) });
+    dispatch(setMessageSlice(message));
+  });
+};
+
+export const sendInvoiceToUser = (id: string): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    const isSend = await Parse.Cloud.run('sendInvoiceToUser', { id })
+
+    if (!isSend) {
+      dispatch(setErrorSlice(i18n.t('user:emailNotSendTo', { email: id.email })))
       return 
     }
     // TODO: send email to user here
