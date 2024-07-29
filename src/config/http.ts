@@ -16,6 +16,9 @@ import { getServerUrl } from '@/utils/utils';
 const createInstance = () =>
   axios.create({
     baseURL: getServerUrl(),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
 
 /**

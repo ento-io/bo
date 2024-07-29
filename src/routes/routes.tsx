@@ -7,13 +7,13 @@ import {
  notFound} from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
-import { IRouteContext } from "@/types/app.type";
 import authPublicRoutes from "./public/auth.routes";
 import privateRoutes from "./protected/private.routes";
 import { PATH_NAMES } from "@/utils/pathnames";
 import { logout } from "@/redux/actions/auth.action";
 import accountPublicRoutes from "./public/account.routes";
 import NotFoundPage from "@/pages/NotFoundPage";
+import { IRouteContext } from "@/types/app.type";
 
 export const appLayout = createRootRouteWithContext<IRouteContext>()({
   component: () => (
@@ -24,7 +24,7 @@ export const appLayout = createRootRouteWithContext<IRouteContext>()({
   ),
   notFoundComponent: () => (
     <NotFoundPage />
-  )
+  ),
 });
 
 const logoutRoute = createRoute({
