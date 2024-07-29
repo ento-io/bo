@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import i18n from '@/config/i18n';
+import { sendEmailSchema } from './email.validation';
 
 
 export const invoiceSchema = z.object({
@@ -15,3 +16,6 @@ export const invoiceSchema = z.object({
 });
 
 export const invoiceFilterSchema = invoiceSchema;
+
+
+export const sendInvoiceSchema = sendEmailSchema.pick({ email: true, subject: true });

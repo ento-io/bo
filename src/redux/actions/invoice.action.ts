@@ -17,6 +17,7 @@ import { IInvoice, InvoiceInput } from '@/types/invoice.type';
 import { Estimate, loadEstimates } from './estimate.action';
 import { generateAndDownloadInvoicePDFApi } from '@/api/invoice.api';
 import { goToNotFound } from './app.action';
+import { downloadFile } from '@/utils/utils';
 
 const Invoice = Parse.Object.extend('Invoice');
 
@@ -283,6 +284,20 @@ export const onInvoiceEnter = (route?: any): AppThunkAction => {
     dispatch(loadInvoiceSlice((invoice as Parse.Attributes).toJSON()));
   });
 };
+
+export const onDownloadPDFEnter = (route?: any): AppThunkAction => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    const currentUser = await Parse.User.currentAsync();
+    if (!currentUser) return;
+
+    const invoice = await getInvoice(route.params.id);
+    if (!invoice) return;
+
+    await downloadFile({ fileName: 'invoices/download', data: { id: route.params.id, reference: invoice.get('reference')}});
+    await dispatch(setMessageSlice(i18n.t('common:invoices.invoiceDownloadedSuccessfully', { value: invoice.get('reference') })));
+  });
+};
+
 
 // --------------------------------------- //
 // ------------- redirection ------------- //

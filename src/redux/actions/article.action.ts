@@ -325,6 +325,7 @@ export const onCreateArticleEnter = (route?: any): AppThunkAction => {
   });
 };
 
+
 // --------------------------------------- //
 // ------------- redirection ------------- //
 // --------------------------------------- //

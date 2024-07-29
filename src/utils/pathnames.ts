@@ -23,6 +23,7 @@ export const PATH_NAMES = {
   },
   estimates: '/' + i18n.t('route:estimates'),
   invoices: '/' + i18n.t('route:invoices'),
+  downloadPdf: i18n.t('route:download'),
 
   // static pathnames (no '/' at the beginning)
   create: i18n.t('route:add'),

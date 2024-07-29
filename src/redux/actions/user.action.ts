@@ -361,7 +361,6 @@ export const inviteUser: any = (values: ISignUpInput): any => {
       user = await newUser.save();
     }
 
-
     dispatch(setMessageSlice(i18n.t('user:messages.employeeAddedSuccessfully')));
   }, setUserLoadingSlice);
 };
@@ -375,6 +374,29 @@ export const sendEmailToUser = (user: IUser, values: SendEmailInput): any => {
       return 
     }
     // TODO: send email to user here
+    const message = i18n.t('user:emailSentTo', { name: getUserFullName(user) });
+    dispatch(setMessageSlice(message));
+  });
+};
+
+export const sendInvoiceToUser = (id: string): any => {
+  return actionWithLoader(async (dispatch: AppDispatch): Promise<void> => {
+    const invoice = await Parse.Cloud.run('getInvoice', { id });
+
+    if (!invoice) {
+      dispatch(setErrorSlice(i18n.t('user:emailNotSendTo', { email: id })));
+      return;
+    }
+
+    const isSend = await Parse.Cloud.run('sendInvoiceToUser', { id })
+
+    if (!isSend) {
+      dispatch(setErrorSlice(i18n.t('user:emailNotSendTo', { email: id })))
+      return 
+    }
+
+    // TODO: send email to user here
+    const user = invoice.get('user') as Parse.User;
     const message = i18n.t('user:emailSentTo', { name: getUserFullName(user) });
     dispatch(setMessageSlice(message));
   });

@@ -3,8 +3,11 @@ import { z } from "zod";
 import { sendEmailSchema } from "@/validations/email.validation";
 import { userFilterSchema, usersRouteSearchParams } from "@/validations/user.validation";
 import { IQueriesInput } from "./app.type";
+import { sendInvoiceSchema } from "@/validations/invoice.validation";
 
 export type SendEmailInput = z.infer<typeof sendEmailSchema>;
+export type SendInvoiceInput = z.infer<typeof sendInvoiceSchema>;
+
 export type UserFiltersInput = z.infer<typeof userFilterSchema>;
 export type IUsersRouteSearchParams = z.infer<typeof usersRouteSearchParams>;
 

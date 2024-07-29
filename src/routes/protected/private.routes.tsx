@@ -1,5 +1,6 @@
 import { createRoute , redirect } from "@tanstack/react-router";
 import Parse from "parse";
+import { z } from "zod";
 import DashboardLayout from "@/pages/DashboardLayout";
 
 import { appLayout } from "../routes";
@@ -10,13 +11,15 @@ import { PATH_NAMES } from "@/utils/pathnames";
 import Settings from "@/pages/Settings";
 import { checkSession } from "@/redux/actions/auth.action";
 import userRoutes, { usersLayout } from "./users.routes";
-import { onDashboardEnter } from "@/redux/actions/app.action";
+import { onDashboardEnter, onEnter } from "@/redux/actions/app.action";
 import { getRoleCurrentUserRolesSelector } from "@/redux/reducers/role.reducer";
 import rolesRoute from "./role.routes";
 import estimateRoutes, { estimatesLayout } from "./estimate.routes";
 import categoryRoutes, { categoriesLayout } from "./category.routes";
 import invoiceRoutes, { invoicesLayout } from "./invoice.routes";
 import pageRoutes, { pagesLayout } from "./page.routes";
+import { onDownloadPDFEnter } from "@/redux/actions/invoice.action";
+import DownloadPdf from "@/pages/DownloadPdf";
 
 /**
  * add id to pathless route (sub layouts)
@@ -82,6 +85,16 @@ const settingsRoute = createRoute({
   path: PATH_NAMES.settings,
 });
 
+const downloadPDFRoute = createRoute({
+  parseParams: (params: any) => ({
+    id: z.string().parse(params.id),
+  }),
+  getParentRoute: () => privateLayout,
+  component: DownloadPdf,
+  loader: onEnter(onDownloadPDFEnter),
+  path: PATH_NAMES.downloadPdf + "/$id",
+});
+
 const privateRoutes = privateLayout.addChildren([
   homeRoute,
   // use addChildren in the root because of type errors
@@ -94,6 +107,7 @@ const privateRoutes = privateLayout.addChildren([
   estimatesLayout.addChildren(estimateRoutes),
   categoriesLayout.addChildren(categoryRoutes),
   invoicesLayout.addChildren(invoiceRoutes),
+  downloadPDFRoute
 ]);
 
 export default privateRoutes;

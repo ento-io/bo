@@ -161,5 +161,7 @@
   },
   "addEmployee": "Add employee",
   "employeeCooperativeExists": "This employee works already in your cooperative",
-  "sendMail": "send email"
+  "sendMail": "send email",
+  "sendInvoiceTo": "Send invoice to {{name}}",
+  "sendInvoice": "Send invoice"
 }

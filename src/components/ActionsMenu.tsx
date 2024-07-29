@@ -6,7 +6,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useTranslation } from 'react-i18next';
-import { FiChevronDown, FiEdit3, FiEye, FiList, FiPlus, FiTrash } from 'react-icons/fi';
+import { FiChevronDown, FiEdit3, FiEye, FiList, FiPlus, FiSend, FiTrash } from 'react-icons/fi';
 
 import { useToggle } from '@/hooks/useToggle';
 
@@ -57,6 +57,7 @@ export type ActionsMenuProps = {
   goToList?: () => void;
   onCreate?: () => void;
   onPreview?: () => void;
+  onSendInvoice?: () => void;
   label?: string;
   className?: string;
   menus?: IMenu[];
@@ -68,6 +69,7 @@ const ActionsMenu = ({
   goToList,
   onPreview,
   onCreate,
+  onSendInvoice,
   label,
   className,
   menus = []
@@ -92,6 +94,12 @@ const ActionsMenu = ({
   const handleDelete = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     toggleDeleteDialog();
+  };
+
+  const handleSendInvoice =  (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    if (!onSendInvoice) return;
+    onSendInvoice();
   };
 
   const handleEdit = (event: MouseEvent<HTMLElement>) => {
@@ -128,6 +136,12 @@ const ActionsMenu = ({
       display: !!goToList,
       label: t('returnToList'),
       icon: <FiList size={20} />
+    },
+    {
+      onClick: handleSendInvoice,
+      display: !!onSendInvoice,
+      label: t('user:sendInvoice'),
+      icon: <FiSend size={20} />
     },
     {
       onClick: onCreate,
