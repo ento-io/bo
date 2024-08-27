@@ -26,6 +26,8 @@ export interface IInvoice extends Attributes {
   file: IFileCloud;
   deleted: boolean;
   status: InvoiceStatusEnum;
+  unitPrice: number;
+  quantity: number;
 }
 
 export interface IInvoiceState {

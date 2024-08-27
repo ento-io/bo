@@ -234,6 +234,7 @@
   "car": "Car",
   "moreAction": "More action for {{value}}",
   "prices": "Prices",
+  "quantities": "Quantities",
   "rating": "Rating",
   "total": "Total",
   "hello": "Hello",
@@ -343,6 +344,8 @@
     "invoiceAlreadyExists": "Invoice with reference {{value}} already exists",
     "thisInvoiceAlreadyExists": "This invoice already exists",
     "countRegeneratedSuccessfully": "{{count}} invoice(s) regenerated successfully",
-    "regeneratedInvoices": "Regenerate invoices"
+    "regeneratedInvoices": "Regenerate invoices",
+    "unitPrice": "Unit price",
+    "quantity": "Quantity"
   }
 }

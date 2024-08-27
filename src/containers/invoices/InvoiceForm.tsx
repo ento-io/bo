@@ -17,11 +17,15 @@ const getInitialValues = (invoice: IInvoice | null): InvoiceInput => {
     return {
       supplierName: '',
       estimate: '',
+      unitPrice: 0,
+      quantity: 1,
     };
   }
   return {
     supplierName: invoice.supplierName,
     estimate: invoice.estimate.objectId,
+    unitPrice: invoice.unitPrice,
+    quantity: invoice.quantity,
   };
 }
 
@@ -58,6 +62,8 @@ const InvoiceForm = ({ formId, onSubmit, invoice }: Props) => {
       onSubmit={handleSubmit(onSubmit)}  
     >
       <TextField name="supplierName" label={t('invoices.supplierName')} required fixedLabel />
+      <TextField name="unitPrice" label={t('invoices.unitPrice')} required fixedLabel type="number" />
+      <TextField name="quantity" label={t('invoices.quantity')} fixedLabel type="number" inputProps={{ min: 1 }}/>
       <SelectField
         name="estimate"
         options={getEstimateOptions(estimates)}

@@ -243,6 +243,7 @@
   "moreAction": "Actions maro ho an'ny {{value}}",
   "passengersCount": "Isan'ny mpandeha",
   "prices": "Sarany",
+  "quantities": "Habetsahany", 
   "rating": "Naoty",
   "total": "Fitambarany",
   "hello": "Salama",
@@ -352,6 +353,8 @@
     "invoiceAlreadyExists": "Efa misy ny faktiora manana ny reference {{value}}",
     "thisInvoiceAlreadyExists": "Efa misy ny faktiora manana io reference io",
     "countRegeneratedSuccessfully": "{{count}} faktiora amboarina soamantsara",
-    "regeneratedInvoices": "Averina amboarina ny facktiora"
+    "regeneratedInvoices": "Averina amboarina ny facktiora",
+    "unitPrice": "Vidin'ny singa",
+    "quantity": "Habetsahany"
   }
 }
