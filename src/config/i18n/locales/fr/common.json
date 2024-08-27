@@ -254,6 +254,7 @@
   "car": "Voiture",
   "moreAction": "Plus d'actions pour {{value}}",
   "prices": "Prix",
+  "quantities": "Quantités",
   "rating": "Note",
   "total": "Total",
   "hello": "Bonjour",
@@ -363,6 +364,8 @@
     "invoiceAlreadyExists": "Facture avec la référence {{value}} existe déjà",
     "thisInvoiceAlreadyExists": "Cette facture existe déjà",
     "countRegeneratedSuccessfully": "{{count}} facture(s) regénéré avec succès",
-    "regeneratedInvoices": "Regénerer les factures"
+    "regeneratedInvoices": "Regénerer les factures",
+    "unitPrice": "Prix unitaire",
+    "quantity": "Quantité"
   }
 }

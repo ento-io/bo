@@ -21,7 +21,7 @@ import { downloadFile } from '@/utils/utils';
 
 const Invoice = Parse.Object.extend('Invoice');
 
-const INVOICE_PROPERTIES = new Set(['supplierName', 'estimate']);
+const INVOICE_PROPERTIES = new Set(['supplierName', 'unitPrice', 'quantity', 'estimate']);
 
 export const getInvoice = async (id: string, include: string[] = []): Promise<Parse.Object | undefined> => {
   const invoice = await Parse.Cloud.run('getInvoice', { id, include });
@@ -187,6 +187,7 @@ export const createInvoice = (values: InvoiceInput): any => {
     // you can sse the cloud function in server in the /cloud/hooks/users.js file
     try {
       const savedInvoice = await invoice.save();
+
       dispatch(addInvoiceToInvoicesSlice((savedInvoice as Attributes).toJSON()));
       await dispatch(setMessageSlice(i18n.t('common:invoices.invoiceCreatedSuccessfully')));
   

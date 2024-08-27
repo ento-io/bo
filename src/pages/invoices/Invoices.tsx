@@ -34,6 +34,8 @@ interface Data {
   status: string;
   createdAt: ReactNode;
   actions: ReactNode;
+  unitPrice: number
+  quantity: number,
 }
 
 const headCells: TableHeadCell<keyof Data>[] = [
@@ -44,6 +46,14 @@ const headCells: TableHeadCell<keyof Data>[] = [
   {
     id: 'supplierName',
     label: i18n.t('common:supplier'),
+  },
+  {
+    id: 'unitPrice',
+    label: i18n.t('common:prices'),
+  },
+  {
+    id: 'quantity',
+    label: i18n.t('common:quantities'),
   },
   {
     id: 'createdBy',
@@ -171,6 +181,8 @@ const Invoices = () => {
         id: invoice.objectId, // required even if not displayed
         reference: invoice.estimate.reference,
         supplierName: invoice.supplierName,
+        unitPrice: invoice.unitPrice,
+        quantity: invoice.quantity,
         createdBy: <UserCell user={invoice.createdBy} />,
         user: invoice.user ? <UserCell user={invoice.user} /> : '-',
         status: invoice.status ? <InvoiceStatus status={invoice.status} /> : '-',
