@@ -143,7 +143,8 @@
     "linkLocationHelper": "Where in the website to place the link of the page",
     "sureToDeleteThing": "Are you sure you want to delete",
     "enterConfirmAndDelete": "Enter {{type}} to confirm and delete",
-    "pleaserEnterValue": "Please enter \"{{value}}\" to confirm deletion"
+    "pleaserEnterValue": "Please enter \"{{value}}\" to confirm deletion",
+    "orderSuccessfully": "Success, we will get back to you as soon as possible"
   },
   "at": "at",
   "fullDateFormat": "MM/DD/YYYY [at] HH:mm",
@@ -347,5 +348,8 @@
     "regeneratedInvoices": "Regenerate invoices",
     "unitPrice": "Unit price",
     "quantity": "Quantity"
-  }
+  },
+  "yourOrder": "Your order",
+  "detailsOrder": "Order details",
+  "confirmOrder": "Confirm the order"
 }

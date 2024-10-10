@@ -12,6 +12,8 @@ const getColor = (status: IInvoice['status']) => {
       return 'info';
     case InvoiceStatusEnum.PAID:
       return 'success';
+    case InvoiceStatusEnum.DONE:
+      return 'success';
     default:
       return 'default';
   }

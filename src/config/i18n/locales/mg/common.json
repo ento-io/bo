@@ -151,7 +151,8 @@
     "sureToDeleteThing": "Vonona ve ianao hamafa",
     "enterConfirmAndDelete": "Ampidiro {{type}} ho ekena ho fafàna",
     "pleaserEnterValue": "Ampidiro ny \"{{value}}\" ho fanekena ny famafàna",
-    "cooperativeAlreadyExist": "Efa manana coopérative ianao"
+    "cooperativeAlreadyExist": "Efa manana coopérative ianao",
+    "orderSuccessfully": "Voaray, hiverina aminao haingana araka izay azo atao izahay"
   },
   "at": "@",
   "fullDateFormat": "DD/MM/YYYY @ HH:mm",
@@ -356,5 +357,8 @@
     "regeneratedInvoices": "Averina amboarina ny facktiora",
     "unitPrice": "Vidin'ny singa",
     "quantity": "Habetsahany"
-  }
+  },
+  "yourOrder": "Zavatra nosafidinao",
+  "detailsOrder": "Momba ny zavatra nosafidinao",
+  "confirmOrder": "Manamafy ny zavatra nosafidiana"
 }

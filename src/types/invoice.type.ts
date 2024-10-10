@@ -10,6 +10,7 @@ export enum InvoiceStatusEnum {
   'IN_PROGRESS' = 'IN_PROGRESS',
   'SENT' =  'SENT',
   'PAID' =  'PAID',
+  'DONE' =  'DONE',
 };
 export interface IInvoice extends Attributes {
   objectId: string;

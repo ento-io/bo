@@ -9,6 +9,10 @@ export const settingsSchema = z.object({
   lang: langSchema,
 });
 
+export const ordersSchema = z.object({
+  lang: langSchema,
+});
+
 export const confirmDeletionSchema = z.object({
   confirmation: z.string(),
 });

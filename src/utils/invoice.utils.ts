@@ -17,6 +17,10 @@ export const invoiceStatus = [
     value: 'PAID',
     label: i18n.t('common:status.paid'),
   },
+  {
+    value: 'DONE',
+    label: i18n.t('common:status.done'),
+  },
 ];
 
 export const getInvoiceStatusLabel = (status: string): string => {

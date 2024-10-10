@@ -15,6 +15,7 @@ export const PATH_NAMES = {
   settings: '/' + i18n.t('route:settings'),
   logout: '/' + i18n.t('route:logout'),
   notFound: '/' + i18n.t('route:notFound'),
+  order: '/' + i18n.t('route:order'),
   account: {
     root: '/' + i18n.t('route:account'),
     confirmResetPasswordCode: '/' + i18n.t('route:confirmCode'),
