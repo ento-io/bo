@@ -13,7 +13,7 @@ import { IQueriesInput } from '@/types/app.type';
 import { getRoleCurrentUserRolesSelector } from '../reducers/role.reducer';
 import { canAccessTo } from '@/utils/role.utils';
 import i18n from '@/config/i18n';
-import { IInvoice, InvoiceInput } from '@/types/invoice.type';
+import { IInvoice, InvoiceInput, InvoiceStatusEnum } from '@/types/invoice.type';
 import { Estimate, loadEstimates } from './estimate.action';
 import { generateAndDownloadInvoicePDFApi } from '@/api/invoice.api';
 import { goToNotFound } from './app.action';
@@ -296,6 +296,23 @@ export const onDownloadPDFEnter = (route?: any): AppThunkAction => {
 
     await downloadFile({ fileName: 'invoices/download', data: { id: route.params.id, reference: invoice.get('reference')}});
     await dispatch(setMessageSlice(i18n.t('common:invoices.invoiceDownloadedSuccessfully', { value: invoice.get('reference') })));
+  });
+};
+
+export const confirmOrderAction = (id: string): any => {
+  return actionWithLoader (async (dispatch: AppDispatch): Promise<void> => {
+    try {
+      const invoice = await getInvoice(id);
+      if (!invoice) return;
+
+      invoice.set('status', InvoiceStatusEnum.DONE);
+      const updatedInvoice = await invoice.save();
+
+      dispatch(updateInvoicesByInvoiceSlice(updatedInvoice.toJSON() as IInvoice));
+      dispatch(setMessageSlice(i18n.t('common:infoMessages.orderSuccessfully')));
+    } catch (error) {
+      console.error('Error confirming order:', error);
+    }
   });
 };
 

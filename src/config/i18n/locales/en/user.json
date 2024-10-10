@@ -163,5 +163,7 @@
   "employeeCooperativeExists": "This employee works already in your cooperative",
   "sendMail": "send email",
   "sendInvoiceTo": "Send invoice to {{name}}",
-  "sendInvoice": "Send invoice"
+  "sendInvoice": "Send invoice",
+  "companyName": "Company name",
+  "customerName": "Customer name"
 }

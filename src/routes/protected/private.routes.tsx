@@ -18,8 +18,9 @@ import estimateRoutes, { estimatesLayout } from "./estimate.routes";
 import categoryRoutes, { categoriesLayout } from "./category.routes";
 import invoiceRoutes, { invoicesLayout } from "./invoice.routes";
 import pageRoutes, { pagesLayout } from "./page.routes";
-import { onDownloadPDFEnter } from "@/redux/actions/invoice.action";
+import { onDownloadPDFEnter, onInvoiceEnter } from "@/redux/actions/invoice.action";
 import DownloadPdf from "@/pages/DownloadPdf";
+import Order from "@/pages/Order";
 
 /**
  * add id to pathless route (sub layouts)
@@ -95,6 +96,16 @@ const downloadPDFRoute = createRoute({
   path: PATH_NAMES.downloadPdf + "/$id",
 });
 
+const orderRoute = createRoute({
+  parseParams: (params: any) => ({
+    id: z.string().parse(params.id),
+  }),
+  getParentRoute: () => privateLayout,
+  beforeLoad: onEnter(onInvoiceEnter),
+  component: Order,
+  path: PATH_NAMES.order + "/$id",
+});
+
 const privateRoutes = privateLayout.addChildren([
   homeRoute,
   // use addChildren in the root because of type errors
@@ -107,7 +118,8 @@ const privateRoutes = privateLayout.addChildren([
   estimatesLayout.addChildren(estimateRoutes),
   categoriesLayout.addChildren(categoryRoutes),
   invoicesLayout.addChildren(invoiceRoutes),
-  downloadPDFRoute
+  downloadPDFRoute,
+  orderRoute
 ]);
 
 export default privateRoutes;
